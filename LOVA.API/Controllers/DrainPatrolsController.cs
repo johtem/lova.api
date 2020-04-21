@@ -97,7 +97,7 @@ namespace LOVA.API.Controllers
         {
             string wellName = string.Concat(drainPatrolViewModel.Slinga, drainPatrolViewModel.Address);
 
-            var well = await _context.Wells.FirstOrDefaultAsync();
+            var well = await _context.Wells.Where(a => a.WellName == wellName).FirstOrDefaultAsync();
 
             if (well == null )
             {
