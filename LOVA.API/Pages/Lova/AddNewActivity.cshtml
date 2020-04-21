@@ -1,0 +1,58 @@
+﻿@page
+@model LOVA.API.Pages.Lova.AddNewActivityModel
+@{
+    ViewData["Title"] = "AddNewActivity";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <form method="post">
+            <div class="card border-primary" style="width: 50rem;">
+                <div class="card-header">
+                    Lägg till ny åtgärd
+                </div>
+                <div class="card-body">
+
+                    <div class="form-group">
+                        <label for="IssueReportViewModel.ProblemDescription">Problembeskrivning</label>
+                        <input type="text" class="form-control form-control-sm" name="IssueReportViewModel.ProblemDescription" />
+                    </div>
+                    <div class="form-group">
+                        <label>Intagsenhet</label>
+                        
+                        @(Html.Kendo().AutoComplete()
+                            .Name("WellName")
+                            .Filter("Startswith")
+                            .Placeholder("Välj intagsenhet")
+                            .MinLength(2)
+                            .DataTextField("wellName")
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Url("/Lova/AddNewActivity?handler=Well").Data("onAdditionalData");
+                                })
+                                .ServerFiltering(true);
+                            })
+                            .HtmlAttributes(new { style="width:100%;"})
+                        )
+  
+                    </div>
+
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-default">Spara</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    function onAdditionalData() {
+        return {
+            text: $("#WellName").val()
+        };
+    }
+</script>
