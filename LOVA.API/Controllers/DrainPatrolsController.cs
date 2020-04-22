@@ -32,10 +32,11 @@ namespace LOVA.API.Controllers
                 .Include(a => a.Well)
                 .Select(a => new DrainPatrolViewModel
                 {
-                    Slinga = a.Slinga,
+                    Master_node = a.Master_node,
+                    Index = a.Index,
                     Address = a.Address,
-                    Tid = a.Tid,
-                    Aktiv = a.Aktiv
+                    Time = a.Time,
+                    Active = a.Active
                 })
                 .ToListAsync();
 
@@ -95,7 +96,7 @@ namespace LOVA.API.Controllers
         [HttpPost]
         public async Task<ActionResult<DrainPatrol>> PostDrainPatrol(DrainPatrolViewModel drainPatrolViewModel)
         {
-            string wellName = string.Concat(drainPatrolViewModel.Slinga, drainPatrolViewModel.Address);
+            string wellName = string.Concat(drainPatrolViewModel.Master_node, drainPatrolViewModel.Address);
 
             var well = await _context.Wells.Where(a => a.WellName == wellName).FirstOrDefaultAsync();
 
@@ -107,11 +108,11 @@ namespace LOVA.API.Controllers
             var insertData = new DrainPatrol
             {
                 WellId = well.Id,
-                Slinga = drainPatrolViewModel.Slinga,
+                Master_node = drainPatrolViewModel.Master_node,
+                Index = drainPatrolViewModel.Index,
                 Address = drainPatrolViewModel.Address,
-                Tid = drainPatrolViewModel.Tid,
-                Aktiv = drainPatrolViewModel.Aktiv,
-
+                Time = drainPatrolViewModel.Time,
+                Active = drainPatrolViewModel.Active
             };
 
 

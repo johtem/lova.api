@@ -19,7 +19,7 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
+            <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">Löttinglund</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -29,26 +29,45 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Startsida</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            LöVA
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarOmDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Villaföreningen
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <div class="dropdown-menu" aria-labelledby="navbarOmDropdown">
                                 <a class="dropdown-item" href="#">Test</a>
                                 <a class="dropdown-item" href="/Lova/AddNewActivity">Lägg till</a>
                             </div>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarVillaDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Villaföreningen
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarVillaDropdown">
+                                <a class="dropdown-item" href="#">Test</a>
+                                <a class="dropdown-item" href="/Lova/AddNewActivity">Lägg till</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarLovaDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                LöVA
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarLovaDropdown">
+                                <a class="dropdown-item" href="#">Test</a>
+                                <a class="dropdown-item" href="/Lova/AddNewActivity">Lägg till</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

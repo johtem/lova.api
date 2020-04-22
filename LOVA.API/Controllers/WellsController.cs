@@ -27,7 +27,7 @@ namespace LOVA.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Well>>> GetWells()
         {
-            var data = await _context.Wells.Where(a => a.WellName == "1A1").ToListAsync();
+            var data = await _context.Wells.ToListAsync();
             return data;
         }
 
