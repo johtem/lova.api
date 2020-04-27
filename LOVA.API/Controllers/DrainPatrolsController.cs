@@ -28,8 +28,11 @@ namespace LOVA.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DrainPatrolViewModel>>> GetDrainPatrols()
         {
+            var dateFrom = DateTime.Now.AddHours(MyConsts.HoursBackInTime);
+
             ActionResult<IEnumerable<DrainPatrolViewModel>> data = await _context.DrainPatrols
                 .Include(a => a.Well)
+                .Where(a => a.Time > dateFrom)
                 .Select(a => new DrainPatrolViewModel
                 {
                     Master_node = a.Master_node,
@@ -58,37 +61,7 @@ namespace LOVA.API.Controllers
             return drainPatrol;
         }
 
-        // PUT: api/DrainPatrols/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutDrainPatrol(long id, DrainPatrol drainPatrol)
-        {
-            if (id != drainPatrol.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(drainPatrol).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DrainPatrolExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
 
         // POST: api/DrainPatrols
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -123,25 +96,5 @@ namespace LOVA.API.Controllers
             return Ok(drainPatrolViewModel);
         }
 
-        // DELETE: api/DrainPatrols/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<DrainPatrol>> DeleteDrainPatrol(long id)
-        {
-            var drainPatrol = await _context.DrainPatrols.FindAsync(id);
-            if (drainPatrol == null)
-            {
-                return NotFound();
-            }
-
-            _context.DrainPatrols.Remove(drainPatrol);
-            await _context.SaveChangesAsync();
-
-            return drainPatrol;
-        }
-
-        private bool DrainPatrolExists(long id)
-        {
-            return _context.DrainPatrols.Any(e => e.Id == id);
-        }
     }
 }

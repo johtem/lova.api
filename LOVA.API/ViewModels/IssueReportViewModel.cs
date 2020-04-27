@@ -7,6 +7,7 @@ namespace LOVA.API.ViewModels
 {
     public class IssueReportViewModel
     {
+        public long Id { get; set; }
         public string WellName { get; set; }
         public string ProblemDescription { get; set; }
 
@@ -16,6 +17,8 @@ namespace LOVA.API.ViewModels
         public string OldActivatorSerialNumber { get; set; }
         public string OldValveSerialNumber { get; set; }
         public bool IsChargeable { get; set; }
+
+        public bool IsPhoto { get; set; }
 
         public DateTime CreatedAt { get; set; }
 

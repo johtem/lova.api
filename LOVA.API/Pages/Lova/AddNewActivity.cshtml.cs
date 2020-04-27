@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LOVA.API.Models;
 using LOVA.API.Services;
 using LOVA.API.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -26,9 +27,41 @@ namespace LOVA.API.Pages.Lova
 
         }
 
-        public void OnPost()
+        public async Task OnPost()
         {
-            var apa = IssueReportViewModel.ProblemDescription;
+          var well = await _context.Wells.Where(a => a.WellName == IssueReportViewModel.WellName).FirstOrDefaultAsync();
+
+            if (well == null)
+            {
+
+            }
+
+            IssueReport insertData = new IssueReport
+            {
+                WellId = well.Id,
+                ProblemDescription = IssueReportViewModel.ProblemDescription,
+                SolutionDescription = IssueReportViewModel.SolutionDescription,
+                NewActivatorSerialNumber = IssueReportViewModel.NewActivatorSerialNumber,
+                NewValveSerialNumber = IssueReportViewModel.NewValveSerialNumber,
+                OldActivatorSerialNumber = well.ActivatorSerialNumber,
+                OldValveSerialNumber = well.ValveSerialNumber,
+                IsChargeable = IssueReportViewModel.IsChargeable,
+                IsPhoto = IssueReportViewModel.IsPhoto,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+            
+            well.ActivatorSerialNumber = string.IsNullOrEmpty(IssueReportViewModel.NewActivatorSerialNumber) ? well.ActivatorSerialNumber : IssueReportViewModel.NewActivatorSerialNumber;
+            well.ValveSerialNumber = string.IsNullOrEmpty(IssueReportViewModel.NewValveSerialNumber) ? well.ValveSerialNumber : IssueReportViewModel.NewValveSerialNumber;
+            well.UpdatedAt = DateTime.UtcNow;
+
+            await _context.AddAsync(well);
+            _context.Entry(well).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            _context.IssueReports.Add(insertData);
+            await _context.SaveChangesAsync();
+
         }
 
         public async Task<JsonResult> OnGetWell(string text)

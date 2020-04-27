@@ -17,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft;
+using Newtonsoft.Json.Serialization;
 
 namespace LOVA.API
 {
@@ -37,7 +38,7 @@ namespace LOVA.API
             
 
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-            services.AddRazorPages().AddNewtonsoftJson();
+            services.AddRazorPages().AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver()); ;
 
             services.AddSwaggerGen(c =>
            {

@@ -1,0 +1,54 @@
+﻿@page
+@model LOVA.API.Pages.Lova.WaterDrainReportModel
+@{
+    ViewData["Title"] = "WaterDrainReport";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@Html.AntiForgeryToken()  
+
+<div class="row">
+
+</div>
+<div class="row">
+    @(Html.Kendo().Grid<IssueReportViewModel>()
+        .Name("grid")
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.Id).Hidden(true);
+            columns.Bound(p => p.WellName).Width(120);
+            columns.Bound(p => p.ProblemDescription);
+            columns.Bound(p => p.SolutionDescription);
+            //columns.Bound(p => p.NewActivatorSerialNumber);
+            //columns.Bound(p => p.NewValveSerialNumber).Width(150);
+            columns.Bound(p => p.CreatedAt).Width(150).Format("{0:MM/dd/yyyy}");
+        })
+        .Pageable()
+        .Sortable()
+        .Scrollable()
+        .Filterable()
+        .HtmlAttributes(new { style = "height:430px;" })
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .PageSize(LOVA.API.Services.MyConsts.PageSize)
+            .Read(read => read.Url("/Lova/WaterDrainReport?handler=Read").Data("forgeryToken"))
+            .Model( m => 
+                {
+                  m.Id(id => id.Id);
+                })
+         )
+)
+</div>
+
+@section Scripts {
+   
+<script>
+    function forgeryToken() {
+        return kendo.antiForgeryTokens();
+    }
+
+</script>
+
+}
+
