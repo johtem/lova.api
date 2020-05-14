@@ -6,12 +6,14 @@ using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using LOVA.API.Services;
 using LOVA.API.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace LOVA.API.Pages.Lova
 {
+    [Authorize(Policy = "RequireLovaRole")]
     public class WaterDrainReportModel : PageModel
     {
 

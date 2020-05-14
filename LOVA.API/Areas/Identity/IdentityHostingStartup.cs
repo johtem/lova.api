@@ -20,7 +20,10 @@ namespace LOVA.API.Areas.Identity
                         context.Configuration.GetConnectionString("LOVAAPIContextConnection")));
 
                 services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                    .AddEntityFrameworkStores<LOVAAPIContext>();
+                .AddRoles<IdentityRole>()    
+                .AddEntityFrameworkStores<LOVAAPIContext>();
+
+                
             });
         }
     }

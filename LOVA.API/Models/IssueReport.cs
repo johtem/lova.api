@@ -21,7 +21,14 @@ namespace LOVA.API.Models
         public bool IsChargeable { get; set; }
 
         public bool IsPhoto { get; set; }
+
         public string Photo { get; set; }
+        public bool IsLowVacuum { get; set; }
+
+        public int MasterNode { get; set; }
+
+        public int Alarm { get; set; }
+        
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

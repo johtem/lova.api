@@ -4,33 +4,36 @@
     ViewData["Title"] = "AddNewActivity";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
-<div class="container">
-    <div class="row">
+<div class="container-fluid">
+    <div class="row offset-2">
         <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="card border-primary" style="width: 50rem;">
                 <div class="card-header">
                     Lägg till ny åtgärd
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="IssueReportViewModel.ProblemDescription">Problembeskrivning</label>
-                                <input type="text" class="form-control form-control-sm" name="IssueReportViewModel.ProblemDescription" />
+                        <div class="col-8">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="IssueReportViewModel.ProblemDescription">Problembeskrivning</label>
+                                        <input type="text" class="form-control form-control-sm" name="IssueReportViewModel.ProblemDescription" />
+                                        <span asp-validation-for="IssueReportViewModel.ProblemDescription" class="text-danger"></span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label>Intagsenhet</label>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group ">
+                                        <label>Intagsenhet</label>
 
-                                @(Html.Kendo().AutoComplete()
+                                        @(Html.Kendo().AutoComplete()
                                     .Name("IssueReportViewModel.WellName")
                                     .Filter("Startswith")
-                                    .Placeholder("Välj intagsenhet")
                                     .MinLength(2)
-                                    .DataTextField("wellName")
+                                    .DataTextField("WellName")
                                     .DataSource(source =>
                                     {
                                         source.Read(read =>
@@ -41,53 +44,99 @@
                                     })
                                     .HtmlAttributes(new { style="width:100%;"})
                                 )
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-check mt-4">
+                                        <span asp-validation-for="IssueReportViewModel.WellName" class="text-danger"></span>
+                                    </div>
 
-                                @(Html.Kendo().Switch()
+                                </div>
+                                <div class="col">
+                                    <div class="form-check mt-4">
+
+                                        @(Html.Kendo().Switch()
                                         .Name("IssueReportViewModel.IsChargeable")
                                         .Messages(c => c.Checked("Yes").Unchecked("No"))
                                  )
-                                <label class="form-check-label" for="IssueReportViewModel.IsChargeable">Fakturerbar</label>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-check mt-4">
+                                        <label class="form-check-label" for="IssueReportViewModel.IsChargeable">Fakturerbar</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check mt-4">
 
-                                @(Html.Kendo().Switch()
+                                        @(Html.Kendo().Switch()
                                         .Name("IssueReportViewModel.IsPhoto")
                                         .Messages(c => c.Checked("Yes").Unchecked("No"))
                                  )
-                                <label class="form-check-label" for="IssueReportViewModel.IsPhoto">Fotobevis</label>
+                                        <label class="form-check-label" for="IssueReportViewModel.IsPhoto">Fotobevis</label>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="IssueReportViewModel.NewActivatorSerialNumber">Serienummer ny aktivator</label>
-                                <input type="text" class="form-control form-control-sm" name="IssueReportViewModel.NewActivatorSerialNumber" />
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="IssueReportViewModel.NewActivatorSerialNumber">Serienummer ny aktivator</label>
+                                        <input type="text" class="form-control form-control-sm" name="IssueReportViewModel.NewActivatorSerialNumber" />
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="IssueReportViewModel.NewValveSerialNumber">Serienummer ny ventil</label>
+                                        <input type="text" class="form-control form-control-sm" name="IssueReportViewModel.NewValveSerialNumber" />
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="IssueReportViewModel.NewValveSerialNumber">Serienummer ny ventil</label>
-                                <input type="text" class="form-control form-control-sm" name="IssueReportViewModel.NewValveSerialNumber" />
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="IssueReportViewModel.SolutionDescription">Lösning</label>
-                                <input type="text" class="form-control form-control-sm" name="IssueReportViewModel.SolutionDescription" />
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="IssueReportViewModel.SolutionDescription">Lösning</label>
+                                        <input type="text" class="form-control form-control-sm" name="IssueReportViewModel.SolutionDescription" />
+                                        <span asp-validation-for="IssueReportViewModel.SolutionDescription" class="text-danger"></span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>                       
-                    </div>
+                        </div>
+                        <div class="col">
+                            
+                                <div class="row">
+                                    <h6 class="text-center">Larmpanel</h6>
+                                </div>
+                                <div class="row mt-2">
+                                    @(Html.Kendo().ButtonGroup()
+                                    .Selection("single")
+                                    .Name("MasterNode")                                  
+                                    .Items(t =>
+                                    {
+                                        t.Add().Text("Slinga 1");
+                                        t.Add().Text("Slinga 2");
+                                        t.Add().Text("Slinga 3");
+                                    })
+                                    .Events(ev => ev.Select("onNodeSelect"))
+                                    )
+                                    <input type="hidden" asp-for="IssueReportViewModel.MasterNode" value="0">
+                                </div>
+                                <div class="row mt-2">
+                                    @(Html.Kendo().ButtonGroup()
+                                    .Selection("single")
+                                    .Name("Alarm")                               
+                                    .Items(t =>
+                                    {
+                                        t.Add().Text("Larm A");
+                                        t.Add().Text("Larm B");
+                                    })
+                                    .Events(ev => ev.Select("onAlarmSelect"))
+                                    )
+                                    <input type="hidden" asp-for="IssueReportViewModel.Alarm" value="0">
+                                </div>
+                                <div class="row mt-2">
+                                    @(Html.Kendo().Switch()
+                                        .Name("IssueReportViewModel.IsLowVacuum")
+                                        .Messages(c => c.Checked("Yes").Unchecked("No"))
+                                      )
+                                    <label class="form-check-label" for="IssueReportViewModel.IsPhoto">Lågt vacuum</label>
+                                </div>
 
+                            </div>
+                       
+                    </div>
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Spara</button>
@@ -104,4 +153,13 @@
             text: $("#WellName").val()
         };
     }
+
+    function onNodeSelect(e) {
+        $("#IssueReportViewModel_MasterNode").val(e.indices);
+    }
+
+    function onAlarmSelect(e) {
+        $("#IssueReportViewModel_Alarm").val(e.indices);
+    }
+
 </script>

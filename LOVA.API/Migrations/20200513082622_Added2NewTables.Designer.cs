@@ -4,14 +4,16 @@ using LOVA.API.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LOVA.API.Migrations
 {
     [DbContext(typeof(LovaDbContext))]
-    partial class LovaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200513082622_Added2NewTables")]
+    partial class Added2NewTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,9 +169,6 @@ namespace LOVA.API.Migrations
                     b.Property<string>("AspNetUserId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("PickupDate")
                         .HasColumnType("datetime2");
 
@@ -183,8 +182,6 @@ namespace LOVA.API.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RentalInventoryId");
 
                     b.ToTable("RentalReservations");
                 });
@@ -248,15 +245,6 @@ namespace LOVA.API.Migrations
                     b.HasOne("LOVA.API.Models.Well", "Well")
                         .WithMany("Premises")
                         .HasForeignKey("WellId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("LOVA.API.Models.RentalReservation", b =>
-                {
-                    b.HasOne("LOVA.API.Models.RentalInventory", "RentalInventory")
-                        .WithMany("RentalReservations")
-                        .HasForeignKey("RentalInventoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

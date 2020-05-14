@@ -38,7 +38,17 @@ namespace LOVA.API
             
 
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-            services.AddRazorPages().AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver()); ;
+            services.AddRazorPages()
+                .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireUserRole", policy => policy.RequireRole("User", "Lova", "Admin"));
+                options.AddPolicy("RequireLovaRole", policy => policy.RequireRole("Lova", "Admin"));
+                options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+            });
+
+           
 
             services.AddSwaggerGen(c =>
            {
@@ -78,7 +88,7 @@ namespace LOVA.API
             app.UseRouting();
 
             app.UseAuthentication();
-           // app.UseAuthorization();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

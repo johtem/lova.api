@@ -4,14 +4,16 @@ using LOVA.API.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LOVA.API.Migrations
 {
     [DbContext(typeof(LovaDbContext))]
-    partial class LovaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200505115314_NewColumnInTableIssueReport")]
+    partial class NewColumnInTableIssueReport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,56 +141,6 @@ namespace LOVA.API.Migrations
                     b.ToTable("Premises");
                 });
 
-            modelBuilder.Entity("LOVA.API.Models.RentalInventory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RentalInventories");
-                });
-
-            modelBuilder.Entity("LOVA.API.Models.RentalReservation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AspNetUserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("PickupDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("RentalInventoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RentalPaymentId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ReturnDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RentalInventoryId");
-
-                    b.ToTable("RentalReservations");
-                });
-
             modelBuilder.Entity("LOVA.API.Models.Well", b =>
                 {
                     b.Property<long>("Id")
@@ -248,15 +200,6 @@ namespace LOVA.API.Migrations
                     b.HasOne("LOVA.API.Models.Well", "Well")
                         .WithMany("Premises")
                         .HasForeignKey("WellId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("LOVA.API.Models.RentalReservation", b =>
-                {
-                    b.HasOne("LOVA.API.Models.RentalInventory", "RentalInventory")
-                        .WithMany("RentalReservations")
-                        .HasForeignKey("RentalInventoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

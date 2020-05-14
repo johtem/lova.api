@@ -10,32 +10,23 @@
       .Items(items =>
       {
           items.Add().Text("Om Löttingelund");
-          items.Add()
-              .Text("LöVA")
+
+          items.Add().Text("Villaföreningen")
               .Items(children =>
-               {
-                   children.Add().Text("VA arbete")
-                           .Items(innerChildren =>
-                           {
-                               innerChildren.Add().Text("Ny Åtgärd").Url("/Lova/AddNewActivity");
-                               innerChildren.Add().Text("VA-rapport").Url("/Lova/WaterDrainReport");
-                           });
+              {
+                  children.Add().Text("Dokument");
+                  children.Add().Text("Felanmälan");
+                  children.Add().Text("Flytta in/ut");
+              });
 
-                 //  children.Add().Text("Statistik")
-                 //          .Items(innerChildren =>
-                 //          {
-                 //              innerChildren.Add().Text("Larm");
-                 //              innerChildren.Add().Text("Intagsenhet");
-                 //          });
-                 //   children.Add().Text("Dokument")
-                 //                      .Items(innerChildren =>
-                 //                      {
-                 //                          innerChildren.Add().Text("Larm");
-                 //                          innerChildren.Add().Text("Intagsenhet");
-                 //                      });
+          items.Add()
+              .Text("Uthyrning")
+              .Items(children =>
+              {
+                  children.Add().Text("Byggställning").Url("/Rental/Workingplatform");
+                  children.Add().Text("Kajak");
+              });
 
-
-               });
 
       })
 )

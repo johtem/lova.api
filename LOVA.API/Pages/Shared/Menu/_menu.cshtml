@@ -10,32 +10,7 @@
       .Items(items =>
       {
           items.Add().Text("Om Löttingelund");
-          items.Add()
-              .Text("LöVA")
-              .Items(children =>
-               {
-                   children.Add().Text("VA arbete")
-                           .Items(innerChildren =>
-                           {
-                               innerChildren.Add().Text("Ny Åtgärd").Url("/Lova/AddNewActivity");
-                               innerChildren.Add().Text("VA-rapport").Url("/Lova/WaterDrainReport");
-                           });
-
-                 //  children.Add().Text("Statistik")
-                 //          .Items(innerChildren =>
-                 //          {
-                 //              innerChildren.Add().Text("Larm");
-                 //              innerChildren.Add().Text("Intagsenhet");
-                 //          });
-                 //   children.Add().Text("Dokument")
-                 //                      .Items(innerChildren =>
-                 //                      {
-                 //                          innerChildren.Add().Text("Larm");
-                 //                          innerChildren.Add().Text("Intagsenhet");
-                 //                      });
-
-
-               });
+         
 
       })
 )
@@ -85,3 +60,4 @@
         box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
     }
 </style>
+

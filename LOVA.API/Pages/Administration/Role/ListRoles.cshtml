@@ -1,0 +1,45 @@
+﻿@page
+@model LOVA.API.Pages.Administration.Role.ListRolesModel
+@{
+    ViewData["Title"] = "ListRoles";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>All Roles</h1>
+
+@if (Model.roles.Any())
+{
+    <a class="btn btn-primary mb-3" style="width:auto" asp-page="/Administration/Role/CreateRole">Add new Role</a>
+
+    foreach (var role in Model.roles)
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                Role Id: @role.Id
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@role.Name</h5>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            No roles yet
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">
+                Use the button below to create a role
+            </h5>
+            <a class="btn btn-primary" style="width:auto" asp-page="CreateRole">
+                Create Role
+            </a>
+        </div>
+    </div>
+}
+

@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+<!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -14,11 +20,42 @@
     <script type="text/javascript" src="https://kendo.cdn.telerik.com/2020.1.406/js/kendo.aspnetmvc.min.js"></script>
     <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <script type="text/javascript" src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2020.1.406/js/cultures/kendo.culture.sv-SE.min.js"></script>
+    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2020.1.406/js/messages/kendo.messages.sv-SE.min.js"></script>
 
 </head>
+
+@{
+
+    var roles = await AuthorizationService.AuthorizeAsync(User, "RequireAdminRole");
+    var apa = User.IsInRole("Admin");
+    var bepa = User;
+    var i = 10;
+}
+
 <body>
     <header>
-        <partial name="Menu/_menuAllUsers" />
+        @if (SignInManager.IsSignedIn(User) && User.IsInRole("User"))
+        {
+            <partial name="Menu/_menuUser" />
+        }
+        else if (SignInManager.IsSignedIn(User) && User.IsInRole("Lova"))
+        {
+            <partial name="Menu/_menuLova" />
+        }
+        else if (SignInManager.IsSignedIn(User) && User.IsInRole("Styrelse"))
+        {
+            <partial name="Menu/_menuStyrelse" />
+        }
+        else if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+        {
+            <partial name="Menu/_menuAdmin" />
+        }
+        else
+        {
+            <partial name="Menu/_menu" />
+        }
+
     </header>
     <div class="container-fluid">
         <main role="main" class="pb-3">
@@ -32,7 +69,7 @@
         </div>
     </footer>
 
-    
+
 
     @RenderSection("Scripts", required: false)
 </body>

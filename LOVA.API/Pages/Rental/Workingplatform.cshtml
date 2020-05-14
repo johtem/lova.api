@@ -1,0 +1,121 @@
+﻿@page
+@model LOVA.API.Pages.Rental.WorkingplatformModel
+@{
+    ViewData["Title"] = "Workingplatform";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@Html.AntiForgeryToken()
+
+<div class="container">
+    <div class="row">
+
+    </div>
+
+
+    <div class="row">
+        <h4>Hyr byggställning Alufase 8m</h4>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col">
+            <img src="~/Images/byggstallning.jpg" />
+        </div>
+        <div class="col">
+            Mått: 250 x 74 cm ( längd x bredd )<br />
+            Arbetshöjd: 8 m<br />
+            Plattformshöjd: 6.3 m<br />
+            Räckeshöjd: 7.3 m<br />
+            Lastklass: 3, 200 kg / kvm<br />
+            Vikt:153 kg<br />
+            <br />
+            I paketet ingår: (enligt bild)<br />
+            3 st Plattformar med lucka<br />
+            4 st Stödben med teleskop<br />
+            6 st Ramar(2 m, bredd 74 cm)<br />
+            2 st Toppgavlar(1 m)<br />
+            6 st Diagonalstag<br />
+            2 st Horizontalstag<br />
+            4 st Stora hjul(150 mm) med broms och justerbara höjdjustering 40 cm<br />
+            2 st Toppräcken, låsbyglar mm.<br />
+            <br />
+            Enligt Arbetsmiljöverkets nya regler (AFS 2013:4)<br />
+            skall ställningen kompletteras med nedanstående<br />
+            säkerhetspaket för användning som arbetsplats.<br />
+            <br />
+            Säkerhetspaket:<br />
+            1 st Lutande trappstege med stöd<br />
+            2 st Lutande trappstege utan stöd<br />
+            1 st Sparklist paket 2,5 x 0,74 m<br />
+            8 st Extra horisontalstag blå 2,5 m<br />
+            <br />
+            Alufase rullställning är en av marknadens mest snabbmonterade och stabila ställning.<br />
+            Tack vare bottensektion med dragspelsprincip som tillval kan en person montera ställningen snabbt och säkert.<br />
+            <br />
+            Kompatibel med andra fabrikat. Alla delar är tillverkade i Europa med högsta kvalitet.<br />
+            Alla profiler är tillverkade i 51 mm rör med extra hård aluminium legering.<br />
+            Alla Alufase plattformar är utrustade med lucka. Ställningen är testad av SP och godkända av<br />
+            Arbetsmiljöverket enligt AFS 1990:12 och AFS2013:4<br />
+            <br />
+            Pris hyra byggställning<br />
+            Vardagar: 150 kr/dag<br />
+            Helg från fredag kl 12.00 till måndag kl 12.00: 300 kr<br />
+            <br />
+            <p>För frågor ring Micke Vikström 070 822 3315 </p>
+        </div>
+        
+    </div>
+
+    <div class="row mt-3">
+        <h4>Boka</h4>
+    </div>
+
+    <div class="row mt-5">
+        @(Html.Kendo().Scheduler<RentalSchedularViewModel>
+                    ()
+                    .Name("scheduler")
+                    .Date(Model.DateToday)
+                    .StartTime(new DateTime(Model.DateToday.Year, Model.DateToday.Month, Model.DateToday.Day, 9, 00 ,00))
+                    .Height(600)
+                    .Views(views =>
+                    {
+                        views.DayView();
+                        views.WeekView();
+                        views.MonthView(w =>
+                        {
+                            w.Selected(true);
+                        });
+                    })
+                    .DataSource( d => d
+                        .Model(m =>
+                        {
+                            m.Id(f => f.RentalId);
+                            m.Field(f => f.Title).DefaultValue("Byggställning");
+                        })
+                .Read(r => r.Url("/Rental/Workingplatform?handler=Read").Data("forgeryToken"))
+                .Create(r => r.Url("/Rental/Workingplatform?handler=Create").Data("forgeryToken"))
+                .Update(r => r.Url("/Rental/Workingplatform?handler=Update").Data("forgeryToken"))
+
+                    )
+                    )
+    </div>
+    <div class="row">
+
+    </div>
+
+</div>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+
+        kendo.culture("sv-SE");
+
+
+        function forgeryToken() {
+            return kendo.antiForgeryTokens();
+        }
+    </script>
+}

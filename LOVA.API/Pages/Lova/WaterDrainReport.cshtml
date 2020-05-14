@@ -17,18 +17,18 @@
         .Columns(columns =>
         {
             columns.Bound(p => p.Id).Hidden(true);
-            columns.Bound(p => p.WellName).Width(120);
-            columns.Bound(p => p.ProblemDescription);
-            columns.Bound(p => p.SolutionDescription);
-            //columns.Bound(p => p.NewActivatorSerialNumber);
-            //columns.Bound(p => p.NewValveSerialNumber).Width(150);
-            columns.Bound(p => p.CreatedAt).Width(150).Format("{0:MM/dd/yyyy}");
+            columns.Bound(p => p.WellName).Title("Intagsenhet").Width(150);
+            columns.Bound(p => p.ProblemDescription).Title("Problem");
+            columns.Bound(p => p.SolutionDescription).Title("Åtgärd");
+            columns.Bound(p => p.NewActivatorSerialNumber).Title("Serienr Aktivator").Width(180);
+            columns.Bound(p => p.NewValveSerialNumber).Title("Serienr Ventil").Width(180);
+            columns.Bound(p => p.CreatedAt).Title("Datum").Width(150).Format("{0:MM/dd/yyyy}");
         })
         .Pageable()
         .Sortable()
         .Scrollable()
         .Filterable()
-        .HtmlAttributes(new { style = "height:430px;" })
+        .HtmlAttributes(new { style = "height:530px;" })
         .DataSource(dataSource => dataSource
             .Ajax()
             .PageSize(LOVA.API.Services.MyConsts.PageSize)

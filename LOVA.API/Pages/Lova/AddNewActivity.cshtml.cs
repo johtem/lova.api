@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using LOVA.API.Models;
 using LOVA.API.Services;
 using LOVA.API.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace LOVA.API.Pages.Lova
 {
+    [Authorize(Policy = "RequireLovaRole")]
     public class AddNewActivityModel : PageModel
     {
         private readonly LovaDbContext _context;
@@ -27,8 +29,14 @@ namespace LOVA.API.Pages.Lova
 
         }
 
-        public async Task OnPost()
+        public async Task<IActionResult> OnPost()
         {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+
           var well = await _context.Wells.Where(a => a.WellName == IssueReportViewModel.WellName).FirstOrDefaultAsync();
 
             if (well == null)
@@ -47,6 +55,9 @@ namespace LOVA.API.Pages.Lova
                 OldValveSerialNumber = well.ValveSerialNumber,
                 IsChargeable = IssueReportViewModel.IsChargeable,
                 IsPhoto = IssueReportViewModel.IsPhoto,
+                IsLowVacuum = IssueReportViewModel.IsLowVacuum,
+                MasterNode = IssueReportViewModel.MasterNode + 1,
+                Alarm = IssueReportViewModel.Alarm + 1,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
@@ -62,6 +73,7 @@ namespace LOVA.API.Pages.Lova
             _context.IssueReports.Add(insertData);
             await _context.SaveChangesAsync();
 
+            return  RedirectToPage("WaterDrainReport");
         }
 
         public async Task<JsonResult> OnGetWell(string text)

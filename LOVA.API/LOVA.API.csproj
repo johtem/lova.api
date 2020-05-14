@@ -20,5 +20,9 @@
     <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2020.1.406" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\villa\" />
+  </ItemGroup>
+
 
 </Project>

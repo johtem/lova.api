@@ -20,6 +20,10 @@ namespace LOVA.API.Services
 
         public DbSet<DrainPatrol> DrainPatrols { get; set; }
 
+        public DbSet<RentalInventory> RentalInventories { get; set; }
+
+        public DbSet<RentalReservation> RentalReservations { get; set; }
+
 
     }
 }
