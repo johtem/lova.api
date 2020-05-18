@@ -75,9 +75,12 @@
         @(Html.Kendo().Scheduler<RentalSchedularViewModel>
                     ()
                     .Name("scheduler")
+                    .Mobile(MobileMode.Auto)
                     .Date(Model.DateToday)
                     .StartTime(new DateTime(Model.DateToday.Year, Model.DateToday.Month, Model.DateToday.Day, 9, 00 ,00))
                     .Height(600)
+                    .Editable(e => e.TemplateName("rentalTemplate"))
+                    .Events(e => e.Edit("onEdit"))
                     .Views(views =>
                     {
                         views.DayView();
@@ -106,6 +109,11 @@
 
 </div>
 
+
+
+
+
+
 @section Scripts{
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
@@ -113,9 +121,23 @@
 
         kendo.culture("sv-SE");
 
+        //$("#scheduler").kendoScheduler({
+        //    edit: function (e) {
+        //        setTimeout(function () {
+        //            $('.k-window-title').text('Boka');
+        //        }, 100)
+        //    }
+        //});
 
         function forgeryToken() {
             return kendo.antiForgeryTokens();
         }
+
+        function onEdit(e) {
+            $('.k-window-title').text('Boka');
+        }
+
+        
+        
     </script>
 }

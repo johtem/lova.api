@@ -20,5 +20,7 @@ namespace LOVA.API.ViewModels
         public string EndTimezone { get; set; }
         public string RecurrenceRule { get; set; }
         public string RecurrenceException { get; set; }
+
+        public string AspNetUserId { get; set; }
     }
 }

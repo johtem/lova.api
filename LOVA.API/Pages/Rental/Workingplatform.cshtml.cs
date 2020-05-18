@@ -8,6 +8,7 @@ using LOVA.API.Models;
 using LOVA.API.Services;
 using LOVA.API.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -32,15 +33,18 @@ namespace LOVA.API.Pages.Rental
         {
             var DateToday = DateTime.Now;
 
+            
+
             var Reservations = await _context.RentalReservations
                 .Include(a => a.RentalInventory)
-                .Where(a => a.RentalInventoryId == 1 && a.PickupDate >= DateToday)
+                .Where(a => a.RentalInventoryId == 1 && a.PickupDate >= DateToday.AddDays(-7))
                 .Select( m => new RentalSchedularViewModel
                 {
                     RentalId = m.Id,
                     Title = m.RentalInventory.Name,
                     Start = m.PickupDate,
-                    End = m.ReturnDate
+                    End = m.ReturnDate,
+                    AspNetUserId = m.AspNetUserId
                 })
                 .ToListAsync();
 
@@ -60,7 +64,8 @@ namespace LOVA.API.Pages.Rental
                     PickupDate = rental.Start,
                     ReturnDate = rental.End,
                     RentalInventoryId = 1,  // Id för Byggställning
-                    Description = rental.Description
+                    Description = rental.Description,
+                    AspNetUserId = User.Identity.Name
 
                 };
 
