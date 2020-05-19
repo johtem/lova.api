@@ -350,5 +350,5 @@ MigrationBackup/
 .ionide/
 
 
-# Removed application.json
-application.json
+# Remove files
+appsettings.json
