@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LOVA.API.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace LOVA.API.Data
 {
-    public class LOVAAPIContext : IdentityDbContext<IdentityUser>
+    public class LOVAAPIContext : IdentityDbContext<ApplicationUser>
     {
         public LOVAAPIContext(DbContextOptions<LOVAAPIContext> options)
             : base(options)

@@ -1,5 +1,6 @@
 ﻿using System;
 using LOVA.API.Data;
+using LOVA.API.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -19,7 +20,7 @@ namespace LOVA.API.Areas.Identity
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("LOVAAPIContextConnection")));
 
-                services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()    
                 .AddEntityFrameworkStores<LOVAAPIContext>();
 

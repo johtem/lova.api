@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
+using LOVA.API.Models;
 using LOVA.API.Services;
 using LOVA.API.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -19,9 +20,9 @@ namespace LOVA.API.Pages.Lova
     {
 
         private readonly LovaDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public WaterDrainReportModel(LovaDbContext context, UserManager<IdentityUser> userManager)
+        public WaterDrainReportModel(LovaDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
