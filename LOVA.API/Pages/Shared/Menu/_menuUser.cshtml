@@ -9,11 +9,11 @@
       .Name("Menu")
       .Items(items =>
       {
-          items.Add().Text("Om Löttingelund");
-
+         
           items.Add().Text("Villaföreningen")
               .Items(children =>
               {
+                  children.Add().Text("Om").Url("/Villa/About");
                   children.Add().Text("Dokument");
                   children.Add().Text("Felanmälan");
                   children.Add().Text("Flytta in/ut");
@@ -39,40 +39,3 @@
 </nav>
 
 
-<style>
-
-    /* default state */
-    .k-menu .k-item {
-        background-color: white;
-    }
-        /* hovered state */
-        .k-menu .k-item .k-state-hover {
-            background-color: lightsteelblue;
-        }
-        /* parent state */
-        .k-menu .k-item .k-state-border-right {
-            background-color: lightsteelblue;
-            color: white;
-        }
-
-
-    .k-menu .k-state-hover .k-link.k-state-active {
-        background-color: lightsteelblue;
-    }
-
-    .k-menu .k-item > .k-state-active {
-        background-color: lightsteelblue;
-    }
-
-
-
-
-    #verifyMainMenu {
-    }
-
-    #verifyNav {
-        max-width: 100%;
-        border-bottom: 1px solid #dee2e6 !important;
-        box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-    }
-</style>

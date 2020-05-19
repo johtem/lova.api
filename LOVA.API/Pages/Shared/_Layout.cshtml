@@ -13,7 +13,7 @@
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2020.1.406/styles/kendo.bootstrap-v4.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
 
     <script type="text/javascript" src="https://kendo.cdn.telerik.com/2020.1.406/js/jquery.min.js"></script>
     <script type="text/javascript" src="https://kendo.cdn.telerik.com/2020.1.406/js/kendo.all.min.js"></script>
@@ -25,13 +25,7 @@
 
 </head>
 
-@{
 
-    var roles = await AuthorizationService.AuthorizeAsync(User, "RequireAdminRole");
-    var apa = User.IsInRole("Admin");
-    var bepa = User;
-    var i = 10;
-}
 
 <body>
     <header>

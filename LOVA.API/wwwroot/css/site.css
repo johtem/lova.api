@@ -50,8 +50,9 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    background-color: #f4f4f2;
 }
 .footer {
   position: absolute;
@@ -62,6 +63,41 @@ body {
   /* Set the fixed height of the footer here */
   height: 60px;
   line-height: 60px; /* Vertically center the text there */
+}
+
+/* default state */
+.k-menu .k-item {
+    background-color: white;
+}
+    /* hovered state */
+    .k-menu .k-item .k-state-hover {
+        background-color: lightsteelblue;
+    }
+    /* parent state */
+    .k-menu .k-item .k-state-border-right {
+        background-color: lightsteelblue;
+        color: white;
+    }
+
+
+.k-menu .k-state-hover .k-link.k-state-active {
+    background-color: lightsteelblue;
+}
+
+.k-menu .k-item > .k-state-active {
+    background-color: lightsteelblue;
+}
+
+
+
+
+#verifyMainMenu {
+}
+
+#verifyNav {
+    max-width: 100%;
+    border-bottom: 1px solid #dee2e6 !important;
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
 
