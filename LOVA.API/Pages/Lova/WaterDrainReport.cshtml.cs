@@ -7,21 +7,24 @@ using Kendo.Mvc.UI;
 using LOVA.API.Services;
 using LOVA.API.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace LOVA.API.Pages.Lova
 {
-    [Authorize(Policy = "RequireLovaRole")]
+    [Authorize(Roles = "Lova, Admin, Styrelse")]
     public class WaterDrainReportModel : PageModel
     {
 
         private readonly LovaDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public WaterDrainReportModel(LovaDbContext context)
+        public WaterDrainReportModel(LovaDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public void OnGet()
@@ -31,6 +34,8 @@ namespace LOVA.API.Pages.Lova
 
         public async Task<JsonResult> OnPostRead([DataSourceRequest] DataSourceRequest request)
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
             var readData = await _context.IssueReports
                 .Include(a => a.Well)
                 .Select(a => new IssueReportViewModel
@@ -43,7 +48,8 @@ namespace LOVA.API.Pages.Lova
                             NewActivatorSerialNumber = a.NewActivatorSerialNumber,
                             NewValveSerialNumber = a.NewValveSerialNumber,
                             IsChargeable = a.IsChargeable,
-                            IsPhoto = a.IsPhoto
+                            IsPhoto = a.IsPhoto,
+                            AspNetUserName = user.UserName
                         }
                     )
                 .OrderByDescending(a => a.CreatedAt)

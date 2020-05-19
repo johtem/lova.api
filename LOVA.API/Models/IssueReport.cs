@@ -28,7 +28,8 @@ namespace LOVA.API.Models
         public int MasterNode { get; set; }
 
         public int Alarm { get; set; }
-        
+
+        public string AspNetUserId { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

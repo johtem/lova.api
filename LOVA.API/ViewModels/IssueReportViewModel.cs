@@ -32,6 +32,8 @@ namespace LOVA.API.ViewModels
 
         public int Alarm { get; set; }
 
+        public string AspNetUserName { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
     }

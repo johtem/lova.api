@@ -6,20 +6,23 @@ using LOVA.API.Models;
 using LOVA.API.Services;
 using LOVA.API.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace LOVA.API.Pages.Lova
 {
-    [Authorize(Policy = "RequireLovaRole")]
+    [Authorize(Roles = "Lova, Admin, Styrelse")]
     public class AddNewActivityModel : PageModel
     {
         private readonly LovaDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public AddNewActivityModel(LovaDbContext context)
+        public AddNewActivityModel(LovaDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         [BindProperty]
@@ -44,6 +47,8 @@ namespace LOVA.API.Pages.Lova
 
             }
 
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
             IssueReport insertData = new IssueReport
             {
                 WellId = well.Id,
@@ -58,6 +63,7 @@ namespace LOVA.API.Pages.Lova
                 IsLowVacuum = IssueReportViewModel.IsLowVacuum,
                 MasterNode = IssueReportViewModel.MasterNode + 1,
                 Alarm = IssueReportViewModel.Alarm + 1,
+                AspNetUserId = user.Id,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };

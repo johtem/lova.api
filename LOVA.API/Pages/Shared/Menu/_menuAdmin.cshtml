@@ -9,12 +9,36 @@
       .Name("Menu")
       .Items(items =>
       {
-         
+          items.Add().Text("Om Löttingelund")
+          .Items(children =>
+          {
+
+              children.Add().Text("Om").Url("/Villa/About");
+              children.Add().Text("Kultur & fritid")
+              .Items(innerChildren =>
+                          {
+                              innerChildren.Add().Text("Bad");
+                              innerChildren.Add().Text("Båtliv");
+                              innerChildren.Add().Text("Cykelvägar");
+                              innerChildren.Add().Text("Golf");
+                              innerChildren.Add().Text("Fiske");
+                              innerChildren.Add().Text("Fornlämningar");
+                              innerChildren.Add().Text("Motionsspår");
+                              innerChildren.Add().Text("Ridskola");
+                              innerChildren.Add().Text("Rönninge by");
+                              innerChildren.Add().Text("Roslagsleden");
+
+                          });
+              children.Add().Text("Skola & barnomsorg");
+              children.Add().Text("Grannsamverkan");
+
+          });
 
           items.Add().Text("Villaföreningen")
               .Items(children =>
               {
-                  children.Add().Text("Om").Url("/Villa/About");
+
+                  children.Add().Text("TV och Internet");
                   children.Add().Text("Dokument");
                   children.Add().Text("Felanmälan");
                   children.Add().Text("Flytta in/ut");
@@ -46,7 +70,7 @@
                               innerChildren.Add().Text("Intagsenhet");
                           });
                   children.Add().Text("Dokument");
-                                     
+
 
 
               });

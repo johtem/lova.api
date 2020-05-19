@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace LOVA.API.Pages.Administration.Role
 {
-    [Authorize(Policy = "RequireAdminRole")]
+    [Authorize(Roles = "Admin")]
     public class ListRolesModel : PageModel
     {
         private readonly RoleManager<IdentityRole> _roleManager;
