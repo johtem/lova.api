@@ -13,12 +13,12 @@
           .Items(children =>
           {
 
-              children.Add().Text("Om").Url("/Villa/About");
+              children.Add().Text("Om").Url("/About/About");
               children.Add().Text("Kultur & fritid")
               .Items(innerChildren =>
                           {
-                              innerChildren.Add().Text("Bad");
-                              innerChildren.Add().Text("Båtliv");
+                              innerChildren.Add().Text("Bad").Url("/About/Bath");
+                              innerChildren.Add().Text("Båtliv").Url("/About/Harbour");
                               innerChildren.Add().Text("Cykelvägar");
                               innerChildren.Add().Text("Golf");
                               innerChildren.Add().Text("Fiske");
@@ -58,7 +58,7 @@
                   children.Add().Text("VA arbete")
                           .Items(innerChildren =>
                           {
-                              innerChildren.Add().Text("Ny Åtgärd").Url("/Lova/AddNewActivity");
+                              innerChildren.Add().Text("Ny Jouråtgärd").Url("/Lova/AddNewActivity");
                               innerChildren.Add().Text("VA-rapport").Url("/Lova/WaterDrainReport");
                           });
 

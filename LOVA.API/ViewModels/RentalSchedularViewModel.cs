@@ -10,11 +10,15 @@ namespace LOVA.API.ViewModels
     public class RentalSchedularViewModel : ISchedulerEvent
     {
         public int RentalId { get; set; }
+
+        public int RentalInventoryId { get; set; }
         public string Title { get; set; }
 
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public string Description { get; set; }
+
+        public string BackgroundColor { get; set; }
         public bool IsAllDay { get; set; }
         public string StartTimezone { get; set; }
         public string EndTimezone { get; set; }

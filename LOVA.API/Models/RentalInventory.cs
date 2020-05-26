@@ -11,6 +11,7 @@ namespace LOVA.API.Models
         public string Name { get; set; }
         public string Description { get; set; }
 
+        public string BackgroundColor { get; set; }
         public ICollection<RentalReservation> RentalReservations { get; set; }
     }
 }

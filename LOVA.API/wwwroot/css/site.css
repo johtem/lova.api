@@ -101,3 +101,9 @@ body {
 }
 
 
+.k-scheduler-header-wrap div.k-event,
+.k-scheduler-content div.k-event {
+    background-color: lightgray;
+}
+
+

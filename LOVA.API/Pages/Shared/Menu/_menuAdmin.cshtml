@@ -17,8 +17,8 @@
               children.Add().Text("Kultur & fritid")
               .Items(innerChildren =>
                           {
-                              innerChildren.Add().Text("Bad");
-                              innerChildren.Add().Text("Båtliv");
+                              innerChildren.Add().Text("Bad").Url("/About/Bath");
+                              innerChildren.Add().Text("Båtliv").Url("/About/Harbour");
                               innerChildren.Add().Text("Cykelvägar");
                               innerChildren.Add().Text("Golf");
                               innerChildren.Add().Text("Fiske");
@@ -49,7 +49,7 @@
               .Items(children =>
               {
                   children.Add().Text("Byggställning").Url("/Rental/Workingplatform");
-                  children.Add().Text("Kajak");
+                  children.Add().Text("Kajak").Url("/Rental/Kajak");
               });
 
           items.Add()
