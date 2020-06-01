@@ -4,6 +4,11 @@
     ViewData["Title"] = "AddNewActivity";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@Html.AntiForgeryToken()
+
+
 <div class="container-fluid">
     <div class="row offset-2">
         <form method="post">

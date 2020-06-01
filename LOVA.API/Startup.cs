@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs;
 using LOVA.API.Data;
 using LOVA.API.Models;
 using LOVA.API.Services;
@@ -48,7 +49,8 @@ namespace LOVA.API
                 options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
             });
 
-           
+            services.AddSingleton(x => new BlobServiceClient(Configuration.GetConnectionString("LottingelundFiles")));
+            services.AddSingleton<IBlobService, BlobService>();
 
             services.AddSwaggerGen(c =>
            {

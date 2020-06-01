@@ -25,6 +25,10 @@ namespace LOVA.API.Services
 
         public DbSet<RentalReservation> RentalReservations { get; set; }
 
+        public DbSet<UploadedFile> UploadedFiles{ get; set; }
+
+        public DbSet<UploadFileCategory> UploadFileCategories { get; set; }
+
 
     }
 }

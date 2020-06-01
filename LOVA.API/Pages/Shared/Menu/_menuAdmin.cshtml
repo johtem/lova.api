@@ -13,22 +13,22 @@
           .Items(children =>
           {
 
-              children.Add().Text("Om").Url("/Villa/About");
+              children.Add().Text("Om").Url("/About/About");
               children.Add().Text("Kultur & fritid")
               .Items(innerChildren =>
-                          {
-                              innerChildren.Add().Text("Bad").Url("/About/Bath");
-                              innerChildren.Add().Text("Båtliv").Url("/About/Harbour");
-                              innerChildren.Add().Text("Cykelvägar");
-                              innerChildren.Add().Text("Golf");
-                              innerChildren.Add().Text("Fiske");
-                              innerChildren.Add().Text("Fornlämningar");
-                              innerChildren.Add().Text("Motionsspår");
-                              innerChildren.Add().Text("Ridskola");
-                              innerChildren.Add().Text("Rönninge by");
-                              innerChildren.Add().Text("Roslagsleden");
+              {
+                  innerChildren.Add().Text("Bad").Url("/About/Bath");
+                  innerChildren.Add().Text("Båtliv").Url("/About/Harbour");
+                  innerChildren.Add().Text("Cykelvägar").Url("/About/Bicycle");
+                  innerChildren.Add().Text("Golf");
+                  innerChildren.Add().Text("Fiske").Url("/About/Fishing");
+                  innerChildren.Add().Text("Fornlämningar");
+                  innerChildren.Add().Text("Motionsspår");
+                  innerChildren.Add().Text("Ridskola");
+                  innerChildren.Add().Text("Rönninge by");
+                  innerChildren.Add().Text("Roslagsleden");
 
-                          });
+              });
               children.Add().Text("Skola & barnomsorg");
               children.Add().Text("Grannsamverkan");
 
@@ -40,7 +40,7 @@
 
                   children.Add().Text("TV och Internet");
                   children.Add().Text("Dokument");
-                  children.Add().Text("Felanmälan");
+                  children.Add().Text("Felanmälan").Url("/Lottingelund/ErrorReport");
                   children.Add().Text("Flytta in/ut");
               });
 
@@ -89,6 +89,7 @@
                                    l3.Add().Text("Ny roll").Url("/Administration/Role/CreateRole");
                                    l3.Add().Text("Lista roller").Url("/Administration/Role/ListRoles");
                                });
+                              innerChildren.Add().Text("Ladda upp dokument").Url("/Files/UploadFile");
                           });
           });
 

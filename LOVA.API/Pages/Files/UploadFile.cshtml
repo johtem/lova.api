@@ -1,0 +1,44 @@
+﻿@page
+@model LOVA.API.Pages.Files.UploadFileModel
+@{
+    ViewData["Title"] = "UploadFile";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container">
+    <div class="row">
+        <h4>Ladda upp fil.</h4>
+    </div>
+    <div class="row">
+        <form method="post">
+            <div class="row" >
+                <div class="form-group">
+                    <label asp-for="FileUpload.UploadFileCategoryId">Dokument kategori</label>
+                    <select asp-for="FileUpload.UploadFileCategoryId" asp-items="Model.Categories" class="form-control"></select>
+                </div>
+                </div>
+            <div class="row">
+                <div class="form-group">
+                    <label asp-for="FileUpload.FileName">Dokument namn</label>
+                    @(Html.Kendo().Upload()
+                        .Name("files")
+                        .HtmlAttributes(new { style = "width:100%", aria_label = "files"})
+                        .Multiple(false)
+                        
+                     )
+                </div>
+
+            </div>
+            <button type="submit" class="btn btn-primary">Spara</button>
+        </form>
+    </div>
+</div>
+<script>
+    function onUpload(e) {
+        e.data = {
+            Id: $("#FileUpload_UploadFileCategoryId").val()
+        };
+    }
+</script>
