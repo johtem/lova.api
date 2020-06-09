@@ -7,16 +7,34 @@
 
 
 
-<div class="container">
-    <div class="row">
-        <h4>Ladda upp fil.</h4>
-    </div>
-    <div class="row">
-        <form method="post">
-            <div class="row">
-                <div class="form-group">
-                    <label asp-for="FileUpload.UploadFileCategoryId">Välj förening/kategori</label>
-                    @(Html.Kendo().DropDownList()
+    <div class="container">
+        <div class="row d-flex">
+            <p>
+                @if (Model.Message != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show ml-auto" role="alert">
+                    @Model.Message
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+            </p>
+        </div>
+
+
+        <div class="row mt-5">
+            <div class="col-md-12 align-self-center">
+                <div class="card w-50 mx-auto">
+                    <div class="card-header">
+                        Importera fil.
+                    </div>
+                    <div class="card-body mr-5 ml-5">
+                        <form method="post">
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label asp-for="FileUpload.UploadFileCategoryId">Välj förening/kategori</label>
+                                    @(Html.Kendo().DropDownList()
                         .Name("FileUpload.UploadFileCategoryId")
                         .HtmlAttributes(new { style = "width:100%" })
                         .OptionLabel("Välj")
@@ -31,13 +49,13 @@
                         })
 
                     )
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <label asp-for="FileUpload.UploadFileDirectoryId">Välj mapp</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label asp-for="FileUpload.UploadFileDirectoryId">Välj mapp</label>
 
-                    @(Html.Kendo().DropDownList()
+                                    @(Html.Kendo().DropDownList()
                         .Name("FileUpload.UploadFileDirectoryId")
                         .HtmlAttributes(new { style = "width:100%" })
                         .OptionLabel("Välj")
@@ -56,29 +74,37 @@
                         .CascadeFrom("FileUpload_UploadFileCategoryId")
 
                     )
+                                </div>
+                            </div>
+                            <div class="row">
+
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label asp-for="FileUpload.FileName">Dokument namn</label>
+                                    @(Html.Kendo().Upload()
+                                        .Name("files")
+                                        .HtmlAttributes(new { style = "width:100%", aria_label = "files"})
+                                        .Multiple(false)
+                                        // .Events(events => events.Select("onSelect"))
+
+                                     )
+                                </div>
+
+                            </div>
+                            <button type="submit" class="btn btn-primary">Spara</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-            <div class="row">
+        </div>
 
-            </div>
 
-            <div class="row">
-                <div class="form-group">
-                    <label asp-for="FileUpload.FileName">Dokument namn</label>
-                    @(Html.Kendo().Upload()
-                        .Name("files")
-                        .HtmlAttributes(new { style = "width:100%", aria_label = "files"})
-                        .Multiple(false)
-                        // .Events(events => events.Select("onSelect"))
-
-                     )
-                </div>
-
-            </div>
-            <button type="submit" class="btn btn-primary">Spara</button>
-        </form>
+        <div class="row">
+            
+        </div>
     </div>
-</div>
 <script>
 
     function filterCategory() {

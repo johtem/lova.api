@@ -46,6 +46,8 @@ namespace LOVA.API.Pages.Files
         [BindProperty]
         public UploadFileViewModel FileUpload { get; set; }
 
+        public string Message { get; set; }
+
 
         public async Task<JsonResult> OnGetAssociation([DataSourceRequest] DataSourceRequest request)
         {
@@ -130,6 +132,8 @@ namespace LOVA.API.Pages.Files
                         await _context.SaveChangesAsync();
                     }
                 }
+
+                Message = fileName + " är nu sparad.";
             }
         }
 
