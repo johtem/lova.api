@@ -10,5 +10,7 @@ namespace LOVA.API.ViewModels
 
         public string FileName { get; set; }
         public long  UploadFileCategoryId { get; set; }
+        public long  UploadFileDirectoryId { get; set; }
+        public long Size { get; set; }
     }
 }

@@ -13,12 +13,55 @@
     </div>
     <div class="row">
         <form method="post">
-            <div class="row" >
+            <div class="row">
                 <div class="form-group">
-                    <label asp-for="FileUpload.UploadFileCategoryId">Dokument kategori</label>
-                    <select asp-for="FileUpload.UploadFileCategoryId" asp-items="Model.Categories" class="form-control"></select>
+                    <label asp-for="FileUpload.UploadFileCategoryId">Välj förening/kategori</label>
+                    @(Html.Kendo().DropDownList()
+                        .Name("FileUpload.UploadFileCategoryId")
+                        .HtmlAttributes(new { style = "width:100%" })
+                        .OptionLabel("Välj")
+                        .DataTextField("Name")
+                        .DataValueField("Id")
+                        .DataSource(source =>
+                        {
+                            source.Read(r =>
+                            {
+                                r.Url("/Files/UploadFile?handler=Association");
+                            });
+                        })
+
+                    )
                 </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label asp-for="FileUpload.UploadFileDirectoryId">Välj mapp</label>
+
+                    @(Html.Kendo().DropDownList()
+                        .Name("FileUpload.UploadFileDirectoryId")
+                        .HtmlAttributes(new { style = "width:100%" })
+                        .OptionLabel("Välj")
+                        .DataTextField("CascadedName")
+                        .DataValueField("CascadedId")
+                        .DataSource(source =>
+                        {
+                            source.Read(r =>
+                            {
+                                r.Url("/Files/UploadFile?handler=Documents").Data("filterCategory");
+                            })
+                            .ServerFiltering(true);
+                        })
+                        .Enable(false)
+                        .AutoBind(false)
+                        .CascadeFrom("FileUpload_UploadFileCategoryId")
+
+                    )
                 </div>
+            </div>
+            <div class="row">
+
+            </div>
+
             <div class="row">
                 <div class="form-group">
                     <label asp-for="FileUpload.FileName">Dokument namn</label>
@@ -26,7 +69,8 @@
                         .Name("files")
                         .HtmlAttributes(new { style = "width:100%", aria_label = "files"})
                         .Multiple(false)
-                        
+                        // .Events(events => events.Select("onSelect"))
+
                      )
                 </div>
 
@@ -36,9 +80,32 @@
     </div>
 </div>
 <script>
+
+    function filterCategory() {
+        return {
+            categoryId: $("#FileUpload_UploadFileCategoryId").val()
+        }
+    }
+
     function onUpload(e) {
         e.data = {
             Id: $("#FileUpload_UploadFileCategoryId").val()
         };
     }
+
+    function onSelect(e) {
+        getFileInfo(e);
+    }
+
+    function getFileInfo(e) {
+        var size = $.map(e.files, function (file) {
+            Console.log(file);
+            if (file.size > 0) {
+                Console.log(Math.ceil(file.size));
+                return Math.ceil(file.size);
+            }
+            return 0;
+        });
+    }
+
 </script>

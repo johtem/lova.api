@@ -29,6 +29,8 @@ namespace LOVA.API.Services
 
         public DbSet<UploadFileCategory> UploadFileCategories { get; set; }
 
+        public DbSet<UploadFileDirectory> UploadFileDirectories { get; set; }
+
 
     }
 }

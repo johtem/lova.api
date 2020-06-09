@@ -69,7 +69,7 @@
                               innerChildren.Add().Text("Larm");
                               innerChildren.Add().Text("Intagsenhet");
                           });
-                  children.Add().Text("Dokument");
+                  children.Add().Text("Dokument").Url("/Lova/Documents");
 
 
 
@@ -89,8 +89,9 @@
                                    l3.Add().Text("Ny roll").Url("/Administration/Role/CreateRole");
                                    l3.Add().Text("Lista roller").Url("/Administration/Role/ListRoles");
                                });
-                              innerChildren.Add().Text("Ladda upp dokument").Url("/Files/UploadFile");
+                              
                           });
+              children.Add().Text("Ladda upp dokument").Url("/Files/UploadFile");
           });
 
 

@@ -4,14 +4,16 @@ using LOVA.API.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LOVA.API.Migrations
 {
     [DbContext(typeof(LovaDbContext))]
-    partial class LovaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200608131537_AddedDirectoryToUploadFiles")]
+    partial class AddedDirectoryToUploadFiles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -243,26 +245,6 @@ namespace LOVA.API.Migrations
                     b.ToTable("UploadFileCategories");
                 });
 
-            modelBuilder.Entity("LOVA.API.Models.UploadFileDirectory", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Directory")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("UploadFileCategoryId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UploadFileCategoryId");
-
-                    b.ToTable("UploadFileDirectories");
-                });
-
             modelBuilder.Entity("LOVA.API.Models.UploadedFile", b =>
                 {
                     b.Property<long>("Id")
@@ -298,9 +280,6 @@ namespace LOVA.API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<long>("UploadFileCategoryId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("UploadFileDirectoryId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -376,15 +355,6 @@ namespace LOVA.API.Migrations
                     b.HasOne("LOVA.API.Models.RentalInventory", "RentalInventory")
                         .WithMany("RentalReservations")
                         .HasForeignKey("RentalInventoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("LOVA.API.Models.UploadFileDirectory", b =>
-                {
-                    b.HasOne("LOVA.API.Models.UploadFileCategory", "UploadFileCategory")
-                        .WithMany()
-                        .HasForeignKey("UploadFileCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

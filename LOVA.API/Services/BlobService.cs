@@ -66,10 +66,13 @@ namespace LOVA.API.Services
         public async Task UploadFileBlobAsync(string filePath, string fileName)
         {
             var containerClient = _blobServiceClient.GetBlobContainerClient("lottingelundfiles");
+           
             var blobClient = containerClient.GetBlobClient(fileName);
 
             await blobClient.UploadAsync(filePath, new BlobHttpHeaders { ContentType = filePath.GetContentType() });
-  
+
+            
+
         }
     }
 }

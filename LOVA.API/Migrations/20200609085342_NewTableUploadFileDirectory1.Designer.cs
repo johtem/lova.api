@@ -4,14 +4,16 @@ using LOVA.API.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LOVA.API.Migrations
 {
     [DbContext(typeof(LovaDbContext))]
-    partial class LovaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200609085342_NewTableUploadFileDirectory1")]
+    partial class NewTableUploadFileDirectory1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -298,9 +300,6 @@ namespace LOVA.API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<long>("UploadFileCategoryId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("UploadFileDirectoryId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
