@@ -15,11 +15,11 @@ using Microsoft.EntityFrameworkCore;
 namespace LOVA.API.Pages.Rental
 {
     [Authorize(Roles = "User, Admin, Styrelse")]
-    public class KajakModel : PageModel
+    public class PartyModel : PageModel
     {
         private readonly LovaDbContext _context;
 
-        public KajakModel(LovaDbContext context)
+        public PartyModel(LovaDbContext context)
         {
             _context = context;
         }
@@ -35,7 +35,7 @@ namespace LOVA.API.Pages.Rental
 
             var Reservations = await _context.RentalReservations
                 .Include(a => a.RentalInventory)
-                .Where(a => a.PickupDate >= DateToday.AddDays(-7) && a.RentalInventory.GroupItems == "Kajak")
+                .Where(a => a.PickupDate >= DateToday.AddDays(-7) && a.RentalInventory.GroupItems == "Party")
                 .Select(m => new RentalSchedularViewModel
                 {
                     RentalId = m.Id,

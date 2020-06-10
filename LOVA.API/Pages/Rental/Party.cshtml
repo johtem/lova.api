@@ -1,11 +1,11 @@
 ﻿@page
-@model LOVA.API.Pages.Rental.KajakModel
+@model LOVA.API.Pages.Rental.PartyModel
 @{
-    ViewData["Title"] = "Kajak";
+    ViewData["Title"] = "Party";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<div class="container">
+<div class="container-fluid">
     <div class="row">
 
     </div>
@@ -13,76 +13,98 @@
 
     <div class="row">
         <div class="mx-auto">
-            <h4>Hyr kajak</h4>
-        </div>     
+            <h4>Hyr till partyt</h4>
+        </div>
     </div>
 
     <div class="row mt-5">
-        <div class="col-6">
+        <div class="col-3">
             <div class="row">
-                <h4>Enmanskajak</h4>
+                <h4>Tält (2 st finns)</h4>
             </div>
             <div class="row">
-                <img src="~/Images/kajak_Dreamer_2.jpg" width="400" height="120" />
+                <img src="~/Images/Talt.jpg" width="200" height="60" />
             </div>
             <div class="row mt-3">
-                En mycket stabil, lätt och lite kortare havskajak som kan användas av både vuxna och barn. Dreamer har en rymlig sittbrunn, och har trots sin relativt korta längd bra med förvaringsutrymme för längre turer. Mycket smidig och enkel att hantera på land.
+                24 kvm (6 x 4 m) i tålig PVC.
                 <br />
-                Passar dig som väger mellan 50-90 kg och paddlar mestadels i lugnt vatten.<br />
-                Längd: 4,45m<br />
-                Bredd: 0,58 m<br />
-                Vikt: 23kg<br />
-                Maxlast: rekommenderad 130kg<br />
-                Material: Polyethylene<br />
-                Roder ingår som standard<br />
+
                 <br />
-                Priser för uthyrning av enmanskajak från Löttingelunds Tomtägareförening (inkl. paddel och flytväst).<br />
-                <br />
-                0-2 tim 100 kr<br />
-                2-4 tim 200 kr<br />
-                Heldag 350 kr<br />
-                Helg 600 kr<br />
+                Pris: 500 kr per dygn<br />
+                Hämta dag 1 efter kl 12:00 och lämna tillbaka dag 2 före Kl 12:00.
+
             </div>
 
         </div>
-        <div class="col-6">
+        <div class="col-3">
             <div class="row">
-                <h4>Tvåmanskajak</h4>
+                <h4>Bord (8 st finns)</h4>
             </div>
             <div class="row">
+                <!--
                 <img src="~/Images/2-manskajak.jpg" width="400" height="120" />
+            -->
             </div>
             <div class="row mt-3">
-                En rolig och väldigt stabil tvåmanskajak med två stora sittbrunnar, vilket gör det möjligt att ha mindre barn i knäet medan man paddlar. Två stora förvaringsutrymmen finns, samt dryckes- och matförvaringsmöjlighet framför båda sittbrunnarna.<br />
+                Rektangulära bord, 183x76 cm (6 personer). Höjd: 74 cm.<br />
                 <br />
-                Båda sittbrunnarna har mycket bekväma och mjuka sitsar med justerbara ryggstöd.<br />
+
+
                 <br />
-                Kajaken går utmärkt att paddla även på egen hand. Från den bakre sittbrunnen styr man rodret och har därifrån bra manövreringsförmåga.
-                Längd: 5,11m<br />
-                Bredd: 0,68 m<br />
-                Vikt: 28 kg<br />
-                Maxlast: rekommenderad 240 kg<br />
+                Pris: 20 kr per dygn.<br />
+                Hämta dag 1 efter kl 12:00 och lämna tillbaka dag 2 före Kl 12:00.
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="row">
+                <h4>Klappstolar (60 st finns)</h4>
+            </div>
+            <div class="row">
+                <!--
+                <img src="~/Images/2-manskajak.jpg" width="400" height="120" />
+            -->
+            </div>
+            <div class="row mt-3">
+                Klappstolar, stapelbara och praktiska. Färg: vita<br />
                 <br />
-                Priser för uthyrning av tvåmanskajak från Löttingelunds Tomtägareförening (inkl. paddel och flytväst).
+
+
                 <br />
-                0-2 tim 150 kr<br />
-                2-4 tim 250 kr<br />
-                Heldag 500 kr<br />
-                Helg 750 kr<br />
+                Pris: 10 kr per dygn.<br />
+                Hämta dag 1 efter kl 12:00 och lämna tillbaka dag 2 före Kl 12:00.
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="row">
+                <h4>Värmare (4 st finns)</h4>
+            </div>
+            <div class="row">
+                <!--
+                <img src="~/Images/2-manskajak.jpg" width="400" height="120" />
+            -->
+            </div>
+            <div class="row mt-3">
+                Effektiv och energisnål kolfiberstav som överträffar värmare med metallstav. Timerfunktion, som kan ställas mellan 1-60 minuter. Oscillerande funktion gör att ett större område kan värmas upp. Värmaren är utrustad med överhettnings- och tippskydd. Fotens diameter: 210 mm, höjd 77 cm.<br />
+                <br />
+
+
+                <br />
+                Pris: 30 kr per dygn.<br />
+                Hämta dag 1 efter kl 12:00 och lämna tillbaka dag 2 före Kl 12:00.
             </div>
         </div>
     </div>
 
     <div class="row mt-4">
-       
+
 
     </div>
 
-    <div class="row mt-3">
+    <div class="row mt-3 col-8 offset-2">
         <h4>Boka</h4>
     </div>
 
-    <div class="row mt-5">
+    <div class="row mt-5 col-8 offset-2">
         @(Html.Kendo().Scheduler<RentalSchedularViewModel>
                     ()
                     .Name("scheduler")
@@ -90,13 +112,13 @@
                     .Date(Model.DateToday)
                     .StartTime(new DateTime(Model.DateToday.Year, Model.DateToday.Month, Model.DateToday.Day, 9, 00 ,00))
                     .Height(600)
-                    .Editable(e => e.TemplateName("kajakTemplate"))
+                    .Editable(e => e.TemplateName("partyTemplate"))
                     .Events(e => e.Edit("onEdit"))
                     .EventTemplate(
         "<div class='movie-template' style='background-color:#:data.BackgroundColor#'>" +
-                    
+
                     "<h5>#= title #</h5>" +
-                    
+
                 "</div>")
                     .Views(views =>
                     {
@@ -115,9 +137,9 @@
                             m.Field(f => f.Title);
                             m.Field(f => f.BackgroundColor);
                         })
-                .Read(r => r.Url("/Rental/Kajak?handler=Read").Data("forgeryToken"))
-                .Create(r => r.Url("/Rental/Kajak?handler=Create").Data("forgeryToken"))
-                .Update(r => r.Url("/Rental/Kajak?handler=Update").Data("forgeryToken"))
+                .Read(r => r.Url("/Rental/Party?handler=Read").Data("forgeryToken"))
+                .Create(r => r.Url("/Rental/Party?handler=Create").Data("forgeryToken"))
+                .Update(r => r.Url("/Rental/Party?handler=Update").Data("forgeryToken"))
 
                     )
                     )
@@ -162,4 +184,5 @@
 
     </script>
 }
+
 

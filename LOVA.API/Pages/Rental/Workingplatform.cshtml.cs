@@ -37,7 +37,7 @@ namespace LOVA.API.Pages.Rental
 
             var Reservations = await _context.RentalReservations
                 .Include(a => a.RentalInventory)
-                .Where(a =>  a.PickupDate >= DateToday.AddDays(-7))
+                .Where(a =>  a.PickupDate >= DateToday.AddDays(-7) && a.RentalInventory.GroupItems == "Bygg")
                 .Select( m => new RentalSchedularViewModel
                 {
                     RentalId = m.Id,
