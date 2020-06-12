@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LOVA.API.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]  //Remove from Swagger page
     [Route("blobs")]
   public class BlobExplorerController : Controller
     {

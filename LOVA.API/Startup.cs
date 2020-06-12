@@ -69,7 +69,7 @@ namespace LOVA.API
                { 
                    Title = "Löva API", 
                    Version = "v1",
-                   Description = "API för att logga alla arbeten i vacuumsystemet.",
+                   Description = "API för att logga alla arbeten i Löttingelunds VA vacuumsystem.",
                    Contact = new OpenApiContact
                    {
                        Name="Johan Tempelman",
