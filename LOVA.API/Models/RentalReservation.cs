@@ -12,6 +12,8 @@ namespace LOVA.API.Models
 
         public RentalInventory RentalInventory { get; set; }
 
+        public int NumberOf { get; set; }
+
         public string AspNetUserId { get; set; }
 
         public string Description { get; set; }

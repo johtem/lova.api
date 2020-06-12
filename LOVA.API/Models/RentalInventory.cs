@@ -11,6 +11,8 @@ namespace LOVA.API.Models
         public string Name { get; set; }
         public string Description { get; set; }
 
+        public int NumberOf { get; set; }
+
         public string GroupItems { get; set; }
 
         public string BackgroundColor { get; set; }

@@ -61,7 +61,8 @@ namespace LOVA.API
 
             services.AddSingleton(x => new BlobServiceClient(Configuration.GetConnectionString("LottingelundFiles")));
             services.AddSingleton<IBlobService, BlobService>();
-
+            services.AddSingleton<IEmailConfiguration>(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
+            services.AddTransient<IEmailService, EmailService>();
             services.AddSwaggerGen(c =>
            {
                c.SwaggerDoc("v1", new OpenApiInfo 
