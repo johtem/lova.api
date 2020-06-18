@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace LOVA.API.Pages.Rental
@@ -107,6 +108,44 @@ namespace LOVA.API.Pages.Rental
 
                 return new JsonResult(new[] { rental }.ToDataSourceResult(request, ModelState));
         }
+
+        
+        //public async Task<JsonResult> OnGetNumber([DataSourceRequest] DataSourceRequest request, int rentalId, DateTime startDate, DateTime endDate)
+        public async Task<JsonResult> OnGetNumber( int rentalId, DateTime startDate, DateTime endDate)
+        {
+           
+
+            var booked = await _context.RentalReservations
+                .Where(a => a.PickupDate >= startDate && a.ReturnDate <= endDate && a.RentalInventoryId == rentalId)
+                .ToArrayAsync();
+
+            var sum = (from x in booked select x.NumberOf).Sum();
+
+            var numberOfItems = await _context.RentalInventories.Where(a => a.Id == rentalId).FirstOrDefaultAsync();
+
+            int free = numberOfItems.NumberOf - sum;
+
+            List<SelectListItem> freeToBook = new List<SelectListItem>();
+
+            if (free > 0)
+            {
+                for (int i = 1; i < free  + 1; i++)
+                {
+                    freeToBook.Add(new SelectListItem { Text = i.ToString() , Value = i.ToString() });
+                }
+
+            }
+            else
+            {
+                freeToBook.Add(new SelectListItem { Text = "Ingen ledig för vald period.", Value = "999" });
+            }
+
+            //return new JsonResult(new[] { freeToBook }.ToDataSourceResult(request));
+            return new JsonResult(freeToBook);
+            
+        }
+
+
 
     }
 }

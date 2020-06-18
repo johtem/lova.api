@@ -44,6 +44,9 @@ namespace LOVA.API
             services.AddRazorPages()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
+            services.AddServerSideBlazor();
+
+
             services.AddSession(options =>
                 {
                     options.Cookie.SameSite = SameSiteMode.None;
@@ -107,6 +110,7 @@ namespace LOVA.API
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                endpoints.MapBlazorHub();
             });
         }
     }

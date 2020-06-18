@@ -64,7 +64,7 @@
             <br />
             <p>För frågor ring Micke Vikström 070 822 3315 </p>
         </div>
-        
+
     </div>
 
     <div class="row mt-3">
@@ -90,6 +90,29 @@
                             w.Selected(true);
                         });
                     })
+                    .Resources(resource =>
+    {
+        resource.Add(m => m.RoomID)
+            .Title("Room")
+            .DataTextField("Text")
+            .DataValueField("Value")
+            .DataColorField("Color")
+            .BindTo(new[] {
+                    new { Text = "Meeting Room 101", Value = 1, Color = "#6eb3fa" },
+                    new { Text = "Meeting Room 201", Value = 2, Color = "#f58a8a" }
+            });
+        resource.Add(m => m.Attendees)
+            .Title("Attendees")
+            .Multiple(true)
+            .DataTextField("Text")
+            .DataValueField("Value")
+            .DataColorField("Color")
+            .BindTo(new[] {
+                    new { Text = "Alex", Value = 1, Color = "#f8a398" },
+                    new { Text = "Bob", Value = 2, Color = "#51a0ed" },
+                    new { Text = "Charlie", Value = 3, Color = "#56ca85" }
+            });
+    })
                     .DataSource( d => d
                         .Model(m =>
                         {
@@ -121,13 +144,6 @@
 
         kendo.culture("sv-SE");
 
-        //$("#scheduler").kendoScheduler({
-        //    edit: function (e) {
-        //        setTimeout(function () {
-        //            $('.k-window-title').text('Boka');
-        //        }, 100)
-        //    }
-        //});
 
         function forgeryToken() {
             return kendo.antiForgeryTokens();
@@ -137,7 +153,15 @@
             $('.k-window-title').text('Boka');
         }
 
+        function filterRental() {
+            return {
+                rentalId: $("#RentalInventoryId").val(),
+                startDate: $("#startDate").val(),
+                endDate: $("#endDate").val()
+            };
+        }
         
-        
+
+
     </script>
 }

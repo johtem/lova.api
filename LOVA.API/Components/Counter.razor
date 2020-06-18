@@ -1,0 +1,18 @@
+﻿
+<p>Current count: @currentCount</p>
+<button class="btn btn-primary" @onclick="IncrementalCount">Click me</button>
+
+@code {
+    private int currentCount = 0;
+
+    [Parameter]
+    public int InitialValue { get; set; }
+
+    private void IncrementalCount() => currentCount++;
+
+    protected override void OnParametersSet()
+    {
+        currentCount = InitialValue;
+    }
+
+}

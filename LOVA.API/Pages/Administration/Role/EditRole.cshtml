@@ -1,0 +1,63 @@
+﻿@page
+@model LOVA.API.Pages.Administration.Role.EditRoleModel
+@{
+    ViewData["Title"] = "EditRole";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>EditRole</h1>
+
+<form method="post" class="mt-3">
+    <div class="form-group row">
+        <label asp-for="editModel.Id" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input class="form-control" disabled value="@Model.editModel.Id"/>
+            <input asp-for="editModel.Id"  class="form-control" type="hidden"/>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="editModel.RoleName" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="editModel.RoleName"  class="form-control" />
+            <span asp-validation-for="editModel.RoleName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a asp-page="ListRoles" class="btn btn-primary">Cancel</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h4>Users in this role</h4>
+        </div>
+        <div class="card-body">
+            @if (Model.editModel.Users.Any())
+            {
+                foreach (var user in Model.editModel.Users)
+                {
+                    <h5 class="card-title">@user</h5>
+                }
+            }
+            else
+            {
+
+                <h5 class="card-title">None at the moment</h5>
+            }
+        </div>
+        <div class="card-footer">
+            <a href="#" class="btn btn-primary" style="width:auto">Add Users</a>
+            <a href="#" class="btn btn-primary" style="width:auto">Remove Users</a>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts {
+@{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

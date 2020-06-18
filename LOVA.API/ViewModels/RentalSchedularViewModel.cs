@@ -25,6 +25,12 @@ namespace LOVA.API.ViewModels
         public string RecurrenceRule { get; set; }
         public string RecurrenceException { get; set; }
 
+        public int NumberOf { get; set; }
+
         public string AspNetUserId { get; set; }
+
+        public int? RoomID { get; set; }
+
+        public IEnumerable<int> Attendees { get; set; }
     }
 }
