@@ -1,0 +1,43 @@
+﻿@page
+@model LOVA.API.Pages.Administration.Role.EditUserInRoleModel
+@{
+    ViewData["Title"] = "EditUserInRole";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+    var roleId = ViewData["roleId"];
+}
+
+<div class="container">
+    <div class="row">
+        <h5>EditUserInRole</h5>
+    </div>
+    <div class="row">
+        <form method="post">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Add or remove users from this role</h5>
+                </div>
+                <div class="card-body">
+                    @for (int i = 0; i < Model.userRoleVM.Count; i++)
+                    {
+                        <div class="form-check m-1">
+                            <input type="hidden" asp-for="@Model.userRoleVM[i].UserId" />
+                            <input type="hidden" asp-for="@Model.userRoleVM[i].UserName" />
+                            <input asp-for="@Model.userRoleVM[i].IsSelected" class="form-check-input" />
+                            <label asp-for="@Model.userRoleVM[i].IsSelected" class="form-check-label">
+                                @Model.userRoleVM[i].UserName
+                            </label> 
+                        </div>
+
+                    }
+                </div>
+                <div class="card-footer">
+                    <input type="submit" value="Update" class="btn btn-primary" style="width:auto" />
+                    <a asp-page="/Administration/Role/EditRole" asp-route-id="@roleId" class="btn btn-primary" style="width:auto">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
