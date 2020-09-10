@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LOVA.API.ViewModels;
 
 namespace LOVA.API.Services
 {
@@ -30,6 +31,8 @@ namespace LOVA.API.Services
         public DbSet<UploadFileCategory> UploadFileCategories { get; set; }
 
         public DbSet<UploadFileDirectory> UploadFileDirectories { get; set; }
+
+        
 
 
     }

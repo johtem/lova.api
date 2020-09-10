@@ -17,7 +17,17 @@
     <label for="end">Till</label>
 </div>
 <div class="k-edit-field" data-container-for="end">
-    <input name="end" id="endDate" type="text" required data-type="date" data-role="datetimepicker" data-bind="value: end ,visible:isAllDay" />
+    <input name="end"
+           id="endDate"
+           type="text"
+           required data-type="date"
+           data-role="datetimepicker"
+           data-bind="value: end ,visible:isAllDay">
+    @(Html.Kendo().DateTimePickerFor(model => model.End)
+	.Format("dd.MM.yyyy HH:mm")
+	.Name("end")
+	.Value("end")
+)
 </div>
 
 <div class="k-edit-label">
@@ -76,6 +86,9 @@
         
 
     }
+
+
+    
 </script>
 
 

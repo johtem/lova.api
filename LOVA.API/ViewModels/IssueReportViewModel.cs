@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,6 +23,8 @@ namespace LOVA.API.ViewModels
         public string NewValveSerialNumber { get; set; }
         public string OldActivatorSerialNumber { get; set; }
         public string OldValveSerialNumber { get; set; }
+
+        public string ImageName { get; set; }
         public bool IsChargeable { get; set; }
 
         public bool IsPhoto { get; set; }
@@ -33,6 +36,12 @@ namespace LOVA.API.ViewModels
         public int Alarm { get; set; }
 
         public string AspNetUserName { get; set; }
+
+        public DateTime TimeForAlarm { get; set; }
+        public DateTime ArrivalTime { get; set; }
+
+        [Column(TypeName = "decimal(5, 2)")]
+        public decimal TimeToRepair { get; set; }
 
         public DateTime CreatedAt { get; set; }
 

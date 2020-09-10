@@ -161,7 +161,15 @@
             };
         }
         
+        $(document).ready(function () {
+            //var dropdownlist = $("#RentalInventoryId").data("kendoDropDownList");
 
+            $("#datetimepicker").change(function() {
+                alert("hejsan");
+                $("#RentalInventoryId").data("kendoDropDownList").value(0);
+            });
+
+        });
 
     </script>
 }

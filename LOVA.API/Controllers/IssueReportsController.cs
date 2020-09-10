@@ -36,7 +36,11 @@ namespace LOVA.API.Controllers
                     SolutionDescription = a.SolutionDescription,
                     NewActivatorSerialNumber = a.NewActivatorSerialNumber,
                     NewValveSerialNumber = a.NewValveSerialNumber,
+                    ImageName = a.Photo,                   
                     IsChargeable = a.IsChargeable,
+                    TimeForAlarm = a.TimeForAlarm,
+                    TimeToRepair = a.TimeToRepair,
+                    ArrivalTime = a.ArrivalTime,
                     CreatedAt = a.CreatedAt
                 })
                 .ToListAsync();
@@ -106,8 +110,12 @@ namespace LOVA.API.Controllers
                 NewActivatorSerialNumber = issueReport.NewActivatorSerialNumber,
                 NewValveSerialNumber = issueReport.NewValveSerialNumber,
                 IsChargeable = issueReport.IsChargeable,
+                Photo = issueReport.ImageName,
                 OldActivatorSerialNumber = well.ActivatorSerialNumber,
                 OldValveSerialNumber = well.ValveSerialNumber,
+                TimeForAlarm = issueReport.TimeForAlarm,
+                ArrivalTime = issueReport.ArrivalTime,
+                TimeToRepair = issueReport.TimeToRepair,
                 CreatedAt = issueReport.CreatedAt,
                 UpdatedAt = issueReport.CreatedAt
             };

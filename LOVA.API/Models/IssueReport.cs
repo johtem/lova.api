@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,6 +24,7 @@ namespace LOVA.API.Models
         public bool IsPhoto { get; set; }
 
         public string Photo { get; set; }
+
         public bool IsLowVacuum { get; set; }
 
         public int MasterNode { get; set; }
@@ -30,6 +32,12 @@ namespace LOVA.API.Models
         public int Alarm { get; set; }
 
         public string AspNetUserId { get; set; }
+
+        public DateTime TimeForAlarm { get; set; }
+        public DateTime ArrivalTime { get; set; }
+
+        [Column(TypeName = "decimal(5, 2)")]
+        public decimal TimeToRepair { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
