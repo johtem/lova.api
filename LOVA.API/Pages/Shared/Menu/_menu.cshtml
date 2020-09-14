@@ -16,20 +16,20 @@
               children.Add().Text("Om").Url("/About/About");
               children.Add().Text("Kultur & fritid")
               .Items(innerChildren =>
-                          {
-                              innerChildren.Add().Text("Bad").Url("/About/Bath");
-                              innerChildren.Add().Text("Båtliv");
-                              innerChildren.Add().Text("Cykelvägar");
-                              innerChildren.Add().Text("Golf");
-                              innerChildren.Add().Text("Fiske");
-                              innerChildren.Add().Text("Fornlämningar");
-                              innerChildren.Add().Text("Motionsspår");
-                              innerChildren.Add().Text("Ridskola");
-                              innerChildren.Add().Text("Rönninge by");
-                              innerChildren.Add().Text("Roslagsleden");
+              {
+                  innerChildren.Add().Text("Bad").Url("/About/Bath");
+                  innerChildren.Add().Text("Båtliv").Url("/About/Harbour");
+                  innerChildren.Add().Text("Cykelvägar").Url("/About/Bicycle");
+                  innerChildren.Add().Text("Golf");
+                  innerChildren.Add().Text("Fiske").Url("/About/Fishing");
+                  innerChildren.Add().Text("Fornlämningar");
+                  innerChildren.Add().Text("Motionsspår");
+                  innerChildren.Add().Text("Ridskola");
+                  innerChildren.Add().Text("Rönninge by");
+                  innerChildren.Add().Text("Roslagsleden");
 
-                          });
-              children.Add().Text("Skola & barnomsorg");
+              });
+              children.Add().Text("Skola & barnomsorg").Url("/About/School");
               children.Add().Text("Grannsamverkan").Url("/About/NeighbourhoodWatch");
 
           });

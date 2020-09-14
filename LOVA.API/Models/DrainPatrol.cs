@@ -17,7 +17,5 @@ namespace LOVA.API.Models
         public DateTime Time { get; set; }
         public bool Active { get; set; }
 
-        public long WellId { get; set; }
-        public Well Well { get; set; }
     }
 }

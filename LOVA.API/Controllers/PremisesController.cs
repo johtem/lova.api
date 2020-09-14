@@ -10,6 +10,7 @@ using LOVA.API.Services;
 
 namespace LOVA.API.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Route("api/[controller]")]
     [ApiController]
     public class PremisesController : ControllerBase

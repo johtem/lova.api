@@ -80,6 +80,9 @@ namespace LOVA.API
                        Email="johan@tempelman.nu"
                    }
                });
+               c.DocInclusionPredicate((_, api) => !string.IsNullOrWhiteSpace(api.GroupName));
+
+               c.TagActionsBy(api => api.GroupName);
            });
             services.AddKendo();
         }
@@ -96,7 +99,9 @@ namespace LOVA.API
 
             app.UseSwaggerUI(c =>
             {
+                c.DefaultModelsExpandDepth(-1); // Disable swagger schemas at bottom
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Löva API v1");
+                
             });
 
             app.UseHttpsRedirection();

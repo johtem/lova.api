@@ -12,8 +12,9 @@ using LOVA.API.Filter;
 
 namespace LOVA.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/alarms")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = @"Alarms")]
     [ApiKeyAuth]
     public class DrainPatrolAlarmsController : ControllerBase
     {
@@ -53,6 +54,7 @@ namespace LOVA.API.Controllers
 
         // GET: api/DrainPatrolAlarms/5
         [HttpGet("{id}")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<DrainPatrolAlarm>> GetDrainPatrolAlarm(long id)
         {
             var drainPatrolAlarm = await _context.DrainPatrolAlarms.FindAsync(id);
@@ -69,6 +71,7 @@ namespace LOVA.API.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> PutDrainPatrolAlarm(long id, DrainPatrolAlarm drainPatrolAlarm)
         {
             if (id != drainPatrolAlarm.Id)
@@ -127,6 +130,7 @@ namespace LOVA.API.Controllers
 
         // DELETE: api/DrainPatrolAlarms/5
         [HttpDelete("{id}")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<DrainPatrolAlarm>> DeleteDrainPatrolAlarm(long id)
         {
             var drainPatrolAlarm = await _context.DrainPatrolAlarms.FindAsync(id);

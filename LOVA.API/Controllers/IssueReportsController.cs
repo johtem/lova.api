@@ -12,6 +12,7 @@ using LOVA.API.ViewModels;
 namespace LOVA.API.Controllers
 {
     [Route("api/[controller]")]
+    [ApiExplorerSettings(GroupName = @"IssueReports")]
     [ApiController]
     public class IssueReportsController : ControllerBase
     {
@@ -62,37 +63,7 @@ namespace LOVA.API.Controllers
             return issueReport;
         }
 
-        // PUT: api/IssueReports/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutIssueReport(long id, IssueReport issueReport)
-        {
-            if (id != issueReport.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(issueReport).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!IssueReportExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
+       
 
         // POST: api/IssueReports
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
@@ -135,21 +106,7 @@ namespace LOVA.API.Controllers
             return Ok(issueReport);
         }
 
-        // DELETE: api/IssueReports/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<IssueReport>> DeleteIssueReport(long id)
-        {
-            var issueReport = await _context.IssueReports.FindAsync(id);
-            if (issueReport == null)
-            {
-                return NotFound();
-            }
-
-            _context.IssueReports.Remove(issueReport);
-            await _context.SaveChangesAsync();
-
-            return issueReport;
-        }
+        
 
         private bool IssueReportExists(long id)
         {

@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 
 namespace LOVA.API.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Route("api/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase

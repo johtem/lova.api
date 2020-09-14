@@ -9,10 +9,13 @@ using LOVA.API.Models;
 using LOVA.API.Services;
 using LOVA.API.ViewModels;
 using LOVA.API.Filter;
+using System.ComponentModel;
 
 namespace LOVA.API.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
+    [Route("api/activities")]
+    [ApiExplorerSettings(GroupName = @"Activities")]
     [ApiController]
     [ApiKeyAuth]
     public class DrainPatrolsController : ControllerBase
@@ -24,15 +27,14 @@ namespace LOVA.API.Controllers
             _context = context;
         }
 
-        // GET: api/DrainPatrols
+        //// GET: api/DrainPatrols
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DrainPatrolViewModel>>> GetDrainPatrols()
         {
-            var dateFrom = DateTime.Now.AddHours(MyConsts.HoursBackInTime);
+            // var dateFrom = DateTime.Now.AddHours(MyConsts.HoursBackInTime);
 
             ActionResult<IEnumerable<DrainPatrolViewModel>> data = await _context.DrainPatrols
-                .Include(a => a.Well)
-                .Where(a => a.Time > dateFrom)
+                //.Where(a => a.Time > dateFrom)
                 .Select(a => new DrainPatrolViewModel
                 {
                     Master_node = a.Master_node,
@@ -43,24 +45,92 @@ namespace LOVA.API.Controllers
                 })
                 .ToListAsync();
 
+            return data;
+        }
+
+        // GET: api/activities/byMasterNode?masterNode=1
+        [HttpGet("byMasterNode")]
+        public async Task<ActionResult<IEnumerable<DrainPatrolViewModel>>> GetDrainPatrols([FromQuery]int masterNode)
+        {
+            //var dateFrom = DateTime.Now.AddHours(MyConsts.HoursBackInTime);
+
+            ActionResult<IEnumerable<DrainPatrolViewModel>> data = await _context.DrainPatrols
+                //.Where(a => a.Time > dateFrom && a.Master_node == masterNode)
+                .Where(a => a.Master_node == masterNode)
+                .Select(a => new DrainPatrolViewModel
+                {
+                    Master_node = a.Master_node,
+                    Index = a.Index,
+                    Address = a.Address,
+                    Time = a.Time,
+                    Active = a.Active
+                })
+                .ToListAsync();
 
             return data;
         }
 
-        // GET: api/DrainPatrols/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<DrainPatrol>> GetDrainPatrol(long id)
-        {
-            var drainPatrol = await _context.DrainPatrols.FindAsync(id);
+        // GET: api/DrainPatrols?masterNode=1&dateFrom=2020-09-12T12:30:45
+        [HttpGet("byMasterNodeAndDateFrom")]
+        public async Task<ActionResult<IEnumerable<DrainPatrolViewModel>>> GetDrainPatrols(int masterNode, DateTime dateFrom)
+        {          
 
-            if (drainPatrol == null)
-            {
-                return NotFound();
-            }
+            ActionResult<IEnumerable<DrainPatrolViewModel>> data = await _context.DrainPatrols
+                .Where(a => a.Time > dateFrom && a.Master_node == masterNode)
+                .Select(a => new DrainPatrolViewModel
+                {
+                    Master_node = a.Master_node,
+                    Index = a.Index,
+                    Address = a.Address,
+                    Time = a.Time,
+                    Active = a.Active
+                })
+                .ToListAsync();
 
-            return drainPatrol;
+            return data;
         }
 
+
+        // GET: api/DrainPatrols?dateFrom=2020-09-12T12:30:45
+        [HttpGet("byDateFrom")]
+        public async Task<ActionResult<IEnumerable<DrainPatrolViewModel>>> GetDrainPatrols(DateTime dateFrom)
+        {
+
+            ActionResult<IEnumerable<DrainPatrolViewModel>> data = await _context.DrainPatrols
+                .Where(a =>  a.Time > dateFrom)
+                .Select(a => new DrainPatrolViewModel
+                {
+                    Master_node = a.Master_node,
+                    Index = a.Index,
+                    Address = a.Address,
+                    Time = a.Time,
+                    Active = a.Active
+                })
+                .ToListAsync();
+
+            return data;
+        }
+
+
+        // GET: api/DrainPatrols/byMasterNodeAndAddressAndDateFrom?masterNode=1&dateFrom=2020-09-12T12:30:45
+        [HttpGet("byMasterNodeAndAddressAndDateFrom")]
+        public async Task<ActionResult<IEnumerable<DrainPatrolViewModel>>> GetDrainPatrols(int masterNode, string address, DateTime dateFrom)
+        {
+
+            ActionResult<IEnumerable<DrainPatrolViewModel>> data = await _context.DrainPatrols
+                .Where(a => a.Time > dateFrom && a.Master_node == masterNode && a.Address == address)
+                .Select(a => new DrainPatrolViewModel
+                {
+                    Master_node = a.Master_node,
+                    Index = a.Index,
+                    Address = a.Address,
+                    Time = a.Time,
+                    Active = a.Active
+                })
+                .ToListAsync();
+
+            return data;
+        }
 
 
         // POST: api/DrainPatrols
@@ -69,18 +139,18 @@ namespace LOVA.API.Controllers
         [HttpPost]
         public async Task<ActionResult<DrainPatrol>> PostDrainPatrol(DrainPatrolViewModel drainPatrolViewModel)
         {
-            string wellName = string.Concat(drainPatrolViewModel.Master_node, drainPatrolViewModel.Address);
+            //string wellName = string.Concat(drainPatrolViewModel.Master_node, drainPatrolViewModel.Address);
 
-            var well = await _context.Wells.Where(a => a.WellName == wellName).FirstOrDefaultAsync();
+            //var well = await _context.Wells.Where(a => a.WellName == wellName).FirstOrDefaultAsync();
 
-            if (well == null )
-            {
-                return NotFound();
-            }
+            //if (well == null )
+            //{
+            //    return NotFound();
+            //}
 
             var insertData = new DrainPatrol
             {
-                WellId = well.Id,
+               // WellId = well.Id,
                 Master_node = drainPatrolViewModel.Master_node,
                 Index = drainPatrolViewModel.Index,
                 Address = drainPatrolViewModel.Address,

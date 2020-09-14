@@ -7,7 +7,7 @@ namespace LOVA.API.Services
 {
     public static class MyConsts
     {
-        public const int HoursBackInTime = 48;
+        public const int HoursBackInTime = -48;
         public const int PageSize = 10;
     }
 }
