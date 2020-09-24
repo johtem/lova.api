@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using LOVA.API.Models;
 using LOVA.API.Services;
 using LOVA.API.ViewModels;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 
 namespace LOVA.API.Controllers
 {
@@ -44,7 +45,31 @@ namespace LOVA.API.Controllers
                     ArrivalTime = a.ArrivalTime,
                     CreatedAt = a.CreatedAt
                 })
+                .OrderByDescending(a => a.CreatedAt)
                 .ToListAsync();
+
+            return data;
+        }
+
+        [HttpGet("CasePerWell")]
+        public async Task<ActionResult<IEnumerable<WellCountViewModel>>> GetWells(string fromDate)
+        {
+
+            DateTime fromD = Convert.ToDateTime(fromDate);
+
+
+
+            ActionResult<IEnumerable<WellCountViewModel>> data =      
+                              await (from p in _context.IssueReports
+                                     where p.CreatedAt >= fromD
+                                     group p by p.Well.WellName into g
+                                     orderby g.Count() descending
+                                     select new WellCountViewModel
+                                      {
+                                          WellName = g.Key,
+                                          Case = g.Count()
+                                      }).Take(5).ToListAsync();
+
 
             return data;
         }

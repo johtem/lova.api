@@ -13,7 +13,11 @@
           .Items(children =>
           {
 
-              children.Add().Text("Om").Url("/About/About");
+              children.Add().Text("Löttingelundsföreningarna").Url("/About/About");
+              children.Add().Text("Områdets historia").Url("/About/History");
+              children.Add().Text("Karta").Url("/About/Map");
+              children.Add().Text("Natur och miljö").Url("/About/Area");
+              children.Add().Text("Kollektivtrafik").Url("/About/PublicTransport");
               children.Add().Text("Kultur & fritid")
               .Items(innerChildren =>
               {
@@ -22,10 +26,10 @@
                   innerChildren.Add().Text("Cykelvägar").Url("/About/Bicycle");
                   innerChildren.Add().Text("Golf");
                   innerChildren.Add().Text("Fiske").Url("/About/Fishing");
-                  innerChildren.Add().Text("Fornlämningar");
-                  innerChildren.Add().Text("Motionsspår");
+                  innerChildren.Add().Text("Fornlämningar").Url("/About/Antiquities");
+                  innerChildren.Add().Text("Motionsspår").Url("/About/Excerise");
                   innerChildren.Add().Text("Ridskola");
-                  innerChildren.Add().Text("Rönninge by");
+                  innerChildren.Add().Text("Rönninge by").Url("/About/RonningBy");
                   innerChildren.Add().Text("Roslagsleden");
 
               });
