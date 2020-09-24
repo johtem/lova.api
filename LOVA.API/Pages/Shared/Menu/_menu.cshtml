@@ -30,17 +30,32 @@
                   innerChildren.Add().Text("Motionsspår").Url("/About/Excerise");
                   innerChildren.Add().Text("Ridskola");
                   innerChildren.Add().Text("Rönninge by").Url("/About/RonningBy");
-                  innerChildren.Add().Text("Roslagsleden");
+                  innerChildren.Add().Text("Roslagsleden").Url("/About/Roslagsleden");
 
               });
               children.Add().Text("Skola & barnomsorg").Url("/About/School");
               children.Add().Text("Grannsamverkan").Url("/About/NeighbourhoodWatch");
+              children.Add().Text("Tv och Internet")
+              .Items(innerChildren =>
+              {
+                  innerChildren.Add().Text("Bredband").Url("/Media/Internet");
+                  innerChildren.Add().Text("Kabel TV").Url("/Media/CableTv");
+                  innerChildren.Add().Text("BredbandsTV").Url("/Media/Tv");
+                  innerChildren.Add().Text("IP-telefoni").Url("/Media/IpPhones");
+              });
+              children.Add().Text("Felanmälan").Url("/Lottingelund/ErrorReport");
+              children.Add().Text("Aktuellt")
+              .Items(innerChildren =>
+              {
+                  innerChildren.Add().Text("Miljötratt").Url("/Aktuellt/EnviromentFunnel");
+                  innerChildren.Add().Text("Vattenbrist").Url("/Aktuellt/WaterShortage");
+                  innerChildren.Add().Text("Anmäl klotter").Url("/Aktuellt/Graffiti");
+                  innerChildren.Add().Text("Hjärtstartare").Url("/Aktuellt/Defibrillator");
+              });
 
           });
-
-
       })
-)
+      )
 
         <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
             <partial name="_LoginPartial" />
