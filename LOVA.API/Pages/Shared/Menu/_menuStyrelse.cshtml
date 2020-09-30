@@ -1,6 +1,8 @@
-﻿<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+﻿<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" style="background-color: #f4f4f2;">
     <div class="container-fluid">
-        <a class="navbar-brand" asp-area="" asp-page="/Index">Löttinglund</a>
+        <a class="navbar-brand" asp-area="" asp-page="/Index">
+            <img src="~/Images/LoggaSmall.jpg" alt="" />
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -9,39 +11,75 @@
       .Name("Menu")
       .Items(items =>
       {
-        items.Add().Text("Om Löttingelund")
+          items.Add().Text("Om Löttingelund")
           .Items(children =>
           {
 
-              children.Add().Text("Om").Url("/About/About");
+              children.Add().Text("Löttingelundsföreningarna").Url("/About/About");
+              children.Add().Text("Om").Items(innerChildren =>
+              {
+                  innerChildren.Add().Text("Kort fakta").Url(" / About/Lottingelund");
+                  innerChildren.Add().Text("Områdets historia").Url("/About/History");
+                  innerChildren.Add().Text("Karta").Url("/About/Map");
+                  innerChildren.Add().Text("Natur och miljö").Url("/About/Area");
+                  innerChildren.Add().Text("Kollektivtrafik").Url("/About/PublicTransport");
+              });
               children.Add().Text("Kultur & fritid")
               .Items(innerChildren =>
-                          {
-                              innerChildren.Add().Text("Bad").Url("/About/Bath");
-                              innerChildren.Add().Text("Båtliv").Url("/About/Harbour");
-                              innerChildren.Add().Text("Cykelvägar");
-                              innerChildren.Add().Text("Golf");
-                              innerChildren.Add().Text("Fiske");
-                              innerChildren.Add().Text("Fornlämningar");
-                              innerChildren.Add().Text("Motionsspår");
-                              innerChildren.Add().Text("Ridskola");
-                              innerChildren.Add().Text("Rönninge by");
-                              innerChildren.Add().Text("Roslagsleden");
+              {
+                  innerChildren.Add().Text("Bad").Url("/About/Bath");
+                  innerChildren.Add().Text("Båtliv").Url("/About/Harbour");
+                  innerChildren.Add().Text("Cykelvägar").Url("/About/Bicycle");
+                  innerChildren.Add().Text("Golf");
+                  innerChildren.Add().Text("Fiske").Url("/About/Fishing");
+                  innerChildren.Add().Text("Fornlämningar").Url("/About/Antiquities");
+                  innerChildren.Add().Text("Motionsspår").Url("/About/Excerise");
+                  innerChildren.Add().Text("Ridskola");
+                  innerChildren.Add().Text("Rönninge by").Url("/About/RonningBy");
+                  innerChildren.Add().Text("Roslagsleden").Url("/About/Roslagsleden");
 
-                          });
+              });
               children.Add().Text("Skola & barnomsorg").Url("/About/School");
               children.Add().Text("Grannsamverkan").Url("/About/NeighbourhoodWatch");
+              children.Add().Text("Tv och Internet")
+              .Items(innerChildren =>
+              {
+                  innerChildren.Add().Text("Om TV och Internet").Url("/Media/About");
+                  innerChildren.Add().Text("Bredband").Url("/Media/Internet");
+                  innerChildren.Add().Text("Kabel TV").Url("/Media/CableTv");
+                  innerChildren.Add().Text("BredbandsTV").Url("/Media/Tv");
+                  innerChildren.Add().Text("IP-telefoni").Url("/Media/IpPhones");
+              });
+              children.Add().Text("Felanmälan").Url("/Lottingelund/ErrorReport");
+              children.Add().Text("Aktuellt")
+              .Items(innerChildren =>
+              {
+                  innerChildren.Add().Text("Miljötratt").Url("/Aktuellt/EnviromentFunnel");
+                  innerChildren.Add().Text("Vattenbrist").Url("/Aktuellt/WaterShortage");
+                  innerChildren.Add().Text("Anmäl klotter").Url("/Aktuellt/Graffiti");
+                  innerChildren.Add().Text("Hjärtstartare").Url("/Aktuellt/Defibrillator");
+              });
 
           });
 
           items.Add().Text("Villaföreningen")
               .Items(children =>
+              {
+
+                  children.Add().Text("Dokument")
+                  .Items(innerChildren =>
                   {
-                      
-                      children.Add().Text("Dokument");
-                      children.Add().Text("Felanmälan");
-                      children.Add().Text("Flytta in/ut");
+                      innerChildren.Add().Text("VA-föreningen").Url("/Lottingelund/DocumentVA");
+                      innerChildren.Add().Text("Tomtföreningen").Url("/Lottingelund/DocumentTomt");
+                      innerChildren.Add().Text("Vägföreningen").Url("/Lottingelund/DocumentVag");
+                      innerChildren.Add().Text("Löttingelundsbladet").Url("/Lottingelund/Leaflet");
                   });
+
+                  children.Add().Text("Felanmälan").Url("/Lottingelund/ErrorReport");
+                  children.Add().Text("Flytta in/ut").Url("/Lottingelund/Move");
+                  children.Add().Text("Styrelse").Url("/Lottingelund/Board");
+
+              });
 
           items.Add()
               .Text("Uthyrning")
@@ -59,7 +97,7 @@
                   children.Add().Text("VA arbete")
                           .Items(innerChildren =>
                           {
-                              innerChildren.Add().Text("Ny Jouråtgärd").Url("/Lova/AddNewActivity");
+                              innerChildren.Add().Text("Ny Åtgärd").Url("/Lova/AddNewActivity");
                               innerChildren.Add().Text("VA-rapport").Url("/Lova/WaterDrainReport");
                           });
 
@@ -69,12 +107,13 @@
                               innerChildren.Add().Text("Larm");
                               innerChildren.Add().Text("Intagsenhet");
                           });
-                  children.Add().Text("Dokument");
+                  children.Add().Text("Dokument").Url("/Lova/Documents");
+
 
 
               });
 
-         
+
 
 
 

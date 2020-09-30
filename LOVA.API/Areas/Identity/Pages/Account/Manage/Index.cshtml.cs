@@ -38,6 +38,9 @@ namespace LOVA.API.Areas.Identity.Pages.Account.Manage
             public string PhoneNumber { get; set; }
 
             public string Property { get; set; }
+
+            public string ForeName { get; set; }
+            public string LastName { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -52,7 +55,9 @@ namespace LOVA.API.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber,
-                Property = user.Property
+                Property = user.Property,
+                ForeName = user.ForeName,
+                LastName = user.LastName
             };
         }
 
@@ -100,8 +105,22 @@ namespace LOVA.API.Areas.Identity.Pages.Account.Manage
 
                 await _userManager.UpdateAsync(user);
             }
-            
-            
+
+            if (user.ForeName != Input.ForeName)
+            {
+                user.ForeName = Input.ForeName;
+
+                await _userManager.UpdateAsync(user);
+            }
+
+            if (user.LastName != Input.LastName)
+            {
+                user.LastName = Input.LastName;
+
+                await _userManager.UpdateAsync(user);
+            }
+
+
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";

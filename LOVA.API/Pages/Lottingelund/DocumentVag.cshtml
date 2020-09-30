@@ -1,0 +1,105 @@
+﻿@page
+@model LOVA.API.Pages.Lottingelund.DocumentVagModel
+@{
+    ViewData["Title"] = "Tomtföreningen";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+
+}
+
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@Html.AntiForgeryToken()
+
+
+<div class="container">
+    <div class="row offset-2">
+        <h4>Dokument Vägföreningen</h4>
+        <br />
+        <br />
+        <br />
+    </div>
+
+    <div class="row col-12">
+        @(Html.Kendo().FileManager()
+        .Name("filemanager")
+        // .Views(v => v.Grid(grid => grid.Columns(cols => cols.Add().Field(Path))))
+        .Width(800)
+    .DataSource(ds =>
+        {
+            ds.Read(operation => operation
+            .Type(HttpVerbs.Post)
+            .Url("/Lottingelund/DocumentVag?handler=Read").Data("forgeryToken")
+        );
+
+    })
+    .UploadUrl("Upload", "FileManagerData")
+    .Toolbar(tb => tb.Items(items =>
+    {
+        //items.Add("createFolder");
+        //items.Add("upload");
+        items.Add("sortDirection");
+        items.Add("sortField");
+        items.Add("changeView");
+        items.Add("spacer");
+        items.Add("details");
+        items.Add("search");
+    }))
+    .Events(events => events.DataBound("onOpen"))
+    .ContextMenu(context => context.Items(items =>
+    {
+       items.Add("download").Text("Öppna").Command("DownloadCommand").SpriteCssClass("k-icon k-i-download");
+       // items.Add("delete");
+    }))
+)
+
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+
+
+
+        function forgeryToken() {
+            return kendo.antiForgeryTokens();
+        }
+
+        function onOpen(e) {
+            console.log(e);
+        }
+
+        function dowloadCommand(e) {
+            alert("heja");
+        }
+
+
+        var filemanagerNS = kendo.ui.filemanager;
+
+        filemanagerNS.commands.DownloadCommand = filemanagerNS.FileManagerCommand.extend({
+            exec: function () {
+                var that = this,
+                    filemanager = that.filemanager, // get the kendo.ui.FileManager instance
+                    options = that.options, // get the options passed through the tool
+                    target = options.target // options.target is available only when command is executed from the context menu
+                selectedFiles = filemanager.getSelected(); // get the selected files
+                window.location = '/Lottingelund/DocumentVag?handler=Download&file=' + selectedFiles[0].name + selectedFiles[0].extension;
+
+            }
+        });
+
+
+        $(document).ready(function () {
+            var filemanager = $("#filemanager").getKendoFileManager();
+
+            filemanager.executeCommand({ command: "TogglePaneCommand", options: { type: "preview" } });
+            filemanager.toolbar.fileManagerDetailsToggle.switchInstance.toggle();
+
+
+
+
+
+        })
+    </script>
+}

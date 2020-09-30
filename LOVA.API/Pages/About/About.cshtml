@@ -10,92 +10,95 @@
     <div class="jumbotron">
         <div class="container">
             <h1 class="display-3">
-                Om Löttingelund
+                Löttingelundsföreningarna
             </h1>
             <p>
-                Löttingelund är ursprungligen ett sommarstugeområde som utvecklats till ett litet villasamhälle med ca 230 villafastigheter. Den vackra och djurrika miljön runt Löttingelund präglar området och kommer att, enligt Täby Kommuns stadsplan, bevaras som grönområden.
+                I Löttingelund tar vi hand om våra egna vägar och vi har ett eget VA-system. Allt sköts av våra villaföreningar.
             </p>
 
         </div>
     </div>
-    <!-- Bootstrap tabs -->
-    <div class="row col-8 offset-2">
-        <div class="tabbable">
 
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="tab-Tomt" href="#Tomt" data-toggle="tab" role="tab">Tomtföreningen</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="tab-Vag"href="#Vag" data-toggle="tab" role="tab">Vägföreningen</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="tab-VA" href="#VA" data-toggle="tab" role="tab">VA-föreningen</a>
-                </li>
-            </ul>
+    <!-- Accordion by bootstrap-->
 
+    <div class="accordion" id="accordionExample">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Tomtföreningen
+                    </button>
+                </h2>
+            </div>
 
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane fade active show" id="Tomt" aria-label="Tomt">
-                    <div class="row m-5">
-                        <div class="row">
-                            <img src="~/Images/fotoAstridMcCormack_050712_frittattanvanda_skavloten_72dpi_1.jpg" width="400" height="150" />
-                        </div>
-                        <div class="row">
-                            <p class="mt-3">
-                                Tomtföreningens uppgift är att tillvarata fastighetsägarnas i Löttingelund tomtområde, gemensamma intressen beträffande skötsel av parkmark, bryggor och båtplatser, samt andra gemensamma intressen för medlemmarnas och samhällets nytta och trevnad.
-                                <br /><br />
-                                Årsavgift 700 kr/medlem.<br />
-                                Båtplatsavgift 400 kr/plats – nyckeldeposition 400 kr (just nu inte aktiv pga anläggning av nya bryggor)<br />
-                                Bredbandsavgift + Kabel TV 209 kr/månad<br />
-                                endast Kabel-TV avgift 100 kr/månad<br />
-                                Anslutningsavgift Fibernät om det ej är indraget i huset redan 31 250 kr. Annars ingen kostnad.<br />
-                                <br />
-                            </p>
-                        </div>
-                    </div>
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                <div class="card-body">
+                    <p class="mt-3">
+                        Tomtföreningens uppgift är att tillvarata fastighetsägarnas i Löttingelund tomtområde, gemensamma intressen beträffande skötsel av parkmark, bryggor och båtplatser, samt andra gemensamma intressen för medlemmarnas och samhällets nytta och trevnad.
+                        <br /><br />
+                        Årsavgift 700 kr/medlem.<br />
+                        Båtplatsavgift 400 kr/plats – nyckeldeposition 400 kr (just nu inte aktiv pga anläggning av nya bryggor)<br />
+                        Bredbandsavgift + Kabel TV 209 kr/månad<br />
+                        endast Kabel-TV avgift 100 kr/månad<br />
+                        Anslutningsavgift Fibernät om det ej är indraget i huset redan 31 250 kr. Annars ingen kostnad.<br />
+                        <br />
+                    </p>
                 </div>
-                <div role="tabpanel" class="tab-pane fade show" id="Vag" aria-label="Tomt">
-                    <div class="row m-5">
-                        <div class="row">
-                            <img src="~/Images/Skavloten.jpg" width="400" height="150" />
-                        </div>
-                        <div class="row">
-                            <p class="mt-3">
-                                Vägföreningens uppgift är att svara för drift och underhåll av samtliga vägar inom Löttingelundomrdet. Löttinglunds- och Löttinelundsvägen har Vägverket ansvar för. Skavlötensvägen samt delar av Löttingelundsvägen har Täy kommun ansvar för.
-                                <br /><br />
-                                Vi sköter förstås snöröjningen själva vilket har samma inverkan på trivseln. Om du inte orkar eller kan röja din garageuppfart kan du ringa till den som röjer snön och be honom att ta bort din snö också.
-                                <br /><br />
-                                Årsavgift 1500 kr
-                            </p>
-                        </div>
-                    </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Vägföreningen
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                <div class="card-body">
+                    <p class="mt-3">
+                        Vägföreningens uppgift är att svara för drift och underhåll av samtliga vägar inom Löttingelundomrdet. Löttinglunds- och Löttinelundsvägen har Vägverket ansvar för. Skavlötensvägen samt delar av Löttingelundsvägen har Täy kommun ansvar för.
+                        <br /><br />
+                        Vi sköter förstås snöröjningen själva vilket har samma inverkan på trivseln. Om du inte orkar eller kan röja din garageuppfart kan du ringa till den som röjer snön och be honom att ta bort din snö också.
+                        <br /><br />
+                        Årsavgift 1500 kr
+                    </p>
                 </div>
-                <div role="tabpanel" class="tab-pane fade show" id="VA" aria-label="Tomt">
-                    <div class="row m-5">
-                        <div class="row">
-                            <img src="~/Images/Skavloten.jpg" width="400" height="150" />
-                        </div>
-                        <div class="row">
-                            <p class="mt-3">
-                                VA-föreningens uppgift är att sköta vårt gemensamma vatten- och avloppssystem. Alla fastigheter inom Löttingelund är anslutna till Löttingelunds privata VA-system. I området finns 142 brunnar som töms 50 ggr/dygn. Vattenförbrukningen i området är 42.000 kbm per år. Vi bidrar med i genomsnitt 550 liter till avloppssystemet per dygn per hushåll. Vi har 6,5 km VA kulvert i området varav ca 6 km eluppvärmd.
-                                <br /><br />
-                                Det vatten vi använder oss av i området köper vi av Norrvatten, vilket är samma vatten som de flesta använder sig av i stockholmsområdet. Vårt vatten är för övrigt bland det billigaste i Stor-Stockholm trots att vi ”bara” försörjer cirka 250 fastigheter. Vattnet kommer in till vårt pumphus nere vid Rönningesjön och pumpas vidare ut till fastigheterna. I vår tur tar vi in avloppet från alla fastigheter via intagsenheterna och vidare till pumphuset. Därefter pumpar vi iväg avloppet i vår egna 1300 meter långa ledning under Rönningesjön ända bort till Arninge. Där tar kommunen vid och skickar avloppet vidare för rening vid Käppalaverken i Lidingö.
-                                <br /><br />
-                                Servisavgift per fastighet avseende obligatorisk anslutningspunkt för VA om 133 705 kr.<br />
-                                Avgift för lägenhet om 45 880 kr (enskild fastighet skall lägga samman beloppen från punkt 1 och 2 för att erhålla årets anslutningsavgift = 179 585 kr) <br />
-                                Avgift för anslutning av Attefallshus är 50% av avgiften för lägenhet i pnkt 2 ovan.<br />
-                                Tappvatten med totalt 23,25 kr/kbm levererat vatten. Avloppsvatten utöver debiterat tappvatten debiteras med 11,70 kr/kbm. (jmf Täby kommun 18,75 kr/kbm + 1556,25 kr/år i fasta avgifter<br />
-                                Extra mätställe (mätställe utöver ett per fastighet) skall erläggas en årlig avgift med 300 kr<br />
-                                Rensningsavgift om 2 500 kr per brunnsrensning.<br />
-                                Medlemsavgift per år för vatten och avlopp är 2 150 kr.<br />
-                                Medlemsavgift per år för endast avlopp är 3 400 kr.<br />
-                            </p>
-                        </div>
-                    </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingThree">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        VA-föreningen
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                <div class="card-body">
+                    <p class="mt-3">
+                        VA-föreningens uppgift är att sköta vårt gemensamma vatten- och avloppssystem. Alla fastigheter inom Löttingelund är anslutna till Löttingelunds privata VA-system. I området finns 142 brunnar som töms 50 ggr/dygn. Vattenförbrukningen i området är 42.000 kbm per år. Vi bidrar med i genomsnitt 550 liter till avloppssystemet per dygn per hushåll. Vi har 6,5 km VA kulvert i området varav ca 6 km eluppvärmd.
+                        <br /><br />
+                        Det vatten vi använder oss av i området köper vi av Norrvatten, vilket är samma vatten som de flesta använder sig av i stockholmsområdet. Vårt vatten är för övrigt bland det billigaste i Stor-Stockholm trots att vi ”bara” försörjer cirka 250 fastigheter. Vattnet kommer in till vårt pumphus nere vid Rönningesjön och pumpas vidare ut till fastigheterna. I vår tur tar vi in avloppet från alla fastigheter via intagsenheterna och vidare till pumphuset. Därefter pumpar vi iväg avloppet i vår egna 1300 meter långa ledning under Rönningesjön ända bort till Arninge. Där tar kommunen vid och skickar avloppet vidare för rening vid Käppalaverken i Lidingö.
+                        <br /><br />
+                        Servisavgift per fastighet avseende obligatorisk anslutningspunkt för VA om 133 705 kr.<br />
+                        Avgift för lägenhet om 45 880 kr (enskild fastighet skall lägga samman beloppen från punkt 1 och 2 för att erhålla årets anslutningsavgift = 179 585 kr) <br />
+                        Avgift för anslutning av Attefallshus är 50% av avgiften för lägenhet i pnkt 2 ovan.<br />
+                        Tappvatten med totalt 23,25 kr/kbm levererat vatten. Avloppsvatten utöver debiterat tappvatten debiteras med 11,70 kr/kbm. (jmf Täby kommun 18,75 kr/kbm + 1556,25 kr/år i fasta avgifter<br />
+                        Extra mätställe (mätställe utöver ett per fastighet) skall erläggas en årlig avgift med 300 kr<br />
+                        Rensningsavgift om 2 500 kr per brunnsrensning.<br />
+                        Medlemsavgift per år för vatten och avlopp är 2 150 kr.<br />
+                        Medlemsavgift per år för endast avlopp är 3 400 kr.<br />
+                    </p>
                 </div>
             </div>
         </div>
     </div>
+
+
+
+
+    
+    
 </div>
 <!-- /container -->

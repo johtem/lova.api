@@ -25,6 +25,16 @@
                 <input asp-for="Input.Property" class="form-control" />
                 <span asp-validation-for="Input.Property" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Input.ForeName">Förnamn</label>
+                <input asp-for="Input.ForeName" class="form-control" />
+                <span asp-validation-for="Input.ForeName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.LastName">Efternamn</label>
+                <input asp-for="Input.LastName" class="form-control" />
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
             <button id="update-profile-button" type="submit" class="btn btn-primary">Spara</button>
         </form>
     </div>

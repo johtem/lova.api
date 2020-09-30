@@ -1,6 +1,8 @@
-﻿<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+﻿<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" style="background-color: #f4f4f2;">
     <div class="container-fluid">
-        <a class="navbar-brand" asp-area="" asp-page="/Index">Löttinglund</a>
+        <a class="navbar-brand" asp-area="" asp-page="/Index">
+            <img src="~/Images/LoggaSmall.jpg" alt="" />
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -14,30 +16,34 @@
           {
 
               children.Add().Text("Löttingelundsföreningarna").Url("/About/About");
-              children.Add().Text("Områdets historia").Url("/About/History");
-              children.Add().Text("Karta").Url("/About/Map");
-              children.Add().Text("Natur och miljö").Url("/About/Area");
-              children.Add().Text("Kollektivtrafik").Url("/About/PublicTransport");
-              children.Add().Text("Kultur & fritid")
-              .Items(innerChildren =>
+              children.Add().Text("Om").Items(innerChildren =>
               {
-                  innerChildren.Add().Text("Bad").Url("/About/Bath");
-                  innerChildren.Add().Text("Båtliv").Url("/About/Harbour");
-                  innerChildren.Add().Text("Cykelvägar").Url("/About/Bicycle");
-                  innerChildren.Add().Text("Golf");
-                  innerChildren.Add().Text("Fiske").Url("/About/Fishing");
-                  innerChildren.Add().Text("Fornlämningar").Url("/About/Antiquities");
-                  innerChildren.Add().Text("Motionsspår").Url("/About/Excerise");
-                  innerChildren.Add().Text("Ridskola");
-                  innerChildren.Add().Text("Rönninge by").Url("/About/RonningBy");
-                  innerChildren.Add().Text("Roslagsleden").Url("/About/Roslagsleden");
-
+                  innerChildren.Add().Text("Kort fakta").Url("/About/Lottingelund");
+                  innerChildren.Add().Text("Områdets historia").Url("/About/History");
+                  innerChildren.Add().Text("Karta").Url("/About/Map");
+                  innerChildren.Add().Text("Natur och miljö").Url("/About/Area");
+                  innerChildren.Add().Text("Kollektivtrafik").Url("/About/PublicTransport");
               });
+              children.Add().Text("Kultur & fritid").Items(innerChildren =>
+               {
+                   innerChildren.Add().Text("Bad").Url("/About/Bath");
+                   innerChildren.Add().Text("Båtliv").Url("/About/Harbour");
+                   innerChildren.Add().Text("Cykelvägar").Url("/About/Bicycle");
+                   innerChildren.Add().Text("Golf");
+                   innerChildren.Add().Text("Fiske").Url("/About/Fishing");
+                   innerChildren.Add().Text("Fornlämningar").Url("/About/Antiquities");
+                   innerChildren.Add().Text("Motionsspår").Url("/About/Excerise");
+                   innerChildren.Add().Text("Ridskola");
+                   innerChildren.Add().Text("Rönninge by").Url("/About/RonningBy");
+                   innerChildren.Add().Text("Roslagsleden").Url("/About/Roslagsleden");
+
+               });
               children.Add().Text("Skola & barnomsorg").Url("/About/School");
               children.Add().Text("Grannsamverkan").Url("/About/NeighbourhoodWatch");
               children.Add().Text("Tv och Internet")
               .Items(innerChildren =>
               {
+                  innerChildren.Add().Text("Om TV och Internet").Url("/Media/About");
                   innerChildren.Add().Text("Bredband").Url("/Media/Internet");
                   innerChildren.Add().Text("Kabel TV").Url("/Media/CableTv");
                   innerChildren.Add().Text("BredbandsTV").Url("/Media/Tv");
@@ -66,7 +72,5 @@
 
 
 <style>
-
-   
 </style>
 

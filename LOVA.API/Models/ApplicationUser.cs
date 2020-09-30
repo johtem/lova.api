@@ -10,5 +10,14 @@ namespace LOVA.API.Models
     {
         public string Property { get; set; }
 
+        public string Email2 { get; set; }
+
+        public string ForeName { get; set; }        
+        public string LastName { get; set; }
+
+        public string ForeName2 { get; set; }
+        public string LastName2 { get; set; }
+
+
     }
 }
