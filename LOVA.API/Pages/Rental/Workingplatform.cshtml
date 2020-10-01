@@ -79,8 +79,14 @@
                     .Date(Model.DateToday)
                     .StartTime(new DateTime(Model.DateToday.Year, Model.DateToday.Month, Model.DateToday.Day, 9, 00 ,00))
                     .Height(600)
-                    .Editable(e => e.TemplateName("byggTemplate"))
+                    .Editable(e => e.TemplateName("kajakTemplate"))
                     .Events(e => e.Edit("onEdit"))
+                    .EventTemplate(
+        "<div class='movie-template' style='background-color:#:data.BackgroundColor#'>" +
+
+                    "<h5>#= title #</h5>" +
+
+                "</div>")
                     .Views(views =>
                     {
                         views.DayView();
@@ -90,34 +96,13 @@
                             w.Selected(true);
                         });
                     })
-                    .Resources(resource =>
-    {
-        resource.Add(m => m.RoomID)
-            .Title("Room")
-            .DataTextField("Text")
-            .DataValueField("Value")
-            .DataColorField("Color")
-            .BindTo(new[] {
-                    new { Text = "Meeting Room 101", Value = 1, Color = "#6eb3fa" },
-                    new { Text = "Meeting Room 201", Value = 2, Color = "#f58a8a" }
-            });
-        resource.Add(m => m.Attendees)
-            .Title("Attendees")
-            .Multiple(true)
-            .DataTextField("Text")
-            .DataValueField("Value")
-            .DataColorField("Color")
-            .BindTo(new[] {
-                    new { Text = "Alex", Value = 1, Color = "#f8a398" },
-                    new { Text = "Bob", Value = 2, Color = "#51a0ed" },
-                    new { Text = "Charlie", Value = 3, Color = "#56ca85" }
-            });
-    })
+
                     .DataSource( d => d
                         .Model(m =>
                         {
                             m.Id(f => f.RentalId);
-                            m.Field(f => f.Title).DefaultValue("Byggställning");
+                            m.Field(f => f.Title);
+                            m.Field(f => f.BackgroundColor);
                         })
                 .Read(r => r.Url("/Rental/Workingplatform?handler=Read").Data("forgeryToken"))
                 .Create(r => r.Url("/Rental/Workingplatform?handler=Create").Data("forgeryToken"))

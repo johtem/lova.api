@@ -1,0 +1,43 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="k-edit-label">
+    <label for="title">Titel</label>
+</div>
+@*<div class="k-edit-field" data-container-for="title">
+        <input name="title" class="k-input k-textbox" type="text" data-bind="value:title" readonly>
+    </div>*@
+
+<div data-container-for="RentalInventoryId" class="k-edit-field">
+    <select id="RentalInventoryId" data-bind="value:RentalInventoryId" data-role="dropdownlist"
+            data-value-field="value" data-text-field="text">
+        <option value="2">Släpkärra</option>
+
+    </select>
+</div>
+
+<div class="k-edit-label">
+    <label for="start">Från</label>
+</div>
+<div class="k-edit-field" data-container-for="start">
+    <input name="start" type="text" required data-type="date" data-role="datetimepicker" data-bind="value: start,invisible: isAllDay" />
+    <input name="start" type="text" required data-type="date" data-role="datepicker" data-bind="value: start,visible: isAllDay" />
+</div>
+
+<div class="k-edit-label">
+    <label for="end">Till</label>
+</div>
+<div class="k-edit-field" data-container-for="end">
+    <input name="end" type="text" required data-type="date" data-role="datetimepicker" data-bind="value: end ,invisible:isAllDay" />
+    <input name="end" type="text" required data-type="date" data-role="datepicker" data-bind="value: end ,visible:isAllDay" />
+</div>
+<div class="k-edit-label">
+    <label for="description">Kommentar</label>
+</div>
+<div class="k-edit-field" data-container-for="description">
+    <textarea name="description" class="k-textbox" data-bind="value:description"></textarea>
+</div>
+

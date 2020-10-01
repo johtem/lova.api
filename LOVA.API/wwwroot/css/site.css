@@ -1,17 +1,32 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\
 for details on configuring this project to bundle and minify static web assets. */
 
+/* Section for custom fonts */
+@font-face {
+    font-family: 'robotoregular';
+    src: url('../Fonts/roboto-regular-webfont.woff2') format('woff2'), 
+        url('../Fonts/roboto-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/* General Settings for all pages */
 
 html {
     position: relative;
     min-height: 100%;
-    font-size: 12px;
+    
 }
 
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
     background-color: #ffffff;
+    font-family: robotoregular, Arial, sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 11px;
 }
 
 

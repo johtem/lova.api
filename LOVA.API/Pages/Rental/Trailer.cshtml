@@ -1,0 +1,134 @@
+﻿@page
+@model LOVA.API.Pages.Rental.TrailerModel
+
+@{
+    ViewData["Title"] = "Släpkärra";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@Html.AntiForgeryToken()
+
+<div class="container">
+    <div class="row">
+
+    </div>
+
+
+    <div class="row">
+        <h4>Hyr släpkärra</h4>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col">
+            <img src="~/Images/Slapvagn.jpg" width="640" height="315" />
+        </div>
+    </div>
+    <div class="row">
+        <br />
+        Pris hyra släpkärra<br />
+        4 tim: 100 kr
+        24 tim: 200 kr<br />
+        Helg från fredag kl 12.00 till måndag kl 12.00: 300 kr<br />
+    </div>
+    <div class="row">
+        <p>
+            Gratis lån, i mån av tillgång, vid hyra av tält eller byggställning för transport från och till Löttingelundsladan.
+        </p>
+        <p>För frågor ring Micke Vikström 070 822 3315 </p>
+    </div>
+
+
+
+    <div class="row mt-3">
+        <h4>Boka</h4>
+    </div>
+
+    <div class="row mt-5">
+        @(Html.Kendo().Scheduler<RentalSchedularViewModel>
+                    ()
+                    .Name("scheduler")
+                    .Mobile(MobileMode.Auto)
+                    .Date(Model.DateToday)
+                    .StartTime(new DateTime(Model.DateToday.Year, Model.DateToday.Month, Model.DateToday.Day, 9, 00 ,00))
+                    .Height(600)
+                    .Editable(e => e.TemplateName("slapTemplate"))
+                    .Events(e => e.Edit("onEdit"))
+                    .EventTemplate(
+        "<div class='movie-template' style='background-color:#:data.BackgroundColor#'>" +
+
+                    "<h5>#= title #</h5>" +
+
+                "</div>")
+                    .Views(views =>
+                    {
+                        views.DayView();
+                        views.WeekView();
+                        views.MonthView(w =>
+                        {
+                            w.Selected(true);
+                        });
+                    })
+
+                    .DataSource( d => d
+                        .Model(m =>
+                        {
+                            m.Id(f => f.RentalId);
+                            m.Field(f => f.Title);
+                            m.Field(f => f.BackgroundColor);
+                        })
+                .Read(r => r.Url("/Rental/Trailer?handler=Read").Data("forgeryToken"))
+                .Create(r => r.Url("/Rental/Trailer?handler=Create").Data("forgeryToken"))
+                .Update(r => r.Url("/Rental/Trailer?handler=Update").Data("forgeryToken"))
+
+                    )
+                    )
+    </div>
+    <div class="row">
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+
+        kendo.culture("sv-SE");
+
+
+        function forgeryToken() {
+            return kendo.antiForgeryTokens();
+        }
+
+        function onEdit(e) {
+            $('.k-window-title').text('Boka');
+        }
+
+        function filterRental() {
+            return {
+                rentalId: $("#RentalInventoryId").val(),
+                startDate: $("#startDate").val(),
+                endDate: $("#endDate").val()
+            };
+        }
+
+        $(document).ready(function () {
+            //var dropdownlist = $("#RentalInventoryId").data("kendoDropDownList");
+
+            $("#datetimepicker").change(function () {
+                alert("hejsan");
+                $("#RentalInventoryId").data("kendoDropDownList").value(0);
+            });
+
+        });
+
+    </script>
+}
