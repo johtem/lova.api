@@ -50,6 +50,10 @@ namespace LOVA.API.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [Display(Name = "Användarnamn")]
+            public string UserName { get; set; }
+
+            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -67,9 +71,13 @@ namespace LOVA.API.Areas.Identity.Pages.Account
             public string Name { get; set; }
 
             [Required]
+            [Display(Name = "Fastighet")]
             public string Property { get; set; }
 
+            [Display(Name = "Förnamn")]
             public string ForeName { get; set; }
+
+            [Display(Name = "Efternamn")]
             public string LastName { get; set; }
         }
 
@@ -89,7 +97,7 @@ namespace LOVA.API.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, Property = Input.Property, ForeName = Input.ForeName, LastName = Input.LastName };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -110,7 +118,7 @@ namespace LOVA.API.Areas.Identity.Pages.Account
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email });
+                        return RedirectToPage("RegisterConfirmation", new { userName = Input.UserName, email = Input.Email });
                     }
                     else
                     {

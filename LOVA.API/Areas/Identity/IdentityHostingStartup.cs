@@ -24,7 +24,13 @@ namespace LOVA.API.Areas.Identity
                 .AddRoles<IdentityRole>()    
                 .AddEntityFrameworkStores<LOVAAPIContext>();
 
-                
+                services.Configure<IdentityOptions>(options =>
+                {
+                    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789-._@+: ";
+                    options.User.RequireUniqueEmail = false;
+                });
+
+
             });
         }
     }

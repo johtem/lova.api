@@ -28,17 +28,17 @@ namespace LOVA.API.Areas.Identity.Pages.Account
 
         public string EmailConfirmationUrl { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string email)
+        public async Task<IActionResult> OnGetAsync(string userName, string email)
         {
-            if (email == null)
+            if (userName == null)
             {
                 return RedirectToPage("/Index");
             }
 
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByNameAsync(userName); //  FindByEmailAsync(email);
             if (user == null)
             {
-                return NotFound($"Unable to load user with email '{email}'.");
+                return NotFound($"Unable to load user with user name '{userName}'.");
             }
 
             Email = email;
