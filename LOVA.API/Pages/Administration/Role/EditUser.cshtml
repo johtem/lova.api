@@ -1,0 +1,111 @@
+﻿@page
+@model LOVA.API.Pages.Administration.Role.EditUserModel
+@{
+}
+<h1>@ViewData["Title"]</h1>
+<div class="container">
+    <div class="row">
+        <h4>Uppdatera användare</h4>
+    </div>
+    <form method="post">
+        <div class="row">
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+
+
+           
+                    <input asp-for="UserViewModel.Id" disabled hidden class="form-control">  
+               
+                <div class="form-group">
+                    <label asp-for="UserViewModel.UserName"></label>
+                    <input asp-for="UserViewModel.UserName" class="form-control" />
+                    <span asp-validation-for="UserViewModel.UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UserViewModel.Email"></label>
+                    <input asp-for="UserViewModel.Email" class="form-control" />
+                    <span asp-validation-for="UserViewModel.Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UserViewModel.Property"></label>
+                    <input asp-for="UserViewModel.Property" class="form-control" placeholder="Ex: Löttinge 8:1" />
+                    <span asp-validation-for="UserViewModel.Property" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UserViewModel.ForeName"></label>
+                    <input asp-for="UserViewModel.ForeName" class="form-control" placeholder="Ex: Johan" />
+                    <span asp-validation-for="UserViewModel.ForeName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UserViewModel.LastName"></label>
+                    <input asp-for="UserViewModel.LastName" class="form-control" placeholder="Ex: Tempelman" />
+                    <span asp-validation-for="UserViewModel.LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UserViewModel.ForeName2"></label>
+                    <input asp-for="UserViewModel.ForeName2" class="form-control" placeholder="Ex: Johan" />
+                    <span asp-validation-for="UserViewModel.ForeName2" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UserViewModel.LastName2"></label>
+                    <input asp-for="UserViewModel.LastName2" class="form-control" placeholder="Ex: Tempelman" />
+                    <span asp-validation-for="UserViewModel.LastName2" class="text-danger"></span>
+                </div>
+                <button type="submit"  asp-route-id="@Model.UserViewModel.Id" class="btn btn-primary">Uppdatera</button>
+
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="card">
+                <div class="card-header">
+                    <h3>User Roles</h3>
+                </div>
+                <div class="card-body">
+                    @if (Model.UserViewModel.Roles.Any())
+                    {
+                        foreach (var role in Model.UserViewModel.Roles)
+                        {
+                            <h5 class="card-title">@role</h5>
+                        }
+                    }
+                    else
+                    {
+                        <h5 class="card-title">None at the moment</h5>
+                    }
+                </div>
+                <div class="card-footer">
+                    <a href="#" style="width:auto" class="btn btn-primary">
+                        Manage Roles
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h3>User Claims</h3>
+                </div>
+                <div class="card-body">
+                    @if (Model.UserViewModel.Claims.Any())
+                    {
+                        foreach (var claim in Model.UserViewModel.Claims)
+                        {
+                            <h5 class="card-title">@claim</h5>
+                        }
+                    }
+                    else
+                    {
+                        <h5 class="card-title">None at the moment</h5>
+                    }
+                </div>
+                <div class="card-footer">
+                    <a href="#" style="width:auto" class="btn btn-primary">
+                        Manage Claims
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

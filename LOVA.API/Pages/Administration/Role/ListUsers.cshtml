@@ -1,0 +1,64 @@
+﻿@page
+@model LOVA.API.Pages.Administration.Role.ListUsersModel
+@{
+}
+
+
+<div class="container">
+    <div class="row">
+        <h3>Alla användare</h3>
+    </div>
+    <div class="row">
+
+        @if (Model.Users.Any())
+        {
+            <table class="table table-light" >
+                <thead>
+                    <tr>
+                        <th>Namn</th>
+                        
+                        <th>Inloggning</th>
+                        <th>E-post</th>
+                        <th>Fastighet</th>
+
+                    </tr>
+                    
+                </thead>
+                    <tbody>
+                        @foreach (var user in Model.Users)
+                        {
+                        <tr>
+                            <td>@user.FullName </td>
+                            
+                            <td>@user.UserName</td>
+                            <td>@user.Email</td>
+                            <td>@user.Property</td>
+
+                            <td><a asp-page="/Administration/Role/EditUser" asp-route-id="@user.Id" class="btn btn-outline-success btn-sm">Edit</a></td>
+                            <td><a href="#" class="btn btn-danger btn-sm">Delete</a></td>
+                        </tr>
+   
+                        }
+                    </tbody>
+            </table>
+
+            
+        }
+        else
+        {
+            <div class="card">
+                <div class="card-header">
+                    No users created yet
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        Use the button below to create a user
+                    </h5>
+                    <a class="btn btn-primary" style="width:auto" asp-page="/Identity/Account/Register">
+                        Lägg till ny användare
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

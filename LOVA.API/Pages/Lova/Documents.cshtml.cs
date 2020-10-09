@@ -14,9 +14,11 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LOVA.API.Pages.Lova
 {
+    [Authorize(Roles = "Lova, Admin, Styrelse")]
     public class DocumentsModel : PageModel
     {
         private readonly LovaDbContext _context;

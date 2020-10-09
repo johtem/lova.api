@@ -7,6 +7,7 @@ using Kendo.Mvc.UI;
 using LOVA.API.Models;
 using LOVA.API.Services;
 using LOVA.API.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LOVA.API.Pages.Rental
 {
+    [Authorize(Roles = "Lova, Admin, Styrelse")]
     public class TrailerModel : PageModel
     {
 

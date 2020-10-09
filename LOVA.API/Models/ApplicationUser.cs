@@ -18,6 +18,30 @@ namespace LOVA.API.Models
         public string ForeName2 { get; set; }
         public string LastName2 { get; set; }
 
+       // public string City { get; set; }
+
+
+
+
+        public string FullName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(ForeName))
+                {
+                    return "";
+                }
+                else
+                {
+                    
+                    return $"{ForeName} {LastName}";
+                }
+            }
+            
+        }
+
+
+
 
     }
 }
