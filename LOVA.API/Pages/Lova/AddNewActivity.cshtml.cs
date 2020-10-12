@@ -6,10 +6,14 @@ using LOVA.API.Models;
 using LOVA.API.Services;
 using LOVA.API.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Azure.Storage;
+using Microsoft.Azure.Storage.Blob;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace LOVA.API.Pages.Lova
 {
@@ -18,11 +22,13 @@ namespace LOVA.API.Pages.Lova
     {
         private readonly LovaDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IConfiguration _configuration;
 
-        public AddNewActivityModel(LovaDbContext context, UserManager<ApplicationUser> userManager)
+        public AddNewActivityModel(LovaDbContext context, UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
             _context = context;
             _userManager = userManager;
+            _configuration = configuration;
         }
 
         [BindProperty]
@@ -49,6 +55,18 @@ namespace LOVA.API.Pages.Lova
 
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
+            var fileName = "";
+
+            if (IssueReportViewModel.File !=null)
+            {
+
+                var fileContent = Microsoft.Net.Http.Headers.ContentDispositionHeaderValue.Parse(IssueReportViewModel.File.ContentDisposition);
+                fileName = System.IO.Path.GetFileName(fileContent.FileName.ToString().Trim('"'));
+
+                string result = await UploadFile(IssueReportViewModel.File);
+            }
+
+
             IssueReport insertData = new IssueReport
             {
                 WellId = well.Id,
@@ -62,7 +80,11 @@ namespace LOVA.API.Pages.Lova
                 IsPhoto = IssueReportViewModel.IsPhoto,
                 IsLowVacuum = IssueReportViewModel.IsLowVacuum,
                 MasterNode = IssueReportViewModel.MasterNode + 1,
+                Photo = fileName,
                 Alarm = IssueReportViewModel.Alarm + 1,
+                TimeForAlarm = IssueReportViewModel.TimeForAlarm,
+                ArrivalTime = IssueReportViewModel.ArrivalTime,
+                TimeToRepair = IssueReportViewModel.TimeToRepair,
                 AspNetUserId = user.Id,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
@@ -95,6 +117,35 @@ namespace LOVA.API.Pages.Lova
             
 
             return new JsonResult(await wells.ToListAsync());
+        }
+
+
+        public async Task<string> UploadFile(IFormFile file)
+        {
+            var storageConnectionString = _configuration["ConnectionStrings:LottingelundFiles"];
+            if (CloudStorageAccount.TryParse(storageConnectionString, out CloudStorageAccount storageAccount))
+            {
+                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+                CloudBlobContainer container = blobClient.GetContainerReference("lovaphotos");
+                await container.CreateIfNotExistsAsync();
+
+                var blobName = container.GetBlockBlobReference(file.FileName);
+
+                if (blobName != null)
+                {
+                    //await blobName.FetchAttributesAsync();
+                }
+
+
+                await blobName.UploadFromStreamAsync(file.OpenReadStream());
+
+
+
+                return "OK";
+            }
+
+            return "ERROR";
         }
     }
 }

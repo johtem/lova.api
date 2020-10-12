@@ -1,5 +1,7 @@
 ﻿@page
 @model LOVA.API.Pages.Lova.AddNewActivityModel
+
+
 @{
     ViewData["Title"] = "AddNewActivity";
     Layout = "~/Pages/Shared/_Layout.cshtml";
@@ -9,36 +11,78 @@
 @Html.AntiForgeryToken()
 
 
+
+
 <div class="container-fluid">
-    <div class="row offset-2">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="card border-primary" style="width: 50rem;">
-                <div class="card-header">
-                    Lägg till ny åtgärd
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label for="IssueReportViewModel.ProblemDescription">Problembeskrivning</label>
-                                        <input type="text" class="form-control form-control-sm" name="IssueReportViewModel.ProblemDescription" />
-                                        <span asp-validation-for="IssueReportViewModel.ProblemDescription" class="text-danger"></span>
+    <div class="row offset-4">
+        <h4>Ny åtgärd</h4>
+    </div>
+    <div class="row mt-5">
+        <div class="col-3">
+
+        </div>
+        <div class="col-7">
+
+
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="card border-primary" style="width: 50rem;">
+                    <div class="card-header">
+                        Lägg till ny åtgärd
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="IssueReportViewModel.ProblemDescription">Problembeskrivning</label>
+                                            <input type="text" class="form-control form-control-sm" name="IssueReportViewModel.ProblemDescription" />
+                                            <span asp-validation-for="IssueReportViewModel.ProblemDescription" class="text-danger"></span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group ">
-                                        <label>Intagsenhet</label>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="IssueReportViewModel.TimeForAlarm">Tid för alarm</label>
+                                            @*<input type="text" class="form-control form-control-sm" name="IssueReportViewModel.TimeForAlarm" />*@
+                                            @(Html.Kendo().DateTimePicker()
+                                            .Name("IssueReportViewModel.TimeForAlarm")
+                                            .Value(DateTime.Now.AddHours(-1))
+                                            .ComponentType("modern")
+                                            .HtmlAttributes(new { style = "width: 100%; font-size: 11px;", title = "datetimepicker" })
+                                            .DateInput()
+                                        )
+                                            <span asp-validation-for="IssueReportViewModel.TimeForAlarm" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="IssueReportViewModel.ArrivalTime">Ankomsttid</label>
+                                            @*<input type="text" class="form-control form-control-sm" name="IssueReportViewModel.ArrivalTime" />*@
+                                            @(Html.Kendo().DateTimePicker()
+                                            .Name("IssueReportViewModel.ArrivalTime")
+                                            .Value(DateTime.Now)
+                                            .ComponentType("modern")
+                                            .HtmlAttributes(new { style = "width: 100%; font-size: 11px;", title = "datetimepicker" })
+                                            .DateInput()
+                                        )
+                                            <span asp-validation-for="IssueReportViewModel.ArrivalTime" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group ">
+                                            <label>Intagsenhet</label>
 
-                                        @(Html.Kendo().AutoComplete()
+                                            @(Html.Kendo().AutoComplete()
                                     .Name("IssueReportViewModel.WellName")
                                     .Filter("Startswith")
                                     .MinLength(2)
                                     .DataTextField("WellName")
+                                    .Placeholder("Ex: 1A1")
                                     .DataSource(source =>
                                     {
                                         source.Read(read =>
@@ -47,67 +91,93 @@
                                         })
                                         .ServerFiltering(true);
                                     })
-                                    .HtmlAttributes(new { style="width:100%;"})
+                                    .HtmlAttributes(new { style= "width:100%; font-size: 11px;" })
                                 )
-                                        <span asp-validation-for="IssueReportViewModel.WellName" class="text-danger"></span>
+                                            <span asp-validation-for="IssueReportViewModel.WellName" class="text-danger"></span>
+                                        </div>
+
                                     </div>
-
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="IssueReportViewModel.TimeToRepair">Åtgärdstid</label>
+                                            <input type="text" class="form-control form-control-sm" name="IssueReportViewModel.TimeToRepair" placeholder="Antal timmar. Ex: 1,5" />
+                                            <span asp-validation-for="IssueReportViewModel.TimeToRepair" class="text-danger"></span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col">
-                                    <div class="form-check mt-4">
+                                <div class="row">
 
-                                        @(Html.Kendo().Switch()
+                                    <div class="col">
+                                        <div class="form-check">
+
+                                            @(Html.Kendo().Switch()
                                         .Name("IssueReportViewModel.IsChargeable")
                                         .Messages(c => c.Checked("Yes").Unchecked("No"))
                                  )
-                                        <label class="form-check-label" for="IssueReportViewModel.IsChargeable">Fakturerbar</label>
+                                            <label class="form-check-label" for="IssueReportViewModel.IsChargeable">Fakturerbar</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-check mt-4">
+                                    <div class="col">
+                                        <div class="form-check">
 
-                                        @(Html.Kendo().Switch()
+                                            @(Html.Kendo().Switch()
                                         .Name("IssueReportViewModel.IsPhoto")
                                         .Messages(c => c.Checked("Yes").Unchecked("No"))
                                  )
-                                        <label class="form-check-label" for="IssueReportViewModel.IsPhoto">Fotobevis</label>
+                                            <label class="form-check-label" for="IssueReportViewModel.IsPhoto">Fotobevis</label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label for="IssueReportViewModel.NewActivatorSerialNumber">Serienummer ny aktivator</label>
-                                        <input type="text" class="form-control form-control-sm" name="IssueReportViewModel.NewActivatorSerialNumber" />
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-check">
+                                            <label>Ladda upp bild</label>
+                                            @(Html.Kendo().Upload()
+                                                .Name("IssueReportViewModel.File")
+                                                .HtmlAttributes(new { aria_label = "files" })
+                                                .Multiple(false)
+                                                .Validation(validation => validation.AllowedExtensions(new string[] { ".gif", ".jpg", ".png" }))
+                                            )
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label for="IssueReportViewModel.NewValveSerialNumber">Serienummer ny ventil</label>
-                                        <input type="text" class="form-control form-control-sm" name="IssueReportViewModel.NewValveSerialNumber" />
+                                <div class="row mt-2">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="IssueReportViewModel.NewActivatorSerialNumber">Serienummer ny aktivator</label>
+                                            <input type="text" class="form-control form-control-sm" name="IssueReportViewModel.NewActivatorSerialNumber" />
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="IssueReportViewModel.NewValveSerialNumber">Serienummer ny ventil</label>
+                                            <input type="text" class="form-control form-control-sm" name="IssueReportViewModel.NewValveSerialNumber" />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label for="IssueReportViewModel.SolutionDescription">Lösning</label>
-                                        <input type="text" class="form-control form-control-sm" name="IssueReportViewModel.SolutionDescription" />
-                                        <span asp-validation-for="IssueReportViewModel.SolutionDescription" class="text-danger"></span>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="IssueReportViewModel.SolutionDescription">Lösning</label>
+                                            <input type="text" class="form-control form-control-sm" name="IssueReportViewModel.SolutionDescription" />
+                                            <span asp-validation-for="IssueReportViewModel.SolutionDescription" class="text-danger"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col">
-                            
+                            <div class="col">
+
                                 <div class="row">
                                     <h6 class="text-center">Larmpanel</h6>
                                 </div>
                                 <div class="row mt-2">
                                     @(Html.Kendo().ButtonGroup()
                                     .Selection("single")
-                                    .Name("MasterNode")                                  
+                                    .Name("MasterNode")
                                     .Items(t =>
                                     {
                                         t.Add().Text("Slinga 1");
@@ -121,7 +191,7 @@
                                 <div class="row mt-2">
                                     @(Html.Kendo().ButtonGroup()
                                     .Selection("single")
-                                    .Name("Alarm")                               
+                                    .Name("Alarm")
                                     .Items(t =>
                                     {
                                         t.Add().Text("Larm A");
@@ -140,14 +210,18 @@
                                 </div>
 
                             </div>
-                       
+
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-outline-primary">Spara</button>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Spara</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
+        <div class="col-2">
+
+        </div>
     </div>
 </div>
 

@@ -52,6 +52,16 @@
         }
 
     </header>
+
+    <script type="text/javascript">
+        //set culture of the Kendo UI
+        kendo.culture("sv-SE");
+    </script>
+
+    @{
+        CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("sv-SE");
+    }
+
     <div class="container-fluid" style="padding-right: 0px; padding-left: 0px;">
         <main role="main" class="pb-3">
             @RenderBody()

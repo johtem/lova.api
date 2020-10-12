@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -44,6 +45,8 @@ namespace LOVA.API.ViewModels
         public decimal TimeToRepair { get; set; }
 
         public DateTime CreatedAt { get; set; }
+
+        public IFormFile File { get; set; }
 
     }
 }

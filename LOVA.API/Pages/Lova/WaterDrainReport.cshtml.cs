@@ -48,6 +48,7 @@ namespace LOVA.API.Pages.Lova
                             SolutionDescription = a.SolutionDescription,
                             NewActivatorSerialNumber = a.NewActivatorSerialNumber,
                             NewValveSerialNumber = a.NewValveSerialNumber,
+                            ImageName = a.Photo,
                             IsChargeable = a.IsChargeable,
                             IsPhoto = a.IsPhoto,
                             AspNetUserName = user.UserName
