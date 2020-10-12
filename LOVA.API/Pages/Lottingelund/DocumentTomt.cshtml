@@ -11,25 +11,29 @@
 @Html.AntiForgeryToken()
 
 
-<div class="container">
-    <div class="row offset-2">
+<div class="container-fluid">
+    <div class="row offset-4">
         <h4>Dokument Tomtföreningen</h4>
-        <br />
-        <br />
         <br />
     </div>
 
-    <div class="row col-12">
-        @(Html.Kendo().FileManager()
+    <div class="row mt-5">
+        <div class="col-3">
+
+        </div>
+        <div class="col-7">
+            <div class="row col-12">
+                @(Html.Kendo().FileManager()
         .Name("filemanager")
         // .Views(v => v.Grid(grid => grid.Columns(cols => cols.Add().Field(Path))))
-        .Width(800)
+        .Width(1100)
+        .Height(600)
     .DataSource(ds =>
-        {
-            ds.Read(operation => operation
-            .Type(HttpVerbs.Post)
-            .Url("/Lottingelund/DocumentTomt?handler=Read").Data("forgeryToken")
-        );
+    {
+        ds.Read(operation => operation
+        .Type(HttpVerbs.Post)
+        .Url("/Lottingelund/DocumentTomt?handler=Read").Data("forgeryToken")
+    );
 
     })
     .UploadUrl("Upload", "FileManagerData")
@@ -47,13 +51,20 @@
     .Events(events => events.DataBound("onOpen"))
     .ContextMenu(context => context.Items(items =>
     {
-       items.Add("download").Text("Öppna").Command("DownloadCommand").SpriteCssClass("k-icon k-i-download");
-       // items.Add("delete");
+        items.Add("download").Text("Öppna").Command("DownloadCommand").SpriteCssClass("k-icon k-i-download");
+        // items.Add("delete");
     }))
 )
 
+            </div>
+        </div>
+        <div class="col-2">
+            <partial name="_InstructionOpenDocument" />
+        </div>
 
     </div>
+
+
 
 </div>
 
@@ -67,7 +78,7 @@
 
         function onOpen(e) {
             console.log(e);
-           // filemanager.view("grid");
+            // filemanager.view("grid");
         }
 
         function dowloadCommand(e) {
