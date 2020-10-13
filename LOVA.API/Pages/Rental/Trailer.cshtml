@@ -44,7 +44,7 @@
         <h4>Boka</h4>
     </div>
 
-    <div class="row mt-5">
+    @*<div class="row mt-5">
         @(Html.Kendo().Scheduler<RentalSchedularViewModel>
                     ()
                     .Name("scheduler")
@@ -55,21 +55,25 @@
                     .Editable(e => e.TemplateName("slapTemplate"))
                     .Events(e => e.Edit("onEdit"))
                     .EventTemplate(
-        "<div class='movie-template' style='background-color:#:data.BackgroundColor#'>" +
+                "<div class='rental-template' style='background-color:#:data.BackgroundColor#'>" +
 
                     "<h5>#= title #</h5>" +
+                    "<p>" +
+                        "#= kendo.toString(start, ' hh:mm') # - #= kendo.toString(end, 'hh:mm') #" +
+                    "</p>" +
 
                 "</div>")
+                        
                     .Views(views =>
                     {
-                        views.DayView();
+                        //views.DayView();
                         views.WeekView();
-                        views.MonthView(w =>
+                        views.MonthView(month =>
                         {
-                            w.Selected(true);
+                            month.Selected(true);
                         });
                     })
-
+                    .Timezone("Etc/UTC")
                     .DataSource( d => d
                         .Model(m =>
                         {
@@ -83,7 +87,7 @@
 
                     )
                     )
-    </div>
+    </div>*@
     <div class="row">
 
     </div>
@@ -110,6 +114,8 @@
 
         function onEdit(e) {
             $('.k-window-title').text('Boka');
+
+           
         }
 
         function filterRental() {

@@ -1,11 +1,35 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
+
+
+@model LOVA.API.ViewModels.RentalSchedularViewModel
+
 @{
+    //required in order to render validation attributes
+    ViewContext.FormContext = new FormContext();
+}
+
+@functions{
+    public Dictionary<string, object> generateDatePickerAttributes(
+           string elementId,
+           string fieldName,
+           string dataBindAttribute,
+           Dictionary<string, object> additionalAttributes = null)
+    {
+
+        Dictionary<string, object> datePickerAttributes = additionalAttributes != null ? new Dictionary<string, object>(additionalAttributes) : new Dictionary<string, object>();
+
+        datePickerAttributes["id"] = elementId;
+        datePickerAttributes["name"] = fieldName;
+        datePickerAttributes["data-bind"] = dataBindAttribute;
+        datePickerAttributes["required"] = "required";
+        datePickerAttributes["style"] = "z-index: inherit;";
+
+        return datePickerAttributes;
+    }
 }
 
 <div class="k-edit-label">
-    <label for="title">Titel</label>
+    <label for="title">Hyra</label>
 </div>
 @*<div class="k-edit-field" data-container-for="title">
         <input name="title" class="k-input k-textbox" type="text" data-bind="value:title" readonly>
@@ -20,11 +44,23 @@
 </div>
 
 <div class="k-edit-label">
-    <label for="start">Från</label>
+    @*<label for="start">Från</label>*@
+    @(Html.LabelFor(model => model.Start))
 </div>
-<div class="k-edit-field" data-container-for="start">
-    <input name="start" type="text" required data-type="date" data-role="datetimepicker" data-bind="value: start,invisible: isAllDay" />
-    <input name="start" type="text" required data-type="date" data-role="datepicker" data-bind="value: start,visible: isAllDay" />
+<div data-container-for="start" class="k-edit-field">
+    @*<input name="start" type="text" required data-type="date" data-role="datetimepicker" data-bind="value: start,invisible: isAllDay" />
+        <input name="start" type="text" required data-type="date" data-role="datepicker" data-bind="value: start,visible: isAllDay" />*@
+
+    @(Html.Kendo().DateTimePickerFor(model => model.Start)
+        .HtmlAttributes(generateDatePickerAttributes("startDateTime", "start", "value:start, invisible:isAllDay")))
+
+    @(Html.Kendo().DatePickerFor(model => model.Start)
+
+        .HtmlAttributes(generateDatePickerAttributes("startDate", "start", "value:start, visible:isAllDay"))
+
+    )
+    <span data-bind="text: startTimezone"></span>
+    <span data-for="start" class="k-invalid-msg"></span>
 </div>
 
 <div class="k-edit-label">
