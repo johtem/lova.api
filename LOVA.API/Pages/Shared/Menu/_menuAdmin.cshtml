@@ -67,7 +67,7 @@
               .Items(children =>
               {
 
-                  
+
                   children.Add().Text("Dokument")
                   .Items(innerChildren =>
                   {
@@ -115,7 +115,17 @@
 
 
               });
+          items.Add()
+              .Text("Styrelse")
+              .Items(children =>
+              {
+                  children.Add().Text("Kontaktuppgifter").Url("/Lottingelund/Board");
 
+                  children.Add().Text("Dokument").Url("/BoardMember/Documents");
+
+
+
+              });
           items.Add().Text("Admin")
           .Items(children =>
           {

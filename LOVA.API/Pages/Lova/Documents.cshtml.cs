@@ -85,7 +85,7 @@ namespace LOVA.API.Pages.Lova
         public async Task<IActionResult> OnGetDownload(string file)
         {
 
-            var data = await _blobService.GetBlobAsync(file);
+            var data = await _blobService.GetBlobAsync(file, "lottingelundfiles");
            
             return File(data.Content, file.GetContentType(), file);
 

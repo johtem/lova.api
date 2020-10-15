@@ -98,7 +98,7 @@ namespace LOVA.API.Pages.Files
                 {
                     var user = await _userManager.GetUserAsync(HttpContext.User);
 
-                    var fileExit = await _context.UploadedFiles.Where(o => o.FileName == fileName).FirstOrDefaultAsync();
+                    var fileExit = await _context.UploadedFiles.Where(o => o.FileName == fileName  && o.Directory == directory.Directory).FirstOrDefaultAsync();
 
                     if (fileExit != null)
                     {

@@ -8,7 +8,7 @@ namespace LOVA.API.Services
 {
     public interface IBlobService
     {
-        public Task<BlobInfo> GetBlobAsync(string name);
+        public Task<BlobInfo> GetBlobAsync(string name, string containerName);
 
         public Task<IEnumerable<string>> ListBlobsAsync();
 

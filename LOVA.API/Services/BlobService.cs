@@ -23,14 +23,14 @@ namespace LOVA.API.Services
 
         public async Task DeleteBlobAsync(string blobName)
         {
-            var containerClient = _blobServiceClient.GetBlobContainerClient("lottingelundfiles");
+            var containerClient = _blobServiceClient.GetBlobContainerClient(blobName);
             var blobClient = containerClient.GetBlobClient(blobName);
 
             await blobClient.DeleteIfExistsAsync();
 
         }
 
-        public async Task<Models.BlobInfo> GetBlobAsync(string name)
+        public async Task<Models.BlobInfo> GetBlobAsync(string name, string containerName = "lottingelundfiles")
         {
             var containerClient = _blobServiceClient.GetBlobContainerClient("lottingelundfiles");
             var blobClient = containerClient.GetBlobClient(name);

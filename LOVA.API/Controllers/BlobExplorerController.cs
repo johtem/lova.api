@@ -23,7 +23,7 @@ namespace LOVA.API.Controllers
         [HttpGet("{blobName}")]
         public async Task<IActionResult> GetBlob(string blobName)
         {
-            var data = await _blobService.GetBlobAsync(blobName);
+            var data = await _blobService.GetBlobAsync(blobName, "lottingelundfiles");
             return File(data.Content, data.ContentType);
         }
 

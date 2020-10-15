@@ -1,0 +1,130 @@
+﻿@page
+@model LOVA.API.Pages.BoardMember.DocumentsModel
+@{
+    ViewData["Title"] = "Styrelsedokument";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+
+}
+
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@Html.AntiForgeryToken()
+
+
+<div class="container-fluid">
+    <div class="row d-flex">
+        <p>
+            @if (Model.Message != null)
+            {
+            <div class="alert alert-success alert-dismissible fade show ml-auto" role="alert">
+                @Model.Message
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            }
+        </p>
+    </div>
+    <div class="row offset-4">
+        <h4>@ViewData["Title"] </h4>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-3">
+
+        </div>
+        <div class="col-7">
+            <div class="row col-12">
+                @(Html.Kendo().FileManager()
+        .Name("filemanager")
+        // .Views(v => v.Grid(grid => grid.Columns(cols => cols.Add().Field(Path))))
+        .Width(1100)
+        .Height(600)
+    .DataSource(ds =>
+        {
+            ds.Read(operation => operation
+            .Type(HttpVerbs.Post)
+            .Url("/BoardMember/Documents?handler=Read").Data("forgeryToken"));
+
+
+
+    })
+    .UploadUrl("/BoardMember/Documents?handler=Upload")
+    .Toolbar(tb => tb.Items(items =>
+    {
+        //items.Add("createFolder");
+        items.Add("upload");
+        items.Add("sortDirection");
+        items.Add("sortField");
+        items.Add("changeView");
+        items.Add("spacer");
+        items.Add("details");
+        items.Add("search");
+    }))
+    .Events(events => events.DataBound("onOpen"))
+    .ContextMenu(context => context.Items(items =>
+    {
+       items.Add("download").Text("Öppna").Command("DownloadCommand").SpriteCssClass("k-icon k-i-download");
+       // items.Add("delete");
+    }))
+)
+
+
+            </div>
+        </div>
+        <div class="col-2">
+            <partial name="_InstructionOpenDocument" />
+        </div>
+
+    </div>
+
+
+
+</div>
+
+@section Scripts {
+    <script>
+
+
+        function forgeryToken() {
+            return kendo.antiForgeryTokens();
+        }
+
+        function onOpen(e) {
+            console.log(e);
+
+        }
+
+        function dowloadCommand(e) {
+            alert("heja");
+        }
+
+
+        var filemanagerNS = kendo.ui.filemanager;
+
+        filemanagerNS.commands.DownloadCommand = filemanagerNS.FileManagerCommand.extend({
+            exec: function () {
+                var that = this,
+                    filemanager = that.filemanager, // get the kendo.ui.FileManager instance
+                    options = that.options, // get the options passed through the tool
+                    target = options.target // options.target is available only when command is executed from the context menu
+                selectedFiles = filemanager.getSelected(); // get the selected files
+                window.location = '/BoardMember/Documents?handler=Download&file=' + selectedFiles[0].name + selectedFiles[0].extension;
+
+            }
+        });
+
+
+        $(document).ready(function () {
+            var filemanager = $("#filemanager").getKendoFileManager();
+
+            filemanager.executeCommand({ command: "TogglePaneCommand", options: { type: "preview" } });
+            filemanager.toolbar.fileManagerDetailsToggle.switchInstance.toggle();
+
+
+
+
+
+        })
+    </script>
+}
