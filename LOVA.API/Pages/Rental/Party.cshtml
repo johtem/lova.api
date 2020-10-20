@@ -42,8 +42,8 @@
             </div>
             <div class="row">
                 <!--
-                <img src="~/Images/2-manskajak.jpg" width="400" height="120" />
-            -->
+                    <img src="~/Images/2-manskajak.jpg" width="400" height="120" />
+                -->
             </div>
             <div class="row mt-3">
                 Rektangulära bord, 183x76 cm (6 personer). Höjd: 74 cm.<br />
@@ -61,8 +61,8 @@
             </div>
             <div class="row">
                 <!--
-                <img src="~/Images/2-manskajak.jpg" width="400" height="120" />
-            -->
+                    <img src="~/Images/2-manskajak.jpg" width="400" height="120" />
+                -->
             </div>
             <div class="row mt-3">
                 Klappstolar, stapelbara och praktiska. Färg: vita<br />
@@ -80,8 +80,8 @@
             </div>
             <div class="row">
                 <!--
-                <img src="~/Images/2-manskajak.jpg" width="400" height="120" />
-            -->
+                    <img src="~/Images/2-manskajak.jpg" width="400" height="120" />
+                -->
             </div>
             <div class="row mt-3">
                 Effektiv och energisnål kolfiberstav som överträffar värmare med metallstav. Timerfunktion, som kan ställas mellan 1-60 minuter. Oscillerande funktion gör att ett större område kan värmas upp. Värmaren är utrustad med överhettnings- och tippskydd. Fotens diameter: 210 mm, höjd 77 cm.<br />
@@ -95,55 +95,56 @@
         </div>
     </div>
 
-    <div class="row mt-4">
-
-
+    <div class="row  mt-5">
+        <partial name="_rentalResponsible" />
     </div>
 
+
+
     @*<div class="row mt-3 col-8 offset-2">
-        <h4>Boka</h4>
-    </div>*@
+            <h4>Boka</h4>
+        </div>*@
 
     @*<div class="row mt-5 col-8 offset-2">
-        @(Html.Kendo().Scheduler<RentalSchedularViewModel>
-                    ()
-                    .Name("scheduler")
-                    .Mobile(MobileMode.Auto)
-                    .Date(Model.DateToday)
-                    .StartTime(new DateTime(Model.DateToday.Year, Model.DateToday.Month, Model.DateToday.Day, 9, 00 ,00))
-                    .Height(600)
-                    .Editable(e => e.TemplateName("partyTemplate"))
-                    .Events(e => e.Edit("onEdit"))
-                    .EventTemplate(
-        "<div class='movie-template' style='background-color:#:data.BackgroundColor#'>" +
+            @(Html.Kendo().Scheduler<RentalSchedularViewModel>
+                        ()
+                        .Name("scheduler")
+                        .Mobile(MobileMode.Auto)
+                        .Date(Model.DateToday)
+                        .StartTime(new DateTime(Model.DateToday.Year, Model.DateToday.Month, Model.DateToday.Day, 9, 00 ,00))
+                        .Height(600)
+                        .Editable(e => e.TemplateName("partyTemplate"))
+                        .Events(e => e.Edit("onEdit"))
+                        .EventTemplate(
+            "<div class='movie-template' style='background-color:#:data.BackgroundColor#'>" +
 
-                    "<h5>#= title #</h5>" +
+                        "<h5>#= title #</h5>" +
 
-                "</div>")
-                    .Views(views =>
-                    {
-                        views.DayView();
-                        views.WeekView();
-                        views.MonthView(w =>
+                    "</div>")
+                        .Views(views =>
                         {
-                            w.Selected(true);
-                        });
-                    })
-
-                    .DataSource( d => d
-                        .Model(m =>
-                        {
-                            m.Id(f => f.RentalId);
-                            m.Field(f => f.Title);
-                            m.Field(f => f.BackgroundColor);
+                            views.DayView();
+                            views.WeekView();
+                            views.MonthView(w =>
+                            {
+                                w.Selected(true);
+                            });
                         })
-                .Read(r => r.Url("/Rental/Party?handler=Read").Data("forgeryToken"))
-                .Create(r => r.Url("/Rental/Party?handler=Create").Data("forgeryToken"))
-                .Update(r => r.Url("/Rental/Party?handler=Update").Data("forgeryToken"))
 
-                    )
-                    )
-    </div>*@
+                        .DataSource( d => d
+                            .Model(m =>
+                            {
+                                m.Id(f => f.RentalId);
+                                m.Field(f => f.Title);
+                                m.Field(f => f.BackgroundColor);
+                            })
+                    .Read(r => r.Url("/Rental/Party?handler=Read").Data("forgeryToken"))
+                    .Create(r => r.Url("/Rental/Party?handler=Create").Data("forgeryToken"))
+                    .Update(r => r.Url("/Rental/Party?handler=Update").Data("forgeryToken"))
+
+                        )
+                        )
+        </div>*@
     <div class="row">
         <partial name="_Scheduler" />
     </div>

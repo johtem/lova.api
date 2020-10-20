@@ -8,6 +8,7 @@ using LOVA.API.Extensions;
 using LOVA.API.Models;
 using LOVA.API.Services;
 using LOVA.API.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace LOVA.API.Pages.BoardMember
 {
+    [Authorize(Roles = "Admin, Styrelse")]
     public class DocumentsModel : PageModel
     {
         private readonly IBlobService _blobService;
