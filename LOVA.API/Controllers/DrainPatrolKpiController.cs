@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LOVA.API.Controllers
 {
     [Route("api/[controller]")]
+    [Route("api/kpis")]
     [ApiController]
     public class DrainPatrolKpiController : ControllerBase
     {
