@@ -86,7 +86,7 @@ namespace LOVA.API
                });
                c.DocInclusionPredicate((_, api) => !string.IsNullOrWhiteSpace(api.GroupName));
 
-               c.TagActionsBy(api => api.GroupName);
+               //c.TagActionsBy(api => api.GroupName);
            });
             services.AddKendo();
         }
