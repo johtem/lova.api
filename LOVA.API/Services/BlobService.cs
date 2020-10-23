@@ -32,7 +32,7 @@ namespace LOVA.API.Services
 
         public async Task<Models.BlobInfo> GetBlobAsync(string name, string containerName = "lottingelundfiles")
         {
-            var containerClient = _blobServiceClient.GetBlobContainerClient("lottingelundfiles");
+            var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
             var blobClient = containerClient.GetBlobClient(name);
             var blobDownloadInfo =  await blobClient.DownloadAsync();
 
@@ -52,10 +52,10 @@ namespace LOVA.API.Services
             return items;
 
         }
-
+        
         public async Task UploadContentBlobAsync(string content, string fileName)
         {
-            var containerClient = _blobServiceClient.GetBlobContainerClient("lottingelundfiles");
+            BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient("lottingelundfiles");
             var blobClient = containerClient.GetBlobClient(fileName);
 
             var bytes = Encoding.UTF8.GetBytes(content);
@@ -63,13 +63,14 @@ namespace LOVA.API.Services
             await blobClient.UploadAsync(memoryStream, new BlobHttpHeaders { ContentType = fileName.GetContentType() });
         }
 
-        public async Task UploadFileBlobAsync(string filePath, string fileName)
+        public async Task UploadFileBlobAsync(string filePath, string fileName, string containerName = "lottingelundfiles")
         {
-            var containerClient = _blobServiceClient.GetBlobContainerClient("lottingelundfiles");
+            BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
            
             var blobClient = containerClient.GetBlobClient(fileName);
 
-            await blobClient.UploadAsync(filePath, new BlobHttpHeaders { ContentType = filePath.GetContentType() });
+            // await blobClient.UploadAsync(filePath, new BlobHttpHeaders { ContentType = filePath.GetContentType() });
+            await blobClient.UploadAsync(filePath);
 
             
 

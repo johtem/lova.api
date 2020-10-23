@@ -12,7 +12,7 @@ namespace LOVA.API.Services
 
         public Task<IEnumerable<string>> ListBlobsAsync();
 
-        public Task UploadFileBlobAsync(string filePath, string fileName);
+        public Task UploadFileBlobAsync(string filePath, string fileName, string containerName);
 
         public Task UploadContentBlobAsync(string content, string fileName);
 

@@ -9,5 +9,9 @@ namespace LOVA.API.Services
     {
         public const int HoursBackInTime = -48;
         public const int PageSize = 10;
+        public const string boardDocuments = "styrelsedokument";
+        public const string lottingelundDocuments = "lottingelundfiles";
+        public const string lovaDocuments = "lovafiles";
+        public const string lovaPhotos = "lovaphotos";
     }
 }

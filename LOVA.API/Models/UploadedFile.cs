@@ -10,6 +10,8 @@ namespace LOVA.API.Models
         public long Id { get; set; }
         public string FileName { get; set; }
 
+        public string Container { get; set; }
+
         public string  Directory { get; set; }
         public string Path { get; set; }
         public long UploadFileCategoryId { get; set; }

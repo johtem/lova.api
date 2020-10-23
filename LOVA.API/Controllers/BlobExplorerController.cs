@@ -45,7 +45,7 @@ namespace LOVA.API.Controllers
 
         {
 
-            await _blobService.UploadFileBlobAsync(request.FilePath, request.FileName);
+            await _blobService.UploadFileBlobAsync(request.FilePath, request.FileName, "");
 
             return Ok();
 

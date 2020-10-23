@@ -17,8 +17,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Azure.Storage;
-using Microsoft.Azure.Storage.Blob;
 using Microsoft.CodeAnalysis.Operations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -90,15 +88,17 @@ namespace LOVA.API.Pages.Files
 
                 long size = files.Length;
 
-              //  await UploadFileBlobAsync(filePath, fileName);
+                //  await UploadFileBlobAsync(filePath, fileName);
 
-                string result = await UploadFile(files);
+                string result = await UploadFile(files, filePath);
+
+                string container = FileUpload.UploadFileCategoryId == 1 ? MyConsts.lovaDocuments : MyConsts.lottingelundDocuments;
 
                 if (result == "OK")
                 {
                     var user = await _userManager.GetUserAsync(HttpContext.User);
 
-                    var fileExit = await _context.UploadedFiles.Where(o => o.FileName == fileName  && o.Directory == directory.Directory).FirstOrDefaultAsync();
+                    var fileExit = await _context.UploadedFiles.Where(o => o.FileName == fileName  && o.Directory == directory.Directory && o.Container == container).FirstOrDefaultAsync();
 
                     if (fileExit != null)
                     {
@@ -120,6 +120,7 @@ namespace LOVA.API.Pages.Files
                             Directory = directory.Directory,
                             UploadFileDirectoryId = FileUpload.UploadFileDirectoryId,
                             UploadFileCategoryId = FileUpload.UploadFileCategoryId,
+                            Container = container,
                             HasDirectories = false,
                             IsDirectory = false,
                             CreatedAt = DateTime.Now,
@@ -137,51 +138,38 @@ namespace LOVA.API.Pages.Files
             }
         }
 
-        public async Task<string> UploadFile(IFormFile file)
+
+        public async Task<string> UploadFile(IFormFile file, string filePath)
         {
-            var storageConnectionString = _configuration["ConnectionStrings:LottingelundFiles"];
-            if (CloudStorageAccount.TryParse(storageConnectionString, out CloudStorageAccount storageAccount))
+
+            try
             {
-                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                await _blobService.UploadFileBlobAsync(filePath, file.FileName, MyConsts.lottingelundDocuments);
+            }
+            catch (Exception)
+            {
 
-                CloudBlobContainer container = blobClient.GetContainerReference("lottingelundfiles");
-                await container.CreateIfNotExistsAsync();
-
-                var blobName = container.GetBlockBlobReference(file.FileName);
-                
-                if (blobName != null)
-                {
-                    //await blobName.FetchAttributesAsync();
-                }
-                
-
-                //Set
-                // blobName.Properties.ContentType = file.FileName.GetContentType();
-
-                //Save
-                // await blobName.SetPropertiesAsync();
-
-                await blobName.UploadFromStreamAsync(file.OpenReadStream());
-
-
-
-                return "OK";
+                return "ERROR";
             }
 
-            return "ERROR";
-        }
 
-        public async Task UploadFileBlobAsync(string filePath, string fileName)
-        {
-            var containerClient = _blobServiceClient.GetBlobContainerClient("lottingelundfiles");
-
-            var blobClient = containerClient.GetBlobClient(fileName);
-
-            await blobClient.UploadAsync(filePath, new BlobHttpHeaders { ContentType = fileName.GetContentType() });
-
-
+            return "OK";
 
         }
+
+           
+
+        //public async Task UploadFileBlobAsync(string filePath, string fileName)
+        //{
+        //    var containerClient = _blobServiceClient.GetBlobContainerClient("lottingelundfiles");
+
+        //    var blobClient = containerClient.GetBlobClient(fileName);
+
+        //    await blobClient.UploadAsync(filePath, new BlobHttpHeaders { ContentType = fileName.GetContentType() });
+
+
+
+        //}
 
     }
 }

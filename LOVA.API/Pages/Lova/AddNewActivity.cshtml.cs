@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs;
 using LOVA.API.Models;
 using LOVA.API.Services;
 using LOVA.API.ViewModels;
@@ -10,8 +12,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Azure.Storage;
-using Microsoft.Azure.Storage.Blob;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -23,12 +23,17 @@ namespace LOVA.API.Pages.Lova
         private readonly LovaDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly IBlobService _blobService;
+        private readonly BlobServiceClient _blobServiceClient;
 
-        public AddNewActivityModel(LovaDbContext context, UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        public AddNewActivityModel(LovaDbContext context, UserManager<ApplicationUser> userManager, IConfiguration configuration, IBlobService blobService, BlobServiceClient blobServiceClient, IssueReportViewModel issueReportViewModel)
         {
             _context = context;
             _userManager = userManager;
             _configuration = configuration;
+            _blobService = blobService;
+            _blobServiceClient = blobServiceClient;
+
         }
 
         [BindProperty]
@@ -61,9 +66,10 @@ namespace LOVA.API.Pages.Lova
             {
 
                 var fileContent = Microsoft.Net.Http.Headers.ContentDispositionHeaderValue.Parse(IssueReportViewModel.File.ContentDisposition);
-                fileName = System.IO.Path.GetFileName(fileContent.FileName.ToString().Trim('"'));
+                fileName = Path.GetFileName(fileContent.FileName.ToString().Trim('"'));
+                var filePath = Path.GetTempFileName();
 
-                string result = await UploadFile(IssueReportViewModel.File);
+                string result = await UploadFile(IssueReportViewModel.File, filePath);
             }
 
 
@@ -120,32 +126,46 @@ namespace LOVA.API.Pages.Lova
         }
 
 
-        public async Task<string> UploadFile(IFormFile file)
+        public async Task<string> UploadFile(IFormFile file, string filePath)
         {
-            var storageConnectionString = _configuration["ConnectionStrings:LottingelundFiles"];
-            if (CloudStorageAccount.TryParse(storageConnectionString, out CloudStorageAccount storageAccount))
+
+            try
             {
-                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                await _blobService.UploadFileBlobAsync(filePath, file.FileName, MyConsts.lovaPhotos);
+            }
+            catch (Exception)
+            {
 
-                CloudBlobContainer container = blobClient.GetContainerReference("lovaphotos");
-                await container.CreateIfNotExistsAsync();
-
-                var blobName = container.GetBlockBlobReference(file.FileName);
-
-                if (blobName != null)
-                {
-                    //await blobName.FetchAttributesAsync();
-                }
-
-
-                await blobName.UploadFromStreamAsync(file.OpenReadStream());
-
-
-
-                return "OK";
+                return "ERROR";
             }
 
-            return "ERROR";
+
+            return "OK";
+
+            //var storageConnectionString = _configuration["ConnectionStrings:LottingelundFiles"];
+            //if (CloudStorageAccount.TryParse(storageConnectionString, out CloudStorageAccount storageAccount))
+            //{
+            //    CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+            //    CloudBlobContainer container = blobClient.GetContainerReference("lovaphotos");
+            //    await container.CreateIfNotExistsAsync();
+
+            //    var blobName = container.GetBlockBlobReference(file.FileName);
+
+            //    if (blobName != null)
+            //    {
+            //        //await blobName.FetchAttributesAsync();
+            //    }
+
+
+            //    await blobName.UploadFromStreamAsync(file.OpenReadStream());
+
+
+
+            //    return "OK";
+            //}
+
+            //return "ERROR";
         }
     }
 }

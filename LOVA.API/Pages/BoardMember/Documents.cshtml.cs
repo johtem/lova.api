@@ -13,8 +13,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Azure.Storage;
-using Microsoft.Azure.Storage.Blob;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -103,13 +101,13 @@ namespace LOVA.API.Pages.BoardMember
 
                 //  await UploadFileBlobAsync(filePath, fileName);
 
-                string result = await UploadFile(file);
+                string result = await UploadFile(file, filePath);
 
                 if (result == "OK")
                 {
                     var user = await _userManager.GetUserAsync(HttpContext.User);
 
-                    var fileExit = await _context.UploadedFiles.Where(o => o.FileName == fileName && o.Directory == path).FirstOrDefaultAsync();
+                    var fileExit = await _context.UploadedFiles.Where(o => o.FileName == fileName && o.Directory == path && o.Container == MyConsts.boardDocuments).FirstOrDefaultAsync();
 
                     if (fileExit != null)
                     {
@@ -129,6 +127,7 @@ namespace LOVA.API.Pages.BoardMember
                             Path = directory.Directory + "/" + fileName,
                             Size = size,
                             Directory = directory.Directory,
+                            Container = MyConsts.boardDocuments,
                             UploadFileDirectoryId = directory.Id,
                             UploadFileCategoryId = directory.UploadFileCategoryId,
                             HasDirectories = false,
@@ -190,38 +189,21 @@ namespace LOVA.API.Pages.BoardMember
         }
 
 
-        public async Task<string> UploadFile(IFormFile file)
+        public async Task<string> UploadFile(IFormFile file, string filePath)
         {
-            var storageConnectionString = _configuration["ConnectionStrings:LottingelundFiles"];
-            if (CloudStorageAccount.TryParse(storageConnectionString, out CloudStorageAccount storageAccount))
+
+            try
             {
-                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-
-                CloudBlobContainer container = blobClient.GetContainerReference("styrelsedokument");
-                await container.CreateIfNotExistsAsync();
-
-                var blobName = container.GetBlockBlobReference(file.FileName);
-
-                if (blobName != null)
-                {
-                    //await blobName.FetchAttributesAsync();
-                }
-
-
-                //Set
-                // blobName.Properties.ContentType = file.FileName.GetContentType();
-
-                //Save
-                // await blobName.SetPropertiesAsync();
-
-                await blobName.UploadFromStreamAsync(file.OpenReadStream());
-
-
-
-                return "OK";
+                await _blobService.UploadFileBlobAsync(filePath, file.FileName, MyConsts.boardDocuments);
             }
+            catch (Exception)
+            {
 
-            return "ERROR";
+                return "ERROR";
+            }
+            
+
+            return "OK";
         }
 
 
