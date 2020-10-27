@@ -1,0 +1,87 @@
+﻿@page
+@model LOVA.API.Pages.Administration.ImportUserModel
+@{
+}
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@Html.AntiForgeryToken()
+
+<div class="container-fluid">
+    <div class="row offset-4">
+        <h3>Importera användare </h3>
+    </div>
+    <div class="row col-12 mt-5">
+        <form method="post" enctype="multipart/form-data" class="col-12">
+            @* New code to add file Upload and button for importing the data from excel *@
+            <div class="row col-12">
+                <div class="col-md-4">
+                    <input type="file" id="fileUpload" name=" fileUpload" class="form-control" />
+                </div>
+                <div class="col-md-8">
+                    <input type="button" id="btnUpload" value="Upload File" />
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div id="divData"></div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+
+
+    <script>
+
+        $(document).ready(function () {
+            $('#btnUpload').on('click', function () {
+                var fileExtension = ['xls', 'xlsx'];
+                var filename = $("#fileUpload").val();
+                //--- Validation for excel file---
+                if (filename.length == 0) {
+                    alert("Please select a file.");
+                    return false;
+                }
+                else {
+                    var extension = filename.replace(/^.*\./, '');
+                    if ($.inArray(extension, fileExtension) == -1) {
+                        alert("Please select only excel files.");
+                        return false;
+                    }
+                }
+                var filedata = new FormData();
+                var fileUpload = $("#fileUpload").get(0);
+                var files = fileUpload.files;
+
+                console.log(filedata);
+                filedata.append(files[0].name, files[0]);
+                $.ajax({
+                    type: "POST",
+                    url: "/Administration/ImportUser?handler=ImportFromExcel",
+                    headers: {
+                        RequestVerificationToken:
+                            $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    data: filedata,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if (response.length == 0)
+                            alert("Error occurred while uploading the excel file");
+                        else {
+                            $('#divData').html(response);
+                        }
+                    },
+                    error: function (e) {
+                        $('#divData').html(e.responseText);
+                    }
+                });
+            })
+        });
+
+
+    </script>
+}

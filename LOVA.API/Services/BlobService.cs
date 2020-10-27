@@ -1,7 +1,9 @@
-﻿using Azure.Storage.Blobs;
+﻿using Azure;
+using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using LOVA.API.Extensions;
 using LOVA.API.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,7 +36,7 @@ namespace LOVA.API.Services
         {
             var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
             var blobClient = containerClient.GetBlobClient(name);
-            var blobDownloadInfo =  await blobClient.DownloadAsync();
+            var blobDownloadInfo = await blobClient.DownloadAsync();
 
             return new Models.BlobInfo(blobDownloadInfo.Value.Content, blobDownloadInfo.Value.ContentType);
         }
@@ -52,27 +54,41 @@ namespace LOVA.API.Services
             return items;
 
         }
-        
-        public async Task UploadContentBlobAsync(string content, string fileName)
+
+
+
+        public async Task UploadFileBlobAsync(IFormFile file, string containerName = "lottingelundfiles")
         {
-            BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient("lottingelundfiles");
-            var blobClient = containerClient.GetBlobClient(fileName);
+            // bool isSaveSuccess = false;
+            string fileName;
 
-            var bytes = Encoding.UTF8.GetBytes(content);
-            using var memoryStream = new MemoryStream(bytes);
-            await blobClient.UploadAsync(memoryStream, new BlobHttpHeaders { ContentType = fileName.GetContentType() });
-        }
 
-        public async Task UploadFileBlobAsync(string filePath, string fileName, string containerName = "lottingelundfiles")
-        {
-            BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
-           
-            var blobClient = containerClient.GetBlobClient(fileName);
+            try
+            {
+                var fileContent = Microsoft.Net.Http.Headers.ContentDispositionHeaderValue.Parse(file.ContentDisposition);
+                fileName = Path.GetFileName(fileContent.FileName.ToString().Trim('"'));
 
-            // await blobClient.UploadAsync(filePath, new BlobHttpHeaders { ContentType = filePath.GetContentType() });
-            await blobClient.UploadAsync(filePath);
+                var localFilePath = Path.GetTempFileName();
 
-            
+                BlobContainerClient containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+                await containerClient.CreateIfNotExistsAsync();
+
+                BlobClient blobClient = containerClient.GetBlobClient(fileName);
+
+
+                // Open the file and upload its data
+                using Stream uploadFileStream = file.OpenReadStream();
+                await blobClient.UploadAsync(uploadFileStream, new BlobHttpHeaders { ContentType = fileName.GetContentType() });
+                uploadFileStream.Close();
+
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
 
         }
     }

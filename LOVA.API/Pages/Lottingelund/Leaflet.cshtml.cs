@@ -34,7 +34,7 @@ namespace LOVA.API.Pages.Lottingelund
 
         public async Task<JsonResult> OnPostRead(string target)
         {
-            //target = "Löttingelundsbladet";
+            // target = "Löttingelundsbladet";
 
             var lovaDirectories = await _context.UploadFileDirectories
                 .Where(a => a.UploadFileCategoryId == 5 && string.IsNullOrEmpty(target) ? a.Directory != target : a.Directory == "apa")

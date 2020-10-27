@@ -90,9 +90,12 @@ namespace LOVA.API.Pages.Files
 
                 //  await UploadFileBlobAsync(filePath, fileName);
 
-                string result = await UploadFile(files, filePath);
-
                 string container = FileUpload.UploadFileCategoryId == 1 ? MyConsts.lovaDocuments : MyConsts.lottingelundDocuments;
+
+
+                string result = await UploadFile(files, filePath, container);
+
+                
 
                 if (result == "OK")
                 {
@@ -139,12 +142,12 @@ namespace LOVA.API.Pages.Files
         }
 
 
-        public async Task<string> UploadFile(IFormFile file, string filePath)
+        public async Task<string> UploadFile(IFormFile file, string filePath, string container)
         {
 
             try
             {
-                await _blobService.UploadFileBlobAsync(filePath, file.FileName, MyConsts.lottingelundDocuments);
+                await _blobService.UploadFileBlobAsync(file, container);
             }
             catch (Exception)
             {

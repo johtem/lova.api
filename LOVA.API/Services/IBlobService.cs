@@ -1,4 +1,5 @@
 ﻿using LOVA.API.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,10 @@ namespace LOVA.API.Services
 
         public Task<IEnumerable<string>> ListBlobsAsync();
 
-        public Task UploadFileBlobAsync(string filePath, string fileName, string containerName);
 
-        public Task UploadContentBlobAsync(string content, string fileName);
+        public Task UploadFileBlobAsync(IFormFile file, string containerName);
+
+       
 
         public Task DeleteBlobAsync(string blobName);
     }

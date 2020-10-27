@@ -42,7 +42,7 @@ namespace LOVA.API.Pages.Lova
 
 
             var lovaDirectories = await _context.UploadFileDirectories
-                .Where(a => a.UploadFileCategoryId == 1 && string.IsNullOrEmpty(target) ? a.Directory != target : a.Directory == "apa" )
+                .Where(a =>  a.UploadFileCategoryId == 1 && string.IsNullOrEmpty(target) ? a.Directory != target : a.Directory == "apa" )
                 .Select(a => new ViewFilesViewModel
                 {
                     Name = a.Directory,
@@ -59,7 +59,7 @@ namespace LOVA.API.Pages.Lova
                 .ToArrayAsync();
 
             var lovaFiles = await _context.UploadedFiles
-                .Where(a => a.UploadFileCategoryId == 1 && a.IsDirectory == false && a.Directory == target)
+                .Where(a => a.UploadFileCategoryId == 1 && a.IsDirectory == false && a.Directory == target && a.Container == MyConsts.lovaDocuments)
                 .Select(a => new ViewFilesViewModel
                 {
                     Name = Path.GetFileNameWithoutExtension(a.FileName),
@@ -85,7 +85,7 @@ namespace LOVA.API.Pages.Lova
         public async Task<IActionResult> OnGetDownload(string file)
         {
 
-            var data = await _blobService.GetBlobAsync(file, "lottingelundfiles");
+            var data = await _blobService.GetBlobAsync(file, MyConsts.lovaDocuments);
            
             return File(data.Content, file.GetContentType(), file);
 

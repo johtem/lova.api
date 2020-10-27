@@ -131,7 +131,7 @@ namespace LOVA.API.Pages.Lova
 
             try
             {
-                await _blobService.UploadFileBlobAsync(filePath, file.FileName, MyConsts.lovaPhotos);
+                await _blobService.UploadFileBlobAsync(file, MyConsts.lovaPhotos);
             }
             catch (Exception)
             {
@@ -142,30 +142,8 @@ namespace LOVA.API.Pages.Lova
 
             return "OK";
 
-            //var storageConnectionString = _configuration["ConnectionStrings:LottingelundFiles"];
-            //if (CloudStorageAccount.TryParse(storageConnectionString, out CloudStorageAccount storageAccount))
-            //{
-            //    CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            
 
-            //    CloudBlobContainer container = blobClient.GetContainerReference("lovaphotos");
-            //    await container.CreateIfNotExistsAsync();
-
-            //    var blobName = container.GetBlockBlobReference(file.FileName);
-
-            //    if (blobName != null)
-            //    {
-            //        //await blobName.FetchAttributesAsync();
-            //    }
-
-
-            //    await blobName.UploadFromStreamAsync(file.OpenReadStream());
-
-
-
-            //    return "OK";
-            //}
-
-            //return "ERROR";
         }
     }
 }

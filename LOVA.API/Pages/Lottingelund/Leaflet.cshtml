@@ -26,7 +26,7 @@
             <div class="row col-12">
                 @(Html.Kendo().FileManager()
         .Name("filemanager")
-        // .Views(v => v.Grid(grid => grid.Columns(cols => cols.Add().Field(Path))))
+        //.Views(v => v.Grid(grid => grid.Columns(cols => cols.Add().Field(Path))))
         .Width(1100)
         .Height(600)
     .DataSource(ds =>
@@ -49,7 +49,7 @@
         items.Add("details");
         items.Add("search");
     }))
-    .Events(events => events.DataBound("onOpen"))
+   //.Events(events => events.DataBound("onOpen"))
     .ContextMenu(context => context.Items(items =>
     {
         items.Add("download").Text("Öppna").Command("DownloadCommand").SpriteCssClass("k-icon k-i-download");
@@ -80,6 +80,7 @@
 
         function onOpen(e) {
             console.log(e);
+
         }
 
         function dowloadCommand(e) {
@@ -109,7 +110,7 @@
             filemanager.toolbar.fileManagerDetailsToggle.switchInstance.toggle();
 
 
-
+            filemanager.view("list");
 
 
         })

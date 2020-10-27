@@ -194,7 +194,7 @@ namespace LOVA.API.Pages.BoardMember
 
             try
             {
-                await _blobService.UploadFileBlobAsync(filePath, file.FileName, MyConsts.boardDocuments);
+                await _blobService.UploadFileBlobAsync(file, MyConsts.boardDocuments);
             }
             catch (Exception)
             {
