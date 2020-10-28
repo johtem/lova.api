@@ -22,26 +22,19 @@ namespace LOVA.API.Pages.Lova
     {
         private readonly LovaDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IConfiguration _configuration;
         private readonly IBlobService _blobService;
-        private readonly BlobServiceClient _blobServiceClient;
 
-        public AddNewActivityModel(LovaDbContext context, UserManager<ApplicationUser> userManager, IConfiguration configuration, IBlobService blobService, BlobServiceClient blobServiceClient, IssueReportViewModel issueReportViewModel)
+
+        public AddNewActivityModel(LovaDbContext context, UserManager<ApplicationUser> userManager, IBlobService blobService)
         {
             _context = context;
             _userManager = userManager;
-            _configuration = configuration;
             _blobService = blobService;
-            _blobServiceClient = blobServiceClient;
-
         }
 
         [BindProperty]
         public IssueReportViewModel IssueReportViewModel { get; set; }
-        public void OnGet()
-        {
 
-        }
 
         public async Task<IActionResult> OnPost()
         {

@@ -38,9 +38,9 @@ namespace LOVA.API
         {
             services.AddDbContext<LovaDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AzureSQL")));
 
-            
 
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddRazorPages()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
@@ -65,12 +65,10 @@ namespace LOVA.API
 
             services.AddSingleton(x => new BlobServiceClient(Configuration.GetConnectionString("LottingelundFiles")));
             services.AddSingleton<IBlobService, BlobService>();
-          //  services.AddSingleton<IEmailConfiguration>(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
-          //  services.AddTransient<IEmailService, EmailService>();
+            //services.AddSingleton<IEmailConfiguration>(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
+            //services.AddTransient<IEmailService, EmailService>();
 
             
-
-
             services.AddSwaggerGen(c =>
            {
                c.SwaggerDoc("v1", new OpenApiInfo 
