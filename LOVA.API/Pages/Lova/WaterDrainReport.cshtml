@@ -25,9 +25,10 @@
             columns.Bound(p => p.WellName).Title("Brunn").Width(120);
             columns.Bound(p => p.ProblemDescription).Title("Problem").Width(250);
             columns.Bound(p => p.SolutionDescription).Title("Åtgärd").Width(250);
-            columns.Bound(p => p.NewActivatorSerialNumber).Title("Serienr Aktivator").Width(160);
-            columns.Bound(p => p.NewValveSerialNumber).Title("Serienr Ventil").Width(160);
-            columns.Bound(p => p.CreatedAt).Title("Datum").Width(150).Format("{0:MM/dd/yyyy}");
+            columns.Bound(p => p.TimeForAlarm).Title("Tid larm").Width(100).Format("{0:yyyy-MM-dd HH:mm}");
+            columns.Bound(p => p.ArrivalTime).Title("Tid ankomst").Width(100).Format("{0:yyyy-MM-dd HH:mm}");
+            columns.Bound(p => p.TimeToRepair).Title("Åtgärdstid").Width(100);
+            columns.Bound(p => p.CreatedAt).Title("Datum").Width(150).Format("{0:yyyy-MM-dd}");
             columns.Bound(p => p.ImageName).ClientTemplate(@"<div class='IssuePhoto' style='background-image: url(" + @Url.Content("https://lottingelundfiles.blob.core.windows.net/lovaphotos/#:data.ImageName#") + "'").Width(100);
         })
         .ToolBar(tools => tools.Excel())
