@@ -1,0 +1,92 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using LOVA.API.Models 
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>@ViewBag.Title</title>
+
+    <!--  Fonts and icons -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2020.1.406/styles/kendo.bootstrap-v4.min.css" />
+    <link rel="stylesheet" href="~/css/bootstrap.custom.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/card.css" />
+
+
+
+    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2020.1.406/js/jquery.min.js"></script>
+    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2020.1.406/js/kendo.all.min.js"></script>
+    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2020.1.406/js/kendo.aspnetmvc.min.js"></script>
+    <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script type="text/javascript" src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2020.1.406/js/cultures/kendo.culture.sv-SE.min.js"></script>
+    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2020.1.406/js/messages/kendo.messages.sv-SE.min.js"></script>
+
+</head>
+
+
+
+<body>
+    <header>
+        @if (SignInManager.IsSignedIn(User) && User.IsInRole("User"))
+        {
+            <partial name="Menu/_menuUser" />
+        }
+        else if (SignInManager.IsSignedIn(User) && User.IsInRole("Lova"))
+        {
+            <partial name="Menu/_menuLova" />
+        }
+        else if (SignInManager.IsSignedIn(User) && User.IsInRole("Styrelse"))
+        {
+            <partial name="Menu/_menuStyrelse" />
+        }
+        else if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+        {
+            <partial name="Menu/_menuAdmin" />
+        }
+        else
+        {
+            <partial name="Menu/_menu" />
+        }
+
+    </header>
+
+    <script type="text/javascript">
+        //set culture of the Kendo UI
+        kendo.culture("sv-SE");
+    </script>
+
+    @{
+        CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("sv-SE");
+    }
+
+    <div class="container-fluid" style="padding-right: 0px; padding-left: 0px;">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container text-center">
+            &copy; 2020 - Löttingelund - <a asp-area="" asp-page="/Privacy">Privacy</a> - <a href="https://www.facebook.com/L%C3%B6ttingelund-346423732213175" target="_blank"><img src="~/Images/facebook.png" width="16" height="16" /></a>
+        </div>
+    </footer>
+
+
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

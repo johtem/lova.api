@@ -37,14 +37,22 @@
           .Filterable(true)
           .AllPages(true)
         )
-        .Pageable()
+        .Pageable(p => p
+            .PageSizes(new[] { 5, 10, 30 })
+            .Info(true)
+            .Messages(x => x.Display("{0}-{1} av {2}").Empty("No Results"))
+            .Enabled(true)
+        )
         .Sortable()
+        .Navigatable()
         .Scrollable()
         .Filterable()
         .HtmlAttributes(new { style = "height:750px;" })
         .DataSource(dataSource => dataSource
             .Ajax()
+            .Batch(true)
             .PageSize(LOVA.API.Services.MyConsts.PageSize)
+            .ServerOperation(true)
             .Read(read => read.Url("/Lova/WaterDrainReport?handler=Read").Data("forgeryToken"))
             .Model( m =>
             {

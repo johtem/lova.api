@@ -1,74 +1,204 @@
 ﻿@page
 @model LOVA.API.Pages.Lottingelund.BoardModel
+
 @{
+    Layout = "~/Pages/Shared/_LayoutDashboard.cshtml";
 }
 
-
-<div class="container mt-2">
-
-    <!-- Example row of columns -->
-    <div class="row">
-        <img src="~/Images/Klubba.jpg" width="640" height="290" />
-    </div>
-    <div class="row">
-        <address>
-            <strong>Magnus Larzon</strong>, Kanslichef<br />
-            Mobil: 0733-327515<br />
-            E-mail: <a href="mailto:magnus.larzon@lottingelund.se">magnus.larzon@lottingelund.se</a>
-        </address>
-    </div>
+<div class="container-fluid mt-5">
 
 
     <div class="row">
-        <address>
-            <strong>Ronny Modig</strong>, Ordförande<br />
-            Mobil: 0706-040610<br />
-            E-mail: <a href="mailto:ronmod@gmail.com">ronmod@gmail.com</a>
-        </address>
-    </div>
-    <div class="row">
-        <address>
-            <strong>Lilling Palmeklint</strong>, Ledamot, Kassör<br />
-            Mobil:  070-6201310<br />
-            E-mail: <a href="mailto:lilling@ownit.nu">lilling@ownit.nu</a>
-        </address>
-    </div>
-    <div class="row">
-        <address>
-            <strong>Lars Sandgren</strong>, Ledamot, Bredband/Kabel-TV<br />
-            Mobil: 0725-112013<br />
-            E-mail: <a href="mailto:lasse@lottingelund.se">lasse@lottingelund.se</a>
-        </address>
-    </div>
-    <div class="row">
-        <address>
-            <strong>Lennart Källqvist</strong>, Ledamot, Sekreterare & Väg<br />
-            Mobil: 0762-067985<br />
-            E-mail: <a href="mailto:l.kallqvist@lottingelund.se">l.kallqvist@lottingelund.se</a>
-        </address>
-    </div>
-    <div class="row">
-        <address>
-            <strong>Johan Tempelman</strong>, Ledamot, VA<br />
-            Mobil: 0734-435407<br />
-            E-mail: <a href="mailto:johan@tempelman.nu">johan@tempelman.nu</a>
-        </address>
+        <div class="offset-md-3  col-md-3">
+            <div class="card card-profile text-center col-12">
+                <div class="card-avatar">
+                    <a href="javascript:;">
+                        <img class="img" src="~/Images/BoardMember/RonnyModigs.png" />
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">Ronny Modigs</h4>
+                    <h6 class="card-category text-gray">Ordförande</h6>
+                    <div class="card-text offset-2 mt-4">
+                        <div class="row">
+                            <i class="fa fa-phone mr-2" aria-hidden="true"></i>
+                            0706-040610
+                            <i class="fa fa-envelope mr-2 ml-3" aria-hidden="false"></i>
+                            <a href="mailto:ronmod@gmail.com" class="mb-1">ronmod@gmail.com</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card card-profile text-center col-12">
+                <div class="card-avatar">
+                    <a href="javascript:;">
+                        <img class="img" src="~/Images/BoardMember/nopic.png" />
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">Magnus Larzon</h4>
+                    <h6 class="card-category text-gray">Kanslichef</h6>
+                    <div class="card-text offset-1 mt-4">
+                        <div class="row">
+                            <i class="fa fa-phone mr-2" aria-hidden="true"></i>
+                            0733-327515
+                            <i class="fa fa-envelope mr-2 ml-3" aria-hidden="false"></i>
+                            <a href="mailto:magnus.larzon@lottingelund.se" class="mb-1">magnus.larzon@lottingelund.se</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
 
     </div>
     <div class="row">
-        <address>
-            <strong>Christer Anrell</strong>, Suppleant<br />
-            Mobil: 08-343131<br />
-            E-mail: <a href="mailto:christer@christeranrell.se">christer@christeranrell.se</a>
-        </address>
+        <div class="col-md-3">
+            <div class="card card-profile text-center col-12">
+                <div class="card-avatar">
+                    <a href="javascript:;">
+                        <img class="img" src="~/Images/BoardMember/nopic.png" />
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">Lilling Palmeklint</h4>
+                    <h6 class="card-category text-gray">Kassör</h6>
+                    <div class="card-text offset-2 mt-4">
+                        <div class="row">
+                            <i class="fa fa-phone mr-2" aria-hidden="true"></i>
+                            070-6201310
+                            <i class="fa fa-envelope mr-2 ml-3" aria-hidden="false"></i>
+                            <a href="mailto:lilling@ownit.nu" class="mb-1">lilling@ownit.nu</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card card-profile text-center col-12">
+                <div class="card-avatar">
+                    <a href="javascript:;">
+                        <img class="img" src="~/Images/BoardMember/nopic.png" />
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">Johan Tempelman</h4>
+                    <h6 class="card-category text-gray">VA ansvarig</h6>
+                    <div class="card-text offset-2 mt-4">
+                        <div class="row">
+                            <i class="fa fa-phone mr-2" aria-hidden="true"></i>
+                            0734 435497
+                            <i class="fa fa-envelope mr-2 ml-3" aria-hidden="false"></i>
+                            <a href="mailto:johan@tempelman.nu" class="mb-1">johan@tempelman.nu</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card card-profile text-center col-12">
+                <div class="card-avatar">
+                    <a href="javascript:;">
+                        <img class="img" src="~/Images/BoardMember/nopic.png" />
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">Lennart Källqvist</h4>
+                    <h6 class="card-category text-gray">Sekreterare & Väg ansvarig</h6>
+                    <div class="card-text offset-1 mt-4">
+                        <div class="row">
+                            <i class="fa fa-phone mr-2" aria-hidden="true"></i>
+                            0762-067985
+                            <i class="fa fa-envelope mr-2 ml-3" aria-hidden="false"></i>
+                            <a href="mailto:l.kallqvist@lottingelund.se" class="mb-1">l.kallqvist@lottingelund.se</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card card-profile text-center col-12">
+                <div class="card-avatar">
+                    <a href="javascript:;">
+                        <img class="img" src="~/Images/BoardMember/nopic.png" />
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">Lars Sandgren</h4>
+                    <h6 class="card-category text-gray">Tomt ansvarig</h6>
+                    <div class="card-text offset-1 mt-4">
+                        <div class="row">
+                            <i class="fa fa-phone mr-2" aria-hidden="true"></i>
+                            0725-112013
+                            <i class="fa fa-envelope mr-2 ml-3" aria-hidden="false"></i>
+                            <a href="mailto:lasse@lottingelund.se" class="mb-1">lasse@lottingelund.se</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
+    
+
     <div class="row">
-        <address>
-            <strong>Micke Vikström</strong>, Suppleant<br />
-            Mobil: 0708-223315<br />
-            E-mail: <a href="mailto:micke@lottingelund.se">micke@lottingelund.se</a>
-        </address>
+        <div class="offset-md-3  col-md-3">
+            <div class="card card-profile text-center col-12">
+                <div class="card-avatar">
+                    <a href="javascript:;">
+                        <img class="img" src="~/Images/BoardMember/nopic.png" />
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">Christer Anrell</h4>
+                    <h6 class="card-category text-gray">Suppleant</h6>
+                    <div class="card-text offset-2 mt-4">
+                        <div class="row">
+                            <i class="fa fa-phone mr-2" aria-hidden="true"></i>
+                            08-343131
+                            <i class="fa fa-envelope mr-2 ml-3" aria-hidden="false"></i>
+                            <a href="mailto:christer@christeranrell.se" class="mb-1">christer@christeranrell.se</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card card-profile text-center col-12">
+                <div class="card-avatar">
+                    <a href="javascript:;">
+                        <img class="img" src="~/Images/BoardMember/nopic.png" />
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">Micke Vikström</h4>
+                    <h6 class="card-category text-gray">Suppleant</h6>
+                    <div class="card-text offset-1 mt-4">
+                        <div class="row">
+                            <i class="fa fa-phone mr-2" aria-hidden="true"></i>
+                            0708-223315
+                            <i class="fa fa-envelope mr-2 ml-3" aria-hidden="false"></i>
+                            <a href="mailto:>micke@lottingelund.se" class="mb-1">>micke@lottingelund.se</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </div>
-<!-- /container -->
+
+
+
+
+
+
