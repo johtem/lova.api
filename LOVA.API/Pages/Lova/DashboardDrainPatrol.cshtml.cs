@@ -1,11 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Kendo.Mvc.Extensions;
 using LOVA.API.Models;
 using LOVA.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace LOVA.API.Pages.Lova
 {
@@ -18,26 +19,36 @@ namespace LOVA.API.Pages.Lova
             _context = context;
         }
 
-        public IEnumerable<WellsNoActivity> NoActivities { get; set; }
+        public IEnumerable<WellsDashboardViewModel> NoActivities { get; set; }
+        public IEnumerable<WellsDashboardViewModel> NumberOfActivities { get; set; }
 
         public void OnGet()
         {
             NoActivities = from n in _context.DrainPatrols
-                    group n by n.Address into g   
-                    select new WellsNoActivity
-                    {
-                        Address = g.Key, 
-                        Date = g.Max(t => t.Time) 
-                    };
+                           group n by n.Address into g
+                           select new WellsDashboardViewModel
+                           {
+                               Address = g.Key,
+                               Date = g.Max(t => t.Time)
+                           };
 
             NoActivities = NoActivities.OrderBy(n => n.Date).Take(5);
 
-        }
-    }
 
-    public class WellsNoActivity
-    {
-        public string Address { get; set; }
-        public DateTime Date { get; set; }
+
+
+            NumberOfActivities = _context.DrainPatrols
+                          .GroupBy(x => new { x.Time.Date, x.Address })
+                          .OrderByDescending(g => g.Count())
+                          .Select(x => new WellsDashboardViewModel
+                          {
+                              Count = x.Count(),
+                              Date = x.Key.Date,
+                              Address = x.Key.Address
+                          })
+                          .ToList()
+                          .Take(5);
+
+        }
     }
 }

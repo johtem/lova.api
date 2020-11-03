@@ -4,6 +4,12 @@
     Layout = "~/Pages/Shared/_LayoutDashboard.cshtml";
 }
 
+<style>
+    body {
+        background-color: #eee;
+    }
+</style>
+
 <div class="row mt-4">
     <div class="col-12">
         <h4 class="text-center">Dashboard - KPIer VA-Systemet</h4>
@@ -14,41 +20,51 @@
 <div class="row ml-3 mr-5">
     <div class="col-md-3">
         <div class="card">
-            <div class="card-header card-header-icon card-header-rose">
-                <div class="card-icon">
-                    <i class="material-icons">language</i>
+            <div class="card-header card-header-text card-header-primary">
+                <div class="card-text">
+                    <h4 class="card-title">3</h4>
                 </div>
             </div>
             <div class="card-body">
-                <h4 class="card-title">Antal intagsenheter</h4>
-                Löttingelunds vacumsystem har 143 st intagsenheter
+                Antal vakuumslingor
             </div>
         </div>
     </div>
-
-    <div class="col-md-6">
+    <div class="col-md-3">
         <div class="card">
             <div class="card-header card-header-text card-header-primary">
                 <div class="card-text">
-                    <h4 class="card-title">Here is the Text</h4>
+                    <h4 class="card-title">143</h4>
                 </div>
             </div>
             <div class="card-body">
-                The place is close to Barceloneta Beach and bus stop just 2 min by walk and near to "Naviglio" where you can enjoy the main night life in Barcelona...
+                Antal intagsenheter
             </div>
         </div>
     </div>
 
     <div class="col-md-3">
         <div class="card">
-            <div class="card-header card-header-icon card-header-rose">
-                <div class="card-icon">
-                    <i class="material-icons">language</i>
+            <div class="card-header card-header-text card-header-primary">
+                <div class="card-text">
+                    <h4 class="card-title">3</h4>
                 </div>
             </div>
             <div class="card-body">
-                <h4 class="card-title">Here is the Icon</h4>
-                The place is close to Barceloneta Beach and bus stop just 2 min by walk and near to "Naviglio" where you can enjoy the main night life in Barcelona...
+                Antal vakuumpumpar
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header card-header-text card-header-primary">
+                <div class="card-text">
+                    <h4 class="card-title">4</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                Antal tryckpumpar
             </div>
         </div>
     </div>
@@ -60,7 +76,7 @@
         <div class="card">
             <div class="card-header card-header-danger">
                 <h4 class="card-title">Intagsenheter aktivitet</h4>
-                <p class="card-category">Top 5 med senaste aktivitet</p>
+                <p class="card-category">Top 5 med senaste datum för aktiveringen</p>
             </div>
             <div class="card-body table-responsive">
                 <table class="table table-hover table-condesed">
@@ -86,45 +102,27 @@
     <div class="col-4">
         <div class="card">
             <div class="card-header card-header-rose">
-                <h4 class="card-title">Employees Stats</h4>
-                <p class="card-category">New employees on 15th September, 2016</p>
+                <h4 class="card-title">Intagsenheter aktivitet</h4>
+                <p class="card-category">Top 5 antal aktiveringar per dag</p>
             </div>
             <div class="card-body table-responsive">
-                <table class="table table-hover">
-                    <thead class="text-warning">
+                <table class="table table-hover table-condesed">
+                    <thead class="text-danger">
                         <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Salary</th>
-                            <th>Country</th>
+                            <th>Intagsenhet</th>
+                            <th>Datum</th>
+                            <th>Antal</th>
                         </tr>
-
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Dakota Rice</td>
-                            <td>$36,738</td>
-                            <td>Niger</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Minerva Hooper</td>
-                            <td>$23,789</td>
-                            <td>Curaçao</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Sage Rodriguez</td>
-                            <td>$56,142</td>
-                            <td>Netherlands</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>Philip Chaney</td>
-                            <td>$38,735</td>
-                            <td>Korea, South</td>
-                        </tr>
+                        @foreach (var kpi in Model.NumberOfActivities)
+                        {
+                            <tr>
+                                <td>@kpi.Address</td>
+                                <td>@kpi.Date.ToShortDateString()</td>
+                                <td>@kpi.Count</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>

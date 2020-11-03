@@ -107,9 +107,10 @@
                   children.Add().Text("Statistik")
                           .Items(innerChildren =>
                           {
-                              innerChildren.Add().Text("Larm");
-                              innerChildren.Add().Text("Intagsenhet");
                               innerChildren.Add().Text("Dashboard").Url("/Lova/DashboardDrainPatrol");
+                              innerChildren.Add().Text("Larm");
+                              innerChildren.Add().Text("Intagsenhet").Url("/Lova/StatisticPerWell");
+                              
                           });
                   children.Add().Text("Dokument").Url("/Lova/Documents");
 

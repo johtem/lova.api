@@ -228,10 +228,14 @@
 </div>
 
 
+@section Scripts {
+@{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
 <script>
     function onAdditionalData() {
         return {
-            text: $("#WellName").val()
+            text: $("#IssueReportViewModel_WellName").val()
         };
     }
 
@@ -244,3 +248,7 @@
     }
 
 </script>
+
+}
+
+
