@@ -12,7 +12,7 @@
 
 <div class="row mt-4">
     <div class="col-12">
-        <h4 class="text-center">Dashboard - KPIer VA-Systemet</h4>
+        <h4 class="text-center">Dashboard - VA-Systemet</h4>
     </div>
 </div>
 
@@ -76,7 +76,7 @@
         <div class="card">
             <div class="card-header card-header-danger">
                 <h4 class="card-title">Intagsenheter aktivitet</h4>
-                <p class="card-category">Top 5 med senaste datum för aktiveringen</p>
+                <p class="card-category">Top 5 med datum för senaste aktivering</p>
             </div>
             <div class="card-body table-responsive">
                 <table class="table table-hover table-condesed">
@@ -91,7 +91,7 @@
                         {
                             <tr>
                                 <td>@kpi.Address</td>
-                                <td>@kpi.Date</td>
+                                <td>@kpi.Date.ToShortDateString()</td>
                             </tr>
                         }
                     </tbody>
@@ -132,11 +132,11 @@
         <div class="card">
             <div class="card-header card-header-text card-header-primary">
                 <div class="card-text">
-                    <h4 class="card-title">Here is the Text</h4>
+                    <h4 class="card-title">Ytterliggare KPI kommer snart</h4>
                 </div>
             </div>
             <div class="card-body">
-                The place is close to Barceloneta Beach and bus stop just 2 min by walk and near to "Naviglio" where you can enjoy the main night life in Barcelona...
+                 Här kommer snart mer info...
             </div>
         </div>
     </div>

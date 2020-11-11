@@ -12,14 +12,14 @@
         background-color: #eee;
     }
 </style>
-
-<div class="row">
-    <div class="col-12">
-        <nav class="navbar navbar-light bg-light">
-            <a class="navbar-brand offset-2">Statistik per intagsenhet</a>
-            <form class="form-inline" method="post">
-                <div class="col">
-                    @(Html.Kendo().AutoComplete()
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <nav class="navbar navbar-light">
+                <a class="navbar-brand offset-2">Statistik per intagsenhet</a>
+                <form class="form-inline" method="post">
+                    <div class="col ml-2">
+                        @(Html.Kendo().AutoComplete()
                                     .Name("IssueReportViewModel.WellName")
                                     .Filter("Startswith")
                                     .MinLength(2)
@@ -36,46 +36,47 @@
                                     .HtmlAttributes(new { style= "width:100%; font-size: 11px;", @class="form-control" })
                                 )
 
-                </div>
-                <div class="col">
-                    <button class="btn btn-outline-success btn-sm" type="submit">Search</button>
-                </div>
-            </form>
-        </nav>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-outline-primary btn-sm" type="submit">Search</button>
+                    </div>
+                </form>
+            </nav>
+        </div>
     </div>
-</div>
 
-@if (Model.LatestActivity != null)
+    @if (Model.LatestActivity != null)
 {
     <div class="row mt-3">
-       
-            <div class="col-4">
-                <div class="card">
-                    <div class="card-header card-header-danger">
-                        <h4 class="card-title">Statistik aktivering</h4>
-                        <p class="card-category"></p>
-                    </div>
-                    <div class="card-body table-responsive">
-                        <table class="table table-condesed">
-                            <tr>
-                                <th>Senaste</th>
-                                <td>@Model.LatestActivity.First().Time</td>
-                            </tr>
-                            <tr>
-                                <th>Antal senaste tim</th>
-                                <td>@Model.LatestHour.First().Count</td>
-                            </tr>
-                            <tr>
-                                <th>Antal senaste 3 tim</th>
-                                <td>@Model.Latest3Hour.First().Count</td>
-                            </tr>
-                        </table>
-                    </div>
+
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header card-header-danger">
+                    <h4 class="card-title">Statistik aktivering</h4>
+                    <p class="card-category">Tid: @Model.DateNow</p>
+                    @*<p class="card-category">Tid UTC: @Model.DateUtcNow</p>*@
                 </div>
-            
-
-
-
+                <div class="card-body table-responsive">
+                    <table class="table table-condesed">
+                        <tr>
+                            <th>Senaste</th>
+                            <td>@Model.LatestActivity.First().Time</td>
+                        </tr>
+                        <tr>
+                            <th>Antal senaste tim</th>
+                            <td>@Model.LatestHour</td>
+                        </tr>
+                        <tr>
+                            <th>Antal senaste 3 tim</th>
+                            <td>@Model.Latest3Hour</td>
+                        </tr>
+                        <tr>
+                            <th>Antal senaste 24 tim</th>
+                            <td>@Model.Latest24Hour</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
 
             <div class="col-4">
 
@@ -84,7 +85,7 @@
     </div>
 }
 
-
+</div>
 
 
 

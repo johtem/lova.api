@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using LOVA.API.Models;
 using LOVA.API.Services;
@@ -33,42 +34,35 @@ namespace LOVA.API.Pages.Lova
         }
 
         public IEnumerable<DrainPatrol> LatestActivity { get; set; }
-        public IEnumerable<WellsDashboardViewModel> LatestHour { get; set; }
-        public IEnumerable<WellsDashboardViewModel> Latest3Hour { get; set; }
+        public int LatestHour { get; set; }
+        public int Latest3Hour { get; set; }
+        public int Latest24Hour { get; set; }
+
+        public DateTime DateNow { get; set; }
+        public DateTime DateUtcNow { get; set; }
 
 
         public async Task OnPost()
         {
             var wells = await _context.DrainPatrols.Where(a => a.Address == IssueReportViewModel.WellName).ToListAsync();
 
+            // Change date to timezone Central Europe Standard Time
+            DateUtcNow = DateTime.UtcNow;
+            DateNow = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Central Europe Standard Time"));
+
             // Latest activity
             LatestActivity = wells.OrderByDescending(a => a.Time).Take(1);
 
             // Number of activity last hour
-            LatestHour = wells.Where(a => a.Time >= DateTime.Now.AddHours(-1))
-                          .GroupBy(x => new { x.Time.Date, x.Address })
-                          .OrderByDescending(g => g.Count())
-                          .Select(x => new WellsDashboardViewModel
-                          {
-                              Count = x.Count(),
-                              Date = x.Key.Date,
-                              Address = x.Key.Address
-                          })
-                          .ToList()
-                          .Take(1);
+            LatestHour = wells.Where(a => a.Time >= DateNow.AddHours(-1)).Count();
+
+
+            // Number of activity last 3 hour
+            Latest3Hour = wells.Where(a => a.Time >= DateNow.AddHours(-3)).Count();
 
             // Number of activity last 24 hour
-            Latest3Hour = wells.Where(a => a.Time >= DateTime.Now.AddHours(-3))
-                          .GroupBy(x => new { x.Time.Date, x.Address })
-                          .OrderByDescending(g => g.Count())
-                          .Select(x => new WellsDashboardViewModel
-                          {
-                              Count = x.Count(),
-                              Date = x.Key.Date,
-                              Address = x.Key.Address
-                          })
-                          .ToList()
-                          .Take(1);
+            Latest24Hour = wells.Where(a => a.Time >= DateNow.AddHours(-24)).Count();
+
 
             //
         }
