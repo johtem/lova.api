@@ -1,6 +1,6 @@
 ﻿<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow" style="background-color: #f4f4f2;">
     <div class="container-fluid">
-        <a class="navbar-brand" asp-area="" asp-page="/Index">Löttinglund</a><a class="navbar-brand" asp-area="" asp-page="/Index">
+        <a class="navbar-brand" asp-area="" asp-page="/Index">
             <img src="~/Images/LoggaSmall.jpg" alt="" />
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -18,12 +18,13 @@
               children.Add().Text("Löttingelundsföreningarna").Url("/About/About");
               children.Add().Text("Om").Items(innerChildren =>
               {
-                  innerChildren.Add().Text("Kort fakta").Url(" / About/Lottingelund");
+                  innerChildren.Add().Text("Kort fakta").Url("/About/Lottingelund");
                   innerChildren.Add().Text("Områdets historia").Url("/About/History");
                   innerChildren.Add().Text("Karta").Url("/About/Map");
                   innerChildren.Add().Text("Natur och miljö").Url("/About/Area");
                   innerChildren.Add().Text("Kollektivtrafik").Url("/About/PublicTransport");
               });
+
               children.Add().Text("Kultur & fritid")
               .Items(innerChildren =>
               {
@@ -61,27 +62,64 @@
               });
 
           });
+
+          items.Add().Text("Villaföreningen")
+              .Items(children =>
+              {
+
+
+                  children.Add().Text("Dokument")
+                  .Items(innerChildren =>
+                  {
+                      innerChildren.Add().Text("VA-föreningen").Url("/Lottingelund/DocumentVA");
+                      innerChildren.Add().Text("Tomtföreningen").Url("/Lottingelund/DocumentTomt");
+                      innerChildren.Add().Text("Vägföreningen").Url("/Lottingelund/DocumentVag");
+                      innerChildren.Add().Text("Löttingelundsbladet").Url("/Lottingelund/Leaflet");
+                  });
+
+                  children.Add().Text("Felanmälan").Url("/Lottingelund/ErrorReport");
+                  children.Add().Text("Flytta in/ut").Url("/Lottingelund/Move");
+                  children.Add().Text("Styrelse").Url("/Lottingelund/Board");
+
+              });
+
+          items.Add()
+              .Text("Uthyrning")
+              .Items(children =>
+              {
+                  children.Add().Text("Byggställning").Url("/Rental/Workingplatform");
+                  children.Add().Text("Kajak").Url("/Rental/Kajak");
+                  children.Add().Text("Party").Url("/Rental/Party");
+                  children.Add().Text("Släpvagn").Url("/Rental/Trailer");
+              });
+
           items.Add()
               .Text("LöVA")
               .Items(children =>
-               {
-                   children.Add().Text("VA arbete")
-                           .Items(innerChildren =>
-                           {
-                               innerChildren.Add().Text("Ny Åtgärd").Url("/Lova/AddNewActivity");
-                               innerChildren.Add().Text("VA-rapport").Url("/Lova/WaterDrainReport");
-                           });
+              {
+                  children.Add().Text("VA arbete")
+                          .Items(innerChildren =>
+                          {
+                              innerChildren.Add().Text("Ny Åtgärd").Url("/Lova/AddNewActivity");
+                              innerChildren.Add().Text("VA-rapport").Url("/Lova/WaterDrainReport");
+                          });
 
-                 //  children.Add().Text("Statistik")
-                 //          .Items(innerChildren =>
-                 //          {
-                 //              innerChildren.Add().Text("Larm");
-                 //              innerChildren.Add().Text("Intagsenhet");
-                 //          });
-                 //   children.Add().Text("Dokument");
+                  children.Add().Text("Statistik")
+                          .Items(innerChildren =>
+                          {
+                              innerChildren.Add().Text("Dashboard").Url("/Lova/DashboardDrainPatrol");
+                              innerChildren.Add().Text("Larm");
+                              innerChildren.Add().Text("Intagsenhet").Url("/Lova/StatisticPerWell");
+
+                          });
+                  children.Add().Text("Dokument").Url("/Lova/Documents");
 
 
-               });
+
+              });
+          
+
+
 
       })
 )
@@ -92,5 +130,7 @@
         </div>
     </div>
 </nav>
+
+
 
 

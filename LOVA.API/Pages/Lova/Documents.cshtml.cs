@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace LOVA.API.Pages.Lova
 {
-    [Authorize(Roles = "Lova, Admin, Styrelse")]
+    [Authorize(Roles = "Lova, Admin, Styrelse, VA")]
     public class DocumentsModel : PageModel
     {
         private readonly LovaDbContext _context;

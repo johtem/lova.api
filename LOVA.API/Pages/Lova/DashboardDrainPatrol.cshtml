@@ -18,7 +18,7 @@
 
 
 <div class="row ml-3 mr-5">
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="card">
             <div class="card-header card-header-text card-header-primary">
                 <div class="card-text">
@@ -30,7 +30,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="card">
             <div class="card-header card-header-text card-header-primary">
                 <div class="card-text">
@@ -43,11 +43,11 @@
         </div>
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="card">
             <div class="card-header card-header-text card-header-primary">
                 <div class="card-text">
-                    <h4 class="card-title">3</h4>
+                    <h4 class="card-title">4</h4>
                 </div>
             </div>
             <div class="card-body">
@@ -56,7 +56,7 @@
         </div>
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="card">
             <div class="card-header card-header-text card-header-primary">
                 <div class="card-text">
@@ -68,13 +68,27 @@
             </div>
         </div>
     </div>
+    <div class="col-md-2">
+        <div class="card">
+            <div class="card-header card-header-text card-header-primary">
+                <div class="card-text">
+                    <h4>
+                        @Model.TotalNumberOfActivitiesLast24H
+                    </h4>
+                </div>
+            </div>
+            <div class="card-body">
+                Antal aktiveringar senaste dygnet
+            </div>
+        </div>
+    </div>
 </div>
 
 
 <div class="row ml-3 mr-5">
-    <div class="col-4">
+    <div class="col-3">
         <div class="card">
-            <div class="card-header card-header-danger">
+            <div class="card-header card-header-warning">
                 <h4 class="card-title">Intagsenheter aktivitet</h4>
                 <p class="card-category">Top 5 med datum för senaste aktivering</p>
             </div>
@@ -89,17 +103,17 @@
                     <tbody>
                         @foreach (var kpi in Model.NoActivities)
                         {
-                            <tr>
-                                <td>@kpi.Address</td>
-                                <td>@kpi.Date.ToShortDateString()</td>
-                            </tr>
+                        <tr>
+                            <td>@kpi.Address</td>
+                            <td>@kpi.Date.ToShortDateString()</td>
+                        </tr>
                         }
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    <div class="col-4">
+    <div class="col-3">
         <div class="card">
             <div class="card-header card-header-rose">
                 <h4 class="card-title">Intagsenheter aktivitet</h4>
@@ -117,30 +131,60 @@
                     <tbody>
                         @foreach (var kpi in Model.NumberOfActivities)
                         {
-                            <tr>
-                                <td>@kpi.Address</td>
-                                <td>@kpi.Date.ToShortDateString()</td>
-                                <td>@kpi.Count</td>
-                            </tr>
+                        <tr>
+                            <td>@kpi.Address</td>
+                            <td>@kpi.Date.ToShortDateString()</td>
+                            <td>@kpi.Count</td>
+                        </tr>
                         }
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    <div class="col-4">
+    <div class="col-3">
         <div class="card">
-            <div class="card-header card-header-text card-header-primary">
+            <div class="card-header card-header-text card-header-danger">
                 <div class="card-text">
-                    <h4 class="card-title">Ytterliggare KPI kommer snart</h4>
+                    <h4 class="card-title">Intagsgruppering full</h4>
+                    <p class="card-category">5 senaste med full brunn i någon av grupperingen</p>
                 </div>
             </div>
             <div class="card-body">
-                 Här kommer snart mer info...
+                <table class="table table-hover table-condesed">
+                    <thead class="text-danger">
+                        <tr>
+                            <th>Intagsenhet</th>
+                            <th>Datum</th>
+                            <th>Antal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var kpi in Model.NumberOfActivitiesFull)
+                        {
+                        <tr>
+                            <td>@kpi.Address</td>
+                            <td>@kpi.Date.ToShortDateString()</td>
+                            <td>@kpi.Count</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-
+    <div class="col-3">
+        <div class="card">
+            <div class="card-header card-header-text card-header-primary">
+                <div class="card-text">
+                    <h4 class="card-title">Larm</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                Här kommer snart mer info...
+            </div>
+        </div>
+    </div>
 
 </div>
 

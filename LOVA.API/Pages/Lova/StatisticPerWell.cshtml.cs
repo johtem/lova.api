@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using LOVA.API.Models;
 using LOVA.API.Services;
 using LOVA.API.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace LOVA.API.Pages.Lova
 {
+    [Authorize(Roles = "Lova, Admin, Styrelse, VA")]
     public class StatisticPerWellModel : PageModel
     {
 
@@ -51,17 +53,17 @@ namespace LOVA.API.Pages.Lova
             DateNow = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Central Europe Standard Time"));
 
             // Latest activity
-            LatestActivity = wells.OrderByDescending(a => a.Time).Take(1);
+            LatestActivity = wells.Where(a => a.Active == true).OrderByDescending(a => a.Time).Take(1);
 
             // Number of activity last hour
-            LatestHour = wells.Where(a => a.Time >= DateNow.AddHours(-1)).Count();
+            LatestHour = wells.Where(a => a.Time >= DateNow.AddHours(-1) && a.Active == true).Count();
 
 
             // Number of activity last 3 hour
-            Latest3Hour = wells.Where(a => a.Time >= DateNow.AddHours(-3)).Count();
+            Latest3Hour = wells.Where(a => a.Time >= DateNow.AddHours(-3) && a.Active == true).Count();
 
             // Number of activity last 24 hour
-            Latest24Hour = wells.Where(a => a.Time >= DateNow.AddHours(-24)).Count();
+            Latest24Hour = wells.Where(a => a.Time >= DateNow.AddHours(-24) && a.Active == true).Count();
 
 
             //

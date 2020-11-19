@@ -46,6 +46,10 @@
         {
             <partial name="Menu/_menuAdmin" />
         }
+        else if (SignInManager.IsSignedIn(User) && User.IsInRole("VA"))
+        {
+            <partial name="Menu/_menuVA" />
+        }
         else
         {
             <partial name="Menu/_menu" />

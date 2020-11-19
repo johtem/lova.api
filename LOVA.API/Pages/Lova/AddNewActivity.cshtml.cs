@@ -17,7 +17,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace LOVA.API.Pages.Lova
 {
-    [Authorize(Roles = "Lova, Admin, Styrelse")]
+    [Authorize(Roles = "Lova, Admin, Styrelse, VA")]
     public class AddNewActivityModel : PageModel
     {
         private readonly LovaDbContext _context;
