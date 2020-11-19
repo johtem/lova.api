@@ -38,7 +38,7 @@
 
                     </div>
                     <div class="col">
-                        <button class="btn btn-outline-primary btn-sm" type="submit">Search</button>
+                        <button class="btn btn-outline-primary btn-sm" type="submit">Hämta data</button>
                     </div>
                 </form>
             </nav>
@@ -47,42 +47,69 @@
 
     @if (Model.LatestActivity != null)
 {
-    <div class="row mt-3">
+<div class="row mt-3">
 
-        <div class="col-4">
-            <div class="card">
-                <div class="card-header card-header-danger">
-                    <h4 class="card-title">Statistik aktivering</h4>
-                    <p class="card-category">Tid: @Model.DateNow</p>
-                    @*<p class="card-category">Tid UTC: @Model.DateUtcNow</p>*@
-                </div>
-                <div class="card-body table-responsive">
-                    <table class="table table-condesed">
-                        <tr>
-                            <th>Senaste</th>
-                            <td>@Model.LatestActivity.First().Time</td>
-                        </tr>
-                        <tr>
-                            <th>Antal senaste tim</th>
-                            <td>@Model.LatestHour</td>
-                        </tr>
-                        <tr>
-                            <th>Antal senaste 3 tim</th>
-                            <td>@Model.Latest3Hour</td>
-                        </tr>
-                        <tr>
-                            <th>Antal senaste 24 tim</th>
-                            <td>@Model.Latest24Hour</td>
-                        </tr>
-                    </table>
-                </div>
+    <div class="col-4">
+        <div class="card">
+            <div class="card-header card-header-danger">
+                <h4 class="card-title">Statistik aktivering</h4>
+                <p class="card-category">Tid: @Model.DateNow</p>
+                @*<p class="card-category">Tid UTC: @Model.DateUtcNow</p>*@
             </div>
-
-            <div class="col-4">
-
+            <div class="card-body table-responsive">
+                <table class="table table-condesed table-sm">
+                    <tr>
+                        <th>Senaste</th>
+                        <td>@Model.LatestActivity.First().Time</td>
+                    </tr>
+                    <tr>
+                        <th>Antal senaste tim</th>
+                        <td>@Model.LatestHour</td>
+                    </tr>
+                    <tr>
+                        <th>Antal senaste 3 tim</th>
+                        <td>@Model.Latest3Hour</td>
+                    </tr>
+                    <tr>
+                        <th>Antal senaste 24 tim</th>
+                        <td>@Model.Latest24Hour</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
+    <div class="col-4">
+        <div class="card">
+            <div class="card-header card-header-success">
+                <h4 class="card-title">Statistik aktivering</h4>
+                <p class="card-category">Tid: @Model.DateNow</p>
+                @*<p class="card-category">Tid UTC: @Model.DateUtcNow</p>*@
+            </div>
+            <div class="card-body table-responsive">
+                <table class="table table-condesed table-sm">
+                    <thead>
+                        <tr>
+                            <th>Address</th>
+                            <th>Aktiv</th>
+                            <th>Datum och tid</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var row in Model.Activities)
+                        {
+                            <tr>
+                                <td>@row.Address</td>
+                                <td>@row.Active</td>
+                                <td>@row.Time</td>
+                            </tr>
+                        }
+                    </tbody>
+       
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 }
 
 </div>

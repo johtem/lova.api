@@ -43,6 +43,8 @@ namespace LOVA.API.Pages.Lova
         public DateTime DateNow { get; set; }
         public DateTime DateUtcNow { get; set; }
 
+        public IEnumerable<DrainPatrol> Activities { get; set; }
+
 
         public async Task OnPost()
         {
@@ -67,6 +69,7 @@ namespace LOVA.API.Pages.Lova
 
 
             //
+            Activities = await _context.DrainPatrols.Where(a => a.Address == IssueReportViewModel.WellName).OrderByDescending(a => a.Time).ToListAsync();
         }
 
 
