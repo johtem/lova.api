@@ -9,6 +9,7 @@ namespace LOVA.API.Services
     {
         public const int HoursBackInTime = -48;
         public const int PageSize = 10;
+        public const int DashboardItemSize = 8;
 
 
 

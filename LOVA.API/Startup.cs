@@ -63,6 +63,18 @@ namespace LOVA.API
                 options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
             });
 
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequiredLength = 4;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireDigit = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredUniqueChars = 3;
+            });
+
+
             services.AddSingleton(x => new BlobServiceClient(Configuration.GetConnectionString("LottingelundFiles")));
             services.AddSingleton<IBlobService, BlobService>();
             //services.AddSingleton<IEmailConfiguration>(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());

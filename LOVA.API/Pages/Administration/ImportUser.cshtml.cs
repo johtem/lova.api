@@ -82,10 +82,12 @@ namespace LOVA.API.Pages.Administration
                     }
                     sb.Append("</tr>");
                     sb.AppendLine("<tr>");
-                    var user = new ApplicationUser();
+                    
 
                     for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++)
                     {
+                        var user = new ApplicationUser();
+
                         IRow row = sheet.GetRow(i);
                         if (row == null) continue;
                         if (row.Cells.All(d => d.CellType == CellType.Blank)) continue;
@@ -164,7 +166,7 @@ namespace LOVA.API.Pages.Administration
             if (result.Succeeded)
             {
                 _logger.LogInformation("User created a new account with password.");
-                await _userManager.AddToRoleAsync(user, role.Name);
+                var apa = await _userManager.AddToRoleAsync(user, role.Name);
                 return true;
             }
             else

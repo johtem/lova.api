@@ -26,10 +26,15 @@ namespace LOVA.API.Pages.Lova
         public IEnumerable<WellsDashboardViewModel> NumberOfActivities { get; set; }
         public IEnumerable<WellsDashboardViewModel> NumberOfActivitiesFull { get; set; }
 
+        public IEnumerable<DrainPatrolAlarm> Alarms { get; set; }
+
         public int TotalNumberOfActivitiesLast24H { get; set; }
+        public int TotalNumberOfDrainingLast24H { get; set; }
+
+        public int DashboardItemSize { get; set; } = MyConsts.DashboardItemSize;
 
 
-        public void OnGet()
+        public async Task  OnGet()
         {
             NoActivities = from n in _context.DrainPatrols
                            where n.Active == true
@@ -40,13 +45,16 @@ namespace LOVA.API.Pages.Lova
                                Date = g.Max(t => t.Time)
                            };
 
-            NoActivities = NoActivities.OrderBy(n => n.Date).Take(5);
+            NoActivities = NoActivities.OrderBy(n => n.Date).Take(MyConsts.DashboardItemSize);
 
 
-            TotalNumberOfActivitiesLast24H = _context.DrainPatrols.Where(a => a.Active == true && a.Time >= DateTime.Now.AddDays(-1)).Count();
+            var totalNumberOfActivitiesLast24H = _context.DrainPatrols.Where(a => a.Active == true && a.Time >= DateTime.Now.AddDays(-1));
 
+            TotalNumberOfActivitiesLast24H = totalNumberOfActivitiesLast24H.Count();
 
-            var allNumberOfActivities = _context.DrainPatrols
+            TotalNumberOfDrainingLast24H = totalNumberOfActivitiesLast24H.Where(a => !EF.Functions.Like(a.Address, "%7")  && !EF.Functions.Like(a.Address, "%8")).Count();
+
+            var allNumberOfActivities = await _context.DrainPatrols
                           .Where(a => a.Active == true)
                           .GroupBy(x => new { x.Time.Date, x.Address })
                           .OrderByDescending(g => g.Count())
@@ -56,12 +64,14 @@ namespace LOVA.API.Pages.Lova
                               Date = x.Key.Date,
                               Address = x.Key.Address
                           })
-                          .ToList();
+                          .ToListAsync();
 
 
-            NumberOfActivities = allNumberOfActivities.Where(a => !EF.Functions.Like(a.Address, "%7")).Take(5);
+            NumberOfActivities = allNumberOfActivities.Where(a => !EF.Functions.Like(a.Address, "%7")).Take(MyConsts.DashboardItemSize);
 
-            NumberOfActivitiesFull = allNumberOfActivities.Where(a => EF.Functions.Like(a.Address, "%8")).Take(5);
+            NumberOfActivitiesFull = allNumberOfActivities.Where(a => EF.Functions.Like(a.Address, "%8")).Take(MyConsts.DashboardItemSize);
+
+            Alarms = await _context.DrainPatrolAlarms.OrderByDescending(a => a.TimeStamp).Take(MyConsts.DashboardItemSize).ToListAsync();
         }
     }
 }
