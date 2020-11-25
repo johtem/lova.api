@@ -15,11 +15,37 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <nav class="navbar navbar-light">
-                <a class="navbar-brand offset-2">Statistik per intagsenhet</a>
-                <form class="form-inline" method="post">
-                    <div class="col ml-1">
-                        @(Html.Kendo().AutoComplete()
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                    <a class="navbar-brand offset-2">Statistik per intagsenhet</a>
+                    <form class="form-inline my-2 my-lg-0" method="post">
+                        <div>
+                            @(Html.Kendo().DateTimePicker()
+                            .Name("startDate")
+                            .Value(Model.startDate)
+                            //.Max(DateTime.Now)
+                            //.ParseFormats(new string[] { "MM/dd/yyyy" })
+                            .Events(e => e.Change("startChange"))
+                            .HtmlAttributes(new { style = "width: 100%; font-size: 11px;", title = "datetimepicker" })
+                            .DateInput()
+                            )
+                        </div>
+                        <div>
+                            @(Html.Kendo().DateTimePicker()
+                            .Name("endDate")
+                            .Value(Model.endDate)
+                            .Max(DateTime.Today)
+                            //.ParseFormats(new string[] { "MM/dd/yyyy" })
+                            .Events(e => e.Change("endChange"))
+                            .HtmlAttributes(new { style = "width: 100%; font-size: 11px;", title = "datetimepicker", @class = " ml-1" })
+                            .DateInput()
+                            )
+                        </div>
+                        <div>
+                            @(Html.Kendo().AutoComplete()
                                     .Name("WellName")
                                     .Filter("Startswith")
                                     .MinLength(2)
@@ -34,17 +60,18 @@
                                         })
                                         .ServerFiltering(true);
                                     })
-                                    .HtmlAttributes(new { style= "width:100%; font-size: 11px;", @class="form-control" })
+                                    .HtmlAttributes(new { style= "width:100%; font-size: 11px;", @class=" ml-2 mb-1" })
                                 )
 
-                    </div>
-                    <div class="col">
-                        <button class="btn btn-outline-primary btn-sm" type="submit">Hämta</button>
-                    </div>
-                    <div class="col">
-                        <a asp-page="./DashboardDrainPatrol">Till Dashboard</a>
-                    </div>
-                </form>
+                        </div>
+                        <div>
+                            <button class="btn btn-outline-primary btn-sm ml-3 mr-5" type="submit">Hämta</button>
+                        </div>
+                        <div>
+                            <a asp-page="./DashboardDrainPatrol">Till Dashboard</a>
+                        </div>
+                    </form>
+                </div>
             </nav>
         </div>
     </div>
@@ -52,105 +79,113 @@
     @if (Model.LatestActivity != null)
     {
         <div class="row mt-3">
-
             <div class="col-4">
-                <div class="row">
-                    <div class="card">
-                        <div class="card-header card-header-success">
-                            <h4 class="card-title">Position</h4>
 
-                            @*<p class="card-category">Tid UTC: @Model.DateUtcNow</p>*@
-                        </div>
-                        <div class="card-body table-responsive">
-                            <p>
-                               @Model.PremisesText
-                            </p>
-                            <table class="table table-condesed table-sm">
-                                <thead>
-                                    <tr>
-                                        <th>Intagsenhet</th>
-                                        <th>Fastighet</th>
-                                        <th>Adress</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var row in Model.PremisesPerWell)
-                                    {
-                                        <tr>
-                                            <td>@row.WellName</td>
-                                            <td>@row.Property</td>
-                                            <td>@row.Address</td>
-                                        </tr>
-                                    }
-                                </tbody>
-
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="card">
-                        <div class="card-header card-header-danger">
-                            <h4 class="card-title">Statistik aktivering</h4>
-                            <p class="card-category">Tid: @Model.DateNow</p>
-                            @*<p class="card-category">Tid UTC: @Model.DateUtcNow</p>*@
-                        </div>
-                        <div class="card-body table-responsive">
-                            <table class="table table-condesed table-sm">
-                                <tr>
-                                    <th>Senaste</th>
-                                    <td>@Model.LatestActivity.First().Time</td>
-                                </tr>
-                                <tr>
-                                    <th>Antal senaste tim</th>
-                                    <td>@Model.LatestHour</td>
-                                </tr>
-                                <tr>
-                                    <th>Antal senaste 3 tim</th>
-                                    <td>@Model.Latest3Hour</td>
-                                </tr>
-                                <tr>
-                                    <th>Antal senaste 24 tim</th>
-                                    <td>@Model.Latest24Hour</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-4">
                 <div class="card">
                     <div class="card-header card-header-success">
-                        <h4 class="card-title">Statistik aktivering</h4>
-                        <p class="card-category">Tid: @Model.DateNow</p>
-                        @*<p class="card-category">Tid UTC: @Model.DateUtcNow</p>*@
+                        <h4 class="card-title">Position</h4>
                     </div>
                     <div class="card-body table-responsive">
+                        <p>
+                            @Model.PremisesText
+                        </p>
+
                         <table class="table table-condesed table-sm">
                             <thead>
                                 <tr>
-                                    <th>Address</th>
-                                    <th>Aktiv</th>
-                                    <th>Datum och tid</th>
+                                    <th>Intagsenhet</th>
+                                    <th>Fastighet</th>
+                                    <th>Adress</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var row in Model.Activities)
+                                @foreach (var row in Model.PremisesPerWell)
                                 {
                                     <tr>
+                                        <td>@row.WellName</td>
+                                        <td>@row.Property</td>
                                         <td>@row.Address</td>
-                                        <td>@row.Active</td>
-                                        <td>@row.Time</td>
                                     </tr>
                                 }
                             </tbody>
 
                         </table>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Statistik aktivering</h4>
+                        <p class="card-category">Tid: @Model.DateNow</p>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <table class="table table-condesed table-sm">
+                            <tr>
+                                <th>Senaste</th>
+                                <td>@Model.LatestActivity.First().Time</td>
+                            </tr>
+                            <tr>
+                                <th>Antal senaste tim</th>
+                                <td>@Model.LatestHour</td>
+                            </tr>
+                            <tr>
+                                <th>Antal senaste 3 tim</th>
+                                <td>@Model.Latest3Hour</td>
+                            </tr>
+                            <tr>
+                                <th>Antal senaste 24 tim</th>
+                                <td>@Model.Latest24Hour</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header card-header-primary">
+                        <h4 class="card-title">Statistik aktivering</h4>
+                        <p class="card-category">Tid: @Model.DateNow</p>
+                        @*<p class="card-category">Tid UTC: @Model.DateUtcNow</p>*@
+                    </div>
+                    <div class="card-body table-responsive">
+                        @if (Model.Activities.Count() != 0)
+                        {
+                            <table class="table table-condesed table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Address</th>
+                                        <th>Aktiv</th>
+                                        <th>Datum och tid</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var row in Model.Activities)
+                                    {
+                                        <tr>
+                                            <td>@row.Address</td>
+                                            <td>@row.Active</td>
+                                            <td>@row.Time</td>
+                                        </tr>
+                                    }
+                                </tbody>
+
+                            </table>
+                        }
+                        else
+                        {
+                            <h5 class="text-danger">Ingen data för vald period on intagsenhet!</h5>
+                        }
                     </div>
                 </div>
             </div>
         </div>
+        <div class="row">
+
+        </div>
+
+
     }
 
 </div>
@@ -165,8 +200,31 @@
     <script>
         function onAdditionalData() {
             return {
-                text: $("#WellName").val()
+                text: $("#WellName").val(),
             };
+        }
+
+
+        function startChange() {
+            var endPicker = $("#endDate").data("kendoDateTimePicker"),
+                startDate = this.value();
+
+            if (startDate) {
+                startDate = new Date(startDate);
+                startDate.setDate(startDate.getDate() + 1);
+                endPicker.min(startDate);
+            }
+        }
+
+        function endChange() {
+            var startPicker = $("#startDate").data("kendoDateTimePicker"),
+                endDate = this.value();
+
+            if (endDate) {
+                endDate = new Date(endDate);
+                endDate.setDate(endDate.getDate() - 1);
+                startPicker.max(endDate);
+            }
         }
 
 

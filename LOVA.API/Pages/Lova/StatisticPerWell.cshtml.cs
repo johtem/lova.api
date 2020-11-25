@@ -29,11 +29,18 @@ namespace LOVA.API.Pages.Lova
 
         [BindProperty]
         public string WellName { get; set; }
-      
+
+        [BindProperty]
+        public DateTime startDate { get; set; }
+
+        [BindProperty]
+        public DateTime endDate { get; set; }
+
 
         public async Task OnGet(string id)
         {
-            
+            startDate = DateTime.Now.AddHours(-3);
+            endDate = DateTime.Now;
 
             if (id != null)
             {
@@ -62,9 +69,11 @@ namespace LOVA.API.Pages.Lova
 
                 PremisesPerWell = await GetPropertiesAsync();
 
+                PremisesText = GetPremisesText();
+
 
                 //
-                Activities = await _context.DrainPatrols.Where(a => a.Address == WellName).OrderByDescending(a => a.Time).ToListAsync();
+                Activities = await GetActivitiesAsync();
             }
         }
 
@@ -108,30 +117,24 @@ namespace LOVA.API.Pages.Lova
 
             PremisesPerWell = await GetPropertiesAsync();
 
-            switch (PremisesPerWell.Count())
-            {
-                case 0:
-                    PremisesText = "Ingen data inlagd";
-                    break;
-                case 1:
-                    PremisesText = "Ansluten fastighet";
-                    break;
-                default:
-                    PremisesText = "Anslutna fastigheter";
-                    break;
+            PremisesText = GetPremisesText();
 
-            }
-            
-  
- 
+
+
 
             //
-            Activities = await _context.DrainPatrols.Where(a => a.Address == WellName).OrderByDescending(a => a.Time).ToListAsync();
+            Activities = await GetActivitiesAsync();
+        }
+
+
+        private async Task<IEnumerable<DrainPatrol>> GetActivitiesAsync()
+        {
+            return await _context.DrainPatrols.Where(a => a.Address == WellName && a.Time >= startDate && a.Time <= endDate).OrderByDescending(a => a.Time).ToListAsync();
         }
 
         private async Task<IEnumerable<DrainPatrol>> GetWellRowsAsync()
         {
-            return await _context.DrainPatrols.Where(a => a.Address == WellName).ToListAsync();
+            return await _context.DrainPatrols.Where(a => a.Address == WellName ).ToListAsync();
         }
 
         private async Task<IEnumerable<PremisesPerWellViewModel>> GetPropertiesAsync()
@@ -146,6 +149,24 @@ namespace LOVA.API.Pages.Lova
                     Address = a.Address
                 })
                 .ToListAsync();
+
+
+        }
+
+        private string GetPremisesText()
+        {
+            switch (PremisesPerWell.Count())
+            {
+                case 0:
+                    return "Ingen data inlagd";
+                case 1:
+                    return "Ansluten fastighet";
+
+                default:
+                    return "Anslutna fastigheter";
+
+
+            }
 
 
         }
