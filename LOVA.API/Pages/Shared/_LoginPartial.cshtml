@@ -6,8 +6,20 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
+        @if (User.IsInRole("User"))
+        {
+            @(Html.Kendo().Menu()
+                    .Name("Login")
+                    .Items(items =>
+                    {
+                        items.Add().Text("Välkommen " + @UserManager.GetUserName(User));
 
-        @(Html.Kendo().Menu()
+                    })
+             )
+        }
+        else
+        {
+            @(Html.Kendo().Menu()
                 .Name("Login")
                 .Items(items =>
                 {
@@ -16,21 +28,24 @@
                        {
                            children.Add().Text("Hantera").Url("/Identity/Account/Manage");
                        });
-                    
+
                 })
          )
+        }
+
+
 
 
 
         @*<li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarIdentityDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Välkommen @UserManager.GetUserName(User)!
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarIdentityDropdown">
-                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Hantera</a>
+                <a class="nav-link dropdown-toggle" href="#" id="navbarIdentityDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Välkommen @UserManager.GetUserName(User)!
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarIdentityDropdown">
+                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Hantera</a>
 
-            </div>
-        </li>*@
+                </div>
+            </li>*@
 
         <li class="nav-item">
             <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">

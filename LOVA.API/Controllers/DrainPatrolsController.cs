@@ -29,13 +29,13 @@ namespace LOVA.API.Controllers
 
         //// GET: api/DrainPatrols
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DrainPatrolViewModel>>> GetDrainPatrols()
+        public async Task<ActionResult<IEnumerable<ActivityViewModel>>> GetDrainPatrols()
         {
             // var dateFrom = DateTime.Now.AddHours(MyConsts.HoursBackInTime);
 
-            ActionResult<IEnumerable<DrainPatrolViewModel>> data = await _context.DrainPatrols
+            ActionResult<IEnumerable<ActivityViewModel>> data = await _context.Activities
                 //.Where(a => a.Time > dateFrom)
-                .Select(a => new DrainPatrolViewModel
+                .Select(a => new ActivityViewModel
                 {
                     Master_node = a.Master_node,
                     Index = a.Index,
@@ -50,14 +50,14 @@ namespace LOVA.API.Controllers
 
         // GET: api/activities/byMasterNode?masterNode=1
         [HttpGet("byMasterNode")]
-        public async Task<ActionResult<IEnumerable<DrainPatrolViewModel>>> GetDrainPatrols([FromQuery]int masterNode)
+        public async Task<ActionResult<IEnumerable<ActivityViewModel>>> GetDrainPatrols([FromQuery]int masterNode)
         {
             //var dateFrom = DateTime.Now.AddHours(MyConsts.HoursBackInTime);
 
-            ActionResult<IEnumerable<DrainPatrolViewModel>> data = await _context.DrainPatrols
+            ActionResult<IEnumerable<ActivityViewModel>> data = await _context.Activities
                 //.Where(a => a.Time > dateFrom && a.Master_node == masterNode)
                 .Where(a => a.Master_node == masterNode)
-                .Select(a => new DrainPatrolViewModel
+                .Select(a => new ActivityViewModel
                 {
                     Master_node = a.Master_node,
                     Index = a.Index,
@@ -72,12 +72,12 @@ namespace LOVA.API.Controllers
 
         // GET: api/DrainPatrols?masterNode=1&dateFrom=2020-09-12T12:30:45
         [HttpGet("byMasterNodeAndDateFrom")]
-        public async Task<ActionResult<IEnumerable<DrainPatrolViewModel>>> GetDrainPatrols(int masterNode, DateTime dateFrom)
+        public async Task<ActionResult<IEnumerable<ActivityViewModel>>> GetDrainPatrols(int masterNode, DateTime dateFrom)
         {          
 
-            ActionResult<IEnumerable<DrainPatrolViewModel>> data = await _context.DrainPatrols
+            ActionResult<IEnumerable<ActivityViewModel>> data = await _context.Activities
                 .Where(a => a.Time > dateFrom && a.Master_node == masterNode)
-                .Select(a => new DrainPatrolViewModel
+                .Select(a => new ActivityViewModel
                 {
                     Master_node = a.Master_node,
                     Index = a.Index,
@@ -93,12 +93,12 @@ namespace LOVA.API.Controllers
 
         // GET: api/DrainPatrols?dateFrom=2020-09-12T12:30:45
         [HttpGet("byDateFrom")]
-        public async Task<ActionResult<IEnumerable<DrainPatrolViewModel>>> GetDrainPatrols(DateTime dateFrom)
+        public async Task<ActionResult<IEnumerable<ActivityViewModel>>> GetDrainPatrols(DateTime dateFrom)
         {
 
-            ActionResult<IEnumerable<DrainPatrolViewModel>> data = await _context.DrainPatrols
+            ActionResult<IEnumerable<ActivityViewModel>> data = await _context.Activities
                 .Where(a =>  a.Time > dateFrom)
-                .Select(a => new DrainPatrolViewModel
+                .Select(a => new ActivityViewModel
                 {
                     Master_node = a.Master_node,
                     Index = a.Index,
@@ -114,12 +114,12 @@ namespace LOVA.API.Controllers
 
         // GET: api/DrainPatrols/byMasterNodeAndAddressAndDateFrom?masterNode=1&dateFrom=2020-09-12T12:30:45
         [HttpGet("byMasterNodeAndAddressAndDateFrom")]
-        public async Task<ActionResult<IEnumerable<DrainPatrolViewModel>>> GetDrainPatrols(int masterNode, string address, DateTime dateFrom)
+        public async Task<ActionResult<IEnumerable<ActivityViewModel>>> GetDrainPatrols(int masterNode, string address, DateTime dateFrom)
         {
 
-            ActionResult<IEnumerable<DrainPatrolViewModel>> data = await _context.DrainPatrols
+            ActionResult<IEnumerable<ActivityViewModel>> data = await _context.Activities
                 .Where(a => a.Time > dateFrom && a.Master_node == masterNode && a.Address == address)
-                .Select(a => new DrainPatrolViewModel
+                .Select(a => new ActivityViewModel
                 {
                     Master_node = a.Master_node,
                     Index = a.Index,
@@ -140,7 +140,7 @@ namespace LOVA.API.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<DrainPatrol>> PostDrainPatrol(DrainPatrolViewModel drainPatrolViewModel)
+        public async Task<ActionResult<Activity>> PostDrainPatrol(ActivityViewModel drainPatrolViewModel)
         {
             //string wellName = string.Concat(drainPatrolViewModel.Master_node, drainPatrolViewModel.Address);
 
@@ -151,7 +151,7 @@ namespace LOVA.API.Controllers
             //    return NotFound();
             //}
 
-            var insertData = new DrainPatrol
+            var insertData = new Activity
             {
                // WellId = well.Id,
                 Master_node = drainPatrolViewModel.Master_node,
@@ -163,7 +163,7 @@ namespace LOVA.API.Controllers
 
 
 
-            _context.DrainPatrols.Add(insertData);
+            _context.Activities.Add(insertData);
             await _context.SaveChangesAsync();
 
             return Ok(drainPatrolViewModel);

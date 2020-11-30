@@ -47,7 +47,7 @@ namespace LOVA.API.Pages.Lova
 
                 WellName = id;
 
-                IEnumerable<DrainPatrol> wells = await GetWellRowsAsync();
+                IEnumerable<Activity> wells = await GetWellRowsAsync();
 
                 // Change date to timezone Central Europe Standard Time
                 DateNow = DateTime.Now;
@@ -77,7 +77,7 @@ namespace LOVA.API.Pages.Lova
             }
         }
 
-        public IEnumerable<DrainPatrol> LatestActivity { get; set; }
+        public IEnumerable<Activity> LatestActivity { get; set; }
         public int LatestHour { get; set; }
         public int Latest3Hour { get; set; }
         public int Latest24Hour { get; set; }
@@ -85,7 +85,7 @@ namespace LOVA.API.Pages.Lova
         public DateTime DateNow { get; set; }
         public DateTime DateUtcNow { get; set; }
 
-        public IEnumerable<DrainPatrol> Activities { get; set; }
+        public IEnumerable<Activity> Activities { get; set; }
 
         public IEnumerable<PremisesPerWellViewModel> PremisesPerWell { get; set; }
 
@@ -95,7 +95,7 @@ namespace LOVA.API.Pages.Lova
         public async Task OnPost()
         {
             // var wells = await _context.DrainPatrols.Where(a => a.Address == IssueReportViewModel.WellName).ToListAsync();
-            IEnumerable<DrainPatrol> wells = await GetWellRowsAsync();
+            IEnumerable<Activity> wells = await GetWellRowsAsync();
 
             // Change date to timezone Central Europe Standard Time
             DateNow = DateTime.Now;
@@ -127,14 +127,14 @@ namespace LOVA.API.Pages.Lova
         }
 
 
-        private async Task<IEnumerable<DrainPatrol>> GetActivitiesAsync()
+        private async Task<IEnumerable<Activity>> GetActivitiesAsync()
         {
-            return await _context.DrainPatrols.Where(a => a.Address == WellName && a.Time >= startDate && a.Time <= endDate).OrderByDescending(a => a.Time).ToListAsync();
+            return await _context.Activities.Where(a => a.Address == WellName && a.Time >= startDate && a.Time <= endDate).OrderByDescending(a => a.Time).ToListAsync();
         }
 
-        private async Task<IEnumerable<DrainPatrol>> GetWellRowsAsync()
+        private async Task<IEnumerable<Activity>> GetWellRowsAsync()
         {
-            return await _context.DrainPatrols.Where(a => a.Address == WellName ).ToListAsync();
+            return await _context.Activities.Where(a => a.Address == WellName ).ToListAsync();
         }
 
         private async Task<IEnumerable<PremisesPerWellViewModel>> GetPropertiesAsync()

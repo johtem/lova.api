@@ -19,7 +19,7 @@ namespace LOVA.API.Services
         public DbSet<Well> Wells { get; set; }
         public DbSet<IssueReport> IssueReports { get; set; }
 
-        public DbSet<DrainPatrol> DrainPatrols { get; set; }
+        // public DbSet<DrainPatrol> DrainPatrols { get; set; }
         public DbSet<DrainPatrolAlarm> DrainPatrolAlarms { get; set; }
 
         public DbSet<RentalInventory> RentalInventories { get; set; }
@@ -32,7 +32,9 @@ namespace LOVA.API.Services
 
         public DbSet<UploadFileDirectory> UploadFileDirectories { get; set; }
 
-        
+        public DbSet<Activity> Activities { get; set; }
+
+
 
 
     }

@@ -34,9 +34,9 @@ namespace LOVA.API.Pages.Lova
         public int DashboardItemSize { get; set; } = MyConsts.DashboardItemSize;
 
 
-        public async Task  OnGet()
+        public async Task OnGet()
         {
-            NoActivities = from n in _context.DrainPatrols
+            NoActivities = from n in _context.Activities
                            where n.Active == true
                            group n by n.Address into g
                            select new WellsDashboardViewModel
@@ -45,16 +45,20 @@ namespace LOVA.API.Pages.Lova
                                Date = g.Max(t => t.Time)
                            };
 
-            NoActivities = NoActivities.OrderBy(n => n.Date).Take(MyConsts.DashboardItemSize);
+
+            NoActivities = NoActivities.OrderBy(n => n.Date)
+                                    .Where(a => !EF.Functions.Like(a.Address, "%8"))
+                                    .Where(a => !EF.Functions.Like(a.Address, "%7"))
+                                    .Take(MyConsts.DashboardItemSize);
 
 
-            var totalNumberOfActivitiesLast24H = _context.DrainPatrols.Where(a => a.Active == true && a.Time >= DateTime.Now.AddDays(-1));
+            var totalNumberOfActivitiesLast24H = _context.Activities.Where(a => a.Active == true && a.Time >= DateTime.Now.AddDays(-1));
 
             TotalNumberOfActivitiesLast24H = totalNumberOfActivitiesLast24H.Count();
 
-            TotalNumberOfDrainingLast24H = totalNumberOfActivitiesLast24H.Where(a => !EF.Functions.Like(a.Address, "%7")  && !EF.Functions.Like(a.Address, "%8")).Count();
+            TotalNumberOfDrainingLast24H = totalNumberOfActivitiesLast24H.Where(a => !EF.Functions.Like(a.Address, "%7") && !EF.Functions.Like(a.Address, "%8")).Count();
 
-            var allNumberOfActivities = await _context.DrainPatrols
+            var allNumberOfActivities = await _context.Activities
                           .Where(a => a.Active == true)
                           .GroupBy(x => new { x.Time.Date, x.Address })
                           .OrderByDescending(g => g.Count())

@@ -88,8 +88,7 @@
                     <div class="card-body table-responsive">
                         <p>
                             @Model.PremisesText
-                        </p>
-
+                        </p>                       
                         <table class="table table-condesed table-sm">
                             <thead>
                                 <tr>
@@ -121,24 +120,33 @@
                         <p class="card-category">Tid: @Model.DateNow</p>
                     </div>
                     <div class="card-body table-responsive">
-                        <table class="table table-condesed table-sm">
-                            <tr>
-                                <th>Senaste</th>
-                                <td>@Model.LatestActivity.First().Time</td>
-                            </tr>
-                            <tr>
-                                <th>Antal senaste tim</th>
-                                <td>@Model.LatestHour</td>
-                            </tr>
-                            <tr>
-                                <th>Antal senaste 3 tim</th>
-                                <td>@Model.Latest3Hour</td>
-                            </tr>
-                            <tr>
-                                <th>Antal senaste 24 tim</th>
-                                <td>@Model.Latest24Hour</td>
-                            </tr>
-                        </table>
+                        @if (Model.LatestActivity.Count() != 0)
+                        {
+                            <table class="table table-condesed table-sm">
+                                <tr>
+                                    <th>Senaste</th>
+                                    <td>@Model.LatestActivity.First().Time</td>
+                                </tr>
+                                <tr>
+                                    <th>Antal senaste tim</th>
+                                    <td>@Model.LatestHour</td>
+                                </tr>
+                                <tr>
+                                    <th>Antal senaste 3 tim</th>
+                                    <td>@Model.Latest3Hour</td>
+                                </tr>
+                                <tr>
+                                    <th>Antal senaste 24 tim</th>
+                                    <td>@Model.Latest24Hour</td>
+                                </tr>
+                            </table>
+
+                        }
+                        else
+                        {
+                            <h5 class="text-danger">Ingen data för denna intagsenhet!</h5>
+                        }
+
                     </div>
                 </div>
             </div>
@@ -175,7 +183,7 @@
                         }
                         else
                         {
-                            <h5 class="text-danger">Ingen data för vald period on intagsenhet!</h5>
+                            <h5 class="text-danger">Ingen data för vald period och intagsenhet!</h5>
                         }
                     </div>
                 </div>
