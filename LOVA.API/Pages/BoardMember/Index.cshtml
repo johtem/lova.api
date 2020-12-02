@@ -1,0 +1,64 @@
+﻿@page
+@model LOVA.API.Pages.BoardMember.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <h4>Notifieringar</h4>
+    </div>
+    
+    <div class="row">
+        <p>
+            <a asp-page="Create">Lägg till ny notifiering</a>
+        </p>
+    </div>
+    <div class="row">
+        <table class="table table-condesed">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Notification[0].Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Notification[0].Message)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Notification[0].FromDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Notification[0].ToDate)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Notification)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Message)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FromDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ToDate)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.Id">Ändra</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.Id">Ta bort</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+    
+</div>
+

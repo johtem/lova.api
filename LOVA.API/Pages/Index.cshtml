@@ -5,11 +5,23 @@
 }
 
 @*<style type="text/css">
-    .w-100 {
-        width: 820px !important;
-        height: 360px;
-    }
-</style>*@
+        .w-100 {
+            width: 820px !important;
+            height: 360px;
+        }
+    </style>*@
+
+@(Html.Kendo().Notification()
+        .Name("notification")
+        .Position(p => p.Pinned(true).Top(30).Right(30))
+    .Stacking(NotificationStackingSettings.Down)
+    .AutoHideAfter(0)
+    .Templates(t =>
+    {
+        t.Add().Type("info").ClientTemplateID("emailTemplate");
+    })
+)
+
 
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
@@ -81,8 +93,8 @@
         <p class="lead">I Löttingelund tar vi hand om våra egna vägar och vi har ett eget VA-system. Allt sköts av våra villaföreningar. Vi har en Tomtförening, en VA-förening och en Vägförening. Anslutning till villaföreningarna är obligatoriskt och föreningarnas arbete betalas genom att varje villaägare kvartalsvis betalar föreningsavgifter.</p>
     </div>
     @*<div class="col-md-5">
-        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
-    </div>*@
+            <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+        </div>*@
 </div>
 
 <hr class="featurette-divider">
@@ -120,21 +132,118 @@
     </div><!-- /.row -->
 
 
-
-
 </div>
 
 
+<script id="emailTemplate" type="text/x-kendo-template">
+    <div class="new-mail">
+        <img src="@Url.Content("~/Images/envelope.png")" />
+        <h3>#= title #</h3>
+        <p>#= message #</p>
+    </div>
+</script>
 
 
-<!--
 
-<div class="row">
-    <component type="typeof(LOVA.API.Components.Counter)" param-InitialValue="0" render-mode="Server" />
-</div>
 
-@section Scripts {
-    <script src="_framework/blazor.server.js"></script>
+@{
+    var RazorData = Model.Notifications;
 }
 
-    -->
+
+@section Scripts {
+    @*<script src="_framework/blazor.server.js"></script>*@
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+
+        var notification = $("#notification").data("kendoNotification");
+
+        var data = JSON.parse('@Json.Serialize(@Model.Notifications)');
+
+        console.log(data);
+
+        jQuery.each(data, notisFunction);
+
+        function notisFunction(index, item) {
+            notification.show({
+                title: item.Title,
+                message: item.Message
+                }, "info");
+        }
+
+
+
+    });
+    </script>
+
+}
+
+
+
+<style>
+
+
+
+
+    /* Notifications */
+
+    .k-notification {
+        background-color: #0058E9;
+        color: white;
+    }
+
+        .k-notification h3 {
+            padding: 30px 10px 5px;
+            font-size: 1em;
+            line-height: normal;
+        }
+
+        .k-notification img {
+            margin: 20px;
+            float: left;
+        }
+
+
+    /* Info template */
+    .new-mail {
+        width: 500px;
+        height: 120px;
+    }
+
+
+
+
+    /* For Bootstrap v4 theme */
+    .k-bootstrap-v4 .k-notification h3 {
+        padding: 10px 10px 5px;
+    }
+
+    .k-bootstrap-v4 .k-notification img {
+        margin: 10px 20px 0 0;
+    }
+
+    .k-bootstrap-v4 .new-mail,
+    .k-bootstrap-v4 .wrong-pass,
+    .k-bootstrap-v4 .upload-success {
+        width: calc( 300px - 2.5rem );
+        height: calc( 100px - 1.5rem );
+    }
+
+
+    /* For Material v2 theme */
+    .k-material-v2 .k-notification h3 {
+        padding: 10px 10px 5px;
+    }
+
+    .k-material-v2 .k-notification img {
+        margin: 10px 20px 0 0;
+    }
+
+    .k-material-v2 .new-mail,
+    .k-material-v2 .wrong-pass,
+    .k-material-v2 .upload-success {
+        width: 270px;
+        height: 70px;
+    }
+</style>

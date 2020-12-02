@@ -1,0 +1,43 @@
+﻿@page
+@model LOVA.API.Pages.BoardMember.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Notification</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Notification.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Notification.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Notification.Message)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Notification.Message)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Notification.FromDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Notification.FromDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Notification.ToDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Notification.ToDate)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Notification.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

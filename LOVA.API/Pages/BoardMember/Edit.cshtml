@@ -1,0 +1,62 @@
+﻿@page
+@model LOVA.API.Pages.BoardMember.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <h4>Ändra notifiering</h4>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Notification.Id" />
+                <div class="form-group">
+                    <label asp-for="Notification.Title" class="control-label">Titel</label>
+                    <input asp-for="Notification.Title" class="form-control" />
+                    <span asp-validation-for="Notification.Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Notification.Message" class="control-label">Meddelande</label>
+                    <input asp-for="Notification.Message" class="form-control" />
+                    <span asp-validation-for="Notification.Message" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Notification.FromDate" class="control-label">Datum från</label>
+                    @(Html.Kendo().DateTimePicker()
+                      .Name("Notification.FromDate")
+                      .Value(@Model.Notification.FromDate)
+                      .HtmlAttributes(new { style = "width:100%;" })
+                    )
+                    <span asp-validation-for="Notification.FromDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Notification.ToDate" class="control-label">Datum till</label>
+                    @(Html.Kendo().DateTimePicker()
+                      .Name("Notification.ToDate")
+                      .Value(@Model.Notification.ToDate)
+                      .HtmlAttributes(new { style = "width:100%;" })
+                    )
+                    <span asp-validation-for="Notification.ToDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Spara" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-page="./Index">Tillbaka till listan</a>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

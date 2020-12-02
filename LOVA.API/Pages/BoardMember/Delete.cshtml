@@ -1,0 +1,53 @@
+﻿@page
+@model LOVA.API.Pages.BoardMember.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <h4>Ta bort</h4>
+    </div>
+    
+    <div class="row mt-2">
+        <h6>Är du säkert på att du vill ta bort denna notifiering?</h6>
+    </div>
+    
+    <div class="row mt-5">
+
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Notification.Title)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Notification.Title)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Notification.Message)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Notification.Message)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Notification.FromDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Notification.FromDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Notification.ToDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Notification.ToDate)
+            </dd>
+        </dl>
+
+        <form method="post">
+            <input type="hidden" asp-for="Notification.Id" />
+            <input type="submit" value="Ta bort" class="btn btn-danger btn-sm" /> |
+            <a asp-page="./Index">Tillbaka till listan</a>
+        </form>
+    </div>
+</div>
+
