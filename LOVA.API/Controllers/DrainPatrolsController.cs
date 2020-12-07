@@ -10,6 +10,7 @@ using LOVA.API.Services;
 using LOVA.API.ViewModels;
 using LOVA.API.Filter;
 using System.ComponentModel;
+using Microsoft.Azure.Cosmos.Table;
 
 namespace LOVA.API.Controllers
 {
@@ -142,14 +143,6 @@ namespace LOVA.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Activity>> PostDrainPatrol(ActivityViewModel drainPatrolViewModel)
         {
-            //string wellName = string.Concat(drainPatrolViewModel.Master_node, drainPatrolViewModel.Address);
-
-            //var well = await _context.Wells.Where(a => a.WellName == wellName).FirstOrDefaultAsync();
-
-            //if (well == null )
-            //{
-            //    return NotFound();
-            //}
 
             var insertData = new Activity
             {
@@ -163,7 +156,45 @@ namespace LOVA.API.Controllers
 
 
 
-            _context.Activities.Add(insertData);
+
+
+
+            // Save data in Table Storage
+
+            // Create or reference an existing table
+            CloudTable table = await TableStorageCommon.CreateTableAsync("Drains");
+
+            DrainTableStorageEntity drain = new DrainTableStorageEntity(drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
+
+            if (drainPatrolViewModel.Active)
+            {
+                drain.TimeUp = drainPatrolViewModel.Time;
+                drain.TimeDown = drainPatrolViewModel.Time;
+
+                await TableStorageUtils.InsertOrMergeEntityAsync(table, drain);
+
+            }
+            else
+            {
+                drain = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
+                drain.TimeDown = drainPatrolViewModel.Time;
+                //await TableStorageUtils.InsertOrMergeEntityAsync(table, drain);
+
+                var perRowData = new ActivityPerRow
+                {
+                    Address = drain.RowKey,
+                    TimeUp = drain.TimeUp,
+                    TimeDown = drain.TimeDown,
+                    TimeDiff = drain.TimeDown.Subtract(drain.TimeUp).Milliseconds
+                };
+
+                _context.ActivityPerRows.Add(perRowData);
+                await _context.SaveChangesAsync();
+            }
+
+
+            // Save activity in Azure SQL
+           _context.Activities.Add(insertData);
             await _context.SaveChangesAsync();
 
             return Ok(drainPatrolViewModel);

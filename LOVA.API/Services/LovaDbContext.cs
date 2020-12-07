@@ -36,6 +36,8 @@ namespace LOVA.API.Services
 
         public DbSet<Notification> Notifications { get; set; }
 
+        public DbSet<ActivityPerRow> ActivityPerRows { get; set; }
+
 
 
 
