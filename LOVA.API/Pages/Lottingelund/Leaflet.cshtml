@@ -20,14 +20,14 @@
         </div>
     </div>
     <div class="row mt-5">
-        <div class="col-3">
+        <div class="col-2">
 
         </div>
-        <div class="col-7">
+        <div class="col-8">
             <div class="row col-12">
                 @(Html.Kendo().FileManager()
         .Name("filemanager")
-        //.Views(v => v.Grid(grid => grid.Columns(cols => cols.Add().Field(Path))))
+        .InitialView("grid")
         .Width(1100)
         .Height(600)
     .DataSource(ds =>
@@ -45,7 +45,7 @@
         //items.Add("upload");
         items.Add("sortDirection");
         items.Add("sortField");
-        items.Add("changeView");
+        //items.Add("changeView");
         items.Add("spacer");
         items.Add("details");
         items.Add("search");
@@ -111,7 +111,7 @@
             filemanager.toolbar.fileManagerDetailsToggle.switchInstance.toggle();
 
 
-            filemanager.view("list");
+            
 
 
         })

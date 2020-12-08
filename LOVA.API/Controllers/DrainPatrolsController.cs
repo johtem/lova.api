@@ -159,13 +159,14 @@ namespace LOVA.API.Controllers
 
 
 
-            // Save data in Table Storage
+            // Save data temporary in Table Storage to flatten out the data.
 
             // Create or reference an existing table
             CloudTable table = await TableStorageCommon.CreateTableAsync("Drains");
 
             DrainTableStorageEntity drain = new DrainTableStorageEntity(drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
 
+            // Store data in Azure table if Active == true
             if (drainPatrolViewModel.Active)
             {
                 drain.TimeUp = drainPatrolViewModel.Time;
@@ -176,9 +177,11 @@ namespace LOVA.API.Controllers
             }
             else
             {
+                // Get data from Azure table and store data in one row on ActivityPerRow
+
                 drain = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
                 drain.TimeDown = drainPatrolViewModel.Time;
-                //await TableStorageUtils.InsertOrMergeEntityAsync(table, drain);
+                
 
                 var perRowData = new ActivityPerRow
                 {

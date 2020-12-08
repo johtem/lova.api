@@ -9,15 +9,22 @@
 @Html.AntiForgeryToken()
 
 
-<div class="container mt-2">
-    <div class="row offset-4">
-        <h4>LöVA dokument</h4>
+<div class="container-fluid mt-2">
+    <div class="row">
+        <div class="col-12">
+            <h4 class="text-center">LöVA dokument</h4>
+        </div>
     </div>
 
-    <div class="row mt-5">
-        @(Html.Kendo().FileManager().Name("filemanager")
+    <div class="row">
+        <div class="col-2">
+
+        </div>
+        <div class="col-8">
+            @(Html.Kendo().FileManager().Name("filemanager")
         .Width(1100)
         .Height(600)
+        .InitialView("grid")
     .DataSource(ds =>
         {
             ds.Read(operation => operation
@@ -33,11 +40,11 @@
         //items.Add("upload");
         items.Add("sortDirection");
         items.Add("sortField");
-        items.Add("changeView");
-        //items.Add("spacer");
+        //items.Add("changeView");
+        items.Add("spacer");
         items.Add("details");
         items.Add("search");
-    })) 
+    }))
     .Events(events => events.Open("onOpen"))
     .ContextMenu(context => context.Items(items =>
     {
@@ -46,13 +53,21 @@
     }))
 )
 
+        </div>
+        <div class="col-2">
+            <partial name="_InstructionOpenDocument" />
+        </div>
 
     </div>
+
+
+
 
 </div>
 
 @section Scripts {
     <script>
+
         function forgeryToken() {
             return kendo.antiForgeryTokens();
         }
@@ -86,8 +101,6 @@
 
             filemanager.executeCommand({ command: "TogglePaneCommand", options: { type: "preview" } });
             filemanager.toolbar.fileManagerDetailsToggle.switchInstance.toggle();
-
-
 
 
 

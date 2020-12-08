@@ -46,7 +46,7 @@
         //items.Add("upload");
         items.Add("sortDirection");
         items.Add("sortField");
-        items.Add("changeView");
+        //items.Add("changeView");
         items.Add("spacer");
         items.Add("details");
         items.Add("search");
@@ -111,7 +111,7 @@
             filemanager.executeCommand({ command: "TogglePaneCommand", options: { type: "preview" } });
             filemanager.toolbar.fileManagerDetailsToggle.switchInstance.toggle();
 
-
+            filemanager.view("grid");
 
 
 
