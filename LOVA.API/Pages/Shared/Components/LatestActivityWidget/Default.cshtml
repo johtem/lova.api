@@ -1,0 +1,27 @@
+﻿@model IEnumerable<WellsDashboardViewModel>
+
+<div class="card">
+    <div class="card-header card-header-warning">
+        <h4 class="card-title">Intagsenheter aktivitet</h4>
+        <p class="card-category">Top @Model.Count() med datum för senaste aktivering</p>
+    </div>
+    <div class="card-body table-responsive">
+        <table class="table table-hover table-condesed table-sm">
+            <thead class="text-danger">
+                <tr>
+                    <th>Intagsenhet</th>
+                    <th>Datum</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var kpi in Model)
+                {
+                    <tr>
+                        <td><a asp-page="./StatisticPerWell" asp-route-id="@kpi.Address">  @kpi.Address</a></td>
+                        <td>@kpi.Date.ToShortDateString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

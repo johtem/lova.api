@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LOVA.API.Pages.Lova
+namespace LOVA.API.ViewModels
 {
     public class WellsDashboardViewModel
     {

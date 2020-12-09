@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Kendo.Mvc.Extensions;
 using LOVA.API.Models;
 using LOVA.API.Services;
+using LOVA.API.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -22,7 +23,6 @@ namespace LOVA.API.Pages.Lova
             _context = context;
         }
 
-        public IEnumerable<WellsDashboardViewModel> NoActivities { get; set; }
         public IEnumerable<WellsDashboardViewModel> NumberOfActivities { get; set; }
         public IEnumerable<WellsDashboardViewModel> NumberOfActivitiesFull { get; set; }
 
@@ -36,20 +36,6 @@ namespace LOVA.API.Pages.Lova
 
         public async Task OnGet()
         {
-            NoActivities = from n in _context.Activities
-                           where n.Active == true
-                           group n by n.Address into g
-                           select new WellsDashboardViewModel
-                           {
-                               Address = g.Key,
-                               Date = g.Max(t => t.Time)
-                           };
-
-
-            NoActivities = NoActivities.OrderBy(n => n.Date)
-                                    .Where(a => !EF.Functions.Like(a.Address, "%8"))
-                                    .Where(a => !EF.Functions.Like(a.Address, "%7"))
-                                    .Take(MyConsts.DashboardItemSize);
 
 
             var totalNumberOfActivitiesLast24H = _context.Activities.Where(a => a.Active == true && a.Time >= DateTime.Now.AddDays(-1));

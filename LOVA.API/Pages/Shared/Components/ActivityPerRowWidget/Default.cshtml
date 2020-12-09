@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ActivityPerRow>
+@{ 
+    var dateNow = DateTime.Now;
+}
+
+
+<div class="card">
+    <div class="card-header card-header-primary">
+        <h4 class="card-title">Statistik aktivering</h4>
+        <p class="card-category">Tid: @dateNow</p>
+        @*<p class="card-category">Tid UTC: @Model.DateUtcNow</p>*@
+    </div>
+    <div class="card-body table-responsive">
+        @if (Model.Count() != 0)
+        {
+            <table class="table table-condesed table-sm">
+                <thead>
+                    <tr>
+                        <th>Address</th>
+                        <th>Aktivering start</th>
+                        <th>Aktivering av</th>
+                        <th>Aktiveringstid (sek)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model)
+                    {
+                        <tr>
+                            <td>@row.Address</td>
+                            <td>@row.TimeUp</td>
+                            <td>@row.TimeDown</td>
+                            <td>@((row.TimeDown - row.TimeUp).TotalSeconds)</td>
+                            
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        }
+        else
+        {
+            <h5 class="text-danger">Ingen data för vald period och intagsenhet!</h5>
+        }
+    </div>
+</div>

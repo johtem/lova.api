@@ -102,7 +102,10 @@
 
 <div class="row ml-3 mr-5">
     <div class="col-3">
-        <div class="card">
+        @await Component.InvokeAsync("LatestActivityWidget", new { dashboardItemSize = @Model.DashboardItemSize })
+
+
+        @*<div class="card">
             <div class="card-header card-header-warning">
                 <h4 class="card-title">Intagsenheter aktivitet</h4>
                 <p class="card-category">Top @Model.DashboardItemSize med datum för senaste aktivering</p>
@@ -118,15 +121,15 @@
                     <tbody>
                         @foreach (var kpi in Model.NoActivities)
                         {
-                        <tr>
-                            <td><a asp-page="./StatisticPerWell" asp-route-id="@kpi.Address">  @kpi.Address</a></td>
-                            <td>@kpi.Date.ToShortDateString()</td>
-                        </tr>
+                            <tr>
+                                <td><a asp-page="./StatisticPerWell" asp-route-id="@kpi.Address">  @kpi.Address</a></td>
+                                <td>@kpi.Date.ToShortDateString()</td>
+                            </tr>
                         }
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div>*@
     </div>
     <div class="col-3">
         <div class="card">

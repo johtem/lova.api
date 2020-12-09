@@ -150,43 +150,15 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4">
-                <div class="card">
-                    <div class="card-header card-header-primary">
-                        <h4 class="card-title">Statistik aktivering</h4>
-                        <p class="card-category">Tid: @Model.DateNow</p>
-                        @*<p class="card-category">Tid UTC: @Model.DateUtcNow</p>*@
-                    </div>
-                    <div class="card-body table-responsive">
-                        @if (Model.Activities.Count() != 0)
-                        {
-                            <table class="table table-condesed table-sm">
-                                <thead>
-                                    <tr>
-                                        <th>Address</th>
-                                        <th>Aktiv</th>
-                                        <th>Datum och tid</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var row in Model.Activities)
-                                    {
-                                        <tr>
-                                            <td>@row.Address</td>
-                                            <td>@row.Active</td>
-                                            <td>@row.Time</td>
-                                        </tr>
-                                    }
-                                </tbody>
 
-                            </table>
-                        }
-                        else
-                        {
-                            <h5 class="text-danger">Ingen data för vald period och intagsenhet!</h5>
-                        }
-                    </div>
-                </div>
+            @{ 
+                DateTime sd = Model.startDate;
+                DateTime ed = Model.endDate;
+            }
+
+            <div class="col-4">
+                @await Component.InvokeAsync("ActivityPerRowWidget", new { startDate = sd, endDate = ed, address = Model.WellName})
+
             </div>
         </div>
         <div class="row">

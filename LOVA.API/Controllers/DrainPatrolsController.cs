@@ -154,11 +154,6 @@ namespace LOVA.API.Controllers
                 Active = drainPatrolViewModel.Active
             };
 
-
-
-
-
-
             // Save data temporary in Table Storage to flatten out the data.
 
             // Create or reference an existing table
@@ -186,9 +181,9 @@ namespace LOVA.API.Controllers
                 var perRowData = new ActivityPerRow
                 {
                     Address = drain.RowKey,
-                    TimeUp = drain.TimeUp,
+                    TimeUp = drain.TimeUp.AddHours(1),
                     TimeDown = drain.TimeDown,
-                    TimeDiff = drain.TimeDown.Subtract(drain.TimeUp).Milliseconds
+                    TimeDiff = (drain.TimeDown - drain.TimeUp.AddHours(1)).TotalMilliseconds
                 };
 
                 _context.ActivityPerRows.Add(perRowData);

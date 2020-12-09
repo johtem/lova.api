@@ -119,11 +119,12 @@ namespace LOVA.API.Pages.Lova
 
             PremisesText = GetPremisesText();
 
-
+            startDate = startDate;
+            endDate = endDate;
 
 
             //
-            Activities = await GetActivitiesAsync();
+           // Activities = await GetActivitiesAsync();
         }
 
 
