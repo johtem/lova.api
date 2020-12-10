@@ -1,5 +1,6 @@
 ﻿using LOVA.API.Models;
 using LOVA.API.Services;
+using LOVA.API.ViewModels.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,17 +19,26 @@ namespace LOVA.API.Pages.Shared.Components.ActivityPerRowWidget
             _context = context;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(DateTime startDate, DateTime endDate, string address)
+        
+
+        public async Task<IViewComponentResult> InvokeAsync(DateTime startDate, DateTime endDate, List<string> address)
         {
 
-            IEnumerable<ActivityPerRow> response = await GetActivitiesAsync(startDate, endDate, address);
+            ActivityPerRowWidgetViewModel response = new ActivityPerRowWidgetViewModel();
+
+            response.ActivityPerRows = await GetActivitiesAsync(startDate, endDate, address);
+
+            response.StartDate = startDate;
+            response.EndDate = endDate;
+
+            var apa = response.ActivityPerRows.Count();
 
             return View("Default", response);
         }
 
-        private async Task<IEnumerable<ActivityPerRow>> GetActivitiesAsync(DateTime startDate, DateTime endDate, string address)
+        private async Task<IEnumerable<ActivityPerRow>> GetActivitiesAsync(DateTime startDate, DateTime endDate, List<string> addresses)
         {
-            return await _context.ActivityPerRows.Where(a => a.Address == address && a.TimeUp >= startDate && a.TimeUp <= endDate).OrderByDescending(a => a.TimeUp).ToArrayAsync();
+            return await _context.ActivityPerRows.Where(a => addresses.Contains(a.Address) && a.TimeUp >= startDate && a.TimeUp <= endDate).OrderByDescending(a => a.TimeUp).ToArrayAsync();
         }
     }
 }

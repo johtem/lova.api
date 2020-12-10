@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Text.Json;
 using System.Threading.Tasks;
 using LOVA.API.Models;
 using LOVA.API.Services;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace LOVA.API.Pages.Lova
 {
@@ -31,6 +33,9 @@ namespace LOVA.API.Pages.Lova
         public string WellName { get; set; }
 
         [BindProperty]
+        public List<string> Brunnar { get; set; } = new List<string>();
+
+        [BindProperty]
         public DateTime startDate { get; set; }
 
         [BindProperty]
@@ -46,6 +51,9 @@ namespace LOVA.API.Pages.Lova
             {
 
                 WellName = id;
+                Brunnar.Add(id);
+
+                // PredefinedWells = await GetPredefinedWellsAsync();
 
                 IEnumerable<Activity> wells = await GetWellRowsAsync();
 
@@ -72,9 +80,12 @@ namespace LOVA.API.Pages.Lova
                 PremisesText = GetPremisesText();
 
 
+               
+
                 //
-                Activities = await GetActivitiesAsync();
+                // Activities = await GetActivitiesAsync();
             }
+
         }
 
         public IEnumerable<Activity> LatestActivity { get; set; }
@@ -94,6 +105,7 @@ namespace LOVA.API.Pages.Lova
 
         public async Task OnPost()
         {
+
             // var wells = await _context.DrainPatrols.Where(a => a.Address == IssueReportViewModel.WellName).ToListAsync();
             IEnumerable<Activity> wells = await GetWellRowsAsync();
 
@@ -119,36 +131,31 @@ namespace LOVA.API.Pages.Lova
 
             PremisesText = GetPremisesText();
 
-            startDate = startDate;
-            endDate = endDate;
+           // PredefinedWells = await GetPredefinedWellsAsync();
 
 
-            //
-           // Activities = await GetActivitiesAsync();
         }
 
 
-        private async Task<IEnumerable<Activity>> GetActivitiesAsync()
-        {
-            return await _context.Activities.Where(a => a.Address == WellName && a.Time >= startDate && a.Time <= endDate).OrderByDescending(a => a.Time).ToListAsync();
-        }
 
         private async Task<IEnumerable<Activity>> GetWellRowsAsync()
         {
-            return await _context.Activities.Where(a => a.Address == WellName ).ToListAsync();
+            return await _context.Activities.Where(a => Brunnar.Contains(a.Address) && a.Time >= endDate.AddDays(-2) && a.Time <= endDate).ToListAsync();
         }
 
         private async Task<IEnumerable<PremisesPerWellViewModel>> GetPropertiesAsync()
         {
             return await _context.Premises
                 .Include(a => a.Well)
-                .Where(a => a.Well.WellName == WellName)
+                //.Where(a => a.Well.WellName == WellName)
+                .Where(a => Brunnar.Contains(a.Well.WellName))
                 .Select(a => new PremisesPerWellViewModel
                 { 
                     WellName = a.Well.WellName,
                     Property = a.Property,
                     Address = a.Address
                 })
+                .OrderBy(a => a.WellName)
                 .ToListAsync();
 
 

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ActivityPerRow>
+﻿@model LOVA.API.ViewModels.Components.ActivityPerRowWidgetViewModel
 @{ 
     var dateNow = DateTime.Now;
 }
@@ -7,11 +7,11 @@
 <div class="card">
     <div class="card-header card-header-primary">
         <h4 class="card-title">Statistik aktivering</h4>
-        <p class="card-category">Tid: @dateNow</p>
+        <p class="card-category">@Model.StartDate och @Model.EndDate</p>
         @*<p class="card-category">Tid UTC: @Model.DateUtcNow</p>*@
     </div>
     <div class="card-body table-responsive">
-        @if (Model.Count() != 0)
+        @if (Model.ActivityPerRows.Count() != 0)
         {
             <table class="table table-condesed table-sm">
                 <thead>
@@ -23,7 +23,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var row in Model)
+                    @foreach (var row in Model.ActivityPerRows)
                     {
                         <tr>
                             <td>@row.Address</td>
