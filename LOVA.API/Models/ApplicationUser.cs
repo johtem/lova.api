@@ -28,7 +28,9 @@ namespace LOVA.API.Models
         public string Phone { get; set; }
         public string Phone2 { get; set; }
 
+        public int LoginCount { get; set; }
 
+        public DateTime LastLogin { get; set; }
 
 
 

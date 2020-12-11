@@ -92,7 +92,11 @@ namespace LOVA.API.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User logged in.");
 
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    user.LastLogin = DateTime.Now;
+                    user.LoginCount = user.LoginCount + 1;
 
+                    await _userManager.UpdateAsync(user);
 
                     return LocalRedirect(returnUrl);
                 }
