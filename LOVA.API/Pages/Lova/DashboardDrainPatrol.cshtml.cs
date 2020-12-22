@@ -38,9 +38,9 @@ namespace LOVA.API.Pages.Lova
         {
 
 
-            var totalNumberOfActivitiesLast24H = _context.Activities.Where(a => a.Active == true && a.Time >= DateTime.Now.AddDays(-1));
+            var totalNumberOfActivitiesLast24H = _context.ActivityPerRows.Where(a => a.TimeUp >= DateTime.Now.AddDays(-1));
 
-            TotalNumberOfActivitiesLast24H = totalNumberOfActivitiesLast24H.Count();
+           // TotalNumberOfActivitiesLast24H = totalNumberOfActivitiesLast24H.Count();
 
             TotalNumberOfDrainingLast24H = totalNumberOfActivitiesLast24H.Where(a => !EF.Functions.Like(a.Address, "%7") && !EF.Functions.Like(a.Address, "%8")).Count();
 

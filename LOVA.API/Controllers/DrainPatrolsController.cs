@@ -11,6 +11,7 @@ using LOVA.API.ViewModels;
 using LOVA.API.Filter;
 using System.ComponentModel;
 using Microsoft.Azure.Cosmos.Table;
+using LOVA.API.Extensions;
 
 namespace LOVA.API.Controllers
 {
@@ -166,6 +167,22 @@ namespace LOVA.API.Controllers
             {
                 drain.TimeUp = drainPatrolViewModel.Time;
                 drain.TimeDown = drainPatrolViewModel.Time;
+
+
+                // Add hourly counter
+
+               var drainExistingRow = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
+                
+                if (DateExtensions.NewHour(drain.TimeUp, drainExistingRow.TimeUp))
+                {
+                    drain.HourlyCount = drainExistingRow.HourlyCount + 1;
+                }
+                else
+                {
+                    drain.HourlyCount = 1;
+                }
+
+                // End hourly counter
 
                 await TableStorageUtils.InsertOrMergeEntityAsync(table, drain);
 

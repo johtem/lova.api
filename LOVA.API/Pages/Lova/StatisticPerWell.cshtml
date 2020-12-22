@@ -15,20 +15,20 @@
 <div class="container-fluid">
     <div class="row mt-5">
         <div class="col-12 offset-1">
-                    <form class="form-inline my-2 my-lg-0" method="post">
-                        <div class="form-group">
-                            <label>Från:</label>
-                            @(Html.Kendo().DateTimePicker()
+            <form class="form-inline my-2 my-lg-0" method="post">
+                <div class="form-group">
+                    <label>Från:</label>
+                    @(Html.Kendo().DateTimePicker()
                             .Name("startDate")
                             .Value(Model.startDate)
                             .Events(e => e.Change("startChange"))
                             .HtmlAttributes(new { style = "width: 100%; font-size: 11px;", title = "datetimepicker" })
                             .DateInput()
                             )
-                        </div>
-                        <div class="form-group">
-                            <label>Till:</label>
-                            @(Html.Kendo().DateTimePicker()
+                </div>
+                <div class="form-group">
+                    <label>Till:</label>
+                    @(Html.Kendo().DateTimePicker()
                             .Name("endDate")
                             .Value(Model.endDate)
                             //.Max(DateTime.Today)
@@ -36,10 +36,10 @@
                             .HtmlAttributes(new { style = "width: 100%; font-size: 11px;", title = "datetimepicker", @class = " ml-1" })
                             .DateInput()
                             )
-                        </div>
-                        <div class="form-group col-4">
-                            <label>Intagsenhet/Intagsenheter</label>
-                            @(Html.Kendo().MultiSelect()
+                </div>
+                <div class="form-group col-4">
+                    <label>Intagsenhet/Intagsenheter</label>
+                    @(Html.Kendo().MultiSelect()
                                     .Name("Brunnar")
                                     .Filter("Startswith")
                                     .DataTextField("WellName")
@@ -59,100 +59,124 @@
                                     .HtmlAttributes(new { style= "width:100%; font-size: 11px;" })
                                 )
 
-                        </div>
-                        <div>
-                            <button class="btn btn-outline-primary btn-sm ml-3 mr-5 mt-3" type="submit">Hämta</button>
-                        </div>
-                        <div class="mt-3">
-                            <a asp-page="./DashboardDrainPatrol">Till Dashboard</a>
-                        </div>
-                    </form>
-    
+                </div>
+                <div>
+                    <button class="btn btn-outline-primary btn-sm ml-3 mr-5 mt-3" type="submit">Hämta</button>
+                </div>
+                <div class="mt-3">
+                    <a asp-page="./DashboardDrainPatrol">Till Dashboard</a>
+                </div>
+            </form>
+
         </div>
     </div>
 
     @if (Model.LatestActivity != null)
     {
         <div class="row mt-5">
-            <div class="col-4">
+            <div class="col-8">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header card-header-success">
+                                <h4 class="card-title">Position</h4>
+                            </div>
+                            <div class="card-body table-responsive">
+                                <p>
+                                    @Model.PremisesText
+                                </p>
+                                <table class="table table-condesed table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Intagsenhet</th>
+                                            <th>Fastighet</th>
+                                            <th>Adress</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var row in Model.PremisesPerWell)
+                                        {
+                                            <tr>
+                                                <td>@row.WellName</td>
+                                                <td>@row.Property</td>
+                                                <td>@row.Address</td>
+                                            </tr>
+                                        }
+                                    </tbody>
 
-                <div class="card">
-                    <div class="card-header card-header-success">
-                        <h4 class="card-title">Position</h4>
+                                </table>
+
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body table-responsive">
-                        <p>
-                            @Model.PremisesText
-                        </p>                       
-                        <table class="table table-condesed table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Intagsenhet</th>
-                                    <th>Fastighet</th>
-                                    <th>Adress</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var row in Model.PremisesPerWell)
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header card-header-danger">
+                                <h4 class="card-title">Statistik aktivering</h4>
+                                <p class="card-category">Till och med @Model.endDate</p>
+                            </div>
+                            <div class="card-body table-responsive">
+                                @if (Model.LatestActivity.Count() != 0)
                                 {
-                                    <tr>
-                                        <td>@row.WellName</td>
-                                        <td>@row.Property</td>
-                                        <td>@row.Address</td>
-                                    </tr>
+                                    <table class="table table-condesed table-sm">
+                                        <tr>
+                                            <th>Senaste</th>
+                                            <td>@Model.LatestActivity.First().Time</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Antal senaste tim</th>
+                                            <td>@Model.LatestHour</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Antal senaste 3 tim</th>
+                                            <td>@Model.Latest3Hour</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Antal senaste 24 tim</th>
+                                            <td>@Model.Latest24Hour</td>
+                                        </tr>
+                                    </table>
+
                                 }
-                            </tbody>
+                                else
+                                {
+                                    <h5 class="text-danger">Ingen data för denna intagsenhet!</h5>
+                                }
 
-                        </table>
-
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-4">
-                <div class="card">
-                    <div class="card-header card-header-danger">
-                        <h4 class="card-title">Statistik aktivering</h4>
-                        <p class="card-category">Till och med @Model.endDate</p>
-                    </div>
-                    <div class="card-body table-responsive">
-                        @if (Model.LatestActivity.Count() != 0)
-                        {
-                            <table class="table table-condesed table-sm">
-                                <tr>
-                                    <th>Senaste</th>
-                                    <td>@Model.LatestActivity.First().Time</td>
-                                </tr>
-                                <tr>
-                                    <th>Antal senaste tim</th>
-                                    <td>@Model.LatestHour</td>
-                                </tr>
-                                <tr>
-                                    <th>Antal senaste 3 tim</th>
-                                    <td>@Model.Latest3Hour</td>
-                                </tr>
-                                <tr>
-                                    <th>Antal senaste 24 tim</th>
-                                    <td>@Model.Latest24Hour</td>
-                                </tr>
-                            </table>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header card-header-rose">
+                                <h4 class="card-title">Graf</h4>
+                            </div>
+                            <div class="card-body table-responsive">
+                                <p>
+                                    Test text
+                                </p>
+                                <div class="demo-section k-content wide">
+                                    Snart kommer en graf här, hoppas jag.
+                                </div>
 
-                        }
-                        else
-                        {
-                            <h5 class="text-danger">Ingen data för denna intagsenhet!</h5>
-                        }
-
+                            </div>
+                        </div>
                     </div>
                 </div>
+                
             </div>
 
-            @{ 
+
+
+            @{
                 DateTime sd = Model.startDate;
                 DateTime ed = Model.endDate;
             }
 
             <div class="col-4">
-                @await Component.InvokeAsync("ActivityPerRowWidget", new { startDate = sd, endDate = ed, address = Model.Brunnar})
+                @await Component.InvokeAsync("ActivityPerRowWidget", new { startDate = sd, endDate = ed, address = Model.Brunnar })
 
             </div>
         </div>

@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29920.165
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LOVA.API", "LOVA.API\LOVA.API.csproj", "{BDCD278B-B593-4DAB-8A71-7EC891F6BABB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LOVA.API.Test", "LOVA.API.Test\LOVA.API.Test.csproj", "{D2F4D114-2F10-43B5-A48B-7B6CD6B07E08}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{BDCD278B-B593-4DAB-8A71-7EC891F6BABB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDCD278B-B593-4DAB-8A71-7EC891F6BABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDCD278B-B593-4DAB-8A71-7EC891F6BABB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2F4D114-2F10-43B5-A48B-7B6CD6B07E08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2F4D114-2F10-43B5-A48B-7B6CD6B07E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2F4D114-2F10-43B5-A48B-7B6CD6B07E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2F4D114-2F10-43B5-A48B-7B6CD6B07E08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

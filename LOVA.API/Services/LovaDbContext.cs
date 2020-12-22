@@ -38,6 +38,8 @@ namespace LOVA.API.Services
 
         public DbSet<ActivityPerRow> ActivityPerRows { get; set; }
 
+        public DbSet<ActivityCount> ActivityCounts { get; set; }
+
 
 
 
