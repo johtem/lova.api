@@ -42,18 +42,18 @@ namespace LOVA.API.Extensions
             DateTime NewDate = RemoveMinutesAndSeconds(newDate);
             DateTime SavedDate = RemoveMinutesAndSeconds(savedDate);
 
-            bool newHour = true;
+            bool newHour = false;
 
             if (NewDate.Hour != SavedDate.Hour)
             {
-                newHour = false;
+                newHour = true;
             }
 
 
             return newHour;
         }
 
-        private static DateTime RemoveMinutesAndSeconds(DateTime d)
+        public static DateTime RemoveMinutesAndSeconds(DateTime d)
         {
             return new DateTime(d.Year, d.Month, d.Day, d.Hour, 0, 0);
         }

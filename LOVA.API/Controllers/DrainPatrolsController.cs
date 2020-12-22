@@ -12,6 +12,7 @@ using LOVA.API.Filter;
 using System.ComponentModel;
 using Microsoft.Azure.Cosmos.Table;
 using LOVA.API.Extensions;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace LOVA.API.Controllers
 {
@@ -160,6 +161,9 @@ namespace LOVA.API.Controllers
             // Create or reference an existing table
             CloudTable table = await TableStorageCommon.CreateTableAsync("Drains");
 
+            var drainExistingRow = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
+
+
             DrainTableStorageEntity drain = new DrainTableStorageEntity(drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
 
             // Store data in Azure table if Active == true
@@ -171,15 +175,28 @@ namespace LOVA.API.Controllers
 
                 // Add hourly counter
 
-               var drainExistingRow = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
+               // var drainExistingRow = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
                 
-                if (DateExtensions.NewHour(drain.TimeUp, drainExistingRow.TimeUp))
+                if (DateExtensions.NewHour(drainPatrolViewModel.Time, drainExistingRow.TimeUp.AddHours(1)))
                 {
-                    drain.HourlyCount = drainExistingRow.HourlyCount + 1;
+                    // New hour reset counter to one
+                    drain.HourlyCount = 1;
+
+                    // Save counter
+                    ActivityCount ac = new ActivityCount
+                    {
+                        Address = drainExistingRow.RowKey,
+                        CountActivity = drainExistingRow.HourlyCount,
+                        Hourly = DateExtensions.RemoveMinutesAndSeconds(drainExistingRow.TimeUp.AddHours(1))
+                    };
+
+                    _context.ActivityCounts.Add(ac);
+                    await _context.SaveChangesAsync();
                 }
                 else
                 {
-                    drain.HourlyCount = 1;
+                    // withing the same hour add one to existing sum.
+                    drain.HourlyCount = drainExistingRow.HourlyCount + 1;
                 }
 
                 // End hourly counter
