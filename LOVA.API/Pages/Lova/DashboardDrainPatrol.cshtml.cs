@@ -57,9 +57,10 @@ namespace LOVA.API.Pages.Lova
                           .ToListAsync();
 
 
-            NumberOfActivities = allNumberOfActivities.Where(a => !EF.Functions.Like(a.Address, "%7")).Take(MyConsts.DashboardItemSize);
+            //NumberOfActivities = allNumberOfActivities.Where(a => !EF.Functions.Like(a.Address, "%7")).Take(MyConsts.DashboardItemSize);
+            NumberOfActivities = allNumberOfActivities.Where(a => !a.Address.Contains("7")).Take(MyConsts.DashboardItemSize);
 
-            NumberOfActivitiesFull = allNumberOfActivities.Where(a => EF.Functions.Like(a.Address, "%8")).Take(MyConsts.DashboardItemSize);
+            NumberOfActivitiesFull = allNumberOfActivities.Where(a => a.Address.Contains("8")).Take(MyConsts.DashboardItemSize);
 
             Alarms = await _context.DrainPatrolAlarms.OrderByDescending(a => a.TimeStamp).Take(MyConsts.DashboardItemSize).ToListAsync();
         }

@@ -12,6 +12,8 @@ namespace LOVA.API.Models
 
         public string Address { get; set; }
 
+        public bool IsGroupAddress { get; set; }
+
         public DateTime TimeUp { get; set; }
         public DateTime TimeDown { get; set; }
 

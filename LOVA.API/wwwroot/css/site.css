@@ -273,3 +273,17 @@ button.accept-policy {
 }
 
 
+/* Notification */
+
+.width-notification {
+    width: 500px;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .width-notification {
+        width: 300px;
+    }
+}
+
+

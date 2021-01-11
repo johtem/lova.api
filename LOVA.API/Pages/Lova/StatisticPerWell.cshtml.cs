@@ -53,50 +53,38 @@ namespace LOVA.API.Pages.Lova
                 WellName = id;
                 Brunnar.Add(id);
 
-                // PredefinedWells = await GetPredefinedWellsAsync();
+                IEnumerable<ActivityPerRow> wells = await GetWellRowsAsync();
 
-                IEnumerable<Activity> wells = await GetWellRowsAsync();
-
-                // Change date to timezone Central Europe Standard Time
                 DateNow = DateTime.Now;
-                // DateNow = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Central Europe Standard Time"));
 
                 // Latest activity
-                LatestActivity = wells.Where(a => a.Active == true).OrderByDescending(a => a.Time).Take(1);
+                LatestActivity = wells.OrderByDescending(a => a.TimeUp).Take(1);
 
                 // Number of activity last hour
-                LatestHour = wells.Where(a => a.Time >= DateNow.AddHours(-1) && a.Active == true).Count();
-
+                LatestHour = CountRows(wells, -1);
 
                 // Number of activity last 3 hour
-                Latest3Hour = wells.Where(a => a.Time >= DateNow.AddHours(-3) && a.Active == true).Count();
+                Latest3Hour = CountRows(wells, -3);
 
                 // Number of activity last 24 hour
-                Latest24Hour = wells.Where(a => a.Time >= DateNow.AddHours(-24) && a.Active == true).Count();
+                Latest24Hour = CountRows(wells, -24);
 
 
                 PremisesPerWell = await GetPropertiesAsync();
 
                 PremisesText = GetPremisesText();
 
-
-               
-
-                //
-                // Activities = await GetActivitiesAsync();
             }
 
         }
 
-        public IEnumerable<Activity> LatestActivity { get; set; }
+        public IEnumerable<ActivityPerRow> LatestActivity { get; set; }
         public int LatestHour { get; set; }
         public int Latest3Hour { get; set; }
         public int Latest24Hour { get; set; }
 
         public DateTime DateNow { get; set; }
-        public DateTime DateUtcNow { get; set; }
 
-        public IEnumerable<Activity> Activities { get; set; }
 
         public IEnumerable<PremisesPerWellViewModel> PremisesPerWell { get; set; }
 
@@ -106,41 +94,45 @@ namespace LOVA.API.Pages.Lova
         public async Task OnPost()
         {
 
-            // var wells = await _context.DrainPatrols.Where(a => a.Address == IssueReportViewModel.WellName).ToListAsync();
-            IEnumerable<Activity> wells = await GetWellRowsAsync();
+            IEnumerable<ActivityPerRow> wells = await GetWellRowsAsync();
 
-            // Change date to timezone Central Europe Standard Time
             DateNow = DateTime.Now;
-            //DateNow = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Central Europe Standard Time"));
+           
 
             // Latest activity
-            LatestActivity = wells.Where(a => a.Active == true).OrderByDescending(a => a.Time).Take(1);
+            LatestActivity = wells.OrderByDescending(a => a.TimeUp).Take(1);
 
             // Number of activity last hour
-            LatestHour = wells.Where(a => a.Time >= DateNow.AddHours(-1) && a.Active == true).Count();
+            LatestHour = CountRows(wells, -1);
 
 
             // Number of activity last 3 hour
-            Latest3Hour = wells.Where(a => a.Time >= DateNow.AddHours(-3) && a.Active == true).Count();
+            Latest3Hour = CountRows(wells, -3);
 
             // Number of activity last 24 hour
-            Latest24Hour = wells.Where(a => a.Time >= DateNow.AddHours(-24) && a.Active == true).Count();
+            Latest24Hour = CountRows(wells, -24);
 
 
             PremisesPerWell = await GetPropertiesAsync();
 
             PremisesText = GetPremisesText();
 
-           // PredefinedWells = await GetPredefinedWellsAsync();
-
 
         }
 
 
 
-        private async Task<IEnumerable<Activity>> GetWellRowsAsync()
+        private async Task<IEnumerable<ActivityPerRow>> GetWellRowsAsync()
         {
-            return await _context.Activities.Where(a => Brunnar.Contains(a.Address) && a.Time >= endDate.AddDays(-2) && a.Time <= endDate).ToListAsync();
+            // return await _context.Activities.Where(a => Brunnar.Contains(a.Address) && a.Time >= endDate.AddDays(-2) && a.Time <= endDate).ToListAsync();
+            return await _context.ActivityPerRows.Where(a => Brunnar.Contains(a.Address))
+                 .Where(a => a.TimeUp >= endDate.AddDays(-2) && a.TimeUp <= endDate)
+                 .ToListAsync();
+        }
+
+        private int CountRows(IEnumerable<ActivityPerRow> wells, int numberOfHours)
+        {
+            return wells.Where(a => a.TimeUp >= DateNow.AddHours(numberOfHours)).Count();
         }
 
         private async Task<IEnumerable<PremisesPerWellViewModel>> GetPropertiesAsync()
@@ -160,6 +152,8 @@ namespace LOVA.API.Pages.Lova
 
 
         }
+
+        
 
         private string GetPremisesText()
         {

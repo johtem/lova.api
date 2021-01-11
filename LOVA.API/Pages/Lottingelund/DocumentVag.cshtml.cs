@@ -36,7 +36,7 @@ namespace LOVA.API.Pages.Lottingelund
             //target = "Löttingelundsbladet";
 
             var lovaDirectories = await _context.UploadFileDirectories
-                .Where(a => a.UploadFileCategoryId == 3 && string.IsNullOrEmpty(target) ? a.Directory != target : a.Directory == "apa")
+                .Where(a => a.UploadFileCategoryId == 4 && string.IsNullOrEmpty(target) ? a.Directory != target : a.Directory == "apa")
                 .Select(a => new ViewFilesViewModel
                 {
                     Name = a.Directory,
@@ -53,7 +53,7 @@ namespace LOVA.API.Pages.Lottingelund
                 .ToArrayAsync();
 
             var lovaFiles = await _context.UploadedFiles
-                .Where(a => a.UploadFileCategoryId == 3 && a.IsDirectory == false && a.Directory == target)
+                .Where(a => a.UploadFileCategoryId == 4 && a.IsDirectory == false && a.Directory == target)
                 .Select(a => new ViewFilesViewModel
                 {
                     Name = Path.GetFileNameWithoutExtension(a.FileName),

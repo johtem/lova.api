@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LOVA.API.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,5 +22,15 @@ namespace LOVA.API.Services
         public const string lottingelundDocuments = "lottingelundfiles";
         public const string lovaDocuments = "lovafiles";
         public const string lovaPhotos = "lovaphotos";
+
+
+        public static readonly BoardMember Ordf = new BoardMember { Name = "Ronny Modigs", Email = "ronmod@gmail.com", Phone = "0706-040610" }; 
+        public static readonly BoardMember Kansli = new BoardMember { Name = "Magnus Larzon", Email = "magnus.larzon@lottingelund.se", Phone = "0733-327515" }; 
+        public static readonly BoardMember Kassor = new BoardMember { Name = "Lilling Palmeklint", Email = "lilling@ownit.nu", Phone = "0706-201310" }; 
+        public static readonly BoardMember VA = new BoardMember { Name = "Johan Tempelman", Email = "johan@tempelman.nu", Phone = "0734-435407" }; 
+        public static readonly BoardMember Tomt = new BoardMember { Name = "Temp. Johan Tempelman", Email = "johan@tempelman.nu", Phone = "0734-435407" }; 
+        public static readonly BoardMember Vag = new BoardMember { Name = "Lennart Källqvist", Email = "l.kallqvist@", Phone = "0762-067985" }; 
+
+
     }
 }

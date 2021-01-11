@@ -136,11 +136,19 @@
 
 
 <script id="emailTemplate" type="text/x-kendo-template">
-    <div class="new-mail">
-        <img src="@Url.Content("~/Images/envelope.png")" />
-        <h3>#= title #</h3>
-        <p>#= message #</p>
+
+    <div class="row width-notification">
+    <div class="col-2">
+         <img src="@Url.Content("~/Images/envelope.png")" />
     </div>
+    <div class="col-8">
+        <h3>#= title #</h3>
+        <p class="p">#= message #</p>
+    </div>
+    </div>
+
+
+
 </script>
 
 
@@ -181,13 +189,19 @@
 
 
 
-<style>
+<style type="text/css">
+
+    .p {
+        color: #d2dae2;
+    }
+
+
+
 
 
 
 
     /* Notifications */
-
     .k-notification {
         background-color: #0058E9;
         color: white;
