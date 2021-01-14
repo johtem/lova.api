@@ -1,9 +1,13 @@
 ﻿using LOVA.API.Models;
+using LOVA.API.Settings;
 using MailKit.Net.Pop3;
 using MailKit.Net.Smtp;
+using MailKit.Security;
+using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
@@ -12,69 +16,43 @@ namespace LOVA.API.Services
 {
     public class EmailService : IEmailService
     {
-        private readonly IEmailConfiguration _emailConfiguration;
+        private readonly MailSettings _mailSettings;
 
-        public EmailService(IEmailConfiguration emailConfiguration)
+        public EmailService(IOptions<MailSettings> emailSettings)
         {
-            _emailConfiguration = emailConfiguration;
+            _mailSettings = emailSettings.Value;
         }
 
-        public List<EmailMessage> ReceiveEmail(int maxCount = 10)
+        public async Task SendEmailAsync(MailRequest mailRequest)
         {
-            using (var emailClient = new Pop3Client())
+            var email = new MimeMessage();
+            email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
+            email.To.Add(MailboxAddress.Parse(mailRequest.ToEmail));
+            email.Subject = mailRequest.Subject;
+            var builder = new BodyBuilder();
+            if (mailRequest.Attachments != null)
             {
-                emailClient.Connect(_emailConfiguration.PopServer, _emailConfiguration.PopPort, true);
-
-                emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
-
-                emailClient.Authenticate(_emailConfiguration.PopUsername, _emailConfiguration.PopPassword);
-
-                List<EmailMessage> emails = new List<EmailMessage>();
-                for (int i = 0; i < emailClient.Count && i < maxCount; i++)
+                byte[] fileBytes;
+                foreach (var file in mailRequest.Attachments)
                 {
-                    var message = emailClient.GetMessage(i);
-                    var emailMessage = new EmailMessage
+                    if (file.Length > 0)
                     {
-                        Content = !string.IsNullOrEmpty(message.HtmlBody) ? message.HtmlBody : message.TextBody,
-                        Subject = message.Subject
-                    };
-                    emailMessage.ToAddresses.AddRange(message.To.Select(x => (MailboxAddress)x).Select(x => new EmailAddress { Address = x.Address, Name = x.Name }));
-                    emailMessage.FromAddresses.AddRange(message.From.Select(x => (MailboxAddress)x).Select(x => new EmailAddress { Address = x.Address, Name = x.Name }));
-                    emails.Add(emailMessage);
+                        using (var ms = new MemoryStream())
+                        {
+                            file.CopyTo(ms);
+                            fileBytes = ms.ToArray();
+                        }
+                        builder.Attachments.Add(file.FileName, fileBytes, ContentType.Parse(file.ContentType));
+                    }
                 }
-
-                return emails;
             }
+            builder.HtmlBody = mailRequest.Body;
+            email.Body = builder.ToMessageBody();
+            using var smtp = new SmtpClient();
+            smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
+            smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
+            await smtp.SendAsync(email);
+            smtp.Disconnect(true);
         }
-
-        public void Send(EmailMessage emailMessage)
-        {
-            var message = new MimeMessage();
-            message.To.AddRange(emailMessage.ToAddresses.Select(x => new MailboxAddress(x.Name, x.Address)));
-            message.From.AddRange(emailMessage.FromAddresses.Select(x => new MailboxAddress(x.Name, x.Address)));
-
-            message.Subject = emailMessage.Subject;
-
-            message.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-            {
-                Text = emailMessage.Content
-            };
-
-            using (var emailClient = new SmtpClient())
-            {
-               // emailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
-                emailClient.Connect(_emailConfiguration.SmtpServer, _emailConfiguration.SmtpPort, true);
-                emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
-
-                emailClient.Authenticate(_emailConfiguration.SmtpUsername, _emailConfiguration.SmtpPassword);
-
-                emailClient.Send(message);
-                emailClient.Disconnect(true);
-
-
-            }
-
-        }
-
     }
 }

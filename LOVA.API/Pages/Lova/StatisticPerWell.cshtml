@@ -158,11 +158,12 @@
                         <div class="card">
                             <div class="card-header card-header-rose">
                                 <h4 class="card-title">Aktiveringar per timme</h4>
+                                <p>Ett dygn bakåt från "Till datumet"</p>
                             </div>
                             <div class="card-body table-responsive">
 
                                 <div class="demo-section k-content wide">
-                                    Snart kommer en graf här, hoppas jag.
+                                    
                                     @await Component.InvokeAsync("ActivityCountWidget", new { startDate = sd, endDate = ed, address = Model.Brunnar})
                                 </div>
 

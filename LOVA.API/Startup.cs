@@ -6,6 +6,7 @@ using Azure.Storage.Blobs;
 using LOVA.API.Data;
 using LOVA.API.Models;
 using LOVA.API.Services;
+using LOVA.API.Settings;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -74,13 +75,15 @@ namespace LOVA.API
                 options.Password.RequiredUniqueChars = 3;
             });
 
-
+            // Blob store service
             services.AddSingleton(x => new BlobServiceClient(Configuration.GetConnectionString("LottingelundFiles")));
             services.AddSingleton<IBlobService, BlobService>();
-            //services.AddSingleton<IEmailConfiguration>(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
-            //services.AddTransient<IEmailService, EmailService>();
-
             
+            // Email service
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.AddTransient<IEmailService, Services.EmailService>();
+
+
             services.AddSwaggerGen(c =>
            {
                c.SwaggerDoc("v1", new OpenApiInfo 

@@ -29,7 +29,7 @@
                             <td>@row.Address</td>
                             <td>@row.TimeUp</td>
                             <td>@row.TimeDown</td>
-                            <td>@((row.TimeDown - row.TimeUp).TotalSeconds)</td>
+                            <td class="text-right">@(Math.Round((row.TimeDown - row.TimeUp).TotalSeconds))</td>
                             
                         </tr>
                     }

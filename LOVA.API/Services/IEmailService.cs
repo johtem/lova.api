@@ -8,7 +8,6 @@ namespace LOVA.API.Services
 {
     public interface IEmailService
     {
-        void Send(EmailMessage emailMessage);
-        List<EmailMessage> ReceiveEmail(int maxCount = 10);
+        Task SendEmailAsync(MailRequest mailRequest);
     }
 }
