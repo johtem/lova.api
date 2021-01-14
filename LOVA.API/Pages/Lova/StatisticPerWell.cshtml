@@ -7,6 +7,12 @@
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
 @Html.AntiForgeryToken()
 
+
+@{
+    DateTime sd = Model.startDate;
+    DateTime ed = Model.endDate;
+}
+
 <style>
     body {
         background-color: #eee;
@@ -151,29 +157,25 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header card-header-rose">
-                                <h4 class="card-title">Graf</h4>
+                                <h4 class="card-title">Aktiveringar per timme</h4>
                             </div>
                             <div class="card-body table-responsive">
-                                <p>
-                                    Test text
-                                </p>
+
                                 <div class="demo-section k-content wide">
                                     Snart kommer en graf här, hoppas jag.
+                                    @await Component.InvokeAsync("ActivityCountWidget", new { startDate = sd, endDate = ed, address = Model.Brunnar})
                                 </div>
 
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
             </div>
 
 
 
-            @{
-                DateTime sd = Model.startDate;
-                DateTime ed = Model.endDate;
-            }
+
 
             <div class="col-4">
                 @await Component.InvokeAsync("ActivityPerRowWidget", new { startDate = sd, endDate = ed, address = Model.Brunnar })

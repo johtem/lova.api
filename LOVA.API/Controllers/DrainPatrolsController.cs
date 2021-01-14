@@ -148,7 +148,6 @@ namespace LOVA.API.Controllers
 
             var insertData = new Activity
             {
-               // WellId = well.Id,
                 Master_node = drainPatrolViewModel.Master_node,
                 Index = drainPatrolViewModel.Index,
                 Address = drainPatrolViewModel.Address,
@@ -174,9 +173,7 @@ namespace LOVA.API.Controllers
 
 
                 // Add hourly counter
-
-               // var drainExistingRow = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
-                
+     
                 if (DateExtensions.NewHour(drainPatrolViewModel.Time, drainExistingRow.TimeUp.AddHours(1)))
                 {
                     // New hour reset counter to one
@@ -189,6 +186,10 @@ namespace LOVA.API.Controllers
                         CountActivity = drainExistingRow.HourlyCount,
                         Hourly = DateExtensions.RemoveMinutesAndSeconds(drainExistingRow.TimeUp.AddHours(1))
                     };
+
+                   // drainExistingRow.AverageActivity = (int)((drainExistingRow.AverageActivity + drainExistingRow.HourlyCount) / 2);
+
+                   // await TableStorageUtils.InsertOrMergeEntityAsync(table, drain);
 
                     _context.ActivityCounts.Add(ac);
                     await _context.SaveChangesAsync();

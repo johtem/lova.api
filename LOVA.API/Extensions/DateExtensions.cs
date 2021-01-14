@@ -57,5 +57,14 @@ namespace LOVA.API.Extensions
         {
             return new DateTime(d.Year, d.Month, d.Day, d.Hour, 0, 0);
         }
+
+        public static IEnumerable<string> ListOfFullHours(DateTime d)
+        {
+            var startDate = RemoveMinutesAndSeconds(d.AddDays(-1));
+
+            IEnumerable<string> listOfHours = Enumerable.Range(0, 24).Select(h => startDate.AddHours(h).ToString("yyyy-MM-dd HH:mm"));
+
+            return listOfHours;
+        }
     }
 }

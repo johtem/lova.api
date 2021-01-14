@@ -79,6 +79,7 @@ namespace LOVA.API.Pages.Lova
         }
 
         public IEnumerable<ActivityPerRow> LatestActivity { get; set; }
+        public IEnumerable<ActivityCount> ActivityCounts { get; set; }
         public int LatestHour { get; set; }
         public int Latest3Hour { get; set; }
         public int Latest24Hour { get; set; }
@@ -118,6 +119,9 @@ namespace LOVA.API.Pages.Lova
             PremisesText = GetPremisesText();
 
 
+            // ActivityCounts = await GetActivityPerHour();
+
+
         }
 
 
@@ -152,6 +156,8 @@ namespace LOVA.API.Pages.Lova
 
 
         }
+
+
 
         
 

@@ -24,6 +24,8 @@ namespace LOVA.API.Models
 
         public int HourlyCount { get; set; }
 
+        public int AverageActivity { get; set; }
+
 
 
     }
