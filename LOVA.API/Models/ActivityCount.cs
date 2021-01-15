@@ -16,5 +16,7 @@ namespace LOVA.API.Models
         public DateTime Hourly { get; set; }
 
         public int CountActivity { get; set; }
+
+        public int AverageCount { get; set; }
     }
 }

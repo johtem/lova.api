@@ -162,8 +162,7 @@
                             </div>
                             <div class="card-body table-responsive">
 
-                                <div class="demo-section k-content wide">
-                                    
+                                <div class="demo-section k-content wide">                                
                                     @await Component.InvokeAsync("ActivityCountWidget", new { startDate = sd, endDate = ed, address = Model.Brunnar})
                                 </div>
 
@@ -176,11 +175,8 @@
 
 
 
-
-
             <div class="col-4">
                 @await Component.InvokeAsync("ActivityPerRowWidget", new { startDate = sd, endDate = ed, address = Model.Brunnar })
-
             </div>
         </div>
         <div class="row">
