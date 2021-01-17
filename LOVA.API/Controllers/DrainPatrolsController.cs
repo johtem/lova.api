@@ -160,9 +160,11 @@ namespace LOVA.API.Controllers
 
             // Save data temporary in Table Storage to flatten out the data.
 
-            // Create or reference an existing table
+            // Create reference an existing table
             CloudTable table = await TableStorageCommon.CreateTableAsync("Drains");
 
+            
+            // Get existing data for address
             var drainExistingRow = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
 
 
@@ -199,30 +201,34 @@ namespace LOVA.API.Controllers
 
                     drain.AverageActivity = (averageCount + drainExistingRow.HourlyCount) / 2;
 
-                   //  await TableStorageUtils.InsertOrMergeEntityAsync(table, drain);
+                    await TableStorageUtils.InsertOrMergeEntityAsync(table, drain);
 
                     _context.ActivityCounts.Add(ac);
                     await _context.SaveChangesAsync();
 
                     if (drainExistingRow.HourlyCount > averageCount)
                     {
-                        await SendEmailMoreThanAverage(ac);
+                        // await SendEmailMoreThanAverage(ac);
+                        await SendEmail(ac);
                     }
-                    
+
+                    await SendEmailMoreThanAverage(ac);
+
                 }
                 else
                 {
                     // withing the same hour add one to existing sum.
                     drain.HourlyCount = drainExistingRow.HourlyCount + 1;
 
-                   
+                    await TableStorageUtils.InsertOrMergeEntityAsync(table, drain);
+
                 }
 
                 // End hourly counter
 
 
                 // Save updated to the Azure nosql table 
-                await TableStorageUtils.InsertOrMergeEntityAsync(table, drain);
+                
 
             }
             else
@@ -255,7 +261,7 @@ namespace LOVA.API.Controllers
             return Ok(drainPatrolViewModel);
         }
 
-        private async Task SendEmail(ActivityCount ac, int averageCount)
+        private async Task SendEmail(ActivityCount ac)
         {
             MailRequest request = new MailRequest();
 
@@ -270,7 +276,15 @@ namespace LOVA.API.Controllers
 
         private async Task SendEmailMoreThanAverage(ActivityCount ac)
         { 
-            await _mailService.SendToManyActivitiesEmailAsync(ac);
+            try
+            {
+                await _mailService.SendToManyActivitiesEmailAsync(ac);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            
         }
 
 

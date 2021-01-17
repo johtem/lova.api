@@ -59,7 +59,7 @@ namespace LOVA.API.Services
 
         public async Task SendToManyActivitiesEmailAsync(ActivityCount request)
         {
-            string FilePath = Directory.GetCurrentDirectory() + "\\Templates\\WelcomeTemplate.html";
+            string FilePath = Directory.GetCurrentDirectory() + "\\Templates\\HighActivities.html";
             StreamReader str = new StreamReader(FilePath);
             string MailText = str.ReadToEnd();
             str.Close();

@@ -33,5 +33,20 @@ namespace LOVA.API.Controllers
             }
 
         }
+
+
+        [HttpPost("welcome")]
+        public async Task<IActionResult> SendWelcomeMail([FromForm] ActivityCount request)
+        {
+            try
+            {
+                await mailService.SendToManyActivitiesEmailAsync(request);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }
