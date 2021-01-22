@@ -185,7 +185,7 @@ namespace LOVA.API.Controllers
                     drain.HourlyCount = 1;
 
 
-                    var averageCount = drainExistingRow.AverageActivity == 0 ? 0 : drainExistingRow.AverageActivity;
+                    var averageCount =  drainExistingRow.AverageActivity;
 
                     // Save counter
                     ActivityCount ac = new ActivityCount
@@ -195,9 +195,7 @@ namespace LOVA.API.Controllers
                         Hourly = DateExtensions.RemoveMinutesAndSeconds(drainExistingRow.TimeUp.AddHours(1)),
                         AverageCount = averageCount
                     };
-
-
-                    
+                
 
                     drain.AverageActivity = (averageCount + drainExistingRow.HourlyCount) / 2;
 
@@ -206,13 +204,18 @@ namespace LOVA.API.Controllers
                     _context.ActivityCounts.Add(ac);
                     await _context.SaveChangesAsync();
 
+                    
+                    // if latest hour is greater than average send out warning email
+                    
                     if (drainExistingRow.HourlyCount > averageCount)
                     {
                         // await SendEmailMoreThanAverage(ac);
-                        await SendEmail(ac);
+                        if (averageCount > 2)
+                        {
+                            await SendEmail(ac);
+                        }
+                       
                     }
-
-                    await SendEmailMoreThanAverage(ac);
 
                 }
                 else

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hangfire;
 using Kendo.Mvc.Extensions;
 using LOVA.API.Models;
 using LOVA.API.Services;
@@ -63,6 +64,9 @@ namespace LOVA.API.Pages.Lova
             NumberOfActivitiesFull = allNumberOfActivities.Where(a => a.Address.Contains("8")).Take(MyConsts.DashboardItemSize);
 
             Alarms = await _context.DrainPatrolAlarms.OrderByDescending(a => a.TimeStamp).Take(MyConsts.DashboardItemSize).ToListAsync();
+
+           BackgroundJob.Enqueue<IEmailService>(x => x.SendEmailAsync(new MailRequest { ToEmail = "johan@tempelman.nu", Subject = "Löva Dashboard", Body = "Someone is looking at the Löva dashboard" }));
+
         }
     }
 }
