@@ -132,6 +132,7 @@
           items.Add().Text("Admin")
           .Items(children =>
           {
+              children.Add().Text("Hangfire").Url("/hangfire");
               children.Add().Text("Användare")
                           .Items(innerChildren =>
                           {

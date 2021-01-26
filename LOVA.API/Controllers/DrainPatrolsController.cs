@@ -239,14 +239,22 @@ namespace LOVA.API.Controllers
                 // Get data from Azure table and store data in one row on ActivityPerRow
 
                 drain = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
-                drain.TimeDown = drainPatrolViewModel.Time;               
+                drain.TimeDown = drainPatrolViewModel.Time;
+
+                bool isGroup = false;
+
+                if (drain.RowKey.Contains("7") || drain.RowKey.Contains("8"))
+                {
+                    isGroup = true;
+                }
 
                 var perRowData = new ActivityPerRow
                 {
                     Address = drain.RowKey,
                     TimeUp = drain.TimeUp.AddHours(1),
                     TimeDown = drain.TimeDown,
-                    TimeDiff = (drain.TimeDown - drain.TimeUp.AddHours(1)).TotalMilliseconds
+                    TimeDiff = (drain.TimeDown - drain.TimeUp.AddHours(1)).TotalMilliseconds,
+                    IsGroupAddress = isGroup
                 };
 
 

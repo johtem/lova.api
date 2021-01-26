@@ -66,7 +66,7 @@ namespace LOVA.API.Pages.Lova
             Alarms = await _context.DrainPatrolAlarms.OrderByDescending(a => a.TimeStamp).Take(MyConsts.DashboardItemSize).ToListAsync();
 
            BackgroundJob.Enqueue<IEmailService>(x => x.SendEmailAsync(new MailRequest { ToEmail = "johan@tempelman.nu", Subject = "Löva Dashboard", Body = "Someone is looking at the Löva dashboard" }));
-
+             
         }
     }
 }

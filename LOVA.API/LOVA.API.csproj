@@ -8,6 +8,7 @@
   <ItemGroup>
     <Content Remove="compilerconfig.json" />
     <Content Remove="wwwroot\Images\notification.png" />
+    <Content Remove="wwwroot\Templates\HighActivities.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +21,7 @@
 
   <ItemGroup>
     <None Include="compilerconfig.json" />
+    <None Include="wwwroot\Templates\HighActivities.txt" />
   </ItemGroup>
 
   <ItemGroup>

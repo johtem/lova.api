@@ -1,8 +1,11 @@
 ﻿using LOVA.API.Models;
 using LOVA.API.Settings;
+using LOVA.API.ViewModels;
 using MailKit.Net.Pop3;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
@@ -17,10 +20,15 @@ namespace LOVA.API.Services
     public class EmailService : IEmailService
     {
         private readonly MailSettings _mailSettings;
+        private readonly LovaDbContext _context;
 
-        public EmailService(IOptions<MailSettings> emailSettings)
+        private readonly string contentRootPath;
+
+        public EmailService(IOptions<MailSettings> emailSettings, IWebHostEnvironment env, LovaDbContext context)
         {
             _mailSettings = emailSettings.Value;
+            contentRootPath = env.WebRootPath;
+            _context = context;
         }
 
         public async Task SendEmailAsync(MailRequest mailRequest)
@@ -59,10 +67,21 @@ namespace LOVA.API.Services
 
         public async Task SendToManyActivitiesEmailAsync(ActivityCount request)
         {
-            string FilePath = Directory.GetCurrentDirectory() + "\\Templates\\HighActivities.html";
-            StreamReader str = new StreamReader(FilePath);
-            string MailText = str.ReadToEnd();
-            str.Close();
+            string FilePath = contentRootPath +
+                Path.DirectorySeparatorChar.ToString()
+                + "Templates"
+                + Path.DirectorySeparatorChar.ToString()
+                + "HighActivities.txt";
+
+            // FilePath = "https://lottingelundfiles.blob.core.windows.net/emailtemplates/HighActivities.html";
+
+            string MailText = string.Empty;
+            using (StreamReader str = new StreamReader(FilePath))
+            {
+                MailText = str.ReadToEnd();
+            };
+            
+            
             MailText = MailText.Replace("[adress]", request.Address)
                 .Replace("[antalAktiveringar]", request.CountActivity.ToString())
                 .Replace("[timme]", request.Hourly.ToString());
@@ -78,6 +97,54 @@ namespace LOVA.API.Services
             smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
             await smtp.SendAsync(email);
             smtp.Disconnect(true);
+        }
+
+
+        public async Task SendNoActivitiesEmailAsync()
+        {
+            var weekAgo = DateTime.Now.AddDays(-6);
+
+            IEnumerable<WellsDashboardViewModel> data = await _context.ActivityPerRows
+                .Where(a => a.IsGroupAddress == false)
+                .GroupBy(x => x.Address, (x, y) => new WellsDashboardViewModel
+                {
+                    Address = x, 
+                    Date = y.Max(z => z.TimeUp)
+                })
+                .OrderBy(n => n.Date)
+                .Where(a => a.Date <= weekAgo)
+                .ToListAsync();
+
+            var email = new MimeMessage();
+            email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
+
+            // TODO: Add dynamic sender list
+            email.To.Add(MailboxAddress.Parse("johan@tempelman.nu"));
+            email.To.Add(MailboxAddress.Parse("johan.tempelman@bt.com"));
+            email.Subject = "Löva Intagsenheter - Ingen aktivitet";
+
+
+            string textBody = "<br>";
+            textBody += "<h5>Nedan tabell visar senaste aktivering(tömning) från och med " + weekAgo + ".</h5><br>";
+            textBody += "";
+            textBody += " <table border=" + 1 + " cellpadding=" + 0 + " cellspacing=" + 0 + " width = " + 400 + "><tr bgcolor='#4da6ff'><td><b>Intagsenhet</b></td> <td> <b> Senaste aktivering</b> </td></tr>";
+            foreach (var item in data)
+            {
+                textBody += "<tr><td>" + item.Address + "</td><td> " + item.Date + "</td> </tr>";
+            }
+            textBody += "</table><br><br>";
+            textBody += "Automatiskt mailutskick från www.lottingelund.se";
+
+
+            var builder = new BodyBuilder();
+            builder.HtmlBody = textBody;
+            email.Body = builder.ToMessageBody();
+            using var smtp = new SmtpClient();
+            smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
+            smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
+            await smtp.SendAsync(email);
+            smtp.Disconnect(true);
+
         }
     }
 }

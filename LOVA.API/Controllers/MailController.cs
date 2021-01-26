@@ -40,7 +40,23 @@ namespace LOVA.API.Controllers
         {
             try
             {
-                await mailService.SendToManyActivitiesEmailAsync(request);
+                //await mailService.SendToManyActivitiesEmailAsync(request);
+                await mailService.SendNoActivitiesEmailAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost("NoActivitiesEmail")]
+        public async Task<IActionResult> SendNoActivitiesEmailAsync()
+        {
+            try
+            {
+                //await mailService.SendToManyActivitiesEmailAsync(request);
+                await mailService.SendNoActivitiesEmailAsync();
                 return Ok();
             }
             catch (Exception ex)

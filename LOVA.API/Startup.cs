@@ -24,6 +24,7 @@ using Newtonsoft;
 using Newtonsoft.Json.Serialization;
 using Hangfire;
 using Hangfire.SqlServer;
+using LOVA.API.Filter;
 
 namespace LOVA.API
 {
@@ -147,12 +148,17 @@ namespace LOVA.API
             app.UseStaticFiles();
             app.UseRouting();
 
-            app.UseHangfireDashboard();
-           // backgroundJobs.Enqueue(() => Console.WriteLine("Hello world from Hangfire!"));
-           
+            
+            
+
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = new[] { new HangfireAuthFilter() }
+            });
 
             app.UseEndpoints(endpoints =>
             {
@@ -161,6 +167,16 @@ namespace LOVA.API
                 endpoints.MapBlazorHub();
                 endpoints.MapHangfireDashboard();
             });
+
+
+            // Put recurring Hangfire jobs here
+
+            // backgroundJobs.Enqueue(() => Console.WriteLine("Hello world from Hangfire!"));
+            //RecurringJob.AddOrUpdate<IEmailService>("hourly-id", x => x.SendEmailAsync(new MailRequest { ToEmail = "johan@tempelman.nu", Subject = "Hourly email", Body = $"Hourly  {DateTime.Now.ToShortDateString()}" }), Cron.we.Hourly);
+            RecurringJob.AddOrUpdate<IEmailService>("weekly-no-activities-id", x => x.SendNoActivitiesEmailAsync(), Cron.Weekly);
+
+
+            // End recurring Hangfire jobs
         }
     }
 }
