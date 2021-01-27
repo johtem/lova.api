@@ -40,7 +40,8 @@ namespace LOVA.API.Services
 
         public DbSet<ActivityCount> ActivityCounts { get; set; }
 
-
+        public DbSet<MailType> MailTypes { get; set; }
+        public DbSet<MailSubscription> MailSubscriptions { get; set; }
 
 
     }

@@ -119,21 +119,33 @@ namespace LOVA.API.Services
             email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
 
             // TODO: Add dynamic sender list
-            email.To.Add(MailboxAddress.Parse("johan@tempelman.nu"));
-            email.To.Add(MailboxAddress.Parse("johan.tempelman@bt.com"));
-            email.Subject = "Löva Intagsenheter - Ingen aktivitet";
+
+            var senderList = await _context.MailSubscriptions
+                .Include(a => a.MailType)
+                .Where(a => a.MailType.Type == "NoActivitySinceEmail")
+                .ToListAsync();
+
+
+            foreach (var sender in senderList)
+            {
+                email.To.Add(MailboxAddress.Parse(sender.Email));
+            }
+
+
+            email.Subject = "Löva - Aktiviteter äldre än " + weekAgo;
 
 
             string textBody = "<br>";
-            textBody += "<h5>Nedan tabell visar senaste aktivering(tömning) från och med " + weekAgo + ".</h5><br>";
+            textBody += "<h5>Nedan tabell visar senaste aktivering(tömning) som är äldre än " + weekAgo + ".</h5><br>";
             textBody += "";
-            textBody += " <table border=" + 1 + " cellpadding=" + 0 + " cellspacing=" + 0 + " width = " + 400 + "><tr bgcolor='#4da6ff'><td><b>Intagsenhet</b></td> <td> <b> Senaste aktivering</b> </td></tr>";
+            textBody += " <table border=" + 1 + " cellpadding=" + 0 + " cellspacing=" + 0 + " width = " + 400 + ">";
+            textBody += "<tr bgcolor='#4da6ff'><td><b>Intagsenhet</b></td> <td> <b> Senaste aktivering</b> </td></tr>";
             foreach (var item in data)
             {
                 textBody += "<tr><td>" + item.Address + "</td><td> " + item.Date + "</td> </tr>";
             }
             textBody += "</table><br><br>";
-            textBody += "Automatiskt mailutskick från www.lottingelund.se";
+            textBody += "Automatiskt mailutskick varje måndag från www.lottingelund.se";
 
 
             var builder = new BodyBuilder();
