@@ -7,11 +7,20 @@
       "library": "bootstrap@4.5.3",
       "destination": "wwwroot/lib/bootstrap/",
       "files": [
-        
+
         "dist/js/bootstrap.min.js",
         "dist/js/bootstrap.bundle.min.js.map",
         "dist/js/bootstrap.min.js.map"
       ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "font-awesome@5.15.2",
+      "destination": "wwwroot/lib/fontawesome/",
+      "files": [
+        
+      ]
+
     }
   ]
 }

@@ -8,5 +8,7 @@ namespace LOVA.API.ViewModels
         public DateTime Date { get; set; }
 
         public int Count { get; set; }
+
+        public bool IsGroupAddress { get; set; }
     }
 }

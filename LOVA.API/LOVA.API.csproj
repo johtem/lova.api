@@ -50,10 +50,11 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NPOI" Version="2.5.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
-    <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2020.3.1021" />
+    <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2021.1.119" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Pages\Lova\Mail\" />
     <Folder Include="wwwroot\lib\fontawesome\" />
   </ItemGroup>
 

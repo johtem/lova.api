@@ -8,6 +8,7 @@ using LOVA.API.Models;
 using LOVA.API.Services;
 using LOVA.API.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -18,10 +19,12 @@ namespace LOVA.API.Pages.Lova
     public class DashboardDrainPatrolModel : PageModel
     {
         private readonly LovaDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public DashboardDrainPatrolModel(LovaDbContext context)
+        public DashboardDrainPatrolModel(LovaDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public IEnumerable<WellsDashboardViewModel> NumberOfActivities { get; set; }
@@ -37,35 +40,42 @@ namespace LOVA.API.Pages.Lova
 
         public async Task OnGet()
         {
+            var usr = await _userManager.GetUserAsync(HttpContext.User);
 
+            var user = await _userManager.FindByIdAsync(usr.Id);
+
+            
 
             var totalNumberOfActivitiesLast24H = _context.ActivityPerRows.Where(a => a.TimeUp >= DateTime.Now.AddDays(-1));
 
-           // TotalNumberOfActivitiesLast24H = totalNumberOfActivitiesLast24H.Count();
+            TotalNumberOfActivitiesLast24H = totalNumberOfActivitiesLast24H.Count();
 
-            TotalNumberOfDrainingLast24H = totalNumberOfActivitiesLast24H.Where(a => !EF.Functions.Like(a.Address, "%7") && !EF.Functions.Like(a.Address, "%8")).Count();
+            TotalNumberOfDrainingLast24H = totalNumberOfActivitiesLast24H.Where(a => a.IsGroupAddress == false).Count();
 
-            var allNumberOfActivities = await _context.Activities
-                          .Where(a => a.Active == true)
-                          .GroupBy(x => new { x.Time.Date, x.Address })
+            var allNumberOfActivities = await _context.ActivityPerRows  
+                          .Where(a => a.TimeUp >= DateTime.Now.AddDays(-6))
+                          .GroupBy(x => new { x.TimeUp.Date, x.Address })
                           .OrderByDescending(g => g.Count())
                           .Select(x => new WellsDashboardViewModel
                           {
                               Count = x.Count(),
                               Date = x.Key.Date,
-                              Address = x.Key.Address
+                              Address = x.Key.Address,
                           })
                           .ToListAsync();
 
 
             //NumberOfActivities = allNumberOfActivities.Where(a => !EF.Functions.Like(a.Address, "%7")).Take(MyConsts.DashboardItemSize);
-            NumberOfActivities = allNumberOfActivities.Where(a => !a.Address.Contains("7")).Take(MyConsts.DashboardItemSize);
+            NumberOfActivities = allNumberOfActivities.Where(a => !a.Address.Contains("7") && !a.Address.Contains("8")).Take(MyConsts.DashboardItemSize);
 
             NumberOfActivitiesFull = allNumberOfActivities.Where(a => a.Address.Contains("8")).Take(MyConsts.DashboardItemSize);
 
             Alarms = await _context.DrainPatrolAlarms.OrderByDescending(a => a.TimeStamp).Take(MyConsts.DashboardItemSize).ToListAsync();
 
-           BackgroundJob.Enqueue<IEmailService>(x => x.SendEmailAsync(new MailRequest { ToEmail = "johan@tempelman.nu", Subject = "Löva Dashboard", Body = "Someone is looking at the Löva dashboard" }));
+
+            
+
+           BackgroundJob.Enqueue<IEmailService>(x => x.SendEmailAsync(new MailRequest { ToEmail = "johan@tempelman.nu", Subject = "Löva Dashboard", Body = $"{user.FullName} is looking at the Löva dashboard" }));
              
         }
     }
