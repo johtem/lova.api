@@ -10,7 +10,10 @@
 
         "dist/js/bootstrap.min.js",
         "dist/js/bootstrap.bundle.min.js.map",
-        "dist/js/bootstrap.min.js.map"
+        "dist/js/bootstrap.min.js.map",
+        "scss/bootstrap.scss",
+        "dist/css/bootstrap.min.css"
+        
       ]
     },
     {
@@ -18,9 +21,28 @@
       "library": "font-awesome@5.15.2",
       "destination": "wwwroot/lib/fontawesome/",
       "files": [
-        
+
       ]
 
+    },
+    {
+      "provider": "cdnjs",
+      "library": "holder@2.9.7",
+      "destination": "wwwroot/lib/holder",
+      "files": [
+        "holder.min.js"
+      ]
+
+    },
+    {
+      "provider": "unpkg",
+      "library": "@microsoft/signalr@latest",
+      "destination": "wwwroot/lib/signalr",
+      "files": [
+        "dist/browser/signalr.js",
+        "dist/browser/signalr.min.js",
+        "dist/browser/signalr.js.map"
+      ]
     }
   ]
 }

@@ -14,6 +14,8 @@ using Microsoft.Azure.Cosmos.Table;
 using LOVA.API.Extensions;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using NPOI.SS.Formula.Functions;
+using LOVA.API.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace LOVA.API.Controllers
 {
@@ -26,11 +28,13 @@ namespace LOVA.API.Controllers
     {
         private readonly LovaDbContext _context;
         private readonly IEmailService _mailService;
+        private readonly IHubContext<ActivationHub> _hub;
 
-        public DrainPatrolsController(LovaDbContext context, IEmailService mailService)
+        public DrainPatrolsController(LovaDbContext context, IEmailService mailService, IHubContext<ActivationHub> hub)
         {
             _context = context;
             _mailService = mailService;
+            _hub = hub;
         }
 
         //// GET: api/DrainPatrols
@@ -157,6 +161,9 @@ namespace LOVA.API.Controllers
                 Time = drainPatrolViewModel.Time,
                 Active = drainPatrolViewModel.Active
             };
+
+            // SignalR to update page
+            await _hub.Clients.All.SendAsync("ReceiveMessage", insertData.Address, insertData);
 
             // Save data temporary in Table Storage to flatten out the data.
 

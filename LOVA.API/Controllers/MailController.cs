@@ -1,6 +1,8 @@
-﻿using LOVA.API.Models;
+﻿using LOVA.API.Hubs;
+using LOVA.API.Models;
 using LOVA.API.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +17,13 @@ namespace LOVA.API.Controllers
     public class MailController : ControllerBase
     {
         private readonly IEmailService mailService;
-        public MailController(IEmailService mailService)
+
+        private readonly Microsoft.AspNetCore.SignalR.IHubContext<ActivationHub> _hub;
+        public MailController(IEmailService mailService, IHubContext<ActivationHub> hub)
         {
             this.mailService = mailService;
+            _hub = hub;
+
         }
         [HttpPost("send")]
         public async Task<IActionResult> SendMail([FromForm] MailRequest request)
@@ -55,8 +61,9 @@ namespace LOVA.API.Controllers
         {
             try
             {
-                //await mailService.SendToManyActivitiesEmailAsync(request);
-                await mailService.SendNoActivitiesEmailAsync();
+                
+                 await mailService.SendNoActivitiesEmailAsync();
+                 
                 return Ok();
             }
             catch (Exception ex)
@@ -64,5 +71,31 @@ namespace LOVA.API.Controllers
                 throw;
             }
         }
+
+
+        [HttpGet]
+        public async Task Get()
+        {
+
+            var insertData = new Activity
+            {
+                Master_node = 3,
+                Index = 2,
+                Address = "3C1",
+                Time = DateTime.Now,
+                Active = true
+            };
+                
+
+
+            await _hub.Clients.All.SendAsync("ReceiveMessage", insertData.Address, insertData);
+        }
+
+
+
+
+
+
+
     }
 }

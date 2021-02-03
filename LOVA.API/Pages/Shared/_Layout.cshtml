@@ -13,22 +13,31 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
 
-    <!--  Fonts and icons -->
+    <!--  Fonts -->
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
-    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />*@
 
 
+
+
+    <!-- Add the Kendo Bootstrap v4 theme: -->
     <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.1.119/styles/kendo.bootstrap-v4.min.css" />
+
+    <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="~/css/bootstrap.custom.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
+
+    <!-- UI Script files -->
     <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/jquery.min.js"></script>
     <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/kendo.all.min.js"></script>
     <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/kendo.aspnetmvc.min.js"></script>
     <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/lib/holder/holder.min.js"></script>
     <script type="text/javascript" src="~/js/site.js" asp-append-version="true"></script>
     <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/cultures/kendo.culture.sv-SE.min.js"></script>
     <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/messages/kendo.messages.sv-SE.min.js"></script>
+
+    <!-- Font -->
     <script src="https://kit.fontawesome.com/ac1c9834c3.js" crossorigin="anonymous"></script>
 
 </head>
@@ -73,11 +82,11 @@
         CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("sv-SE");
     }
 
-    <div class="container-fluid" style="padding-right: 0px; padding-left: 0px;">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+<div class="container-fluid" style="padding-right: 0px; padding-left: 0px; margin-top: 100px;">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
 
     <footer class="border-top footer text-muted">
         <div class="container text-center">

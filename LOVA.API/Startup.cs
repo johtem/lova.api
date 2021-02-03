@@ -25,6 +25,7 @@ using Newtonsoft.Json.Serialization;
 using Hangfire;
 using Hangfire.SqlServer;
 using LOVA.API.Filter;
+using LOVA.API.Hubs;
 
 namespace LOVA.API
 {
@@ -68,6 +69,7 @@ namespace LOVA.API
                 .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
             services.AddServerSideBlazor();
+            services.AddSignalR();
 
 
             services.AddSession(options =>
@@ -166,6 +168,7 @@ namespace LOVA.API
                 endpoints.MapControllers();
                 endpoints.MapBlazorHub();
                 endpoints.MapHangfireDashboard();
+                endpoints.MapHub<ActivationHub>("/activationhub");
             });
 
 

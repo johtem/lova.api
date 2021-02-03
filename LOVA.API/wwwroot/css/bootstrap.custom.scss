@@ -3,7 +3,7 @@ $link_color: #007bff; $link_color_hover: #0400ff;
 $link_color_hover: #0056b3;
 
 
-@import "../lib/bootstrap/scss/bootstrap";
+@import "../lib/bootstrap/scss/bootstrap.scss";
 
 .btn-link {
     color: $link_color;
