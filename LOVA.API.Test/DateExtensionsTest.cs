@@ -42,8 +42,26 @@ namespace LOVA.API.Test
 
 
             // Assert
-            Assert.True(resultSameHour);
-            Assert.False(resultMultipleHours);
+            Assert.False(resultSameHour);
+            Assert.True(resultMultipleHours);
+
+        }
+
+        [Fact]    
+        public void VerifyNewDay()
+        {
+            // Arrange
+            DateTime now = DateTime.Now;
+
+
+            // act
+            var resultSameHour = LOVA.API.Extensions.DateExtensions.IsNewDay(now, now);
+            var resultMultipleHours = LOVA.API.Extensions.DateExtensions.IsNewDay(now, now.AddDays(-2));
+
+
+            // Assert
+            Assert.False(resultSameHour);
+            Assert.True(resultMultipleHours);
 
         }
     }

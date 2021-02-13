@@ -13,5 +13,7 @@ namespace LOVA.API.Services
         Task SendToManyActivitiesEmailAsync(ActivityCount request);
 
         Task SendNoActivitiesEmailAsync();
+
+        Task SendEmailLongActivationTime();
     }
 }

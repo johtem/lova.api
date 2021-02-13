@@ -49,8 +49,21 @@ namespace LOVA.API.Extensions
                 newHour = true;
             }
 
-
             return newHour;
+        }
+
+        public static bool IsNewDay(DateTime newDate, DateTime savedDate)
+        {
+            
+
+            bool newDay = false;
+
+            if (newDate.Day != savedDate.Day)
+            {
+                newDay = true;
+            }
+
+            return newDay;
         }
 
         public static DateTime RemoveMinutesAndSeconds(DateTime d)

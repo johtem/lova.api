@@ -177,6 +177,7 @@ namespace LOVA.API
             // backgroundJobs.Enqueue(() => Console.WriteLine("Hello world from Hangfire!"));
             //RecurringJob.AddOrUpdate<IEmailService>("hourly-id", x => x.SendEmailAsync(new MailRequest { ToEmail = "johan@tempelman.nu", Subject = "Hourly email", Body = $"Hourly  {DateTime.Now.ToShortDateString()}" }), Cron.we.Hourly);
             RecurringJob.AddOrUpdate<IEmailService>("weekly-no-activities-id", x => x.SendNoActivitiesEmailAsync(), Cron.Weekly);  //Weekly Monday 00:00
+            RecurringJob.AddOrUpdate<IEmailService>("long-activation-id", x => x.SendEmailLongActivationTime(), Cron.Hourly);  //Hourly
 
 
             // End recurring Hangfire jobs

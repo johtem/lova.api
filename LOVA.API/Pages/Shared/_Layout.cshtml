@@ -1,92 +1,65 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using LOVA.API.Models 
+@using LOVA.API.Models
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
 
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Löttingelund</title>
 
-    <!--  Fonts -->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
+  <!-- Vendor CSS Files -->
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/icofont/icofont.min.css" />
 
-
-
-    <!-- Add the Kendo Bootstrap v4 theme: -->
-    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.1.119/styles/kendo.bootstrap-v4.min.css" />
-
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="~/css/bootstrap.custom.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-
-
-    <!-- UI Script files -->
-    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/jquery.min.js"></script>
-    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/kendo.all.min.js"></script>
-    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/kendo.aspnetmvc.min.js"></script>
-    <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="~/lib/holder/holder.min.js"></script>
-    <script type="text/javascript" src="~/js/site.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/cultures/kendo.culture.sv-SE.min.js"></script>
-    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/messages/kendo.messages.sv-SE.min.js"></script>
-
-    <!-- Font -->
-    <script src="https://kit.fontawesome.com/ac1c9834c3.js" crossorigin="anonymous"></script>
-
+    <!-- Template Main CSS File -->
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
-
-
-
 <body>
-    <header>
+    <header id="header">
         @if (SignInManager.IsSignedIn(User) && User.IsInRole("User"))
         {
-            <partial name="Menu/_menuUser" />
+            <partial name="Menu/_user" />
         }
         else if (SignInManager.IsSignedIn(User) && User.IsInRole("Lova"))
         {
-            <partial name="Menu/_menuLova" />
+            <partial name="Menu/_lova" />
         }
         else if (SignInManager.IsSignedIn(User) && User.IsInRole("Styrelse"))
         {
-            <partial name="Menu/_menuStyrelse" />
+            <partial name="Menu/_styrelse" />
         }
         else if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
         {
-            <partial name="Menu/_menuAdmin" />
+            @*<partial name="Menu/_menuAdmin" />*@
+            <partial name="Menu/_admin" />
         }
         else if (SignInManager.IsSignedIn(User) && User.IsInRole("VA"))
         {
-            <partial name="Menu/_menuVA" />
+            <partial name="Menu/_va" />
         }
         else
         {
             <partial name="Menu/_menu" />
         }
-
+        
     </header>
+    <div class="container-fluid border-top">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
 
-    <script type="text/javascript">
-        //set culture of the Kendo UI
-        kendo.culture("sv-SE");
-    </script>
-
-    @{
-        CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("sv-SE");
-    }
-
-<div class="container-fluid" style="padding-right: 0px; padding-left: 0px; margin-top: 100px;">
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
-</div>
+    <div id="preloader"></div>
+    <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
     <footer class="border-top footer text-muted">
         <div class="container text-center">
@@ -94,8 +67,18 @@
         </div>
     </footer>
 
+   @* <script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/jquery.min.js"></script>
+    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/kendo.all.min.js"></script>
+    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/kendo.aspnetmvc.min.js"></script>
+    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/cultures/kendo.culture.sv-SE.min.js"></script>
+    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/messages/kendo.messages.sv-SE.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/main.js" asp-append-version="true"></script>
 
+    <!-- Font -->
+    <script src="https://kit.fontawesome.com/ac1c9834c3.js" crossorigin="anonymous"></script>
 
-    @RenderSection("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -41,6 +41,17 @@ namespace LOVA.API.Services
         }
         //  </QueryData>
 
+
+        public static async Task<IEnumerable<DrainTableStorageEntity>> GetAllAsync(CloudTable table) 
+        {
+           
+            var queryResult = table.ExecuteQuery(new TableQuery<DrainTableStorageEntity>()).ToList();
+
+
+            return queryResult;
+        }
+
+
         //  <InsertItem>
         public static async Task<DrainTableStorageEntity> InsertOrMergeEntityAsync(CloudTable table, DrainTableStorageEntity entity)
         {

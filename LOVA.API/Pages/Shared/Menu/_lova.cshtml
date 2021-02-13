@@ -1,0 +1,155 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<div class="container d-flex align-items-center">
+    <!-- Uncomment below if you prefer to use an image logo -->
+    <a href="/Index" class="logo mr-auto"><img src="~/Images/LoggaSmall.jpg" alt=""></a>
+
+    <nav class="nav-menu d-none d-lg-block ">
+        <ul>
+
+            <li class="drop-down">
+                <a href="">Om Löttingelund</a>
+                <ul>
+                    <li><a href="/About/About">Löttingelundsföreningarna</a></li>
+                    <li class="drop-down">
+                        <a href="#">Om</a>
+                        <ul>
+                            <li><a href="/About/Lottingelund">Kort fakta</a></li>
+                            <li><a href="/About/History">Områdets historia</a></li>
+                            <li><a href="/About/Map">Karta</a></li>
+                            <li><a href="/About/Area">Natur och miljö</a></li>
+                            <li><a href="/About/PublicTransport">Kollektivtrafik</a></li>
+                        </ul>
+                    </li>
+                    <li class="drop-down">
+                        <a href="#">Kultur & fritid</a>
+                        <ul>
+                            <li><a href="/About/Bath">Bad</a></li>
+                            <li><a href="/About/Harbour">Båtliv</a></li>
+                            <li><a href="/About/Bicycle">Cykelvägar</a></li>
+                            <li><a href="/About/Fishing">Fiske</a></li>
+                            <li><a href="/About/Antiquites">Fornlämningar</a></li>
+                            <li><a href="/About/Excercise">Motionsspår</a></li>
+                            <li><a href="/About/RonningeBy">Rönninge by</a></li>
+                            <li><a href="/About/Roslagsleden">Roslagsleden</a></li>
+                            <li><a href="#">Golf</a></li>
+                            <li><a href="#">Ridskola</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/About/School">Skola & barnomsorg</a></li>
+                    <li><a href="/About/NeighbourhoodWatch">Grannsamverkan</a></li>
+                    <li class="drop-down">
+                        <a href="#">TV och Internet</a>
+                        <ul>
+                            <li><a href="/Media/About">Om Tv och Internet</a></li>
+                            <li><a href="/Media/Internet">Bredband</a></li>
+                            <li><a href="/Media/CabelTV">Kabel TV</a></li>
+                            <li><a href="/Media/Tv">BredbandsTV</a></li>
+                            <li><a href="/Media/IpPhones">IP-telefoni</a></li>
+
+                        </ul>
+                    </li>
+                    <li><a href="/Lottingelund/ErrorReport">Felanmälan</a></li>
+                    <li class="drop-down">
+                        <a href="#">Akuellt</a>
+                        <ul>
+                            <li><a href="/Aktuellt/EnviromentFunnel">Miljötratt</a></li>
+                            <li><a href="/Aktuellt/WaterShortage">Vattenbrist</a></li>
+                            <li><a href="/Aktuellt/Graffiti">Anmäl klotter</a></li>
+                            <li><a href="/Aktuellt/Defibrillator">Hjärtstartare</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="drop-down">
+                <a href="">Villaföreningen</a>
+                <ul>
+                    <li class="drop-down">
+                        <a href="#">Dokument</a>
+                        <ul>
+                            <li><a href="/Lottingelund/Leaflet">Kollektivtrafik</a></li>
+                            <li><a href="/Lottingelund/DocumentVA">VA-Föreningen</a></li>
+                            <li><a href="/Lottingelund/DocumentTomt">Tomtföreningen</a></li>
+                            <li><a href="/Lottingelund/DocumentVag">Vägföreningen</a></li>
+                            <li><a href="/About/Area">Löttingelundsbladet</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/Lottingelund/Move">Flytta in/ut</a></li>
+                    <li><a href="/Lottingelund/Board">Styrelsen</a></li>
+                    <li><a href="/Lottingelund/ErrorReport">Felanmälan</a></li>
+                </ul>
+            </li>
+            <li class="drop-down">
+                <a href="">Uthyrning</a>
+                <ul>
+                    <li><a href="/Rental/Workingplatform">Byggställning</a></li>
+                    <li><a href="/Rental/Kajak">Kajak</a></li>
+                    <li><a href="/Rental/Party">Party</a></li>
+                    <li><a href="/Rental/Trailer">Släpvagn</a></li>
+                </ul>
+            </li>
+            <li class="drop-down">
+                <a href="">LöVA</a>
+                <ul>
+                    <li class="drop-down">
+                        <a href="#">VA arbete</a>
+                        <ul>
+                            <li><a href="/Lova/AddNewActivity">Ny Åtgärd</a></li>
+                            <li><a href="/Lova/WaterDrainReport">VA-rapport</a></li>
+                        </ul>
+                    </li>
+                    <li class="drop-down">
+                        <a href="#">Statistik</a>
+                        <ul>
+                            <li><a href="/lova/activations">Live</a></li>
+                            <li><a href="/Lova/DashboardDrainPatrol">Dashboard</a></li>
+                            <li><a href="/Lova/StatisticPerWell">Intagsenhet</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/Lova/Documents">Dokument</a></li>
+                </ul>
+            </li>
+
+
+
+
+            @if (SignInManager.IsSignedIn(User))
+            {
+                @if (User.IsInRole("User"))
+                {
+
+                    <li class="drop-down">
+                        <a href="">@UserManager.GetUserName(User)</a>
+                        <ul>
+                            <li><a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">Logga ut</a></li>
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    <li class="drop-down">
+                        <a href="">@UserManager.GetUserName(User)</a>
+                        <ul>
+                            <li><a href="/Identity/Account/Manage" >Hantera</a></li>
+                            <li><a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">Logga ut</a></li>
+                        </ul>
+                    </li>
+                }
+                
+            }
+            else
+            {
+                <li>
+                    <a id="login" asp-area="Identity" asp-page="/Account/Login">Logga in</a>
+                </li>
+            }
+        </ul>
+    </nav><!-- .nav-menu -->
+
+
+
+
+</div>

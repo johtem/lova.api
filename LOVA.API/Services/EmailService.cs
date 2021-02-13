@@ -5,6 +5,7 @@ using MailKit.Net.Pop3;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Azure.Cosmos.Table;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MimeKit;
@@ -118,7 +119,7 @@ namespace LOVA.API.Services
             var email = new MimeMessage();
             email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
 
-            // TODO: Add dynamic sender list
+            // Dynamic sender list
 
             var senderList = await _context.MailSubscriptions
                 .Include(a => a.MailType)
@@ -156,6 +157,71 @@ namespace LOVA.API.Services
             smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
             await smtp.SendAsync(email);
             smtp.Disconnect(true);
+
+        }
+
+        public async Task SendEmailLongActivationTime()
+        {
+            // TODO: Find out long activation time for full drain and send out an email
+
+            // Create reference an existing table
+            CloudTable table = await TableStorageCommon.CreateTableAsync("Drains");
+
+            // Get existing data for address
+            var drainExistingRow = await TableStorageUtils.GetAllAsync(table);
+
+            var data = drainExistingRow.Where(a => a.IsActive == true && a.RowKey.Contains("8"))
+                .Select(a => new WellsDashboardViewModel
+                {
+                    Address = a.RowKey,
+                    Date = a.TimeUp.AddHours(1)
+                })
+                .OrderBy(a => a.Date);
+
+            if (drainExistingRow != null)
+            {
+                var email = new MimeMessage();
+                email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
+
+                // Dynamic sender list
+
+                var senderList = await _context.MailSubscriptions
+                    .Include(a => a.MailType)
+                    .Where(a => a.MailType.Type == "LongActivationDrainFull")
+                    .ToListAsync();
+
+
+                foreach (var sender in senderList)
+                {
+                    email.To.Add(MailboxAddress.Parse(sender.Email));
+                }
+
+
+                email.Subject = "Löva - Intagsenhet full";
+
+
+                string textBody = "<br>";
+                textBody += "<h5>Nedan tabell visar fulla intagsenheter.</h5><br>";
+                textBody += "";
+                textBody += " <table border=" + 1 + " cellpadding=" + 0 + " cellspacing=" + 0 + " width = " + 400 + ">";
+                textBody += "<tr bgcolor='#4da6ff'><td><b>Intagsenhet</b></td> <td> <b> Senaste aktivering</b> </td></tr>";
+                foreach (var item in data)
+                {
+                    textBody += "<tr><td>" + item.Address + "</td><td> " + item.Date + "</td> </tr>";
+                }
+                textBody += "</table><br><br>";
+                textBody += "Automatiskt mailutskick från www.lottingelund.se";
+
+
+                var builder = new BodyBuilder();
+                builder.HtmlBody = textBody;
+                email.Body = builder.ToMessageBody();
+                using var smtp = new SmtpClient();
+                smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
+                smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
+                await smtp.SendAsync(email);
+                smtp.Disconnect(true);
+            }
 
         }
     }

@@ -4,7 +4,7 @@
   "libraries": [
     {
       "provider": "unpkg",
-      "library": "bootstrap@4.5.3",
+      "library": "bootstrap@5.0.0-beta2",
       "destination": "wwwroot/lib/bootstrap/",
       "files": [
 
@@ -43,6 +43,20 @@
         "dist/browser/signalr.min.js",
         "dist/browser/signalr.js.map"
       ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "moment@2.29.1",
+      "destination": "wwwroot/lib/moment",
+      "files": [
+        "moment.js",
+        "src/lib/moment/locale.js",
+        "min/moment.min.js",
+        "min/moment-with-locales.min.js",
+        "min/moment-with-locales.min.js.map"
+
+      ]
+
     }
   ]
 }

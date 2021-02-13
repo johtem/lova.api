@@ -1,76 +1,105 @@
-﻿<nav class="navbar fixed-top navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow" style="background-color: #f4f4f2;">
-    <div class="container-fluid">
-        <a class="navbar-brand" asp-area="" asp-page="/Index">
-            <img src="~/Images/LoggaSmall.jpg" alt="" />
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        @(Html.Kendo().Menu()
-      .Name("Menu")
-      .Items(items =>
-      {
-          items.Add().Text("Om Löttingelund")
-          .Items(children =>
-          {
+﻿@using Microsoft.AspNetCore.Identity
 
-              children.Add().Text("Löttingelundsföreningarna").Url("/About/About");
-              children.Add().Text("Om").Items(innerChildren =>
-              {
-                  innerChildren.Add().Text("Kort fakta").Url("/About/Lottingelund");
-                  innerChildren.Add().Text("Områdets historia").Url("/About/History");
-                  innerChildren.Add().Text("Karta").Url("/About/Map");
-                  innerChildren.Add().Text("Natur och miljö").Url("/About/Area");
-                  innerChildren.Add().Text("Kollektivtrafik").Url("/About/PublicTransport");
-              });
-              children.Add().Text("Kultur & fritid").Items(innerChildren =>
-               {
-                   innerChildren.Add().Text("Bad").Url("/About/Bath");
-                   innerChildren.Add().Text("Båtliv").Url("/About/Harbour");
-                   innerChildren.Add().Text("Cykelvägar").Url("/About/Bicycle");
-                   innerChildren.Add().Text("Golf");
-                   innerChildren.Add().Text("Fiske").Url("/About/Fishing");
-                   innerChildren.Add().Text("Fornlämningar").Url("/About/Antiquities");
-                   innerChildren.Add().Text("Motionsspår").Url("/About/Exercise");
-                   innerChildren.Add().Text("Ridskola");
-                   innerChildren.Add().Text("Rönninge by").Url("/About/RonningBy");
-                   innerChildren.Add().Text("Roslagsleden").Url("/About/Roslagsleden");
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
-               });
-              children.Add().Text("Skola & barnomsorg").Url("/About/School");
-              children.Add().Text("Grannsamverkan").Url("/About/NeighbourhoodWatch");
-              children.Add().Text("Tv och Internet")
-              .Items(innerChildren =>
-              {
-                  innerChildren.Add().Text("Om TV och Internet").Url("/Media/About");
-                  innerChildren.Add().Text("Bredband").Url("/Media/Internet");
-                  innerChildren.Add().Text("Kabel TV").Url("/Media/CableTv");
-                  innerChildren.Add().Text("BredbandsTV").Url("/Media/Tv");
-                  innerChildren.Add().Text("IP-telefoni").Url("/Media/IpPhones");
-              });
-              children.Add().Text("Felanmälan").Url("/Lottingelund/ErrorReport");
-              children.Add().Text("Aktuellt")
-              .Items(innerChildren =>
-              {
-                  innerChildren.Add().Text("Miljötratt").Url("/Aktuellt/EnviromentFunnel");
-                  innerChildren.Add().Text("Vattenbrist").Url("/Aktuellt/WaterShortage");
-                  innerChildren.Add().Text("Anmäl klotter").Url("/Aktuellt/Graffiti");
-                  innerChildren.Add().Text("Hjärtstartare").Url("/Aktuellt/Defibrillator");
-              });
+<div class="container d-flex align-items-center">
+    <!-- Uncomment below if you prefer to use an image logo -->
+    <a href="/Index" class="logo mr-auto"><img src="~/Images/LoggaSmall.jpg" alt=""></a>
 
-          });
-      })
-      )
+    <nav class="nav-menu d-none d-lg-block ">
+        <ul>
 
-        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-            <partial name="_LoginPartial" />
+            <li class="drop-down">
+                <a href="">Om Löttingelund</a>
+                <ul>
+                    <li><a href="/About/About">Löttingelundsföreningarna</a></li>
+                    <li class="drop-down">
+                        <a href="#">Om</a>
+                        <ul>
+                            <li><a href="/About/Lottingelund">Kort fakta</a></li>
+                            <li><a href="/About/History">Områdets historia</a></li>
+                            <li><a href="/About/Map">Karta</a></li>
+                            <li><a href="/About/Area">Natur och miljö</a></li>
+                            <li><a href="/About/PublicTransport">Kollektivtrafik</a></li>
+                        </ul>
+                    </li>
+                    <li class="drop-down">
+                        <a href="#">Kultur & fritid</a>
+                        <ul>
+                            <li><a href="/About/Bath">Bad</a></li>
+                            <li><a href="/About/Harbour">Båtliv</a></li>
+                            <li><a href="/About/Bicycle">Cykelvägar</a></li>
+                            <li><a href="/About/Fishing">Fiske</a></li>
+                            <li><a href="/About/Antiquites">Fornlämningar</a></li>
+                            <li><a href="/About/Excercise">Motionsspår</a></li>
+                            <li><a href="/About/RonningeBy">Rönninge by</a></li>
+                            <li><a href="/About/Roslagsleden">Roslagsleden</a></li>
+                            <li><a href="#">Golf</a></li>
+                            <li><a href="#">Ridskola</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/About/School">Skola & barnomsorg</a></li>
+                    <li><a href="/About/NeighbourhoodWatch">Grannsamverkan</a></li>
+                    <li class="drop-down">
+                        <a href="#">TV och Internet</a>
+                        <ul>
+                            <li><a href="/Media/About">Om Tv och Internet</a></li>
+                            <li><a href="/Media/Internet">Bredband</a></li>
+                            <li><a href="/Media/CabelTV">Kabel TV</a></li>
+                            <li><a href="/Media/Tv">BredbandsTV</a></li>
+                            <li><a href="/Media/IpPhones">IP-telefoni</a></li>
 
-        </div>
-    </div>
-</nav>
+                        </ul>
+                    </li>
+                    <li><a href="/Lottingelund/ErrorReport">Felanmälan</a></li>
+                    <li class="drop-down">
+                        <a href="#">Akuellt</a>
+                        <ul>
+                            <li><a href="/Aktuellt/EnviromentFunnel">Miljötratt</a></li>
+                            <li><a href="/Aktuellt/WaterShortage">Vattenbrist</a></li>
+                            <li><a href="/Aktuellt/Graffiti">Anmäl klotter</a></li>
+                            <li><a href="/Aktuellt/Defibrillator">Hjärtstartare</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
 
 
-<style>
-</style>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                @if (User.IsInRole("User"))
+                {
 
+                    <li class="drop-down">
+                        <a href="">@UserManager.GetUserName(User)</a>
+                        <ul>
+                            <li><a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">Logga ut</a></li>
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    <li class="drop-down">
+                        <a href="">@UserManager.GetUserName(User)</a>
+                        <ul>
+                            <li><a href="/Identity/Account/Manage" >Hantera</a></li>
+                            <li><a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">Logga ut</a></li>
+                        </ul>
+                    </li>
+                }
+                
+            }
+            else
+            {
+                <li>
+                    <a id="login" asp-area="Identity" asp-page="/Account/Login">Logga in</a>
+                </li>
+            }
+        </ul>
+    </nav><!-- .nav-menu -->
+
+
+
+
+</div>

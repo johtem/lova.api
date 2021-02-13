@@ -1,35 +1,178 @@
 ﻿"use strict";
 
-var connection = new signalR.HubConnectionBuilder().withUrl("/activationHub").build();
+var connection = new signalR.HubConnectionBuilder()
+    .withUrl("/activationHub")
+    .build();
 
-  
+var myVarActive;
+var myVarDeActive;
 
-connection.on("ReceiveMessage", function (user, message) {
+var connectionStatus = document.getElementById("connectionStatus");
+
+moment.locale('sv');  // Set moment to Swedish date and time
+
+
+connection.on("DrainActivity", function (user, message) {
     //console.log(message);
     //console.log(message["address"]);
-    // var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    var msg = message["address"] + " " + message["active"];
-    var encodedMsg = user + " says " + msg;
+    var time = moment(message["time"]).format('ddd HH:mm.ss ');
+    var msg = message["active"];
+    var encodedMsg = time + " - " + user + "  aktiv: " + msg;
     var li = document.createElement("li");
-
-//   li.setAttribute('style', 'color: red;');
+    var childLi = document.getElementsByTagName("li");  
 
 
     if (message["active"] == true) {
         li.setAttribute('style', 'color: #fc9005;');
+
         document.getElementById(message["address"]).style.backgroundColor = '#fc9005';
+        document.getElementById(message["address"]).setAttribute("data-timeup", message["time"]);
+        document.getElementById(message["address"]).className = "active";
     } else {
         li.setAttribute('style', 'color: #5ab25e;');
         document.getElementById(message["address"]).style.backgroundColor = '#5ab25e';
+        document.getElementById(message["address"]).classList.remove("active");
     }
 
     li.textContent = encodedMsg;
-    document.getElementById("messagesList").appendChild(li);
+    
+    //document.getElementById("messagesList").appendChild(li);
+    document.querySelector("#messagesList").prepend(li);
+
+    var drainFromPage = document.getElementById("address").innerHTML;
+   
+
+    if (drainFromPage == user) {
+        drainUpdate(user);
+    }
+
 });
 
-connection.start().then(function () {
-   
-}).catch(function (err) {
-    return console.error(err.toString());
+connection.on("Drain", function (user, message, dateNow) {
+    
+    var aTime = document.getElementById("activationTime");
+    var deATime = document.getElementById("deActivationTime");
+    
+    document.getElementById("activationCount").textContent = message["hourlyCount"];
+    document.getElementById("activationDailyCount").textContent = message["dailyCount"];
+
+
+    if (message["isActive"] == true) {
+        aTime.style.color = "green";
+        deATime.style.color = "black";
+
+        aTime.textContent = moment(message["timeUp"]).format('ddd D/M HH:mm.ss');
+        deATime.textContent = moment(message["timeDown"]).format('ddd D/M HH:mm.ss ');
+
+        document.getElementById("activationRunningTime").textContent = secondsToTime(moment(dateNow).diff(moment(message["timeUp"]), "seconds", false));
+        document.getElementById("deActivationRunningTime").textContent = secondsToTime(moment(message["timeUp"]).diff(moment(message["timeDown"]), "seconds", false));
+
+        myVarActive = setInterval(myTimerActive, 1000);
+
+
+
+    } else {
+       
+
+        aTime.style.color = "black";
+        deATime.style.color = "red";
+
+        aTime.textContent = moment(message["timeUp"]).format('ddd D/M HH:mm.ss');
+        deATime.textContent = moment(message["timeDown"]).format('ddd D/M HH:mm.ss');
+
+        document.getElementById("activationRunningTime").textContent = secondsToTime(moment(message["timeDown"]).diff(moment(message["timeUp"]), "seconds", false));
+        document.getElementById("deActivationRunningTime").textContent = secondsToTime(moment(dateNow).diff(moment(message["timeDown"]), "seconds", false));
+
+        myVarDeActive = setInterval(myTimerDeActive, 1000);
+    }
+
+    //console.log(moment(message["timeUp"]).format('ddd HH:mm.SS '));
 });
+
+
+
+
+connection.onclose(function () {
+    onDisconnected();
+    console.log("Reconnect in 5 seconds...");
+    setTimeout(startConnection, 5000);
+})
+
+function startConnection() {
+    connection.start()
+        .then(onConnected)
+        .catch(function (err) {
+            console.error(err);
+        });
+}
+
+function onConnected() {
+    connectionStatus.textContent = "Ansluten";
+}
+
+function onDisconnected() {
+    connectionStatus.textContent = "Försöker att återansluta...";
+}
+
+
+
+
+startConnection();
+
+
+function drainUpdate(drain) {
+    
+    myStopFunctionActive();
+    myStopFunctionDeActive();
+    connection.invoke("Drain", drain);
+    
+};
+
+
+function myTimerActive() {
+    
+    var t = moment.duration(document.getElementById("activationRunningTime").innerHTML).asSeconds();
+    document.getElementById("activationRunningTime").innerHTML = secondsToTime(parseInt(t, 10) + 1);
+}
+
+function myStopFunctionActive() {
+    clearInterval(myVarActive);
+}
+
+function myTimerDeActive() {
+
+    var t = moment.duration(document.getElementById("deActivationRunningTime").innerHTML).asSeconds();
+    document.getElementById("deActivationRunningTime").innerHTML = secondsToTime(parseInt(t, 10) + 1); 
+}
+
+function myStopFunctionDeActive() {
+    clearInterval(myVarDeActive);
+}
+
+
+function secondsToTime(seconds) {
+    return moment.utc(moment.duration(seconds, "seconds").asMilliseconds()).format("HH:mm:ss");
+}
+
+
+// Check for long avtivation time every 5 seconds
+
+var longActivations = setInterval(checkLongActivationTime, 5000);
+
+function checkLongActivationTime() {
+
+    var dateNow = new Date();
+
+    var allActive = document.getElementsByClassName("active");
+
+    var i;
+    for (i = 0; i < allActive.length; i++) {
+        var secondsBetween = moment(dateNow).diff(moment(allActive[i].getAttribute("data-timeup")), "seconds", false)
+        //console.log(secondsBetween);
+
+        if (parseInt(secondsBetween, 10) > 100) {
+            allActive[i].style.backgroundColor = '#e73e3a';
+        }
+    }
+}
 

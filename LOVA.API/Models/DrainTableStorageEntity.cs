@@ -22,7 +22,11 @@ namespace LOVA.API.Models
         public DateTime TimeUp { get; set; }
         public DateTime TimeDown { get; set; }
 
+        public bool IsActive { get; set; }
+
         public int HourlyCount { get; set; }
+
+        public int DailyCount { get; set; }
 
         public int AverageActivity { get; set; }
 
