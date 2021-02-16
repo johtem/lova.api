@@ -134,18 +134,18 @@
   }
 
   // Intro carousel
-  var heroCarousel = $("#heroCarousel");
-  var heroCarouselIndicators = $("#hero-carousel-indicators");
-  heroCarousel.find(".carousel-inner").children(".carousel-item").each(function(index) {
-    (index === 0) ?
-    heroCarouselIndicators.append("<li data-target='#heroCarousel' data-slide-to='" + index + "' class='active'></li>"):
-      heroCarouselIndicators.append("<li data-target='#heroCarousel' data-slide-to='" + index + "'></li>");
-  });
+  //var heroCarousel = $("#heroCarousel");
+  //var heroCarouselIndicators = $("#hero-carousel-indicators");
+  //heroCarousel.find(".carousel-inner").children(".carousel-item").each(function(index) {
+  //  (index === 0) ?
+  //  heroCarouselIndicators.append("<li data-target='#heroCarousel' data-slide-to='" + index + "' class='active'></li>"):
+  //    heroCarouselIndicators.append("<li data-target='#heroCarousel' data-slide-to='" + index + "'></li>");
+  //});
 
-  heroCarousel.on('slid.bs.carousel', function(e) {
-    $(this).find('h2').addClass('animate__animated animate__fadeInDown');
-    $(this).find('p, .btn-get-started').addClass('animate__animated animate__fadeInUp');
-  });
+  //heroCarousel.on('slid.bs.carousel', function(e) {
+  //  $(this).find('h2').addClass('animate__animated animate__fadeInDown');
+  //  $(this).find('p, .btn-get-started').addClass('animate__animated animate__fadeInUp');
+  //});
 
   // Back to top button
   $(window).scroll(function() {
@@ -164,71 +164,71 @@
   });
 
   // jQuery counterUp
-  $('[data-toggle="counter-up"]').counterUp({
-    delay: 10,
-    time: 1000
-  });
+  //$('[data-toggle="counter-up"]').counterUp({
+  //  delay: 10,
+  //  time: 1000
+  //});
 
   // Testimonials carousel (uses the Owl Carousel library)
-  $(".testimonials-carousel").owlCarousel({
-    autoplay: true,
-    dots: true,
-    loop: true,
-    responsive: {
-      0: {
-        items: 1
-      },
-      768: {
-        items: 1
-      },
-      900: {
-        items: 2
-      }
-    }
-  });
+  //$(".testimonials-carousel").owlCarousel({
+  //  autoplay: true,
+  //  dots: true,
+  //  loop: true,
+  //  responsive: {
+  //    0: {
+  //      items: 1
+  //    },
+  //    768: {
+  //      items: 1
+  //    },
+  //    900: {
+  //      items: 2
+  //    }
+  //  }
+  //});
 
   // Porfolio isotope and filter
   $(window).on('load', function() {
-    var portfolioIsotope = $('.portfolio-container').isotope({
-      itemSelector: '.portfolio-item',
-      layoutMode: 'fitRows'
-    });
+    //var portfolioIsotope = $('.portfolio-container').isotope({
+    //  itemSelector: '.portfolio-item',
+    //  layoutMode: 'fitRows'
+    //});
 
-    $('#portfolio-flters li').on('click', function() {
-      $("#portfolio-flters li").removeClass('filter-active');
-      $(this).addClass('filter-active');
+    //$('#portfolio-flters li').on('click', function() {
+    //  $("#portfolio-flters li").removeClass('filter-active');
+    //  $(this).addClass('filter-active');
 
-      portfolioIsotope.isotope({
-        filter: $(this).data('filter')
-      });
-      aos_init();
-    });
+    //  portfolioIsotope.isotope({
+    //    filter: $(this).data('filter')
+    //  });
+    //  aos_init();
+    //});
 
     // Initiate venobox (lightbox feature used in portofilo)
-    $(document).ready(function() {
-      $('.venobox').venobox({
-        'share': false
-      });
-    });
+    //$(document).ready(function() {
+    //  $('.venobox').venobox({
+    //    'share': false
+    //  });
+    //});
   });
 
   // Portfolio details carousel
-  $(".portfolio-details-carousel").owlCarousel({
-    autoplay: true,
-    dots: true,
-    loop: true,
-    items: 1
-  });
+  //$(".portfolio-details-carousel").owlCarousel({
+  //  autoplay: true,
+  //  dots: true,
+  //  loop: true,
+  //  items: 1
+  //});
 
   // Initi AOS
-  function aos_init() {
-    AOS.init({
-      duration: 1000,
-      once: true
-    });
-  }
-  $(window).on('load', function() {
-    aos_init();
-  });
+  //function aos_init() {
+  //  AOS.init({
+  //    duration: 1000,
+  //    once: true
+  //  });
+  //}
+  //$(window).on('load', function() {
+  //  aos_init();
+  //});
 
 })(jQuery);

@@ -79,16 +79,16 @@ button.accept-policy {
 
 /* CUSTOMIZE TELERIK MENU */
 /* default state */
-.k-menu .k-item {
+/*.k-menu .k-item {
     background-color: #f4f4f2;
     font-size: 14px;
-}
+}*/
     /* hovered state */
-    .k-menu .k-item .k-state-hover {
+    /*.k-menu .k-item .k-state-hover {
         background-color: lightsteelblue;
-    }
+    }*/
     /* parent state */
-    .k-menu .k-item .k-state-border-right {
+    /*.k-menu .k-item .k-state-border-right {
         background-color: lightsteelblue;
         color: white;
     }
@@ -109,7 +109,7 @@ button.accept-policy {
 
 .k-menu .k-item > .k-state-active {
     background-color: lightsteelblue;
-}
+}*/
 
 
 
@@ -280,7 +280,7 @@ button.accept-policy {
 
 @media only screen and (max-width: 600px) {
     .width-notification {
-        width: 300px;
+        width: 200px;
     }
 }
 

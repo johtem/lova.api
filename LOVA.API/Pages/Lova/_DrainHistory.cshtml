@@ -1,0 +1,17 @@
+﻿@model IEnumerable<ActivityPerDrainViewModel>
+
+
+    <table class="tableLive" width="100%">
+        <tr>
+            <th width="60%">Aktivering start</th>
+            <th width="40%">Aktiveringstid</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td width="60%">@item.TimeUp</td>
+                <td width="40%">@item.TimeDiffString</td>
+            </tr>
+        }
+    </table>

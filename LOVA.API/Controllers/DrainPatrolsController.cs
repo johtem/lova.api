@@ -165,14 +165,31 @@ namespace LOVA.API.Controllers
             // SignalR to update page with above record
             await _hub.Clients.All.SendAsync("DrainActivity", insertData.Address, insertData);
 
-
+            
             // Save data in Azure Table Storage to flatten out the data.
 
             // Create reference to an existing table
             CloudTable table = await TableStorageCommon.CreateTableAsync("Drains");
 
+
+            DrainTableStorageEntity drainExistingRow = new DrainTableStorageEntity();
+
             // Get existing data for a specific master_node and address
-            var drainExistingRow = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
+            drainExistingRow = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
+
+            if (drainExistingRow == null)
+            {
+                drainExistingRow = new DrainTableStorageEntity
+                {
+                    PartitionKey = drainPatrolViewModel.Master_node.ToString(),
+                    RowKey = drainPatrolViewModel.Address,
+                    TimeDown = drainPatrolViewModel.Time,
+                    TimeUp = drainPatrolViewModel.Time.AddHours(-1),
+                    IsActive = drainPatrolViewModel.Active,
+                    HourlyCount = 0
+                };
+
+            }
 
             // Create a new/update record for Azure Table Storage
             DrainTableStorageEntity drain = new DrainTableStorageEntity(drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
@@ -183,6 +200,8 @@ namespace LOVA.API.Controllers
                 // Store data in Azure nosql table if Active == true
                 drain.TimeUp = drainPatrolViewModel.Time;
                 drain.TimeDown = drainExistingRow.TimeDown;
+                
+                
                 drain.IsActive = drainPatrolViewModel.Active;
 
 
@@ -232,9 +251,7 @@ namespace LOVA.API.Controllers
                         {
                             await SendEmail(ac);
                         }
-
                     }
-
                 }
                 else
                 {
@@ -242,8 +259,6 @@ namespace LOVA.API.Controllers
                     drain.HourlyCount = drainExistingRow.HourlyCount + 1;
                     drain.DailyCount = drainExistingRow.DailyCount + 1;
                     //drain.TimeDown = drainPatrolViewModel.Time;
-
-
 
                 }
 
@@ -258,7 +273,7 @@ namespace LOVA.API.Controllers
             {
                 // Get data from Azure table and store data in one row on ActivityPerRow
 
-                drain = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
+                // drain = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
                 drain.TimeUp = drainExistingRow.TimeUp;
                 drain.TimeDown = drainPatrolViewModel.Time;
                 drain.IsActive = drainPatrolViewModel.Active;

@@ -79,5 +79,14 @@ namespace LOVA.API.Extensions
 
             return listOfHours;
         }
+
+        public static string SecondsToHHMMSS(double secsDouble)
+        {
+            int secs = (int)secsDouble;
+            int hours = secs / 3600;
+            int mins = (secs % 3600) / 60;
+            secs = secs % 60;
+            return string.Format("{0:D2}:{1:D2}:{2:D2}", hours, mins, secs);
+        }
     }
 }

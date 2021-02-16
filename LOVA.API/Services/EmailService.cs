@@ -170,7 +170,7 @@ namespace LOVA.API.Services
             // Get existing data for address
             var drainExistingRow = await TableStorageUtils.GetAllAsync(table);
 
-            var data = drainExistingRow.Where(a => a.IsActive == true && a.RowKey.Contains("8"))
+            var drainFull = drainExistingRow.Where(a => a.IsActive == true && a.RowKey.Contains("8"))
                 .Select(a => new WellsDashboardViewModel
                 {
                     Address = a.RowKey,
@@ -178,7 +178,10 @@ namespace LOVA.API.Services
                 })
                 .OrderBy(a => a.Date);
 
-            if (drainExistingRow != null)
+            if (drainFull == null || drainFull.Count() == 0)
+            {
+
+            } else
             {
                 var email = new MimeMessage();
                 email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
@@ -205,7 +208,7 @@ namespace LOVA.API.Services
                 textBody += "";
                 textBody += " <table border=" + 1 + " cellpadding=" + 0 + " cellspacing=" + 0 + " width = " + 400 + ">";
                 textBody += "<tr bgcolor='#4da6ff'><td><b>Intagsenhet</b></td> <td> <b> Senaste aktivering</b> </td></tr>";
-                foreach (var item in data)
+                foreach (var item in drainFull)
                 {
                     textBody += "<tr><td>" + item.Address + "</td><td> " + item.Date + "</td> </tr>";
                 }

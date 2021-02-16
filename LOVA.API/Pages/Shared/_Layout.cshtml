@@ -13,15 +13,41 @@
     <title>@ViewData["Title"] - Löttingelund</title>
 
     <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
-  <!-- Vendor CSS Files -->
+    <!-- Add the Kendo Bootstrap v4 theme: -->
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.1.119/styles/kendo.bootstrap-v4.min.css" />
+
+
+    <!-- Vendor CSS Files -->
     <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/icofont/icofont.min.css" />
 
     <!-- Template Main CSS File -->
     <link rel="stylesheet" href="~/css/style.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+
+
+        @* <script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/jquery.min.js"></script>
+    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/kendo.all.min.js"></script>
+    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/kendo.aspnetmvc.min.js"></script>
+    <script stype="text/javascript" rc="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    @*<script type="text/javascript" src="~/lib/counterup/counterup.min.js" ></script>*@
+    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/cultures/kendo.culture.sv-SE.min.js"></script>
+    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/messages/kendo.messages.sv-SE.min.js"></script>
+    
+    <script type="text/javascript" src="~/js/main.js" asp-append-version="true"></script>
+
+    <!-- Font -->
+    <script src="https://kit.fontawesome.com/ac1c9834c3.js" crossorigin="anonymous"></script>
+
+
+    <script type="text/javascript">
+        //set culture of the Kendo UI
+        kendo.culture("sv-SE");
+    </script>
+
 </head>
 <body>
     <header id="header">
@@ -50,7 +76,7 @@
         {
             <partial name="Menu/_menu" />
         }
-        
+
     </header>
     <div class="container-fluid border-top">
         <main role="main">
@@ -67,17 +93,11 @@
         </div>
     </footer>
 
-   @* <script src="~/lib/jquery/dist/jquery.min.js"></script>*@
-    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/jquery.min.js"></script>
-    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/kendo.all.min.js"></script>
-    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/kendo.aspnetmvc.min.js"></script>
-    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/cultures/kendo.culture.sv-SE.min.js"></script>
-    <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/messages/kendo.messages.sv-SE.min.js"></script>
-    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/main.js" asp-append-version="true"></script>
 
-    <!-- Font -->
-    <script src="https://kit.fontawesome.com/ac1c9834c3.js" crossorigin="anonymous"></script>
+    @{
+        CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("sv-SE");
+    }
+
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
