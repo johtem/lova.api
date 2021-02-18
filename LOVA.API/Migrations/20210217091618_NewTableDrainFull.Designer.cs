@@ -4,14 +4,16 @@ using LOVA.API.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LOVA.API.Migrations
 {
     [DbContext(typeof(LovaDbContext))]
-    partial class LovaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210217091618_NewTableDrainFull")]
+    partial class NewTableDrainFull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -130,30 +132,6 @@ namespace LOVA.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DrainPatrolAlarms");
-                });
-
-            modelBuilder.Entity("LOVA.API.Models.FullDrain", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateFulldrain")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsUpdated")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("MailSent")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FullDrains");
                 });
 
             modelBuilder.Entity("LOVA.API.Models.IssueReport", b =>

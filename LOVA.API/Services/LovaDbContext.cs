@@ -43,6 +43,8 @@ namespace LOVA.API.Services
         public DbSet<MailType> MailTypes { get; set; }
         public DbSet<MailSubscription> MailSubscriptions { get; set; }
 
+        public DbSet<FullDrain> FullDrains { get; set; }
+
 
     }
 }

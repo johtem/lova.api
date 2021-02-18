@@ -42,7 +42,7 @@ namespace LOVA.API.Services
         //  </QueryData>
 
 
-        public static async Task<IEnumerable<DrainTableStorageEntity>> GetAllAsync(CloudTable table) 
+        public static IEnumerable<DrainTableStorageEntity> GetAll(CloudTable table) 
         {
            
             var queryResult = table.ExecuteQuery(new TableQuery<DrainTableStorageEntity>()).ToList();

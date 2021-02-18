@@ -31,7 +31,7 @@ namespace LOVA.API.Pages.Lova
             // Create reference an existing table
             CloudTable table = await TableStorageCommon.CreateTableAsync("Drains");
             
-            qResult = await TableStorageUtils.GetAllAsync(table);
+            qResult = TableStorageUtils.GetAll(table);
 
             ViewData["qResult"] = JsonConvert.SerializeObject(qResult);
         }
