@@ -7,6 +7,7 @@ using LOVA.API.Extensions;
 using LOVA.API.Models;
 using LOVA.API.Services;
 using LOVA.API.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Azure.Cosmos.Table;
@@ -15,6 +16,7 @@ using Newtonsoft.Json;
 
 namespace LOVA.API.Pages.Lova
 {
+    [Authorize(Roles = "Lova, Admin, Styrelse, VA")]
     public class ActivationsModel : PageModel
     {
 

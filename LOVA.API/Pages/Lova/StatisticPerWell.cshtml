@@ -89,7 +89,7 @@
                                 <p>
                                     @Model.PremisesText
                                 </p>
-                                <table class="table table-condesed table-sm">
+                                <table class="table table-condesed table-sm tableLive">
                                     <thead>
                                         <tr>
                                             <th>Intagsenhet</th>
@@ -117,12 +117,12 @@
                         <div class="card">
                             <div class="card-header card-header-danger">
                                 <h4 class="card-title">Statistik aktivering</h4>
-                                <p class="card-category">Till och med @Model.endDate</p>
+                                <p class="card-category tableLive">Till och med @Model.endDate</p>
                             </div>
                             <div class="card-body table-responsive">
                                 @if (Model.LatestActivity.Count() != 0)
                                 {
-                                    <table class="table table-condesed table-sm">
+                                    <table class="table table-condesed table-sm tableLive">
                                         <tr>
                                             <th>Senaste</th>
                                             <td>@Model.LatestActivity.First().TimeUp</td>
@@ -151,12 +151,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mt-2">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header card-header-rose">
                                 <h4 class="card-title">Aktiveringar per timme</h4>
-                                <p>Ett dygn bakåt från "Till datumet"</p>
+                                <p class="tableLive">Ett dygn bakåt från "Till datumet"</p>
                             </div>
                             <div class="card-body table-responsive">
 

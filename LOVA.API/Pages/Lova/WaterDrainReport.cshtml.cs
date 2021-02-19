@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LOVA.API.Pages.Lova
 {
-    [Authorize(Roles = "Lova, Admin, Styrelse")]
+    [Authorize(Roles = "Lova, Admin, Styrelse, VA")]
     public class WaterDrainReportModel : PageModel
     {
 

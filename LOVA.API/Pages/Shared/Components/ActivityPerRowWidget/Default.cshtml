@@ -7,13 +7,13 @@
 <div class="card">
     <div class="card-header card-header-primary">
         <h4 class="card-title">Statistik</h4>
-        <p class="card-category">@Model.StartDate och @Model.EndDate</p>
+        <p class="card-category tableLive">@Model.StartDate och @Model.EndDate</p>
         @*<p class="card-category">Tid UTC: @Model.DateUtcNow</p>*@
     </div>
     <div class="card-body table-responsive">
         @if (Model.ActivityPerRows.Count() != 0)
         {
-            <table class="table table-condesed table-sm" style="font-size: 12px;">
+            <table class="table table-condesed table-sm tableLive" >
                 <thead>
                     <tr>
                         <th>Adress</th>

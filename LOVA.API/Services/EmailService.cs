@@ -263,7 +263,7 @@ namespace LOVA.API.Services
                     email.To.Add(MailboxAddress.Parse(sender.Email));
                 }
 
-                if (objectsToEmail == null)
+                if (objectsToEmail == null || objectsToEmail.Count() == 0)
                 {
 
                 }
@@ -282,6 +282,8 @@ namespace LOVA.API.Services
                         textBody += "<tr><td>" + item.Address + "</td><td> " + item.Date + "</td> </tr>";
                     }
                     textBody += "</table><br><br>";
+                    textBody += "Varje timme kollas om grupp larm 8 är aktiv. Om aktiv skickas ett mail ut.<br>";
+                    textBody += " Dock max en gång per 24h för samma adress. <br><br>";
                     textBody += "Automatiskt mailutskick från www.lottingelund.se";
 
 
