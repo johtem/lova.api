@@ -3,11 +3,11 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<div class="container d-flex align-items-center">
+<div class="container d-flex align-items-center justify-content-between">
     <!-- Uncomment below if you prefer to use an image logo -->
     <a href="/Index" class="logo mr-auto"><img src="~/Images/LoggaSmall.jpg" alt=""></a>
 
-    <nav class="nav-menu d-none d-lg-block ">
+    <nav class="nav-menu d-none d-lg-block">
         <ul>
 
             <li class="drop-down">
@@ -162,12 +162,12 @@
                     <li class="drop-down">
                         <a href="">@UserManager.GetUserName(User)</a>
                         <ul>
-                            <li><a href="/Identity/Account/Manage" >Hantera</a></li>
+                            <li><a href="/Identity/Account/Manage">Hantera</a></li>
                             <li><a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">Logga ut</a></li>
                         </ul>
                     </li>
                 }
-                
+
             }
             else
             {

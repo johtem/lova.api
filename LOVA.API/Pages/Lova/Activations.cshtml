@@ -1,147 +1,165 @@
 ﻿@page
 @model LOVA.API.Pages.Lova.ActivationsModel
 @{
-    ViewData["Title"] = "Live "; 
+    ViewData["Title"] = "Live ";
 }
 
 
 
 <div class="container-fluid">
-
-
-<div class="row m-3">
-    <div class="col-md-2 mr-2">
-        <div class="row">
-            <h6>Slinga 1</h6>
-        </div>
-        <div class="row">
-            <table border="1" class="tableLive">
-                @foreach (var r in "ABCDEFGHIJKLMNOP")
-                {
-                    <tr>
-                        @foreach (var d in "12345678")
-                        {
-                            <td id="1@($"{@r}{@d}")" style="background-color: #a6a6a6;text-align: center;" width="50" height="30">@r@d</td>
-                        }
-
-                    </tr>
-
-                }
-
-            </table>
-        </div>
+    <div class="row offset-1 mt-2">
+        <span style="font-size: 18px; color: #5ab25e">
+            <i class="fas fa-square"></i>
+        </span>
+        <span class="tableLive mt-1">&nbsp; Varit aktiv senaste veckan</span>
+        <span class="ml-2" style="font-size: 18px;color: #fc9005">
+            <i class="fas fa-square"></i>
+        </span>
+        <span class="tableLive mt-1">&nbsp; Aktiv</span>
+        <span class="ml-2" style="font-size: 18px;color: #e73e3a;">
+            <i class="fas fa-square"></i>
+        </span>
+        <span class="tableLive mt-1">&nbsp; Aktiv mer än 100 s</span>
+        <span class="ml-2" style="font-size: 18px;color: #a6a6a6">
+            <i class="fas fa-square"></i>
+        </span>
+        <span class="tableLive mt-1">&nbsp; Ej aktiv på en vecka</span>
     </div>
-    <div class="col-md-2 mr-2">
-        <div class="row">
-            <h6>Slinga 2</h6>
+
+
+    <div class="row m-3">
+        <div class="col-md-2 mr-2">
+            <div class="row">
+                <h6>Slinga 1</h6>
+            </div>
+            <div class="row">
+                <table border="1" class="tableLive">
+                    @foreach (var r in "ABCDEFGHIJKLMNOP")
+                    {
+                        <tr>
+                            @foreach (var d in "12345678")
+                            {
+                                <td id="1@($"{@r}{@d}")" style="background-color: #a6a6a6;text-align: center;" width="50" height="30">@r@d</td>
+                            }
+
+                        </tr>
+
+                    }
+
+                </table>
+            </div>
         </div>
-        <div class="row">
-            <table border="1" class="tableLive">
-                @foreach (var r in "ABCDEFGHIJKLMNOP")
-                {
-                    <tr>
-                        @foreach (var d in "12345678")
-                        {
-                            <td id="2@($"{@r}{@d}")" style="background-color: #a6a6a6; text-align: center;" width="50" height="30">@r@d</td>
-                        }
+        <div class="col-md-2 mr-2">
+            <div class="row">
+                <h6>Slinga 2</h6>
+            </div>
+            <div class="row">
+                <table border="1" class="tableLive">
+                    @foreach (var r in "ABCDEFGHIJKLMNOP")
+                    {
+                        <tr>
+                            @foreach (var d in "12345678")
+                            {
+                                <td id="2@($"{@r}{@d}")" style="background-color: #a6a6a6; text-align: center;" width="50" height="30">@r@d</td>
+                            }
 
-                    </tr>
+                        </tr>
 
-                }
+                    }
 
-            </table>
+                </table>
+            </div>
         </div>
-    </div>
-    <div class="col-md-2 mr-2">
-        <div class="row">
-            <h6>Slinga 3</h6>
+        <div class="col-md-2 mr-2">
+            <div class="row">
+                <h6>Slinga 3</h6>
+            </div>
+            <div class="row">
+                <table border="1" class="tableLive">
+                    @foreach (var r in "ABCDEFGHIJKLMNOP")
+                    {
+                        <tr>
+                            @foreach (var d in "12345678")
+                            {
+                                <td id="3@($"{@r}{@d}")" style="background-color: #a6a6a6;text-align: center;" width="50" height="30">@r@d</td>
+                            }
+
+                        </tr>
+
+                    }
+
+                </table>
+            </div>
         </div>
-        <div class="row">
-            <table border="1" class="tableLive">
-                @foreach (var r in "ABCDEFGHIJKLMNOP")
-                {
-                    <tr>
-                        @foreach (var d in "12345678")
-                        {
-                            <td id="3@($"{@r}{@d}")" style="background-color: #a6a6a6;text-align: center;" width="50" height="30">@r@d</td>
-                        }
-
-                    </tr>
-
-                }
-
-            </table>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="row">
-                    <h6 id="address"></h6><h6 class="ml-1"><small id="masterNode" class="text-muted">Välj en adress</small></h6>
-                </div>
-                <div class="row">
-                    <div class="card w-100">
-                        <div class="card-body card-activation">
-                            <table class="tableLive" width="100%">
-                                <tr>
-                                    <td width="60%">Aktiverad:</td>
-                                    <td id="activationTime" width="40%"></td>
-                                </tr>
-                                <tr>
-                                    <td width="60%">Senaste gångtid:</td>
-                                    <td width="40%" id="activationRunningTime"></td>
-                                </tr>
-                                <tr>
-                                    <td width="60%" data-toggle="tooltip" data-placement="top" title="Antal aktiveringar pågående timme. ">Aktiveringar timme:</td>
-                                    <td width="40%" id="activationCount"></td>
-                                </tr>
-                                <tr>
-                                    <td width="60%" data-toggle="tooltip" data-placement="top" title="Antal aktiveringar pågående dygn. ">Aktiveringar dygn:</td>
-                                    <td width="40%" id="activationDailyCount"></td>
-                                </tr>
-                            </table>
-                        </div>
-                        
-                        <div class="card-body card-deactivation">
-                            <table class="tableLive" width="100%">
-                                <tr>
-                                    <td width="60%">Inaktiv:</td>
-                                    <td width="40%" id="deActivationTime"></td>
-                                </tr>
-                                <tr>
-                                    <td width="60%">Senaste vilotid:</td width="40%">
-                                    <td width="40%" id="deActivationRunningTime"></td>
-                                </tr>
-                            </table>
-                        </div>
-
+        <div class="col-md-3">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <h6 id="address"></h6><h6 class="ml-1"><small id="masterNode" class="text-muted">Välj en adress</small></h6>
                     </div>
-                </div>                
-                <div class="row">
-                    <h6 id="address"></h6><h6 class="ml-1"><small id="masterNode" class="text-muted">Senaste aktiveringarna</small></h6>
-                </div>
-                <div class="row">
-                    <div class="card w-100" style="height: 280px; overflow-y: scroll;">
-                        <div class="card-body card-activation" id="drainHistory"> 
-                            
+                    <div class="row">
+                        <div class="card w-100">
+                            <div class="card-body card-activation">
+                                <table class="tableLive" width="100%">
+                                    <tr>
+                                        <td width="60%">Aktiverad:</td>
+                                        <td id="activationTime" width="40%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="60%">Senaste gångtid:</td>
+                                        <td width="40%" id="activationRunningTime"></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="60%" data-toggle="tooltip" data-placement="top" title="Antal aktiveringar pågående timme. ">Aktiveringar timme:</td>
+                                        <td width="40%" id="activationCount"></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="60%" data-toggle="tooltip" data-placement="top" title="Antal aktiveringar pågående dygn. ">Aktiveringar dygn:</td>
+                                        <td width="40%" id="activationDailyCount"></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="card-body card-deactivation">
+                                <table class="tableLive" width="100%">
+                                    <tr>
+                                        <td width="60%">Inaktiv:</td>
+                                        <td width="40%" id="deActivationTime"></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="60%">Senaste vilotid:</td>
+                                        <td width="40%" id="deActivationRunningTime"></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h6 id="address"></h6><h6 class="ml-1"><small id="masterNode" class="text-muted">Senaste aktiveringarna</small></h6>
+                    </div>
+                    <div class="row">
+                        <div class="card w-100" style="height: 280px; overflow-y: scroll;">
+                            <div class="card-body card-activation" id="drainHistory">
+
+                            </div>
                         </div>
                     </div>
                 </div>
-                </div>
+            </div>
+        </div>
+        <div class="col-md-auto">
+            <div class="row">
+                <h6>Aktiviteter</h6><h6 class="ml-1"><small id="connectionStatus" class="text-muted"></small></h6>
+            </div>
+            <div class="row">
+                <ul id="messagesList" class="tableLive" style="height: 510px; width: 300px; list-style-type: none; overflow-y:scroll; ">
+                    <li></li>
+                </ul>
+
+            </div>
         </div>
     </div>
-    <div class="col-md-auto">
-        <div class="row">
-            <h6>Aktiviteter</h6><h6 class="ml-1"><small id="connectionStatus" class="text-muted"></small></h6>
-        </div>
-        <div class="row">
-            <ul id="messagesList" class="tableLive" style="height: 510px; width: 300px; list-style-type: none; overflow-y:scroll; ">
-                <li></li>
-            </ul>
-            
-        </div>
-    </div>
-</div>
 
 </div>
 
@@ -157,15 +175,15 @@
 
        var longActivationTime = "@LOVA.API.Services.MyConsts.LongActivationTime";
        console.log(longActivationTime);
-     
-        
+
+
         moment.locale('sv');  // Set moment to Swedish date and time
 
         $(document).ready(function () {
 
-            
+
             // Remove not used addresses from the grids
-            
+
             var notActive1 = ["#1A5", "#1A6", "#1B5", "#1B6", "#1C5", "#1C6", "#1E6", "#1F4", "#1F5", "#1F6", "#1G5", "#1G6", "#1I3", "#1I4", "#1I5", "#1I6", "#1J5", "#1J6", "#1K6", "#1L6", "#1N6", "#1O6", "#1P4", "#1P5", "#1P6",]
             var notActive2 = ["#2A4", "#2A5", "#2A6", "#2B4", "#2B5", "#2B6", "#2C4", "#2C5", "#2C6", "#2D4", "#2D5", "#2D6", "#2E3", "#2E4", "#2E5", "#2E6", "#2F3", "#2F4", "#2F5", "#2F6", "#2G3", "#2G4", "#2G5", "#2G6", "#2H3", "#2H4", "#2H5", "#2H6", "#2I5", "#2I6", "#2J2", "#2J3", "#2J4", "#2J5", "#2J6", "#2K4", "#2K5", "#2K6", "#2L4", "#2L5", "#2L6", "#2M2", "#2M3", "#2M4", "#2M5", "#2M6", "#2N1", "#2N2", "#2N3", "#2N4", "#2N5", "#2N6", "#2N7", "#2N8", "#2O3", "#2O4", "#2O5", "#2O6", "#2O7", "#2O8", "#2P2", "#2P3", "#2P4", "#2P5", "#2P6", "#2P7", "#2P8",]
             var notActive3 = ["#3A4", "#3A5", "#3A6", "#3B3", "#3B4", "#3B5", "#3B6", "#3C4", "#3C5", "#3C6", "#3D5", "#3D6", "#3E3", "#3E4", "#3E5", "#3E6", "#3F5", "#3F6", "#3G3", "#3G4", "#3G5", "#3G6", "#3H3", "#3H4", "#3H5", "#3H6", "#3I3", "#3I4", "#3I5", "#3I6", "#3J3", "#3J4", "#3J5", "#3J6", "#3K5", "#3K6", "#3L4", "#3L5", "#3L6", "#3M3", "#3M4", "#3M5", "#3M6", "#3N3", "#3N4", "#3N5", "#3N6", "#3O3", "#3O4", "#3O5", "#3O6", "#3P1", "#3P2", "#3P3", "#3P4", "#3P5", "#3P6", "#3P7", "#3P8"]
@@ -177,11 +195,13 @@
             function greyOut(item, index) {
                 $(item).css("background-color", "lightgrey").css("color", "lightgrey").css("cursor", "not-allowed");
             }
-            
-             var statesAvailable = JSON.parse(@Html.Raw(Json.Serialize(ViewData["qResult"])));
+
+            var statesAvailable = JSON.parse(@Html.Raw(Json.Serialize(ViewData["qResult"])));
+
+
 
              jQuery.each( statesAvailable, function( i, val ) {
-                           // console.log(val);  
+                           // console.log(val);
                            if (val["IsActive"])
                            {
                                var dateNow = new Date();
@@ -194,7 +214,7 @@
                                    // color orange
                                    $("#" + val["RowKey"]).css("background-color", "#fc9005").attr("data-timeup", val["TimeUp"]).addClass("active");
                                }
-                               
+
                            } else
                            {
                                $("#" + val["RowKey"]).css("background-color", "#5ab25e");
@@ -202,7 +222,13 @@
                });
 
 
-               
+            var noActivations = JSON.parse(@Html.Raw(Json.Serialize(ViewData["noActivations"])));
+
+            jQuery.each(noActivations, function (i, val) {
+                 // Color
+                $("#" + val["Address"]).css("background-color", "#a6a6a6");
+
+            });
 
 
 
@@ -216,14 +242,14 @@
                 $("#deActivationRunningTime").text("");
                 $("#activationCount").text("");
                 $("#activationDailyCount").text("");
-                
+
 
                 // Function in DrainPush.js
                 drainUpdate(cid);
 
 
                 $("#address").text(cid);
-                
+
 @*                if (cid == "2P1") {
                     $("#masterNode").text(" Vakuumpumparna");
                 } else {
@@ -246,7 +272,7 @@
                 }
 
 
-                // TODO: Jquery get data for the last 24 h 
+                // TODO: Jquery get data for the last 24 h
                 $.ajax({
                     type: "GET",
                     url: "/Lova/Activations?handler=DrainHistory",

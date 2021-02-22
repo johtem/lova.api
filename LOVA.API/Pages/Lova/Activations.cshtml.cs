@@ -36,6 +36,22 @@ namespace LOVA.API.Pages.Lova
             qResult = TableStorageUtils.GetAll(table);
 
             ViewData["qResult"] = JsonConvert.SerializeObject(qResult);
+
+
+            var weekAgo = DateTime.Now.AddDays(-6);
+
+            IEnumerable<WellsDashboardViewModel> data = await _context.ActivityPerRows
+                .Where(a => a.IsGroupAddress == true || a.IsGroupAddress == false)
+                .GroupBy(x => x.Address, (x, y) => new WellsDashboardViewModel
+                {
+                    Address = x,
+                    Date = y.Max(z => z.TimeUp)
+                })
+                .OrderBy(n => n.Date)
+                .Where(a => a.Date <= weekAgo)
+                .ToListAsync();
+
+            ViewData["noActivations"] = JsonConvert.SerializeObject(data);
         }
 
 

@@ -37,7 +37,7 @@
     <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/cultures/kendo.culture.sv-SE.min.js"></script>
     <script type="text/javascript" src="https://kendo.cdn.telerik.com/2021.1.119/js/messages/kendo.messages.sv-SE.min.js"></script>
     
-    <script type="text/javascript" src="~/js/main.js" asp-append-version="true"></script>
+    @*<script type="text/javascript" src="~/js/main.js" asp-append-version="true"></script>*@
 
     <!-- Font -->
     <script src="https://kit.fontawesome.com/ac1c9834c3.js" crossorigin="anonymous"></script>
@@ -100,5 +100,10 @@
 
 
     @await RenderSectionAsync("Scripts", required: false)
+
+
+
 </body>
+
+<script type="text/javascript" src="~/js/main.js" asp-append-version="true"></script>
 </html>

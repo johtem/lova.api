@@ -67,6 +67,7 @@
     var $mobile_nav = $('.nav-menu').clone().prop({
       class: 'mobile-nav d-lg-none'
     });
+
     $('body').append($mobile_nav);
     $('body').prepend('<button type="button" class="mobile-nav-toggle d-lg-none"><i class="icofont-navigation-menu"></i></button>');
     $('body').append('<div class="mobile-nav-overly"></div>');
@@ -221,14 +222,14 @@
   //});
 
   // Initi AOS
-  //function aos_init() {
-  //  AOS.init({
-  //    duration: 1000,
-  //    once: true
-  //  });
-  //}
-  //$(window).on('load', function() {
-  //  aos_init();
-  //});
+  function aos_init() {
+    AOS.init({
+      duration: 1000,
+      once: true
+    });
+  }
+  $(window).on('load', function() {
+    aos_init();
+  });
 
 })(jQuery);

@@ -34,7 +34,7 @@ html {
 
 @media (min-width: 768px) {
   html {
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 
@@ -280,7 +280,7 @@ button.accept-policy {
 
 @media only screen and (max-width: 600px) {
     .width-notification {
-        width: 200px;
+        width: 300px;
     }
 }
 
