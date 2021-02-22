@@ -40,16 +40,8 @@ namespace LOVA.API.Pages.Lova
 
             var weekAgo = DateTime.Now.AddDays(-6);
 
-            IEnumerable<WellsDashboardViewModel> data = await _context.ActivityPerRows
-                .Where(a => a.IsGroupAddress == true || a.IsGroupAddress == false)
-                .GroupBy(x => x.Address, (x, y) => new WellsDashboardViewModel
-                {
-                    Address = x,
-                    Date = y.Max(z => z.TimeUp)
-                })
-                .OrderBy(n => n.Date)
-                .Where(a => a.Date <= weekAgo)
-                .ToListAsync();
+            var data = qResult.Where(a => a.TimeUp <= weekAgo);
+
 
             ViewData["noActivations"] = JsonConvert.SerializeObject(data);
         }
