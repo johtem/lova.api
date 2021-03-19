@@ -9,22 +9,31 @@
 
 <div class="container-fluid">
     <div class="row mt-2 ml-5">
-        <span style="font-size: 18px; color: #5ab25e">
-            <i class="fas fa-square"></i>
-        </span>
-        <span class="tableLive mt-1">&nbsp; Varit aktiv senaste veckan</span>
-        <span class="ml-2" style="font-size: 18px;color: #fc9005">
-            <i class="fas fa-square"></i>
-        </span>
-        <span class="tableLive mt-1">&nbsp; Aktiv</span>
-        <span class="ml-2" style="font-size: 18px;color: #e73e3a;">
-            <i class="fas fa-square"></i>
-        </span>
-        <span class="tableLive mt-1">&nbsp; Aktiv mer än 100 s</span>
-        <span class="ml-2" style="font-size: 18px;color: #a6a6a6">
-            <i class="fas fa-square"></i>
-        </span>
-        <span class="tableLive mt-1">&nbsp; Ej aktiv på en vecka</span>
+        <div class="col-md">
+            <span style="font-size: 18px; color: #5ab25e">
+                <i class="fas fa-square"></i>
+            </span>
+            <span class="tableLive mt-1">&nbsp; Varit aktiv senaste veckan</span>
+            <span class="ml-2" style="font-size: 18px;color: #fc9005">
+                <i class="fas fa-square"></i>
+            </span>
+            <span class="tableLive mt-1">&nbsp; Aktiv</span>
+            <span class="ml-2" style="font-size: 18px;color: #e73e3a;">
+                <i class="fas fa-square"></i>
+            </span>
+            <span class="tableLive mt-1">&nbsp; Aktiv mer än 100 s</span>
+            <span class="ml-2" style="font-size: 18px;color: #990000;">
+                <i class="far fa-square"></i>
+            </span>
+            <span class="tableLive mt-1">&nbsp; Aktiv mer än 10 min</span>
+            <span class="ml-2" style="font-size: 18px;color: #a6a6a6">
+                <i class="fas fa-square"></i>
+            </span>
+            <span class="tableLive mt-1">&nbsp; Ej aktiv på en vecka</span>
+            <button type="button" class="btn btn-outline-secondary btn-sm ml-2" id="resetSquare">Återställ</button>
+        </div>
+        
+        
     </div>
 
 
@@ -40,7 +49,7 @@
                         <tr>
                             @foreach (var d in "12345678")
                             {
-                                <td id="1@($"{@r}{@d}")" style="background-color: #a6a6a6;text-align: center;" width="50" height="30">@r@d</td>
+                                <td id="1@($"{@r}{@d}")" class="tableLiveTd tableLiveTdStart" width="50" height="30">@r@d</td>
                             }
 
                         </tr>
@@ -61,7 +70,7 @@
                         <tr>
                             @foreach (var d in "12345678")
                             {
-                                <td id="2@($"{@r}{@d}")" style="background-color: #a6a6a6; text-align: center;" width="50" height="30">@r@d</td>
+                                <td id="2@($"{@r}{@d}")" class="tableLiveTd tableLiveTdStart" width="50" height="30">@r@d</td>
                             }
 
                         </tr>
@@ -82,7 +91,7 @@
                         <tr>
                             @foreach (var d in "12345678")
                             {
-                                <td id="3@($"{@r}{@d}")" style="background-color: #a6a6a6;text-align: center;" width="50" height="30">@r@d</td>
+                                <td id="3@($"{@r}{@d}")" class="tableLiveTd tableLiveTdStart" width="50" height="30">@r@d</td>
                             }
 
                         </tr>
@@ -209,16 +218,21 @@
                                var secondsBetween = moment(dateNow).diff(moment(val["TimeUp"]), "seconds", false)
                                if (secondsBetween > longActivationTime)
                                {
+                                   
                                    // Color red
-                                   $("#" + val["RowKey"]).css("background-color", "#e73e3a").attr("data-timeup", val["TimeUp"]).addClass("active");
+                                   $("#" + val["RowKey"]).attr("data-timeup", val["TimeUp"]).removeClass("tableLiveTdStart").addClass("active").addClass("tableLiveTdLongActive");
+
+                                   if (secondsBetween > 600) {
+                                       $("#" + val["RowKey"]).addClass("redSolidBorder");
+                                   }
                                } else {
                                    // color orange
-                                   $("#" + val["RowKey"]).css("background-color", "#fc9005").attr("data-timeup", val["TimeUp"]).addClass("active");
+                                   $("#" + val["RowKey"]).attr("data-timeup", val["TimeUp"]).removeClass("tableLiveTdStart").addClass("active").addClass("tableLiveTdActive");
                                }
 
                            } else
                            {
-                               $("#" + val["RowKey"]).css("background-color", "#5ab25e");
+                               $("#" + val["RowKey"]).removeClass("tableLiveTdStart").addClass("tableLiveTdNonActive");
                            }
                });
 
@@ -227,9 +241,9 @@
 
             jQuery.each(noActivations, function (i, val) {
                  // Color
-                $("#" + val["RowKey"]).css("background-color", "#a6a6a6");
+                $("#" + val["RowKey"]).removeClass("tableLiveTdNonActive tableLiveTdActive").addClass("tableLiveTdStart");
 
-            });
+            }); 
 
 
 
@@ -251,11 +265,6 @@
 
                 $("#address").text(cid);
 
-@*                if (cid == "2P1") {
-                    $("#masterNode").text(" Vakuumpumparna");
-                } else {
-                    $("#masterNode").text(" Slinga " + cid.charAt(0));
-                }*@
 
                 switch(cid) {
                     case "2P1":
@@ -277,10 +286,6 @@
                 $.ajax({
                     type: "GET",
                     url: "/Lova/Activations?handler=DrainHistory",
-                    @*beforeSend: function (xhr) {
-                        xhr.setRequestHeader("XSRF-TOKEN",
-                            $('input:hidden[name="__RequestVerificationToken"]').val());
-                    },*@
                     data: { "drain": cid },
                     success: function (response) {
                         $("#drainHistory").html(response);
@@ -296,7 +301,9 @@
             });
 
 
-
+            $("#resetSquare").click(function () {
+                $("td").removeClass("redSolidBorder");
+            });
 
         })
     </script>

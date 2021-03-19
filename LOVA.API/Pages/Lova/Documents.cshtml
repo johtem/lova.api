@@ -17,12 +17,12 @@
     </div>
 
     <div class="row">
-        <div class="col-2">
+        <div class="col-1">
 
         </div>
         <div class="col-8">
             @(Html.Kendo().FileManager().Name("filemanager")
-        .Width(1100)
+        //.Width(1100)
         .Height(600)
         .InitialView("grid")
         
@@ -55,7 +55,7 @@
 )
 
         </div>
-        <div class="col-2">
+        <div class="col">
             <partial name="_InstructionOpenDocument" />
         </div>
 
@@ -100,10 +100,11 @@
         $(document).ready(function () {
             var filemanager = $("#filemanager").getKendoFileManager();
 
-            filemanager.executeCommand({ command: "TogglePaneCommand", options: { type: "preview" } });
-            filemanager.toolbar.fileManagerDetailsToggle.switchInstance.toggle();
+            @*filemanager.executeCommand({ command: "TogglePaneCommand", options: { type: "preview" } });
+            filemanager.toolbar.fileManagerDetailsToggle.switchInstance.toggle();*@
 
-
+            filemanager.wrapper.find(".k-filemanager-navigation").hide();
+            filemanager.wrapper.find(".k-filemanager-splitbar-navigation").hide()
 
         })
     </script>

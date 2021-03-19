@@ -171,6 +171,8 @@ namespace LOVA.API.Services
             // Get existing data for address
             var drainExistingRow = TableStorageUtils.GetAll(table);
 
+            var dateNow = DateTime.Now;
+
             var drainFull = drainExistingRow.Where(a => a.IsActive == true && a.RowKey.Contains("8"))
                 .Select(a => new WellsDashboardViewModel
                 {
@@ -202,6 +204,11 @@ namespace LOVA.API.Services
                 foreach (var item in drainFull)
                 {
 
+                    // Check if full less than one hour
+                    if ((dateNow - item.Date).TotalMinutes > 59)
+                    {
+
+                   
                     var exist = savedFullDrains.Where(a => a.Address == item.Address).FirstOrDefault();
 
                     if (exist == null)
@@ -231,11 +238,10 @@ namespace LOVA.API.Services
                         exist.IsUpdated = true;
 
                         await _context.FullDrains.AddAsync(exist);
-                        _context.Attach(exist).State = EntityState.Modified;
 
                         await _context.SaveChangesAsync();
                     }
-
+                    }
                 }
 
                 // Remove all rows that have IsUpdated = false
@@ -300,6 +306,51 @@ namespace LOVA.API.Services
                 
             }
 
+        }
+
+        public async Task SendAlarmEmailAsync(MailRequest mailRequest)
+        {
+            var email = new MimeMessage();
+            email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
+
+            // Dynamic sender list
+
+            var senderList = await _context.MailSubscriptions
+                .Include(a => a.MailType)
+                .Where(a => a.MailType.Type == "Alarm")
+                .ToListAsync();
+
+            foreach (var sender in senderList)
+            {
+                email.To.Add(MailboxAddress.Parse(sender.Email));
+            }
+            //  email.To.Add(MailboxAddress.Parse(mailRequest.ToEmail));
+
+            email.Subject = mailRequest.Subject;
+            var builder = new BodyBuilder();
+            if (mailRequest.Attachments != null)
+            {
+                byte[] fileBytes;
+                foreach (var file in mailRequest.Attachments)
+                {
+                    if (file.Length > 0)
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            file.CopyTo(ms);
+                            fileBytes = ms.ToArray();
+                        }
+                        builder.Attachments.Add(file.FileName, fileBytes, ContentType.Parse(file.ContentType));
+                    }
+                }
+            }
+            builder.HtmlBody = mailRequest.Body;
+            email.Body = builder.ToMessageBody();
+            using var smtp = new SmtpClient();
+            smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
+            smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
+            await smtp.SendAsync(email);
+            smtp.Disconnect(true);
         }
     }
 }

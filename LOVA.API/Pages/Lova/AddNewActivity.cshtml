@@ -206,6 +206,7 @@
                                     {
                                         t.Add().Text("Larm A");
                                         t.Add().Text("Larm B");
+                                        t.Add().Text("Telefon");
                                     })
                                     .Events(ev => ev.Select("onAlarmSelect"))
                                     )
@@ -253,6 +254,7 @@
 
     function onAlarmSelect(e) {
         $("#IssueReportViewModel_Alarm").val(e.indices);
+        console.log(e.indices);
     }
 
 </script>

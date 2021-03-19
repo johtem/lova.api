@@ -19,15 +19,15 @@
     </div>
 
     <div class="row mt-5">
-        <div class="col-3">
+        <div class="col-1">
 
         </div>
-        <div class="col-7">
+        <div class="col-8">
             <div class="row col-12">
                 @(Html.Kendo().FileManager()
         .Name("filemanager")
         // .Views(v => v.Grid(grid => grid.Columns(cols => cols.Add().Field(Path))))
-        .Width(1100)
+        //.Width(1100)
         .Height(600)
     .DataSource(ds =>
     {
@@ -46,7 +46,7 @@
         items.Add("sortField");
         // items.Add("changeView");
         items.Add("spacer");
-        items.Add("details");
+        // items.Add("details");
         items.Add("search");
     }))
     .Events(events => events.DataBound("onOpen"))
@@ -59,7 +59,7 @@
 
             </div>
         </div>
-        <div class="col-2">
+        <div class="col">
             <partial name="_InstructionOpenDocument" />
         </div>
 
@@ -106,10 +106,13 @@
         $(document).ready(function () {
             var filemanager = $("#filemanager").getKendoFileManager();
 
-            filemanager.executeCommand({ command: "TogglePaneCommand", options: { type: "preview" } });
-            filemanager.toolbar.fileManagerDetailsToggle.switchInstance.toggle();
+            @*filemanager.executeCommand({ command: "TogglePaneCommand", options: { type: "preview" } });
+            filemanager.toolbar.fileManagerDetailsToggle.switchInstance.toggle();*@
 
             filemanager.view("grid");
+
+            filemanager.wrapper.find(".k-filemanager-navigation").hide();
+            filemanager.wrapper.find(".k-filemanager-splitbar-navigation").hide()
 
 
 

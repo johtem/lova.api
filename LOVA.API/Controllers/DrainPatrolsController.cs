@@ -297,6 +297,19 @@ namespace LOVA.API.Controllers
             _context.Activities.Add(insertData);
             await _context.SaveChangesAsync();
 
+            // Email if A or B-Alarm
+            switch (insertData.Address)
+            {
+                case "2O1":
+                    await SendEmailAlarm(insertData, "A-larm");
+                    break;
+                case "2O2":
+                    await SendEmailAlarm(insertData, "B-larm");
+                    break;
+                default:
+                    break;
+            }
+
             return Ok(drainPatrolViewModel);
         }
 
@@ -310,6 +323,25 @@ namespace LOVA.API.Controllers
 
 
             await _mailService.SendEmailAsync(request);
+        }
+
+        private async Task SendEmailAlarm(Activity ac, string alarmType)
+        {
+            
+            if (ac.Active)
+            {
+                MailRequest request = new MailRequest();
+
+                request.ToEmail = ""; // Will be added in EmailService.cs
+
+
+                request.Subject = alarmType;
+                request.Body = $"{alarmType} har aktiverats tid: {ac.Time.ToShortTimeString()} \n\r Mvh Löva";
+
+
+                await _mailService.SendAlarmEmailAsync(request);
+            }
+            
         }
 
 

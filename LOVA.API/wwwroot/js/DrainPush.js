@@ -1,5 +1,6 @@
 ﻿"use strict";
 
+
 var connection = new signalR.HubConnectionBuilder()
     .withUrl("/activationHub")
     .build();
@@ -25,13 +26,16 @@ connection.on("DrainActivity", function (user, message) {
     if (message["active"] == true) {
         li.setAttribute('style', 'color: #fc9005;');
 
-        document.getElementById(message["address"]).style.backgroundColor = '#fc9005';
+        document.getElementById(message["address"]).classList.remove("tableLiveTdNonActive", "tableLiveTdActive");
+
         document.getElementById(message["address"]).setAttribute("data-timeup", message["time"]);
-        document.getElementById(message["address"]).className = "active";
+        document.getElementById(message["address"]).classList.add("active", "tableLiveTdActive");
+       
     } else {
         li.setAttribute('style', 'color: #5ab25e;');
-        document.getElementById(message["address"]).style.backgroundColor = '#5ab25e';
-        document.getElementById(message["address"]).classList.remove("active");
+        document.getElementById(message["address"]).classList.remove("tableLiveTdNonActive", "tableLiveTdActive", "active", 'tableLiveTdLongActive');
+
+        document.getElementById(message["address"]).classList.add("tableLiveTdNonActive");
     }
 
     li.textContent = encodedMsg;
@@ -52,6 +56,9 @@ connection.on("Drain", function (user, message, dateNow) {
     
     var aTime = document.getElementById("activationTime");
     var deATime = document.getElementById("deActivationTime");
+
+    aTime.setAttribute("data-time", message["timeUp"]);
+    deATime.setAttribute("data-time", message["timeDown"]);
     
     document.getElementById("activationCount").textContent = message["hourlyCount"];
     document.getElementById("activationDailyCount").textContent = message["dailyCount"];
@@ -68,14 +75,10 @@ connection.on("Drain", function (user, message, dateNow) {
         document.getElementById("deActivationRunningTime").textContent = secondsToTime(moment(message["timeUp"]).diff(moment(message["timeDown"]), "seconds", false));
 
         myVarActive = setInterval(myTimerActive, 1000);
-
-
-
     } else {
-       
-
         aTime.style.color = "black";
         deATime.style.color = "red";
+        
 
         aTime.textContent = moment(message["timeUp"]).format('ddd D/M HH:mm.ss');
         deATime.textContent = moment(message["timeDown"]).format('ddd D/M HH:mm.ss');
@@ -133,6 +136,8 @@ function myTimerActive() {
     
     var t = moment.duration(document.getElementById("activationRunningTime").innerHTML).asSeconds();
     document.getElementById("activationRunningTime").innerHTML = secondsToTime(parseInt(t, 10) + 1);
+
+    
 }
 
 function myStopFunctionActive() {
@@ -143,6 +148,7 @@ function myTimerDeActive() {
 
     var t = moment.duration(document.getElementById("deActivationRunningTime").innerHTML).asSeconds();
     document.getElementById("deActivationRunningTime").innerHTML = secondsToTime(parseInt(t, 10) + 1); 
+
 }
 
 function myStopFunctionDeActive() {
@@ -151,8 +157,15 @@ function myStopFunctionDeActive() {
 
 
 function secondsToTime(seconds) {
+
+
     return moment.utc(moment.duration(seconds, "seconds").asMilliseconds()).format("HH:mm:ss");
+
+    
 }
+
+
+
 
 
 // Check for long avtivation time every 5 seconds
@@ -164,6 +177,7 @@ function checkLongActivationTime() {
     var dateNow = new Date();
 
     var allActive = document.getElementsByClassName("active");
+    //console.log(allActive);
 
     var i;
     for (i = 0; i < allActive.length; i++) {
@@ -171,7 +185,17 @@ function checkLongActivationTime() {
         //console.log(secondsBetween);
 
         if (parseInt(secondsBetween, 10) > 100) {
-            allActive[i].style.backgroundColor = '#e73e3a';
+            var id = allActive[i]["id"];
+            //console.log(id);
+            document.getElementById(id).classList.add('tableLiveTdLongActive', 'active');
+
+            document.getElementById(id).classList.remove("tableLiveTdActive", "tableLiveTdNonActive");
+            
+        }
+
+        if (parseInt(secondsBetween, 10) > 600) {
+
+            document.getElementById(id).classList.add('redSolidBorder');
         }
     }
 }

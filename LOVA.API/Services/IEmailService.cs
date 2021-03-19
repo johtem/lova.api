@@ -9,6 +9,7 @@ namespace LOVA.API.Services
     public interface IEmailService
     {
         Task SendEmailAsync(MailRequest mailRequest);
+        Task SendAlarmEmailAsync(MailRequest mailRequest);
 
         Task SendToManyActivitiesEmailAsync(ActivityCount request);
 

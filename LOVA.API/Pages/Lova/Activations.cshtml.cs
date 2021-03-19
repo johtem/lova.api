@@ -58,9 +58,23 @@ namespace LOVA.API.Pages.Lova
         {
 
             var dateNow = DateTime.Now;
+            int daysAgo = -1;
+
+            switch (drain)
+            {
+                case "2O2":
+                    daysAgo = -7;
+                    break;
+                case "2O1":
+                    daysAgo = -7;
+                    break;
+                default:
+                    break;
+            }
+
 
             var drainHistory = await _context.ActivityPerRows.Where(a => a.Address == drain)
-                 .Where(a => a.TimeUp >= dateNow.AddDays(-1) && a.TimeUp <= dateNow)
+                 .Where(a => a.TimeUp >= dateNow.AddDays(daysAgo) && a.TimeUp <= dateNow)
                  .Select(a => new ActivityPerDrainViewModel
                  {
                      TimeUp = a.TimeUp,
