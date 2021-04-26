@@ -165,9 +165,36 @@ namespace LOVA.API.Controllers
             // SignalR to update page with above record
            await _hub.Clients.All.SendAsync("DrainActivity", insertData.Address, insertData);
 
-            
+
             // Save data in Azure Table Storage to flatten out the data.
 
+            await SaveToTableStorage(drainPatrolViewModel);
+
+           
+
+            // Save activity in Azure SQL to table Activities
+            _context.Activities.Add(insertData);
+            await _context.SaveChangesAsync();
+
+            // Email if A or B-Alarm
+            switch (insertData.Address)
+            {
+                case "2O1":
+                    await SendEmailAlarm(insertData, "A-larm");
+                    break;
+                case "2O2":
+                    await SendEmailAlarm(insertData, "B-larm");
+                    break;
+                default:
+                    break;
+            }
+
+            return Ok(drainPatrolViewModel);
+        }
+
+        private async Task SaveToTableStorage(ActivityViewModel drainPatrolViewModel)
+        {
+            
             // Create reference to an existing table
             CloudTable table = await TableStorageCommon.CreateTableAsync("Drains");
 
@@ -176,17 +203,6 @@ namespace LOVA.API.Controllers
             // Get existing data for a specific master_node and address
             drainExistingRow = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
 
-            //if (drainExistingRow == null)
-            //{
-            //    drainExistingRow = new DrainTableStorageEntity
-            //    {
-            //        PartitionKey = drainPatrolViewModel.Master_node.ToString(),
-            //        RowKey = drainPatrolViewModel.Address,
-            //        TimeDown = drainPatrolViewModel.Time,
-            //        TimeUp = drainPatrolViewModel.Time.AddHours(-1),
-            //        IsActive = drainPatrolViewModel.Active
-            //    };
-            //}
 
             // Create a new/update record for Azure Table Storage
             DrainTableStorageEntity drain = new DrainTableStorageEntity(drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
@@ -196,7 +212,7 @@ namespace LOVA.API.Controllers
             {
                 // Store data in Azure nosql table if Active == true
                 drain.TimeUp = drainPatrolViewModel.Time;
-                drain.TimeDown = drainExistingRow.TimeDown;          
+                drain.TimeDown = drainExistingRow.TimeDown;
                 drain.IsActive = drainPatrolViewModel.Active;
 
                 // Add hourly counter if within same hour otherwise save count to Azure SQL table AcitvityCounts    
@@ -221,7 +237,7 @@ namespace LOVA.API.Controllers
                     {
                         Address = drainExistingRow.RowKey,
                         CountActivity = drainExistingRow.HourlyCount,
-                        Hourly = DateExtensions.RemoveMinutesAndSeconds(drainExistingRow.TimeUp.AddHours(1)),
+                        Hourly = DateExtensions.RemoveMinutesAndSeconds(convertToLocalTimeZone(drainExistingRow.TimeUp)),
                         AverageCount = averageCount
                     };
 
@@ -276,12 +292,18 @@ namespace LOVA.API.Controllers
                     isGroup = true;
                 }
 
+
+                
+                
+                
+                
                 var perRowData = new ActivityPerRow
                 {
                     Address = drain.RowKey,
-                    TimeUp = drain.TimeUp.AddHours(1),
+                    TimeUp = convertToLocalTimeZone(drain.TimeUp),
                     TimeDown = drain.TimeDown,
-                    TimeDiff = (drain.TimeDown - drain.TimeUp.AddHours(1)).TotalMilliseconds,
+                    TimeDiff = (drain.TimeDown - convertToLocalTimeZone(drain.TimeUp)).TotalMilliseconds,
+                     //(drain.TimeDown - drain.TimeUp.AddHours(1)).TotalMilliseconds,
                     IsGroupAddress = isGroup
                 };
 
@@ -291,26 +313,13 @@ namespace LOVA.API.Controllers
 
 
             }
+        }
 
-
-            // Save activity in Azure SQL to table Activities
-            _context.Activities.Add(insertData);
-            await _context.SaveChangesAsync();
-
-            // Email if A or B-Alarm
-            switch (insertData.Address)
-            {
-                case "2O1":
-                    await SendEmailAlarm(insertData, "A-larm");
-                    break;
-                case "2O2":
-                    await SendEmailAlarm(insertData, "B-larm");
-                    break;
-                default:
-                    break;
-            }
-
-            return Ok(drainPatrolViewModel);
+        private DateTime convertToLocalTimeZone(DateTime time)
+        {
+            // Define Timezone
+            TimeZoneInfo Sweden_Standard_Time = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+            return TimeZoneInfo.ConvertTime(time, Sweden_Standard_Time);
         }
 
         private async Task SendEmail(ActivityCount ac)
