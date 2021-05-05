@@ -63,10 +63,10 @@ namespace LOVA.API.Pages.Lova
             switch (drain)
             {
                 case "2O2":
-                    daysAgo = -7;
+                    daysAgo = -14;
                     break;
                 case "2O1":
-                    daysAgo = -7;
+                    daysAgo = -14;
                     break;
                 default:
                     break;

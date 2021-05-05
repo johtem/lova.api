@@ -1765,7 +1765,7 @@ section {
 # Footer
 --------------------------------------------------------------*/
 #footer {
-  background: #071527;
+  background: #FFF;
   padding: 0 0 30px 0;
   color: #fff;
   font-size: 14px;
@@ -1912,7 +1912,8 @@ section {
 }
 
 @media (max-width: 575px) {
-  #footer .footer-top .footer-info {
-    margin: -20px 0 30px 0;
-  }
+    #footer {
+        /*  margin: -20px 0 30px 0; 
+        background-color: red; */
+    }
 }
