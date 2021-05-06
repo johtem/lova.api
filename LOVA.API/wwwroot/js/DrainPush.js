@@ -62,6 +62,7 @@ connection.on("Drain", function (user, message, dateNow) {
     
     document.getElementById("activationCount").textContent = message["hourlyCount"];
     document.getElementById("activationDailyCount").textContent = message["dailyCount"];
+    document.getElementById("activationAverage").textContent = message["averageActivity"];
 
 
     if (message["isActive"] == true) {

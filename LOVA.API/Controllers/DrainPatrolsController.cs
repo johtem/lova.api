@@ -214,14 +214,15 @@ namespace LOVA.API.Controllers
                 drain.TimeUp = drainPatrolViewModel.Time;
                 drain.TimeDown = drainExistingRow.TimeDown;
                 drain.IsActive = drainPatrolViewModel.Active;
+                drain.AverageActivity = drainExistingRow.AverageActivity;
 
                 // Add hourly counter if within same hour otherwise save count to Azure SQL table AcitvityCounts    
-                if (DateExtensions.NewHour(drainPatrolViewModel.Time, drainExistingRow.TimeUp.AddHours(1)))
+                if (DateExtensions.NewHour(drainPatrolViewModel.Time, convertToLocalTimeZone(drainExistingRow.TimeUp)))
                 {
                     // New hour reset counter to one
                     drain.HourlyCount = 1;
 
-                    if (DateExtensions.IsNewDay(drainPatrolViewModel.Time, drainExistingRow.TimeUp.AddHours(1)))
+                    if (DateExtensions.IsNewDay(drainPatrolViewModel.Time, convertToLocalTimeZone(drainExistingRow.TimeUp)))
                     {
                         drain.DailyCount = 1;
                     }
@@ -249,23 +250,13 @@ namespace LOVA.API.Controllers
                     _context.ActivityCounts.Add(ac);
                     await _context.SaveChangesAsync();
 
-
-                    // if latest hour is greater than average send out warning email
-
-                    //if (drainExistingRow.HourlyCount > averageCount)
-                    //{
-                    //    // await SendEmailMoreThanAverage(ac);
-                    //    if (averageCount > 2)
-                    //    {
-                    //        await SendEmail(ac);
-                    //    }
-                    //}
                 }
                 else
                 {
                     // withing the same hour add one to existing sum.
                     drain.HourlyCount = drainExistingRow.HourlyCount + 1;
                     drain.DailyCount = drainExistingRow.DailyCount + 1;
+                    
 
 
                     // Save updated to the Azure nosql table 
@@ -283,6 +274,17 @@ namespace LOVA.API.Controllers
                 drain.IsActive = drainPatrolViewModel.Active;
                 drain.HourlyCount = drainExistingRow.HourlyCount;
 
+                var diff = (drain.TimeDown - convertToLocalTimeZone(drain.TimeUp)).TotalSeconds;
+                if (drainExistingRow.AverageActivity == 0)
+                {
+                    drain.AverageActivity = (int)diff;
+                }else
+                {
+                    drain.AverageActivity = (int)((drainExistingRow.AverageActivity + diff) / 2);
+                }
+                
+
+
                 await TableStorageUtils.InsertOrMergeEntityAsync(table, drain);
 
                 bool isGroup = false;
@@ -293,9 +295,7 @@ namespace LOVA.API.Controllers
                 }
 
 
-                
-                
-                
+ 
                 
                 var perRowData = new ActivityPerRow
                 {
