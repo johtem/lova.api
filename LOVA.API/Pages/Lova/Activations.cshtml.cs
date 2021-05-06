@@ -85,8 +85,32 @@ namespace LOVA.API.Pages.Lova
 
             return Partial("_DrainHistory", drainHistory);
         }
+
+
+        public async Task OnGetRemoveColumn(string drain, string apa)
+        {
+            // Create reference an existing table
+            CloudTable table = await TableStorageCommon.CreateTableAsync("Drains");
+            string b = apa;
+
+            string a = drain.Substring(0, 1);
+            // Get existing data for a specific master_node and address
+            var drainExistingRow = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, a, drain);
+
+            switch (apa)
+            {
+                case "AverageActivity":
+                    drainExistingRow.AverageActivity = 0;
+                    break;
+                case "AverageRest":
+                    drainExistingRow.AverageRest = 0;
+                    break;
+            }
+
+            await TableStorageUtils.InsertOrMergeEntityAsync(table, drainExistingRow);
+
+
+            // return "deleted";
+        }
     }
-
-
-
 }

@@ -62,7 +62,8 @@ connection.on("Drain", function (user, message, dateNow) {
     
     document.getElementById("activationCount").textContent = message["hourlyCount"];
     document.getElementById("activationDailyCount").textContent = message["dailyCount"];
-    document.getElementById("activationAverage").textContent = message["averageActivity"];
+    document.getElementById("activationAverage").textContent = secondsToTime(message["averageActivity"]);
+    document.getElementById("deActivationRestAverage").textContent = secondsToTime(message["averageRest"]);
 
 
     if (message["isActive"] == true) {
@@ -74,6 +75,7 @@ connection.on("Drain", function (user, message, dateNow) {
 
         document.getElementById("activationRunningTime").textContent = secondsToTime(moment(dateNow).diff(moment(message["timeUp"]), "seconds", false));
         document.getElementById("deActivationRunningTime").textContent = secondsToTime(moment(message["timeUp"]).diff(moment(message["timeDown"]), "seconds", false));
+       
 
         myVarActive = setInterval(myTimerActive, 1000);
     } else {

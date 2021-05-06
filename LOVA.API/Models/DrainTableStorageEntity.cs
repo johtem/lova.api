@@ -30,6 +30,8 @@ namespace LOVA.API.Models
 
         public int AverageActivity { get; set; }
 
+        public int AverageRest { get; set; }
+
 
 
     }

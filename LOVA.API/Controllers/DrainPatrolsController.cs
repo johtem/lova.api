@@ -216,6 +216,16 @@ namespace LOVA.API.Controllers
                 drain.IsActive = drainPatrolViewModel.Active;
                 drain.AverageActivity = drainExistingRow.AverageActivity;
 
+                var diff = (drainPatrolViewModel.Time - convertToLocalTimeZone(drainExistingRow.TimeDown)).TotalSeconds;
+                if (drainExistingRow.AverageRest == 0)
+                {
+                    drain.AverageRest = (int)diff;
+                }
+                else
+                {
+                    drain.AverageRest = (int)((drainExistingRow.AverageRest + diff) / 2);
+                }
+
                 // Add hourly counter if within same hour otherwise save count to Azure SQL table AcitvityCounts    
                 if (DateExtensions.NewHour(drainPatrolViewModel.Time, convertToLocalTimeZone(drainExistingRow.TimeUp)))
                 {
@@ -273,6 +283,7 @@ namespace LOVA.API.Controllers
                 drain.TimeDown = drainPatrolViewModel.Time;
                 drain.IsActive = drainPatrolViewModel.Active;
                 drain.HourlyCount = drainExistingRow.HourlyCount;
+                drain.AverageRest = drainExistingRow.AverageRest;
 
                 var diff = (drain.TimeDown - convertToLocalTimeZone(drain.TimeUp)).TotalSeconds;
                 if (drainExistingRow.AverageActivity == 0)

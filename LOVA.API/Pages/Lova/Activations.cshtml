@@ -43,7 +43,7 @@
                 <h6>Slinga 1</h6>
             </div>
             <div class="row">
-                <table border="1" class="tableLive">
+                <table border="1" class="tableLive live">
                     @foreach (var r in "ABCDEFGHIJKLMNOP")
                     {
                         <tr>
@@ -64,7 +64,7 @@
                 <h6>Slinga 2</h6>
             </div>
             <div class="row">
-                <table border="1" class="tableLive">
+                <table border="1" class="tableLive live">
                     @foreach (var r in "ABCDEFGHIJKLMNOP")
                     {
                         <tr>
@@ -85,7 +85,7 @@
                 <h6>Slinga 3</h6>
             </div>
             <div class="row">
-                <table border="1" class="tableLive">
+                <table border="1" class="tableLive live">
                     @foreach (var r in "ABCDEFGHIJKLMNOP")
                     {
                         <tr>
@@ -112,24 +112,29 @@
                             <div class="card-body card-activation">
                                 <table class="tableLive" width="100%">
                                     <tr>
-                                        <td width="60%">Aktiverad:</td>
+                                        <td width="50%">Aktiverad:</td>
                                         <td id="activationTime" width="40%"></td>
+                                        <td width="10%"></td>
                                     </tr>
                                     <tr>
-                                        <td width="60%">Senaste gångtid:</td>
+                                        <td width="50%">Senaste gångtid:</td>
                                         <td width="40%" id="activationRunningTime"></td>
+                                        <td width="10%"></td>
                                     </tr>
                                     <tr>
-                                        <td width="60%">Snitt gångtid:</td>
+                                        <td width="50%">Snitt gångtid:</td>
                                         <td width="40%" id="activationAverage"></td>
+                                        <td width="10%"><i class="far fa-trash-alt btnDelete" data-type="AverageActivity"></i></td>
                                     </tr>
                                     <tr>
-                                        <td width="60%" data-toggle="tooltip" data-placement="top" title="Antal aktiveringar pågående timme. ">Aktiveringar timme:</td>
+                                        <td width="50%" data-toggle="tooltip" data-placement="top" title="Antal aktiveringar pågående timme. ">Aktiveringar timme:</td>
                                         <td width="40%" id="activationCount"></td>
+                                        <td width="10%"></td>
                                     </tr>
                                     <tr>
-                                        <td width="60%" data-toggle="tooltip" data-placement="top" title="Antal aktiveringar pågående dygn. ">Aktiveringar dygn:</td>
+                                        <td width="50%" data-toggle="tooltip" data-placement="top" title="Antal aktiveringar pågående dygn. ">Aktiveringar dygn:</td>
                                         <td width="40%" id="activationDailyCount"></td>
+                                        <td width="10%"></td>
                                     </tr>
                                 </table>
                             </div>
@@ -137,12 +142,19 @@
                             <div class="card-body card-deactivation">
                                 <table class="tableLive" width="100%">
                                     <tr>
-                                        <td width="60%">Inaktiv:</td>
+                                        <td width="50%">Inaktiv:</td>
                                         <td width="40%" id="deActivationTime"></td>
+                                        <td width="10%"></td>
                                     </tr>
                                     <tr>
-                                        <td width="60%">Senaste vilotid:</td>
+                                        <td width="50%">Senaste vilotid:</td>
                                         <td width="40%" id="deActivationRunningTime"></td>
+                                        <td width="10%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%">Snitt vilotid :</td>
+                                        <td width="40%" id="deActivationRestAverage"></td>
+                                        <td width="10%"><i class="far fa-trash-alt btnDelete" data-type="AverageRest"></i></td> 
                                     </tr>
                                 </table>
                             </div>
@@ -251,7 +263,7 @@
 
 
 
-            $("td").click(function () {
+            $(".live").on("click", "td", function () {
 
                 var cid = $(this).attr('id');
 
@@ -262,6 +274,7 @@
                 $("#activationCount").text("");
                 $("#activationDailyCount").text("");
                 $("#activationAverage").text("");
+                $("#deActivationRestAverage").text("");
                 $("#drainHistory").html("Data laddas...");
 
 
@@ -298,7 +311,7 @@
                 $.ajax({
                     type: "GET",
                     url: "/Lova/Activations?handler=DrainHistory",
-                    data: { "drain": cid },
+                    data: { drain: cid },
                     success: function (response) {
                         $("#drainHistory").html(response);
                     },
@@ -316,6 +329,44 @@
             $("#resetSquare").click(function () {
                 $("td").removeClass("redSolidBorder");
             });
+
+            $(".btnDelete").click(function() {
+                var t = $(this).data('type');
+                var cid = $("#address").text();
+
+                if (cid)
+                {
+                     $.ajax({
+                    type: "GET",
+                    url: "/Lova/Activations?handler=RemoveColumn",
+                    data: { drain: cid, apa: t },
+                    success: function (response) {
+                       if (t == "AverageActivity")
+                       {
+                           $("#activationAverage").text("0");
+                       }else
+                       {
+                           $("#deActivationRestAverage").text("0");
+                       }
+                       
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+                } else
+                {
+                    alert("Välj först en adress.");
+                }
+               
+
+
+            });
+
+             
 
         })
     </script>
