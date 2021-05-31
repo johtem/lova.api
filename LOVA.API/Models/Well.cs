@@ -8,6 +8,7 @@ namespace LOVA.API.Models
     public class Well
     {
         public long Id { get; set; }
+        public int MasterNode { get; set; }
         public string WellName { get; set; }
         public string ActivatorSerialNumber  { get; set; }
 

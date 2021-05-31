@@ -11,9 +11,10 @@ using LOVA.API.Filter;
 
 namespace LOVA.API.Controllers
 {
-    [ApiExplorerSettings(IgnoreApi = true)]
+    
     [Route("api/[controller]")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = @"Wells")]
     [ApiKeyAuth]
     public class WellsController : ControllerBase
     {
@@ -28,7 +29,7 @@ namespace LOVA.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Well>>> GetWells()
         {
-            var data = await _context.Wells.ToListAsync();
+            var data = await _context.Wells.Take(10).ToListAsync();
             return data;
         }
 
@@ -46,6 +47,53 @@ namespace LOVA.API.Controllers
             return well;
         }
 
-        
+        // GET: 
+        [HttpGet("byMasterNode")]
+        public async Task<ActionResult<IEnumerable<Well>>> GetWells([FromQuery]  int masterNode)
+        {
+            var data = await _context.Wells.Where(a => a.MasterNode == masterNode).ToListAsync();
+
+            return data;
+        }
+
+
+        // PUT: api/Premises/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // more details see https://aka.ms/RazorPagesCRUD.
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutWell(long id, Well well)
+        {
+            if (id != well.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(well).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!WellExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        private bool WellExists(long id)
+        {
+            return _context.Wells.Any(e => e.Id == id);
+        }
+
+
     }
 }

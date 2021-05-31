@@ -33,7 +33,9 @@ namespace LOVA.API.Controllers
 
             ActionResult<IEnumerable<DrainPatrolAlarmViewModel>> data = await _context.DrainPatrolAlarms
                 
-                .Where(a => a.TimeStamp > dateFrom)
+                // .Where(a => a.TimeStamp > dateFrom)
+                .OrderByDescending(a => a.Id)
+                .Take(10)
                 .Select(a => new DrainPatrolAlarmViewModel
                 {
                     Master_node = a.Master_node,
