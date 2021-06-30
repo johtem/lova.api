@@ -71,6 +71,15 @@ namespace LOVA.API
             services.AddServerSideBlazor();
             services.AddSignalR();
 
+            //services.AddCors(options =>
+            //{
+            //    options.AddDefaultPolicy(builder =>
+            //    {
+            //        builder.WithOrigins("https://www.lottingelund.se")
+            //            .AllowCredentials();
+            //    });
+            //});
+
 
             services.AddSession(options =>
                 {
@@ -150,6 +159,7 @@ namespace LOVA.API
             app.UseStaticFiles();
             app.UseRouting();
 
+            // app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();

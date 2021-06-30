@@ -90,7 +90,23 @@ namespace LOVA.API.Pages.Files
 
                 //  await UploadFileBlobAsync(filePath, fileName);
 
-                string container = FileUpload.UploadFileCategoryId == 1 ? MyConsts.lovaDocuments : MyConsts.lottingelundDocuments;
+                // string container = FileUpload.UploadFileCategoryId == 1 ? MyConsts.lovaDocuments : MyConsts.lottingelundDocuments;
+
+                string container = "";
+
+                switch (FileUpload.UploadFileCategoryId)
+                {
+                    case 1:
+                        container = MyConsts.lovaDocuments;
+                        break;
+                    case 2:
+                        container = MyConsts.boardDocuments;
+                        break;
+                    default:
+                        container = MyConsts.lottingelundDocuments;
+                        break;
+                }
+
 
 
                 string result = await UploadFile(files, filePath, container);

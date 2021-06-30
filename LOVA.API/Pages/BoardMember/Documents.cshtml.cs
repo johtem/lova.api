@@ -210,7 +210,7 @@ namespace LOVA.API.Pages.BoardMember
         public async Task<IActionResult> OnGetDownload(string file)
         {
 
-            var data = await _blobService.GetBlobAsync(file, "styrelsedokument");
+            var data = await _blobService.GetBlobAsync(file, MyConsts.boardDocuments);
 
             return File(data.Content, file.GetContentType(), file);
 
