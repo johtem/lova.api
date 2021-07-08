@@ -30,7 +30,7 @@ namespace LOVA.API.Controllers
         }
 
         // GET: api/WellMaintenanceWorks/5
-        [HttpGet("{id}")]
+        [HttpGet("{wellId}")]
         public async Task<ActionResult<IEnumerable<WellMaintenanceWork>>> GetWellMaintenanceWork(long wellId)
         {
             var wellMaintenanceWorks = await _context.WellMaintenanceWorks.Where(a => a.WellId == wellId).ToListAsync();

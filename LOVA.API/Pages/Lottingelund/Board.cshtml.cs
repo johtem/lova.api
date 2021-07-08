@@ -19,6 +19,8 @@ namespace LOVA.API.Pages.Lottingelund
         public LOVA.API.Models.BoardMember Vag { get; set; }
         public LOVA.API.Models.BoardMember VA { get; set; }
         public LOVA.API.Models.BoardMember Tomt { get; set; }
+        public LOVA.API.Models.BoardMember Supp1 { get; set; }
+        public LOVA.API.Models.BoardMember Supp2 { get; set; }
 
 
         public void OnGet()
@@ -29,6 +31,8 @@ namespace LOVA.API.Pages.Lottingelund
             Vag = MyConsts.Vag;
             VA = MyConsts.VA;
             Tomt = MyConsts.Tomt;
+            Supp1 = MyConsts.Suppleant1;
+            Supp2 = MyConsts.Suppleant2;
                 
         }
     }
