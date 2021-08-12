@@ -32,7 +32,7 @@ namespace LOVA.API.Services
         public static readonly BoardMember Tomt = new BoardMember { Name = "Christer Anrell", Email = "christer@christeranrell.se", Phone = "08-343131" }; 
         public static readonly BoardMember Vag = new BoardMember { Name = "Lennart Källqvist", Email = "l.kallqvist@lottingelund.se", Phone = "0762-067985" }; 
         public static readonly BoardMember Suppleant1 = new BoardMember { Name = "Micke Vikström", Email = "micke@lottingelund.se", Phone = "0708-223315" }; 
-        public static readonly BoardMember Suppleant2 = new BoardMember { Name = "Stefan Wassberg", Email = "stw@lottingelund.se", Phone = "0702-560976" }; 
+        public static readonly BoardMember Suppleant2 = new BoardMember { Name = "Stefan Wassberg (Adjungerad)", Email = "stw@lottingelund.se", Phone = "0702-560976" }; 
 
 
     }
