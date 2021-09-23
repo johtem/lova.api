@@ -3,144 +3,145 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<div class="container d-flex align-items-center justify-content-between">
+<div class="container d-flex align-items-center">
     <!-- Uncomment below if you prefer to use an image logo -->
-    <a href="/Index" class="logo mr-auto"><img src="~/Images/LoggaSmall.jpg" alt=""></a>
+    <a  href="/Index" class="logo mr-auto"><img src="~/Images/LoggaSmall.jpg" alt=""></a>
 
-    <nav class="nav-menu d-none d-lg-block">
+    <nav class="navbar nav-menu d-none d-lg-block">
         <ul>
 
             <li class="drop-down">
-                <a href="">Om Löttingelund</a>
+                <a class="nav-link" href="" >Om Löttingelund</a>
                 <ul>
-                    <li><a href="/About/About">Löttingelundsföreningarna</a></li>
+                    <li><a class="nav-link" href="/About/About">Löttingelundsföreningarna</a></li>
                     <li class="drop-down">
-                        <a href="#">Om</a>
+                        <a class="nav-link" href="#">Om</a>
                         <ul>
-                            <li><a href="/About/Lottingelund">Kort fakta</a></li>
-                            <li><a href="/About/History">Områdets historia</a></li>
-                            <li><a href="/About/Map">Karta</a></li>
-                            <li><a href="/About/Area">Natur och miljö</a></li>
-                            <li><a href="/About/PublicTransport">Kollektivtrafik</a></li>
+                            <li><a class="nav-link" href="/About/Lottingelund" >Kort fakta</a></li>
+                            <li><a class="nav-link" href="/About/History" >Områdets historia</a></li>
+                            <li><a class="nav-link" href="/About/Map" >Karta</a></li>
+                            <li><a class="nav-link" href="/About/Area" >Natur och miljö</a></li>
+                            <li><a class="nav-link" href="/About/PublicTransport" >Kollektivtrafik</a></li>
                         </ul>
                     </li>
                     <li class="drop-down">
-                        <a href="#">Kultur & fritid</a>
+                        <a class="nav-link" href="#" >Kultur & fritid</a>
                         <ul>
-                            <li><a href="/About/Bath">Bad</a></li>
-                            <li><a href="/About/Harbour">Båtliv</a></li>
-                            <li><a href="/About/Bicycle">Cykelvägar</a></li>
-                            <li><a href="/About/Fishing">Fiske</a></li>
-                            <li><a href="/About/Antiquites">Fornlämningar</a></li>
-                            <li><a href="/About/Excercise">Motionsspår</a></li>
-                            <li><a href="/About/RonningeBy">Rönninge by</a></li>
-                            <li><a href="/About/Roslagsleden">Roslagsleden</a></li>
-                            <li><a href="#">Golf</a></li>
-                            <li><a href="#">Ridskola</a></li>
+                            <li><a class="nav-link" href="/About/Bath" >Bad</a></li>
+                            <li><a class="nav-link" href="/About/Harbour" >Båtliv</a></li>
+                            <li><a class="nav-link" href="/About/Bicycle" >Cykelvägar</a></li>
+                            <li><a class="nav-link" href="/About/Fishing" >Fiske</a></li>
+                            <li><a class="nav-link" href="/About/Antiquites" >Fornlämningar</a></li>
+                            <li><a class="nav-link" href="/About/Excercise" >Motionsspår</a></li>
+                            <li><a class="nav-link" href="/About/RonningeBy" >Rönninge by</a></li>
+                            <li><a class="nav-link" href="/About/Roslagsleden" >Roslagsleden</a></li>
+                            <li><a class="nav-link" href="#" >Golf</a></li>
+                            <li><a class="nav-link" href="#" >Ridskola</a></li>
                         </ul>
                     </li>
-                    <li><a href="/About/School">Skola & barnomsorg</a></li>
-                    <li><a href="/About/NeighbourhoodWatch">Grannsamverkan</a></li>
+                    <li><a class="nav-link" href="/About/School" >Skola & barnomsorg</a></li>
+                    <li><a class="nav-link" href="/About/NeighbourhoodWatch" >Grannsamverkan</a></li>
                     <li class="drop-down">
-                        <a href="#">TV och Internet</a>
+                        <a class="nav-link" href="#" >TV och Internet</a>
                         <ul>
-                            <li><a href="/Media/About">Om Tv och Internet</a></li>
-                            <li><a href="/Media/Internet">Bredband</a></li>
-                            <li><a href="/Media/CabelTV">Kabel TV</a></li>
-                            <li><a href="/Media/Tv">BredbandsTV</a></li>
-                            <li><a href="/Media/IpPhones">IP-telefoni</a></li>
+                            <li><a class="nav-link" href="/Media/About" >Om Tv och Internet</a></li>
+                            <li><a class="nav-link" href="/Media/Internet" >Bredband</a></li>
+                            <li><a class="nav-link" href="/Media/CabelTV" >Kabel TV</a></li>
+                            <li><a class="nav-link" href="/Media/Tv" >BredbandsTV</a></li>
+                            <li><a class="nav-link" href="/Media/IpPhones" >IP-telefoni</a></li>
 
                         </ul>
                     </li>
-                    <li><a href="/Lottingelund/ErrorReport">Felanmälan</a></li>
+                    <li><a class="nav-link" href="/Lottingelund/ErrorReport" >Felanmälan</a></li>
                     <li class="drop-down">
-                        <a href="#">Akuellt</a>
+                        <a class="nav-link" href="#" >Akuellt</a>
                         <ul>
-                            <li><a href="/Aktuellt/EnviromentFunnel">Miljötratt</a></li>
-                            <li><a href="/Aktuellt/WaterShortage">Vattenbrist</a></li>
-                            <li><a href="/Aktuellt/Graffiti">Anmäl klotter</a></li>
-                            <li><a href="/Aktuellt/Defibrillator">Hjärtstartare</a></li>
+                            <li><a class="nav-link" href="/Aktuellt/EnviromentFunnel" >Miljötratt</a></li>
+                            <li><a class="nav-link" href="/Aktuellt/WaterShortage" >Vattenbrist</a></li>
+                            <li><a class="nav-link" href="/Aktuellt/Graffiti" >Anmäl klotter</a></li>
+                            <li><a class="nav-link" href="/Aktuellt/Defibrillator" >Hjärtstartare</a></li>
                         </ul>
                     </li>
                 </ul>
             </li>
             <li class="drop-down">
-                <a href="">Villaföreningen</a>
+                <a class="nav-link" href="" >Villaföreningen</a>
                 <ul>
                     <li class="drop-down">
-                        <a href="#">Dokument</a>
+                        <a class="nav-link" href="#" >Dokument</a>
                         <ul>
-                            <li><a href="/Lottingelund/Leaflet">Löttingelundsbladet</a></li>
-                            <li><a href="/Lottingelund/DocumentVA">VA-Föreningen</a></li>
-                            <li><a href="/Lottingelund/DocumentTomt">Tomtföreningen</a></li>
-                            <li><a href="/Lottingelund/DocumentVag">Vägföreningen</a></li>
-                            <li><a href="/Lottingelund/DocumentAnnualMeeting">Årsmöteshandlingar</a></li>
+                            <li><a class="nav-link" href="/Lottingelund/Leaflet" >Löttingelundsbladet</a></li>
+                            <li><a class="nav-link" href="/Lottingelund/DocumentVA" >VA-Föreningen</a></li>
+                            <li><a class="nav-link" href="/Lottingelund/DocumentTomt" >Tomtföreningen</a></li>
+                            <li><a class="nav-link" href="/Lottingelund/DocumentVag" >Vägföreningen</a></li>
+                            <li><a class="nav-link" href="/Lottingelund/DocumentAnnualMeeting" >Årsmöteshandlingar</a></li>
                         </ul>
                     </li>
-                    <li><a href="/Lottingelund/Move">Flytta in/ut</a></li>
-                    <li><a href="/Lottingelund/Board">Styrelsen</a></li>
-                    <li><a href="/Lottingelund/ErrorReport">Felanmälan</a></li>
+                    <li><a class="nav-link" href="/Lottingelund/Move" >Flytta in/ut</a></li>
+                    <li><a class="nav-link" href="/Lottingelund/Board" >Styrelsen</a></li>
+                    <li><a class="nav-link" href="/Lottingelund/ErrorReport" >Felanmälan</a></li>
+                    <li><a class="nav-link" href="/Lottingelund/Survey" >Enkät</a></li>
                 </ul>
             </li>
             <li class="drop-down">
-                <a href="">Uthyrning</a>
+                <a class="nav-link" href="" >Uthyrning</a>
                 <ul>
-                    <li><a href="/Rental/Workingplatform">Byggställning</a></li>
-                    <li><a href="/Rental/Kajak">Kajak</a></li>
-                    <li><a href="/Rental/Party">Party</a></li>
-                    <li><a href="/Rental/Trailer">Släpvagn</a></li>
+                    <li><a class="nav-link" href="/Rental/Workingplatform" >Byggställning</a></li>
+                    <li><a class="nav-link" href="/Rental/Kajak" >Kajak</a></li>
+                    <li><a class="nav-link" href="/Rental/Party" >Party</a></li>
+                    <li><a class="nav-link" href="/Rental/Trailer" >Släpvagn</a></li>
                 </ul>
             </li>
             <li class="drop-down">
-                <a href="">LöVA</a>
+                <a class="nav-link" href="" >LöVA</a>
                 <ul>
                     <li class="drop-down">
-                        <a href="#">VA arbete</a>
+                        <a class="nav-link" href="#" >VA arbete</a>
                         <ul>
-                            <li><a href="/Lova/AddNewActivity">Ny Åtgärd</a></li>
-                            <li><a href="/Lova/WaterDrainReport">VA-rapport</a></li>
+                            <li><a class="nav-link" href="/Lova/AddNewActivity" >Ny Åtgärd</a></li>
+                            <li><a class="nav-link" href="/Lova/WaterDrainReport" >VA-rapport</a></li>
                         </ul>
                     </li>
                     <li class="drop-down">
-                        <a href="#">Statistik</a>
+                        <a class="nav-link" href="#" >Statistik</a>
                         <ul>
-                            <li><a href="/lova/activations">Live</a></li>
-                            <li><a href="/Lova/DashboardDrainPatrol">Dashboard</a></li>
-                            <li><a href="/Lova/StatisticPerWell">Intagsenhet</a></li>
+                            <li><a class="nav-link" href="/lova/activations" >Live</a></li>
+                            <li><a class="nav-link" href="/Lova/DashboardDrainPatrol" >Dashboard</a></li>
+                            <li><a class="nav-link" href="/Lova/StatisticPerWell" >Intagsenhet</a></li>
                         </ul>
                     </li>
-                    <li><a href="/Lova/Documents">Dokument</a></li>
+                    <li><a class="nav-link" href="/Lova/Documents" >Dokument</a></li>
                 </ul>
             </li>
             <li class="drop-down">
-                <a href="">Styrelse</a>
+                <a class="nav-link" href="" >Styrelse</a>
                 <ul>
-                    <li><a href="/Lottingelund/Board">Kontaktuppgifter</a></li>
-                    <li><a href="/BoardMember/Index">Notifiering på hemsidan</a></li>
-                    <li><a href="/BoardMember/Documents">Dokument</a></li>
+                    <li><a class="nav-link" href="/Lottingelund/Board" >Kontaktuppgifter</a></li>
+                    <li><a class="nav-link" href="/BoardMember/Index" >Notifiering på hemsidan</a></li>
+                    <li><a class="nav-link" href="/BoardMember/Documents" >Dokument</a></li>
                 </ul>
             </li>
             <li class="drop-down">
-                <a href="">Admin</a>
+                <a class="nav-link" href="">Admin</a>
                 <ul>
-                    <li><a href="/hangfire">Hangfire</a></li>
+                    <li><a class="nav-link" href="/hangfire">Hangfire</a></li>
                     <li class="drop-down">
-                        <a href="#">Användare</a>
+                        <a class="nav-link" href="#">Användare</a>
                         <ul>
-                            <li><a href="/Identity/Account/Register">Ny användare</a></li>
-                            <li><a href="/Administration/Role/ListUsers">Lista användare</a></li>
-                            <li><a href="/Administration/ImportUser">Importera användare</a></li>
+                            <li><a class="nav-link" href="/Identity/Account/Register">Ny användare</a></li>
+                            <li><a class="nav-link" href="/Administration/Role/ListUsers">Lista användare</a></li>
+                            <li><a class="nav-link" href="/Administration/ImportUser">Importera användare</a></li>
                         </ul>
                     </li>
                     <li class="drop-down">
-                        <a href="#">Roller</a>
+                        <a class="nav-link" href="#">Roller</a>
                         <ul>
-                            <li><a href="/Administration/Role/CreateRole">Ny roll</a></li>
-                            <li><a href="/Administration/Role/ListRoles">Lista roller</a></li>
+                            <li><a class="nav-link" href="/Administration/Role/CreateRole">Ny roll</a></li>
+                            <li><a class="nav-link" href="/Administration/Role/ListRoles">Lista roller</a></li>
                         </ul>
                     </li>
-                    <li><a href="/Files/UploadFile">Ladda upp dokument</a></li>
-                    <li><a href="/Administration/Role/ListRoles">Dokument</a></li>
+                    <li><a class="nav-link" href="/Files/UploadFile">Ladda upp dokument</a></li>
+                    <li><a class="nav-link" href="/Administration/Role/ListRoles">Dokument</a></li>
                 </ul>
             </li>
 
@@ -151,20 +152,20 @@
                 {
 
                     <li class="drop-down">
-                        <a href="">@UserManager.GetUserName(User)</a>
+                        <a class="nav-link" href="">@UserManager.GetUserName(User)</a>
                         <ul>
-                            <li><a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">Logga ut</a></li>
+                            <li><a class="nav-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">Logga ut</a></li>
                         </ul>
                     </li>
                 }
                 else
                 {
                     <li class="drop-down">
-                        <a href="">@UserManager.GetUserName(User)</a>
+                        <a class="nav-link" href="">@UserManager.GetUserName(User)</a>
                         <ul>
-                            <li><a href="/Identity/Account/Manage">Hantera</a></li>
+                            <li><a class="nav-link" href="/Identity/Account/Manage">Hantera</a></li>
                             <li>
-                                <!--<a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">Logga ut</a> -->
+                                <!--<a class="nav-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">Logga ut</a> -->
 
                                  <form method="post" id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
                                     <button id="logout" type="submit" class="nav-link btn btn-link text-dark ml-2" style="font-size: 12px;">Logga ut</button>
@@ -178,7 +179,7 @@
             else
             {
                 <li>
-                    <a id="login" asp-area="Identity" asp-page="/Account/Login">Logga in</a>
+                    <a class="nav-link" id="login" asp-area="Identity" asp-page="/Account/Login">Logga in</a>
                 </li>
             }
         </ul>

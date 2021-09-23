@@ -280,7 +280,7 @@ namespace LOVA.API.Controllers
 
                 // drain = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
                 drain.TimeUp = drainExistingRow.TimeUp;
-                drain.TimeDown = drainPatrolViewModel.Time;
+                drain.TimeDown = drainPatrolViewModel.Time.AddHours(2);
                 drain.IsActive = drainPatrolViewModel.Active;
                 drain.HourlyCount = drainExistingRow.HourlyCount;
                 drain.AverageRest = drainExistingRow.AverageRest;

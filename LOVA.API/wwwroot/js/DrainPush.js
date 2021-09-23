@@ -71,10 +71,10 @@ connection.on("Drain", function (user, message, dateNow) {
         deATime.style.color = "black";
 
         aTime.textContent = moment(message["timeUp"]).format('ddd D/M HH:mm.ss');
-        deATime.textContent = moment(message["timeDown"]).format('ddd D/M HH:mm.ss ');
+        deATime.textContent = moment(message["timeDown"]).add(-2, 'hours').format('ddd D/M HH:mm.ss ');
 
-        document.getElementById("activationRunningTime").textContent = secondsToTime(moment(dateNow).diff(moment(message["timeUp"]), "seconds", false));
-        document.getElementById("deActivationRunningTime").textContent = secondsToTime(moment(message["timeUp"]).diff(moment(message["timeDown"]), "seconds", false));
+        document.getElementById("activationRunningTime").textContent = secondsToTime(moment(dateNow).diff(moment(message["timeUp"]).add(0, 'hours'), "seconds", false));
+        document.getElementById("deActivationRunningTime").textContent = secondsToTime(moment(message["timeUp"]).diff(moment(message["timeDown"]).add(-2, 'hours'), "seconds", false));
        
 
         myVarActive = setInterval(myTimerActive, 1000);
@@ -84,10 +84,10 @@ connection.on("Drain", function (user, message, dateNow) {
         
 
         aTime.textContent = moment(message["timeUp"]).format('ddd D/M HH:mm.ss');
-        deATime.textContent = moment(message["timeDown"]).format('ddd D/M HH:mm.ss');
+        deATime.textContent = moment(message["timeDown"]).add(-2, 'hours').format('ddd D/M HH:mm.ss');
 
-        document.getElementById("activationRunningTime").textContent = secondsToTime(moment(message["timeDown"]).diff(moment(message["timeUp"]), "seconds", false));
-        document.getElementById("deActivationRunningTime").textContent = secondsToTime(moment(dateNow).diff(moment(message["timeDown"]), "seconds", false));
+        document.getElementById("activationRunningTime").textContent = secondsToTime(moment(message["timeDown"]).diff(moment(message["timeUp"]).add(2, 'hours'), "seconds", false));
+        document.getElementById("deActivationRunningTime").textContent = secondsToTime(moment(dateNow).diff(moment(message["timeDown"]).add(-2, 'hours'), "seconds", false));
 
         myVarDeActive = setInterval(myTimerDeActive, 1000);
     }

@@ -46,8 +46,9 @@ namespace LOVA.API.Services
         public DbSet<FullDrain> FullDrains { get; set; }
         public DbSet<WellMaintenanceWork> WellMaintenanceWorks { get; set; }
 
+        public DbSet<Survey> Surveys { get; set; }
 
+        public DbSet<SurveyCheckbox> SurveyCheckBoxes { get; set; }
 
-        
     }
 }
