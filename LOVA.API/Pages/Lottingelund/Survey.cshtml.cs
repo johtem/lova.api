@@ -42,7 +42,7 @@ namespace LOVA.API.Pages.Lottingelund
 
             var isAnswered = _context.Surveys.AnyAsync(a => a.UserName == user.UserName);
 
-            if (!isAnswered.Result)
+            if (isAnswered.Result)
             {
                
                 return RedirectToPage("SurveyAnswered");
@@ -58,17 +58,29 @@ namespace LOVA.API.Pages.Lottingelund
         }
 
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
+            var user = await GetUser();
 
-            var apa = SurveyViewModel;
+            Survey survey = new Survey
+            {
+                UserName = user.UserName,
+                Query1 = SurveyViewModel.Query1,
+                Query2 = SurveyViewModel.Query2,
+                Query3 = SurveyViewModel.Query3,
+                Query4 = SurveyViewModel.Query4,
+                Query5 = SurveyViewModel.Query5,
+            };
 
-            return Page();
+            _context.Surveys.Add(survey);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("SurveyThanks");
         }
 
     }
