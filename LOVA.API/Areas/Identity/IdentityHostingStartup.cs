@@ -28,6 +28,8 @@ namespace LOVA.API.Areas.Identity
                 {
                     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789-._@+: ";
                     options.User.RequireUniqueEmail = false;
+
+
                 });
 
 

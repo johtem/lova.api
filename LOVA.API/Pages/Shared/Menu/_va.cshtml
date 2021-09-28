@@ -96,7 +96,11 @@
                     <li class="drop-down">
                         <a class="nav-link" href="">@UserManager.GetUserName(User)</a>
                         <ul>
-                            <li><a class="nav-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">Logga ut</a></li>
+                            <li>
+                                <form method="post" id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                                    <button id="logout" type="submit" class="nav-link btn btn-link text-dark ml-2" style="font-size: 12px;">Logga ut</button>
+                                </form>
+                            </li>
                         </ul>
                     </li>
                 }
