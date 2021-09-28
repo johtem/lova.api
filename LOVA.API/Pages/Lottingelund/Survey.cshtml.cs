@@ -49,9 +49,6 @@ namespace LOVA.API.Pages.Lottingelund
             }
  
 
-            // TODO: Add check if user already has answer to the survey
-
-            var bepa = 1;
 
             return Page();
 
