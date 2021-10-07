@@ -1,0 +1,66 @@
+﻿@page
+@model LOVA.API.Pages.Lova.Activity.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="Container" style="height:80vh;">
+    <div class="row">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <h2 class="display-5 fw-bold text-center">Ta bort</h2>
+                <p class="text-center">Vill du ta bort denna action?</p>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LovaIssue.Status)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LovaIssue.Status)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LovaIssue.Action)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LovaIssue.Action)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LovaIssue.Response)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LovaIssue.Response)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LovaIssue.OwnedBy)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LovaIssue.OwnedBy)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LovaIssue.CreatedAt)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LovaIssue.CreatedAt)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LovaIssue.UpdatedAt)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LovaIssue.UpdatedAt)
+            </dd>
+        </dl>
+        <form method="post" class="mt-5">
+            <input type="hidden" asp-for="LovaIssue.Id" />
+            <input type="submit" value="Ta bort" class="btn btn-danger" /> |
+            <a asp-page="./Index">Tillbaka till listan</a>
+        </form>
+        </div>
+    </div>
+
+
+

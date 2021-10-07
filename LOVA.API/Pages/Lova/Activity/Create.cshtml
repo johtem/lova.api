@@ -1,0 +1,60 @@
+﻿@page
+@model LOVA.API.Pages.Lova.Activity.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="Container" style="height:80vh;">
+    <div class="row">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <h2 class="display-5 fw-bold text-center">Ny åtgärd</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="mb-3">
+                    <label asp-for="LovaIssue.Status" class="control-label"></label>
+                    <select asp-for="LovaIssue.Status" asp-items="Html.GetEnumSelectList<Status>()" class="form-select">
+                        <option selected="selected" value="">Välj status</option>
+                    </select>
+                    <span asp-validation-for="LovaIssue.Status" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="LovaIssue.Action" class="control-label"></label>
+                    <input asp-for="LovaIssue.Action" class="form-control" />
+                    <span asp-validation-for="LovaIssue.Action" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="LovaIssue.Response" class="control-label">Åtgärd</label>
+                    <textarea asp-for="LovaIssue.Response" class="form-control" rows="3" > </textarea>
+                    <span asp-validation-for="LovaIssue.Response" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="LovaIssue.OwnedBy" class="control-label">Ägare</label>
+                    <input asp-for="LovaIssue.OwnedBy" class="form-control" />
+                    <span asp-validation-for="LovaIssue.OwnedBy" class="text-danger"></span>
+                </div>
+
+
+                    <button type="submit" class="btn btn-primary" >Spara</button>
+
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <a asp-page="Index" class="text-center">Tillbaka till listan</a>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

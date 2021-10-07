@@ -4,19 +4,21 @@ using LOVA.API.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LOVA.API.Migrations
 {
     [DbContext(typeof(LovaDbContext))]
-    partial class LovaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211004172112_ChangedTableLovaIssuesAddedEnum")]
+    partial class ChangedTableLovaIssuesAddedEnum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.9")
+                .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("LOVA.API.Models.Activity", b =>
@@ -234,11 +236,11 @@ namespace LOVA.API.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Action")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Issue")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OwnedBy")
                         .HasColumnType("nvarchar(max)");

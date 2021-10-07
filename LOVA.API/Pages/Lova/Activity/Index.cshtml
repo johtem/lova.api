@@ -1,0 +1,91 @@
+﻿@page
+@model LOVA.API.Pages.Lova.Activity.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+            <h2 class="display-5 fw-bold">Åtgärder</h2>
+            <p class="col-md-8 fs-4">Löva gruppens åtgärdspunkter.</p>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <p>
+            <a asp-page="Create">Ny åtgärd</a>
+        </p>
+    </div>
+    <div class="row" style="height:80vh;">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>
+                        <label class="control-label">Status</label>
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LovaIssue[0].Action)
+
+                    </th>
+                    <th>
+                        <label class="control-label">Åtgärd</label>
+                    </th>
+                    <th>
+                        <label class="control-label">Ägare</label>
+                    </th>
+                    <th>
+
+                        <label class="control-label">Skapat</label>
+                    </th>
+                    <th>
+
+                        <label class="control-label">Uppdaterat</label>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.LovaIssue)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Action)
+                        </td>
+                        <td>
+                            <span class="d-inline-block text-truncate" style="max-width: 170px;">
+                                @Html.DisplayFor(modelItem => item.Response)
+                            </span>
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OwnedBy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatedAt)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UpdatedAt)
+                        </td>
+                        <td>
+                            <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+
+
+
