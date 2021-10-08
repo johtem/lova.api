@@ -21,9 +21,19 @@ namespace LOVA.API.Pages.Lova.Activity
 
         public IList<LovaIssue> LovaIssue { get;set; }
 
+        [BindProperty(SupportsGet = true)]
+        public bool ShowClosedActions { get; set; } = false;
+
         public async Task OnGetAsync()
         {
-            LovaIssue = await _context.LovaIssues.ToListAsync();
+           
+            var lovaIssue = _context.LovaIssues.OrderBy(a => a.UpdatedAt);
+            if (!ShowClosedActions)
+            {
+                lovaIssue = (IOrderedQueryable<LovaIssue>)lovaIssue.Where(a => a.Status == Status.Påbörjad);
+            }
+
+            LovaIssue = await lovaIssue.ToListAsync();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace LOVA.API.Models
 
     public enum Status
     {
-        Pågående,
+        Påbörjad,
         Slutförd,
         Parkerad
     }
