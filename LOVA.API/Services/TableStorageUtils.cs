@@ -39,13 +39,49 @@ namespace LOVA.API.Services
                 throw;
             }
         }
-        //  </QueryData>
 
 
-        public static IEnumerable<DrainTableStorageEntity> GetAll(CloudTable table) 
+        public static async Task<ResetGridTableStorageEntity> RetrieveResetGridEntityUsingPointQueryAsync(CloudTable table, string partitionKey, string rowKey)
         {
-           
+            try
+            {
+                TableOperation retrieveOperation = TableOperation.Retrieve<ResetGridTableStorageEntity>(partitionKey, rowKey);
+                TableResult result = await table.ExecuteAsync(retrieveOperation);
+                ResetGridTableStorageEntity customer = result.Result as ResetGridTableStorageEntity;
+                if (customer != null)
+                {
+                    Console.WriteLine("\t{0}\t{1}\t{2}", customer.PartitionKey, customer.RowKey, customer.ResetDate);
+                }
+
+                if (result.RequestCharge.HasValue)
+                {
+                    Console.WriteLine("Request Charge of Retrieve Operation: " + result.RequestCharge);
+                }
+
+                return customer;
+            }
+            catch (StorageException e)
+            {
+                Console.WriteLine(e.Message);
+                Console.ReadLine();
+                throw;
+            }
+        }
+
+
+        public static IEnumerable<DrainTableStorageEntity> GetAll(CloudTable table, DateTime resetDate) 
+        {
+
             var queryResult = table.ExecuteQuery(new TableQuery<DrainTableStorageEntity>()).ToList();
+
+            // Filter only data from resetDate. Valid 2 hours.
+            var now = DateTime.Now;
+
+            if (now > resetDate && now < resetDate.AddHours(MyConsts.resetGridWaitTime))
+            {
+                queryResult = table.ExecuteQuery(new TableQuery<DrainTableStorageEntity>()).Where(a => a.TimeUp.ToLocalTime() > resetDate).ToList();
+            }
+
 
 
             return queryResult;
@@ -84,6 +120,39 @@ namespace LOVA.API.Services
             }
         }
         //  </InsertItem>
+
+
+        public static async Task<ResetGridTableStorageEntity> InsertOrMergeResetGridEntityAsync(CloudTable table, ResetGridTableStorageEntity entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException("entity");
+            }
+
+            try
+            {
+                // Create the InsertOrReplace table operation
+                TableOperation insertOrMergeOperation = TableOperation.InsertOrMerge(entity);
+
+                // Execute the operation.
+                TableResult result = await table.ExecuteAsync(insertOrMergeOperation);
+                ResetGridTableStorageEntity insertedCustomer = result.Result as ResetGridTableStorageEntity;
+
+                if (result.RequestCharge.HasValue)
+                {
+                    Console.WriteLine("Request Charge of InsertOrMerge Operation: " + result.RequestCharge);
+                }
+
+                return insertedCustomer;
+            }
+            catch (StorageException e)
+            {
+                Console.WriteLine(e.Message);
+                Console.ReadLine();
+                throw;
+            }
+        }
+
 
         //  <DeleteItem>
         public static async Task DeleteEntityAsync(CloudTable table, DrainTableStorageEntity deleteEntity)

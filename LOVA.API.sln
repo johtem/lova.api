@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LOVA.API", "LOVA.API\LOVA.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LOVA.API.Test", "LOVA.API.Test\LOVA.API.Test.csproj", "{D2F4D114-2F10-43B5-A48B-7B6CD6B07E08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LOVA.APITests", "LOVA.APITests\LOVA.APITests.csproj", "{5FF8193D-6EC1-4C5A-8D48-5FBE485FE34B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D2F4D114-2F10-43B5-A48B-7B6CD6B07E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2F4D114-2F10-43B5-A48B-7B6CD6B07E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2F4D114-2F10-43B5-A48B-7B6CD6B07E08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FF8193D-6EC1-4C5A-8D48-5FBE485FE34B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FF8193D-6EC1-4C5A-8D48-5FBE485FE34B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FF8193D-6EC1-4C5A-8D48-5FBE485FE34B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FF8193D-6EC1-4C5A-8D48-5FBE485FE34B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

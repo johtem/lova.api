@@ -33,7 +33,17 @@ namespace LOVA.API.Pages.Lova
             // Create reference an existing table
             CloudTable table = await TableStorageCommon.CreateTableAsync("Drains");
             
-            qResult = TableStorageUtils.GetAll(table);
+
+            // Get reset time from ResetGrid
+            CloudTable tableResetGrid = await TableStorageCommon.CreateTableAsync("ResetGrid");
+
+            ResetGridTableStorageEntity resetGridExistingRow = new ResetGridTableStorageEntity();
+
+            resetGridExistingRow = await TableStorageUtils.RetrieveResetGridEntityUsingPointQueryAsync(tableResetGrid, "one", "two");
+
+            // Get rows newer than that date
+
+            qResult = TableStorageUtils.GetAll(table, resetGridExistingRow.ResetDate.ToLocalTime());
 
             ViewData["qResult"] = JsonConvert.SerializeObject(qResult);
 
@@ -111,6 +121,24 @@ namespace LOVA.API.Pages.Lova
 
 
             // return "deleted";
+        }
+
+        public async Task OnGetResetGrids()
+        {
+
+            // Create reference to an existing table
+            CloudTable table = await TableStorageCommon.CreateTableAsync("ResetGrid");
+
+            ResetGridTableStorageEntity resetGridExistingRow = new ResetGridTableStorageEntity();
+
+            // Get existing data for a specific master_node and address
+            resetGridExistingRow = await TableStorageUtils.RetrieveResetGridEntityUsingPointQueryAsync(table, "one", "two");
+
+            // Create a new/update record for Azure Table Storage
+            ResetGridTableStorageEntity drain = new ResetGridTableStorageEntity("one", "two", DateTime.Now);
+
+            await TableStorageUtils.InsertOrMergeResetGridEntityAsync(table, drain);
+
         }
     }
 }

@@ -12,6 +12,7 @@ namespace LOVA.API.Services
         public const int PageSize = 10;
         public const int DashboardItemSize = 8;
         public const int LongActivationTime = 100;
+        public const int resetGridWaitTime = 2;
 
 
 

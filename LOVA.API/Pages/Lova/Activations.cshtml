@@ -328,6 +328,21 @@
 
             $("#resetSquare").click(function () {
                 $("td").removeClass("redSolidBorder");
+
+                $.ajax({
+                    type: "GET",
+                    url: "/Lova/Activations?handler=ResetGrids",
+                    success: function (response) {
+
+                       
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                    });
             });
 
             $(".btnDelete").click(function() {

@@ -30,7 +30,7 @@ namespace LOVA.API.Pages.Lova.Activity
             var lovaIssue = _context.LovaIssues.OrderBy(a => a.UpdatedAt);
             if (!ShowClosedActions)
             {
-                lovaIssue = (IOrderedQueryable<LovaIssue>)lovaIssue.Where(a => a.Status == Status.Påbörjad);
+                lovaIssue = (IOrderedQueryable<LovaIssue>)lovaIssue.Where(a => a.Status == Status.Påbörjad || a.Status == Status.Planerad).OrderBy(a => a.Status).ThenByDescending(a => a.UpdatedAt);
             }
 
             LovaIssue = await lovaIssue.ToListAsync();

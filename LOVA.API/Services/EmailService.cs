@@ -169,7 +169,7 @@ namespace LOVA.API.Services
             CloudTable table = await TableStorageCommon.CreateTableAsync("Drains");
 
             // Get existing data for address
-            var drainExistingRow = TableStorageUtils.GetAll(table);
+            var drainExistingRow = TableStorageUtils.GetAll(table, DateTime.Now.AddHours(1));
 
             var dateNow = DateTime.Now;
 
