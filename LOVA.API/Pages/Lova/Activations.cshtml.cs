@@ -43,7 +43,16 @@ namespace LOVA.API.Pages.Lova
 
             // Get rows newer than that date
 
-            qResult = TableStorageUtils.GetAll(table, resetGridExistingRow.ResetDate.ToLocalTime());
+            qResult = TableStorageUtils.GetAll(table);
+
+            // Filter only data from resetDate. Valid 2 hours.
+            var now = DateTime.Now;
+            ViewData["buttonText"] = "Återställ grid i 2h";
+            if (now > resetGridExistingRow.ResetDate.ToLocalTime() && now < resetGridExistingRow.ResetDate.ToLocalTime().AddHours(MyConsts.resetGridWaitTime))
+            {
+                qResult = table.ExecuteQuery(new TableQuery<DrainTableStorageEntity>()).Where(a => a.TimeUp.ToLocalTime() > resetGridExistingRow.ResetDate.ToLocalTime()).ToList();
+                ViewData["buttonText"] = resetGridExistingRow.ResetDate.ToLocalTime().ToString();
+            }
 
             ViewData["qResult"] = JsonConvert.SerializeObject(qResult);
 

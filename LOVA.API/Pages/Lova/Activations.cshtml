@@ -30,7 +30,7 @@
                 <i class="fas fa-square"></i>
             </span>
             <span class="tableLive mt-1">&nbsp; Ej aktiv på en vecka</span>
-            <button type="button" class="btn btn-outline-secondary btn-sm ml-2" id="resetSquare">Återställ</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm ml-2" id="resetSquare">@ViewData["buttonText"]</button>
         </div>
         
         
@@ -333,7 +333,7 @@
                     type: "GET",
                     url: "/Lova/Activations?handler=ResetGrids",
                     success: function (response) {
-
+                        location.reload();
                        
                     },
                     failure: function (response) {

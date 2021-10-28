@@ -69,19 +69,10 @@ namespace LOVA.API.Services
         }
 
 
-        public static IEnumerable<DrainTableStorageEntity> GetAll(CloudTable table, DateTime resetDate) 
+        public static IEnumerable<DrainTableStorageEntity> GetAll(CloudTable table) 
         {
 
             var queryResult = table.ExecuteQuery(new TableQuery<DrainTableStorageEntity>()).ToList();
-
-            // Filter only data from resetDate. Valid 2 hours.
-            var now = DateTime.Now;
-
-            if (now > resetDate && now < resetDate.AddHours(MyConsts.resetGridWaitTime))
-            {
-                queryResult = table.ExecuteQuery(new TableQuery<DrainTableStorageEntity>()).Where(a => a.TimeUp.ToLocalTime() > resetDate).ToList();
-            }
-
 
 
             return queryResult;
