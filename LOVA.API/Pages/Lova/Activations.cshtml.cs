@@ -144,7 +144,19 @@ namespace LOVA.API.Pages.Lova
             resetGridExistingRow = await TableStorageUtils.RetrieveResetGridEntityUsingPointQueryAsync(table, "one", "two");
 
             // Create a new/update record for Azure Table Storage
-            ResetGridTableStorageEntity drain = new ResetGridTableStorageEntity("one", "two", DateTime.Now);
+
+            var now = DateTime.Now;
+            if (now > resetGridExistingRow.ResetDate.ToLocalTime() && now < resetGridExistingRow.ResetDate.ToLocalTime().AddHours(MyConsts.resetGridWaitTime))
+            {
+                now = now.AddDays(-1);
+            }
+            else
+            {
+                
+            }
+
+
+            ResetGridTableStorageEntity drain = new ResetGridTableStorageEntity("one", "two", now);
 
             await TableStorageUtils.InsertOrMergeResetGridEntityAsync(table, drain);
 
