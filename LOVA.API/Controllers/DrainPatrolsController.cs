@@ -186,6 +186,11 @@ namespace LOVA.API.Controllers
                     await SendEmailAlarm(insertData, "B-larm");
                     break;
                 default:
+                    if (insertData.Address.StartsWith("3") && insertData.Address.EndsWith("8"))
+                    {
+                        await SendEmailWellFull(insertData);
+                    }
+
                     break;
             }
 
@@ -361,7 +366,52 @@ namespace LOVA.API.Controllers
 
                 await _mailService.SendAlarmEmailAsync(request);
             }
+            else
+            {
+                MailRequest request = new MailRequest();
+
+                request.ToEmail = ""; // Will be added in EmailService.cs
+
+
+                request.Subject = alarmType;
+                request.Body = $"{alarmType} har de-aktiverats tid: {ac.Time.ToShortTimeString()} \n\r Mvh Löva";
+
+
+                await _mailService.SendAlarmEmailAsync(request);
+            }
             
+        }
+
+        private async Task SendEmailWellFull(Activity ac)
+        {
+
+            if (ac.Active)
+            {
+                MailRequest request = new MailRequest();
+
+                request.ToEmail = ""; // Will be added in EmailService.cs
+
+
+                request.Subject = "Intagsenhet full - slinga 3";
+                request.Body = $"Intagsenhet {ac.Address} signalerar att den är full. \n\r Mvh Löva";
+
+
+                await _mailService.SendAlarmEmailAsync(request);
+            }
+            else
+            {
+                MailRequest request = new MailRequest();
+
+                request.ToEmail = ""; // Will be added in EmailService.cs
+
+
+                request.Subject = "Intagsenhet full - slinga 3";
+                request.Body = $"Intagsenhet {ac.Address} är nu tömd. \n\r Mvh Löva";
+
+
+                await _mailService.SendAlarmEmailAsync(request);
+            }
+
         }
 
 
