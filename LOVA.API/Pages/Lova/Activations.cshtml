@@ -207,6 +207,28 @@
 
         $(document).ready(function () {
 
+            // Timer for reset button
+            setInterval(function(){
+                var now = new Date();
+                console.log(now);
+                console.log("@ViewData["buttonText"]");
+                if ("@ViewData["buttonText"]" != "Återställ grid i 2h" && now > new Date("@ViewData["buttonText"]"))
+                {
+                    var savedDate = new Date("@ViewData["buttonText"]");
+                    if (now < savedDate.setHours(savedDate.getHours()+2))
+                    {
+                        
+                    }
+                    else
+                    {
+                        location.reload();
+                    }
+                    
+                }
+                
+            }, 5000);
+
+
 
             // Remove not used addresses from the grids
 
@@ -333,7 +355,7 @@
                     type: "GET",
                     url: "/Lova/Activations?handler=ResetGrids",
                     success: function (response) {
-                        location.reload();
+                        location.reload(); 
                        
                     },
                     failure: function (response) {
