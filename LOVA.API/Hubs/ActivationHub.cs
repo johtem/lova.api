@@ -29,6 +29,9 @@ namespace LOVA.API.Hubs
             // Get existing data for address
             var drainExistingRow = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drain.Substring(0,1), drain);
 
+            drainExistingRow.TimeUp = drainExistingRow.TimeUp.ToLocalTime();
+            drainExistingRow.TimeDown = drainExistingRow.TimeDown.ToLocalTime(); 
+
             DateTime dateNow = DateTime.Now;
 
 

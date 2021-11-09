@@ -163,14 +163,14 @@ namespace LOVA.API.Controllers
             };
 
             // SignalR to update page with above record
-           await _hub.Clients.All.SendAsync("DrainActivity", insertData.Address, insertData);
+            await _hub.Clients.All.SendAsync("DrainActivity", insertData.Address, insertData);
 
 
             // Save data in Azure Table Storage to flatten out the data.
 
             await SaveToTableStorage(drainPatrolViewModel);
 
-           
+
 
             // Save activity in Azure SQL to table Activities
             _context.Activities.Add(insertData);
@@ -199,7 +199,7 @@ namespace LOVA.API.Controllers
 
         private async Task SaveToTableStorage(ActivityViewModel drainPatrolViewModel)
         {
-            
+
             // Create reference to an existing table
             CloudTable table = await TableStorageCommon.CreateTableAsync("Drains");
 
@@ -216,12 +216,12 @@ namespace LOVA.API.Controllers
             if (drainPatrolViewModel.Active)
             {
                 // Store data in Azure nosql table if Active == true
-                drain.TimeUp = drainPatrolViewModel.Time;
-                drain.TimeDown = drainExistingRow.TimeDown;
+                drain.TimeUp = drainPatrolViewModel.Time.ToLocalTime();
+                drain.TimeDown = drainExistingRow.TimeDown.ToLocalTime();
                 drain.IsActive = drainPatrolViewModel.Active;
                 drain.AverageActivity = drainExistingRow.AverageActivity;
 
-                var diff = (drainPatrolViewModel.Time - convertToLocalTimeZone(drainExistingRow.TimeDown)).TotalSeconds;
+                var diff = (drainPatrolViewModel.Time - drainExistingRow.TimeDown).TotalSeconds;
                 if (drainExistingRow.AverageRest == 0)
                 {
                     drain.AverageRest = (int)diff;
@@ -232,12 +232,12 @@ namespace LOVA.API.Controllers
                 }
 
                 // Add hourly counter if within same hour otherwise save count to Azure SQL table AcitvityCounts    
-                if (DateExtensions.NewHour(drainPatrolViewModel.Time, convertToLocalTimeZone(drainExistingRow.TimeUp)))
+                if (DateExtensions.NewHour(drainPatrolViewModel.Time.ToLocalTime(), drainExistingRow.TimeUp.ToLocalTime()))
                 {
                     // New hour reset counter to one
                     drain.HourlyCount = 1;
 
-                    if (DateExtensions.IsNewDay(drainPatrolViewModel.Time, convertToLocalTimeZone(drainExistingRow.TimeUp)))
+                    if (DateExtensions.IsNewDay(drainPatrolViewModel.Time.ToLocalTime(), drainExistingRow.TimeUp.ToLocalTime()))
                     {
                         drain.DailyCount = 1;
                     }
@@ -271,7 +271,7 @@ namespace LOVA.API.Controllers
                     // withing the same hour add one to existing sum.
                     drain.HourlyCount = drainExistingRow.HourlyCount + 1;
                     drain.DailyCount = drainExistingRow.DailyCount + 1;
-                    
+
 
 
                     // Save updated to the Azure nosql table 
@@ -284,21 +284,22 @@ namespace LOVA.API.Controllers
                 // Get data from Azure table and store data in one row on ActivityPerRow
 
                 // drain = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
-                drain.TimeUp = drainExistingRow.TimeUp;
-                drain.TimeDown = drainPatrolViewModel.Time.AddHours(2);
+                drain.TimeUp = drainExistingRow.TimeUp.ToLocalTime();
+                drain.TimeDown = drainPatrolViewModel.Time.ToLocalTime();
                 drain.IsActive = drainPatrolViewModel.Active;
                 drain.HourlyCount = drainExistingRow.HourlyCount;
                 drain.AverageRest = drainExistingRow.AverageRest;
 
-                var diff = (drain.TimeDown - convertToLocalTimeZone(drain.TimeUp)).TotalSeconds;
+                var diff = (drain.TimeDown - drain.TimeUp).TotalSeconds;
                 if (drainExistingRow.AverageActivity == 0)
                 {
                     drain.AverageActivity = (int)diff;
-                }else
+                }
+                else
                 {
                     drain.AverageActivity = (int)((drainExistingRow.AverageActivity + diff) / 2);
                 }
-                
+
 
 
                 await TableStorageUtils.InsertOrMergeEntityAsync(table, drain);
@@ -311,15 +312,15 @@ namespace LOVA.API.Controllers
                 }
 
 
- 
-                
+
+
                 var perRowData = new ActivityPerRow
                 {
                     Address = drain.RowKey,
-                    TimeUp = convertToLocalTimeZone(drain.TimeUp),
+                    TimeUp = drain.TimeUp,
                     TimeDown = drain.TimeDown,
-                    TimeDiff = (drain.TimeDown - convertToLocalTimeZone(drain.TimeUp)).TotalMilliseconds,
-                     //(drain.TimeDown - drain.TimeUp.AddHours(1)).TotalMilliseconds,
+                    TimeDiff = (drain.TimeDown - drain.TimeUp).TotalMilliseconds,
+                    //(drain.TimeDown - drain.TimeUp.AddHours(1)).TotalMilliseconds,
                     IsGroupAddress = isGroup
                 };
 
@@ -352,7 +353,7 @@ namespace LOVA.API.Controllers
 
         private async Task SendEmailAlarm(Activity ac, string alarmType)
         {
-            
+
             if (ac.Active)
             {
                 MailRequest request = new MailRequest();
@@ -379,7 +380,7 @@ namespace LOVA.API.Controllers
 
                 await _mailService.SendAlarmEmailAsync(request);
             }
-            
+
         }
 
         private async Task SendEmailWellFull(Activity ac)
