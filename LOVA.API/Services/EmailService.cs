@@ -308,7 +308,7 @@ namespace LOVA.API.Services
 
         }
 
-        public async Task SendAlarmEmailAsync(MailRequest mailRequest)
+        public async Task SendAlarmEmailAsync(MailRequest mailRequest, string emailType)
         {
             var email = new MimeMessage();
             email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
@@ -317,7 +317,7 @@ namespace LOVA.API.Services
 
             var senderList = await _context.MailSubscriptions
                 .Include(a => a.MailType)
-                .Where(a => a.MailType.Type == "Alarm")
+                .Where(a => a.MailType.Type == emailType)
                 .ToListAsync();
 
             foreach (var sender in senderList)

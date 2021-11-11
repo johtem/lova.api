@@ -365,7 +365,7 @@ namespace LOVA.API.Controllers
                 request.Body = $"{alarmType} har aktiverats tid: {ac.Time.ToShortTimeString()} \n\r Mvh Löva";
 
 
-                await _mailService.SendAlarmEmailAsync(request);
+                await _mailService.SendAlarmEmailAsync(request, "Alarm");
             }
             else
             {
@@ -378,39 +378,40 @@ namespace LOVA.API.Controllers
                 request.Body = $"{alarmType} har de-aktiverats tid: {ac.Time.ToShortTimeString()} \n\r Mvh Löva";
 
 
-                await _mailService.SendAlarmEmailAsync(request);
+                await _mailService.SendAlarmEmailAsync(request, "Alarm");
             }
 
         }
 
         private async Task SendEmailWellFull(Activity ac)
         {
+            MailRequest request = new MailRequest();
+            var emailType = "DrainFull";
 
             if (ac.Active)
             {
-                MailRequest request = new MailRequest();
 
                 request.ToEmail = ""; // Will be added in EmailService.cs
 
 
                 request.Subject = "Intagsenhet full - slinga 3";
-                request.Body = $"Intagsenhet {ac.Address} signalerar att den är full. \n\r Mvh Löva";
+                request.Body = $"Intagsenhet {ac.Address} är full. \n\r Mvh Löva";
 
 
-                await _mailService.SendAlarmEmailAsync(request);
+                await _mailService.SendAlarmEmailAsync(request, emailType);
             }
             else
             {
-                MailRequest request = new MailRequest();
+                
 
                 request.ToEmail = ""; // Will be added in EmailService.cs
 
 
-                request.Subject = "Intagsenhet full - slinga 3";
+                request.Subject = "Intagsenhet tömd - slinga 3";
                 request.Body = $"Intagsenhet {ac.Address} är nu tömd. \n\r Mvh Löva";
 
 
-                await _mailService.SendAlarmEmailAsync(request);
+                await _mailService.SendAlarmEmailAsync(request, emailType);
             }
 
         }
