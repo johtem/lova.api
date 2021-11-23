@@ -9,7 +9,6 @@ namespace LOVA.API.Models
     {
         public long Id { get; set; }
 
-        public string UserName { get; set; }
         public string Query1 { get; set; }
         public string Query2 { get; set; }
         public string Query3 { get; set; }

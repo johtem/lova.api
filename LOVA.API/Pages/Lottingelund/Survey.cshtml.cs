@@ -40,14 +40,13 @@ namespace LOVA.API.Pages.Lottingelund
         {
             var user = await GetUser();
 
-            var isAnswered = _context.Surveys.AnyAsync(a => a.UserName == user.UserName);
+            var isAnswered = _context.SurveyAnswereds.AnyAsync(a => a.UserName == user.UserName && a.SurveyName == "Investeringar");
 
             if (isAnswered.Result)
             {
-               
                 return RedirectToPage("SurveyAnswered");
             }
- 
+
 
 
             return Page();
@@ -64,14 +63,32 @@ namespace LOVA.API.Pages.Lottingelund
 
             var user = await GetUser();
 
-            Survey survey = new Survey
+
+            // Check if logged in user tries to save more than one survey
+            var isAnswered = _context.SurveyAnswereds.AnyAsync(a => a.UserName == user.UserName && a.SurveyName == "Investeringar");
+
+            if (isAnswered.Result)
+            {
+                return RedirectToPage("SurveyAnswered");
+            }
+
+
+            SurveyAnswered sa = new SurveyAnswered
             {
                 UserName = user.UserName,
+                SurveyName = "Investeringar"
+            };
+
+            _context.SurveyAnswereds.Add(sa);
+            await _context.SaveChangesAsync();
+
+            Survey survey = new Survey
+            {
                 Query1 = SurveyViewModel.Query1,
                 Query2 = SurveyViewModel.Query2,
                 Query3 = SurveyViewModel.Query3,
-                Query4 = SurveyViewModel.Query4,
-                Query5 = SurveyViewModel.Query5,
+                //Query4 = SurveyViewModel.Query4,
+                //Query5 = SurveyViewModel.Query5,
             };
 
             _context.Surveys.Add(survey);

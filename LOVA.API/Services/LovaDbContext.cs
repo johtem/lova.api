@@ -50,6 +50,8 @@ namespace LOVA.API.Services
 
         public DbSet<SurveyCheckbox> SurveyCheckBoxes { get; set; }
 
+        public DbSet<SurveyAnswered> SurveyAnswereds { get; set; }
+
         public DbSet<LovaIssue> LovaIssues { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29920.165
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.31911.260
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LOVA.API", "LOVA.API\LOVA.API.csproj", "{BDCD278B-B593-4DAB-8A71-7EC891F6BABB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LOVA.API.Test", "LOVA.API.Test\LOVA.API.Test.csproj", "{D2F4D114-2F10-43B5-A48B-7B6CD6B07E08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LOVA.APITests", "LOVA.APITests\LOVA.APITests.csproj", "{5FF8193D-6EC1-4C5A-8D48-5FBE485FE34B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LOVA.APITests", "LOVA.APITests\LOVA.APITests.csproj", "{5FF8193D-6EC1-4C5A-8D48-5FBE485FE34B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

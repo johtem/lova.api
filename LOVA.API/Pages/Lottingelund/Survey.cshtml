@@ -113,6 +113,23 @@
     .thanks-message {
         display: none
     }
+
+
+    .form-check-input:checked {
+        background-color: #6a1b9a;
+        border-color: #6a1b9a;
+    }
+
+    .btn-outline-primary, .btn-outline-primary:hover, .btn-outline-primary:active, .btn-outline-primary:visited {
+        border-color: #6a1b9a !important;
+        color: #6a1b9a !important;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #972ada !important; 
+        color:  #e0c0f4 !important;
+    }
+
 </style>
 
 
@@ -126,74 +143,95 @@
                     <span class="step">2</span>
                     <span class="step">3</span>
                     <span class="step">4</span>
-                    <span class="step">5</span>
-                    <span class="step">6</span>
-                    <span class="step">7</span>
-                    <span class="step">8</span>
+                    @*<span class="step">5</span>*@
+                    @*                    <span class="step">6</span>
+                        <span class="step">7</span>
+                        <span class="step">8</span>*@
                 </div>
                 <div class="tab">
                     <div class="row">
-                        <h6>What's your name?</h6>
+                        <h6>Det kortsiktiga behovet av investeringar i VA-anläggningen, inklusive återbetalning av lån och skapande av en buffert, beräknas till ca 2,6 MSEK. Det innebär ca 12 000 SEK per fastighet. Dessa pengar behöver komma in till föreningarna under 2022/2023. <br />På vilket sätt vill du helst att dessa kostnader finansieras?</h6>
                     </div>
                     <div class="row mt-5">
-                        <p> <input placeholder="Name..." oninput="this.className = ''" name="SurveyViewModel.Query1"></p>
+                        <p>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="SurveyViewModel.Query1" id="exampleRadios1" value="VA - engångsbelopp">
+                                <label class="form-check-label ms-3" for="exampleRadios1">
+                                    Att varje medlem sätter in ett engångsbelopp på 12 000 kronor under 2022 som beräknas täcka de kommande investeringarna i förbättrat och modernare Vatten/Avlopp.
+                                </label>
+                            </div>
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="radio" name="SurveyViewModel.Query1" id="exampleRadios2" value="VA - kvartalsvis">
+                                <label class="form-check-label ms-3" for="exampleRadios2">
+                                    Att varje medlem sätter in ett extra belopp varje kvartal på ca 2 000 kronor per kvartal under en period på 1,5 år under 2022/2023.
+                                </label>
+                            </div>
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="radio" name="SurveyViewModel.Query1" id="exampleRadios3" value="VA - ombilda till samfällighet">
+                                <label class="form-check-label ms-3" for="exampleRadios3">
+                                    Att om möjligt VA-föreningen ombildas till en samfällighet för att underlätta extern finansiering/upptagande av lån. Utöver eventuell lånefinansiering sätter varje medlem in resterande summa som ett engångsbelopp.
+                                </label>
+                            </div>
+                        </p>
                     </div>
                 </div>
                 <div class="tab">
-                    <h6>What's your city?</h6>
-                    <p>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="SurveyViewModel.Query2" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
-                                Default radio
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="SurveyViewModel.Query2" id="exampleRadios2" value="option2">
-                            <label class="form-check-label" for="exampleRadios2">
-                                Second default radio
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="SurveyViewModel.Query2" id="exampleRadios3" value="option3">
-                            <label class="form-check-label" for="exampleRadios3">
-                                Disabled radio
-                            </label>
-                        </div>
-                    </p>
+                    <div class="row">
+                        <h6>Det omedelbara behovet av förbättringar av våra vägar beräknas klaras av med nuvarande budget, men inom ca 3 år behövs mer omfattande arbeten. En plan för detta kommer att presenteras på årsmötet 2022, men beräkningar är att vi behöver investera minst ca 13 000 kronor per fastighet.<br />a.	På vilket sätt vill du helst att dessa kostnader finansieras?</h6>
+                    </div>
+                    <div class="row mt-5">
+                        <p>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="SurveyViewModel.Query2" id="exampleRadios1" value="Väg - engångsbelopp">
+                                <label class="form-check-label ms-3" for="exampleRadios1">
+                                    Att varje medlem sätter in ett engångsbelopp på 13 000 kronor under 2024 som beräknas täcka de kommande investeringarna i förbättrade och säkrare vägar.
+                                </label>
+                            </div>
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="radio" name="SurveyViewModel.Query2" id="exampleRadios2" value="Väg - kvartalsvis">
+                                <label class="form-check-label ms-3" for="exampleRadios2">
+                                    Att varje medlem sätter in ett extra belopp varje kvartal på ca 2 000 kronor per kvartal under en period på 1,5 år under 2024/2025.
+                                </label>
+                            </div>
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="radio" name="SurveyViewModel.Query2" id="exampleRadios3" value="Väg - exernt lån">
+                                <label class="form-check-label ms-3" for="exampleRadios3">
+                                    Att Vägföreningen, som sannolikt räknas som samfällighet tar upp ett externt lån. Utöver eventuell lånefinansiering sätter varje medlem in resterande summa som ett engångsbelopp.
+                                </label>
+                            </div>
+                        </p>
+                    </div>
                 </div>
                 <div class="tab">
-                    <h6>What's your Favourite Shopping site?</h6>
-                    @for (var i = 1; i <= 4; i++)
-                    {
-                        <div class="form-check">
-                            <input name="SurveyViewModel.AreChecked1" type="checkbox" value="@i" class="form-check-input" />
-                            <label class="form-check-label" for="flexCheckIndeterminate">
-                                @i
-                            </label>
-                        </div>
-
-                    }
+                    <div class="row">
+                        <h6>Finns det något annat du vill tillägga avseende skötsel, finansiering, investeringar, kommunikation eller annat som styrelsen för föreningarna bör ta i beaktande?</h6>
+                    </div>
+                    <div class="row mt-5">
+                    </div>
+                    <p><input placeholder="" oninput="this.className = ''" name="SurveyViewModel.Query3"></p>
                 </div>
-                <div class="tab">
-                    <h6>What's your Favourite Shopping site?</h6>
-                    <p><input placeholder="Favourite Shopping site" oninput="this.className = ''" name="SurveyViewModel.Query3"></p>
-                </div>
-                <div class="tab">
+                @*                <div class="tab">
                     <h6>What's your Favourite car?</h6>
                     <p><input placeholder="Favourite car" oninput="this.className = ''" name="SurveyViewModel.Query4"></p>
-                </div>
-                <div class="tab">
+                    </div>
+                    <div class="tab">
                     <h6>What's your Favourite Song?</h6>
                     <p><input placeholder="Favourite Song" oninput="this.className = ''" name="SurveyViewModel.Query5"></p>
-                </div>
-                <div class="tab">
+                    </div>
+                    <div class="tab">
                     <h6>What's your Favourite Mobile brand?</h6>
                     <p><input placeholder="Favourite Mobile Brand" oninput="this.className = ''" name="uname"></p>
-                </div>
+                    </div>*@
                 <div class="tab">
-                    <h6>Om du är klar så tryck spara annars kolla igenom svaren.</h6>
-                    <button type="submit" class="btn btn-outline-primary">Spara</button>
+                    <div class="row">
+                        <h6>
+                             Kolla igenom svaren innan du sparar.
+                        </h6>
+                    </div>
+                    <div class="row mt-5 col-sm-2">
+                        <button type="submit" class="btn btn-outline-primary">Spara</button>
+                    </div>
+
                 </div>
 
                 <div style="overflow:auto;" id="nextprevious">
@@ -208,103 +246,103 @@
 @section Scripts {
 
 <script>
-    var currentTab = 0;
-    document.addEventListener("DOMContentLoaded", function(event) {
+     var currentTab = 0;
+     document.addEventListener("DOMContentLoaded", function(event) {
 
-    showTab(currentTab);
+     showTab(currentTab);
 
-    });
+     });
 
-    function showTab(n) {
-        
-        var x = document.getElementsByClassName("tab");
-        
-        // console.log(x.length);
-        x[n].style.display = "block";
-        if (n == 0) {
-            document.getElementById("prevBtn").style.display = "none";
-            } else {
-            document.getElementById("prevBtn").style.display = "inline";
-        }
-        if (n == (x.length - 1)) {
-            document.getElementById("nextBtn").innerHTML = '<i class="fa fa-angle-double-right"></i>';
-            } else {
-            document.getElementById("nextBtn").innerHTML = '<i class="fa fa-angle-double-right"></i>';
-        }
-        fixStepIndicator(n)
-    }
+     function showTab(n) {
 
-    function nextPrev(n) 
-    {
-        console.log(n);
-        var x = document.getElementsByClassName("tab");
-        if (n == 1 && !validateForm()) return false;
-        x[currentTab].style.display = "none";
-        currentTab = currentTab + n;
-        console.log(currentTab);
-        if (currentTab == x.length -1) {
-                document.getElementById("nextBtn").style.display = "none";
-            }else{
-                document.getElementById("nextBtn").style.display = "inline";
-        }
+         var x = document.getElementsByClassName("tab");
 
-
-        if (currentTab >= x.length) {
-
-        document.getElementById("nextprevious").style.display = "none";
-        document.getElementById("all-steps").style.display = "none";
-        document.getElementById("register").style.display = "none";
-        document.getElementById("text-message").style.display = "block";
-
-        }
-
-
-        showTab(currentTab);
-    }
-
-    function fixIndicatorWhenBack(n) 
-    {
-        var i;
-        var x=document.getElementsByClassName("step");
-        
-    }
-
-   
-
-    function validateForm() {
-        var x, y, i, valid = true;
-        x = document.getElementsByClassName("tab");
-        y = x[currentTab].getElementsByTagName("input");
-        for (i = 0; i < y.length; i++) 
-            { 
-            if (y[i].value=="" ) 
-            { 
-                y[i].className +=" invalid" ; 
-                valid=false; 
-            } 
-        } 
-        if (valid) 
-        { 
-        document.getElementsByClassName("step")[currentTab].className +=" finish" ;
-        } 
-        return valid; 
-    } 
-
-   function fixStepIndicator(n) 
-    { 
-        console.log("FixStepIndicator");
-        console.log(n);
-    var i, x=document.getElementsByClassName("step"); 
-    for (i=0; i < x.length; i++) 
-    { 
-     x[i].className=x[i].className.replace(" active", "" ); 
-     if (i >= n)
-     {
-         x[i].className=x[i].className.replace(" finish", "" );
+         // console.log(x.length);
+         x[n].style.display = "block";
+         if (n == 0) {
+             document.getElementById("prevBtn").style.display = "none";
+             } else {
+             document.getElementById("prevBtn").style.display = "inline";
+         }
+         if (n == (x.length)) {
+             document.getElementById("nextBtn").innerHTML = '<i class="fa fa-angle-double-right"></i>';
+             } else {
+             document.getElementById("nextBtn").innerHTML = '<i class="fa fa-angle-double-right"></i>';
+         }
+         fixStepIndicator(n)
      }
-    } 
-    x[n].className +=" active" ; 
 
-   }
+     function nextPrev(n)
+     {
+         console.log(n);
+         var x = document.getElementsByClassName("tab");
+         //if (n == 1 && !validateForm()) return false;
+         x[currentTab].style.display = "none";
+         currentTab = currentTab + n;
+         console.log(currentTab);
+         if (currentTab == x.length -1) {
+                 document.getElementById("nextBtn").style.display = "none";
+             }else{
+                 document.getElementById("nextBtn").style.display = "inline";
+         }
+
+
+         if (currentTab >= x.length) {
+
+         document.getElementById("nextprevious").style.display = "none";
+         document.getElementById("all-steps").style.display = "none";
+         document.getElementById("register").style.display = "none";
+         document.getElementById("text-message").style.display = "block";
+
+         }
+
+
+         showTab(currentTab);
+     }
+
+     function fixIndicatorWhenBack(n)
+     {
+         var i;
+         var x=document.getElementsByClassName("step");
+
+     }
+
+
+
+     function validateForm() {
+         var x, y, i, valid = true;
+         x = document.getElementsByClassName("tab");
+         y = x[currentTab].getElementsByTagName("input");
+         for (i = 0; i < y.length; i++)
+             {
+             if (y[i].value=="" )
+             {
+                 y[i].className +=" invalid" ;
+                 valid=false;
+             }
+         }
+         if (valid)
+         {
+         document.getElementsByClassName("step")[currentTab].className +=" finish" ;
+         }
+         return valid;
+     }
+
+    function fixStepIndicator(n)
+     {
+         console.log("FixStepIndicator");
+         console.log(n);
+     var i, x=document.getElementsByClassName("step");
+     for (i=0; i < x.length; i++)
+     {
+      x[i].className=x[i].className.replace(" active", "" );
+      if (i >= n)
+      {
+          x[i].className=x[i].className.replace(" finish", "" );
+      }
+     }
+     x[n].className +=" active" ;
+
+    }
 </script>
  }
