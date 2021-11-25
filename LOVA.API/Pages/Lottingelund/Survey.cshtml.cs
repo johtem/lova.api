@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LOVA.API.Models;
 using LOVA.API.Services;
 using LOVA.API.ViewModels.Lottingelund;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LOVA.API.Pages.Lottingelund
 {
+    [Authorize(Roles = "Admin, Styrelse")]
     public class SurveyModel : PageModel
     {
 
@@ -84,6 +86,7 @@ namespace LOVA.API.Pages.Lottingelund
 
             Survey survey = new Survey
             {
+                SurveyName = "Investeringar",
                 Query1 = SurveyViewModel.Query1,
                 Query2 = SurveyViewModel.Query2,
                 Query3 = SurveyViewModel.Query3,
