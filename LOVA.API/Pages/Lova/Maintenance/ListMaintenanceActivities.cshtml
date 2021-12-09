@@ -1,0 +1,66 @@
+﻿@page
+@model LOVA.API.Pages.Lova.Maintenance.ListMaintenanceActivitiesModel
+
+@{
+    ViewData["Title"] = "ListMaintenanceActivities";
+}
+<div class="container mt-5" style="height:80vh;">
+    <div class="row mt-5">
+        <h4>Underhållslista</h4>
+    </div>
+
+    
+<div class="row">
+<p>
+    <a asp-page="Create">Ny aktivitet</a>
+</p>
+</div>
+<div class="row">
+    <table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Maintenance[0].MaintenanceGroup)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Maintenance[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Maintenance[0].RecurringFrequence)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Maintenance[0].LastMaintenance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Maintenance[0].NextMaintenance)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Maintenance) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaintenanceGroup)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecurringFrequence)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastMaintenance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NextMaintenance)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Spara nytt datum</a>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+
+</div>

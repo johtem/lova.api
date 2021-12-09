@@ -362,7 +362,7 @@ namespace LOVA.API.Controllers
 
 
                 request.Subject = alarmType;
-                request.Body = $"{alarmType} har aktiverats tid: {ac.Time.ToShortTimeString()} \n\r Mvh Löva";
+                request.Body = $"{alarmType} har aktiverats tid: {ac.Time.ToLocalTime().ToShortTimeString()} \n\r Mvh Löva";
 
 
                 await _mailService.SendAlarmEmailAsync(request, "Alarm");
@@ -375,7 +375,7 @@ namespace LOVA.API.Controllers
 
 
                 request.Subject = alarmType;
-                request.Body = $"{alarmType} har de-aktiverats tid: {ac.Time.ToShortTimeString()} \n\r Mvh Löva";
+                request.Body = $"{alarmType} har de-aktiverats tid: {ac.Time.ToLocalTime().ToShortTimeString()} \n\r Mvh Löva";
 
 
                 await _mailService.SendAlarmEmailAsync(request, "Alarm");

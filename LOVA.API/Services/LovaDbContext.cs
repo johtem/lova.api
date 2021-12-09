@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LOVA.API.ViewModels;
+using LOVA.API.Models.Lova;
 
 namespace LOVA.API.Services
 {
@@ -63,5 +64,8 @@ namespace LOVA.API.Services
                     v => v.ToString(),
                     v => (Status)Enum.Parse(typeof(Status), v));
         }
+
+        public DbSet<LOVA.API.Models.Lova.Maintenance> Maintenances { get; set; }
+        public DbSet<LOVA.API.Models.Lova.LatestMaintenance> LatestMaintenances { get; set; }
     }
 }

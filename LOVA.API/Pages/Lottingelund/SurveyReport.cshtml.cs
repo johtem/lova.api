@@ -39,11 +39,11 @@ namespace LOVA.API.Pages.Lottingelund
 
         public string TextOfAnswerQuestion2Alt1 { get; set; } = "Väg - engångsbelopp";
         public string TextOfAnswerQuestion2Alt2 { get; set; } = "Väg - kvartalsvis";
-        public string TextOfAnswerQuestion2Alt3 { get; set; } = "Väg - ombilda till samfällighet";
+        public string TextOfAnswerQuestion2Alt3 { get; set; } = "Väg - exernt lån";
 
         public async Task OnGetAsync()
         {
-            Survey = await _context.Surveys.ToListAsync();
+            Survey = await _context.Surveys.Where(a => a.SurveyName == "Investeringar").ToListAsync();
             NumberOfAnswer = Survey.Count;
             NumberOfAnswerQuestion1Alt1 = Survey.Where(a => a.Query1 == TextOfAnswerQuestion1Alt1).Count();
             NumberOfAnswerQuestion1Alt2 = Survey.Where(a => a.Query1 == TextOfAnswerQuestion1Alt2).Count();

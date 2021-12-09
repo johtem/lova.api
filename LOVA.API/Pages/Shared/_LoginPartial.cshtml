@@ -27,6 +27,8 @@
                        .Items(children =>
                        {
                            children.Add().Text("Hantera").Url("/Identity/Account/Manage");
+                           children.Add().Text("E-post prem").Url("/Administration/Mail/List");
+                           
                        });
 
                 })
@@ -49,7 +51,7 @@
 
         <li class="nav-item">
             <form  method="post" id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-                <button id="logout" type="submit" class="nav-link btn btn-link text-dark mt-2" style="font-size: 14px; opacity:0.75;">Logga ut1</button>
+                <button id="logout" type="submit" class="nav-link btn btn-link text-dark mt-2" style="font-size: 14px; opacity:0.75;">Logga ut</button>
             </form>
         </li>
     }

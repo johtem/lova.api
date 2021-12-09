@@ -4,14 +4,16 @@ using LOVA.API.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LOVA.API.Migrations
 {
     [DbContext(typeof(LovaDbContext))]
-    partial class LovaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211203082429_ChangedColumnInMaintenance")]
+    partial class ChangedColumnInMaintenance
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -240,9 +242,6 @@ namespace LOVA.API.Migrations
                     b.Property<int>("MaintenanceId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("NextMaintenance")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
 
                     b.HasIndex("MaintenanceId");
@@ -312,9 +311,6 @@ namespace LOVA.API.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsScription")
-                        .HasColumnType("bit");
-
                     b.Property<long>("MailTypeId")
                         .HasColumnType("bigint");
 
@@ -335,10 +331,15 @@ namespace LOVA.API.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<long?>("MailTypeId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MailTypeId");
 
                     b.ToTable("MailTypes");
                 });
@@ -729,12 +730,19 @@ namespace LOVA.API.Migrations
             modelBuilder.Entity("LOVA.API.Models.MailSubscription", b =>
                 {
                     b.HasOne("LOVA.API.Models.MailType", "MailType")
-                        .WithMany("MailSubscriptions")
+                        .WithMany()
                         .HasForeignKey("MailTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("MailType");
+                });
+
+            modelBuilder.Entity("LOVA.API.Models.MailType", b =>
+                {
+                    b.HasOne("LOVA.API.Models.MailType", null)
+                        .WithMany("MailTypes")
+                        .HasForeignKey("MailTypeId");
                 });
 
             modelBuilder.Entity("LOVA.API.Models.Premise", b =>
@@ -799,7 +807,7 @@ namespace LOVA.API.Migrations
 
             modelBuilder.Entity("LOVA.API.Models.MailType", b =>
                 {
-                    b.Navigation("MailSubscriptions");
+                    b.Navigation("MailTypes");
                 });
 
             modelBuilder.Entity("LOVA.API.Models.RentalInventory", b =>

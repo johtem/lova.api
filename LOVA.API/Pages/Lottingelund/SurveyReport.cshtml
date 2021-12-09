@@ -50,7 +50,7 @@
                 </div>
                 <div class="card-body">
                     <ol start="1"> 
-                        @foreach(var item in Model.Survey.Where(a => !(a.Query3 == "") && !(a.Query1 == null) && a.SurveyName == "Investeringar"))
+                        @foreach(var item in Model.Survey.Where(a => !(a.Query3 == "") && !(a.Query1 == null)))
                         {
                              <li>@item.Query3</li>
                         }

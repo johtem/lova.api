@@ -1,0 +1,62 @@
+﻿@page
+@model LOVA.API.Pages.Lova.Maintenance.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container mt-5">
+
+    <div class="row">
+        <h4>Ny underhållsaktivitet</h4>
+    </div>
+
+    <div class="row">
+  
+    <hr />
+    </div>
+
+
+   
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Maintenance.MaintenanceGroup" class="control-label"></label>
+                    <select asp-for="Maintenance.MaintenanceGroup" asp-items="Html.GetEnumSelectList<LOVA.API.Models.Lova.MaintenanceGroup>()" class="form-control"></select>
+                    <span asp-validation-for="Maintenance.MaintenanceGroup" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Maintenance.Name" class="control-label"></label>
+                    <input asp-for="Maintenance.Name" class="form-control" />
+                    <span asp-validation-for="Maintenance.Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Maintenance.RecurringFrequence" class="control-label"></label>
+                    <input asp-for="Maintenance.RecurringFrequence" class="form-control" />
+                    <span asp-validation-for="Maintenance.RecurringFrequence" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Maintenance.LastMaintenance" class="control-label"></label>
+                    <input asp-for="Maintenance.LastMaintenance" class="form-control" />
+                    <span asp-validation-for="Maintenance.LastMaintenance" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-5">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-page="Index">Back to List</a>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}

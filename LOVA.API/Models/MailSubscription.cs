@@ -12,6 +12,8 @@ namespace LOVA.API.Models
         public string Name { get; set; }
         public string Email { get; set; }
 
+        public bool IsScription { get; set; }
+
         public long MailTypeId { get; set; }
         public MailType MailType { get; set; }
     }

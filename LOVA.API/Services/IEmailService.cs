@@ -16,5 +16,7 @@ namespace LOVA.API.Services
         Task SendNoActivitiesEmailAsync();
 
         Task SendEmailLongActivationTime();
+
+        Task SendMaintenenceReminderEmailAsync();
     }
 }

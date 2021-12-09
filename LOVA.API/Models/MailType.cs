@@ -10,7 +10,7 @@ namespace LOVA.API.Models
         public long Id { get; set; }
         public string Type { get; set; }
 
-        public ICollection<MailType> MailTypes { get; set; }
+        public ICollection<MailSubscription> MailSubscriptions { get; set; }
 
     }
 }

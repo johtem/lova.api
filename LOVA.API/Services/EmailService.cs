@@ -1,6 +1,7 @@
 ﻿using LOVA.API.Models;
 using LOVA.API.Settings;
 using LOVA.API.ViewModels;
+using LOVA.API.ViewModels.Lova;
 using MailKit.Net.Pop3;
 using MailKit.Net.Smtp;
 using MailKit.Security;
@@ -124,7 +125,7 @@ namespace LOVA.API.Services
 
             var senderList = await _context.MailSubscriptions
                 .Include(a => a.MailType)
-                .Where(a => a.MailType.Type == "NoActivitySinceEmail")
+                .Where(a => a.MailType.Type == "NoActivitySinceEmail" && a.IsScription == true)
                 .ToListAsync();
 
 
@@ -162,7 +163,7 @@ namespace LOVA.API.Services
         }
 
         public async Task SendEmailLongActivationTime()
-        { 
+        {
             // Find out long activation time for full drain and send out an email
 
             // Create reference an existing table
@@ -208,39 +209,39 @@ namespace LOVA.API.Services
                     if ((dateNow - item.Date).TotalMinutes > 59)
                     {
 
-                   
-                    var exist = savedFullDrains.Where(a => a.Address == item.Address).FirstOrDefault();
 
-                    if (exist == null)
-                    {
-                        var addNew = new FullDrain
+                        var exist = savedFullDrains.Where(a => a.Address == item.Address).FirstOrDefault();
+
+                        if (exist == null)
                         {
-                            Address = item.Address,
-                            DateFulldrain = item.Date,
-                            MailSent = item.Date,
-                            IsUpdated = true
+                            var addNew = new FullDrain
+                            {
+                                Address = item.Address,
+                                DateFulldrain = item.Date,
+                                MailSent = item.Date,
+                                IsUpdated = true
 
-                        };
+                            };
 
-                        await _context.FullDrains.AddAsync(addNew);
-                        await _context.SaveChangesAsync();
+                            await _context.FullDrains.AddAsync(addNew);
+                            await _context.SaveChangesAsync();
 
-                        objectsToEmail.Add(item);
-                    }
-                    else
-                    {
-                        if (exist.MailSent.Day != DateTime.Now.Day && exist.MailSent.Hour == DateTime.Now.Hour)
-                        {
-                            exist.MailSent = DateTime.Now;
                             objectsToEmail.Add(item);
                         }
+                        else
+                        {
+                            if (exist.MailSent.Day != DateTime.Now.Day && exist.MailSent.Hour == DateTime.Now.Hour)
+                            {
+                                exist.MailSent = DateTime.Now;
+                                objectsToEmail.Add(item);
+                            }
 
-                        exist.IsUpdated = true;
+                            exist.IsUpdated = true;
 
-                        await _context.FullDrains.AddAsync(exist);
+                            await _context.FullDrains.AddAsync(exist);
 
-                        await _context.SaveChangesAsync();
-                    }
+                            await _context.SaveChangesAsync();
+                        }
                     }
                 }
 
@@ -260,7 +261,7 @@ namespace LOVA.API.Services
 
                 var senderList = await _context.MailSubscriptions
                     .Include(a => a.MailType)
-                    .Where(a => a.MailType.Type == "LongActivationDrainFull")
+                    .Where(a => a.MailType.Type == "LongActivationDrainFull" && a.IsScription == true)
                     .ToListAsync();
 
 
@@ -303,7 +304,7 @@ namespace LOVA.API.Services
                     smtp.Disconnect(true);
                 }
 
-                
+
             }
 
         }
@@ -317,7 +318,7 @@ namespace LOVA.API.Services
 
             var senderList = await _context.MailSubscriptions
                 .Include(a => a.MailType)
-                .Where(a => a.MailType.Type == emailType)
+                .Where(a => a.MailType.Type == emailType && a.IsScription == true)
                 .ToListAsync();
 
             foreach (var sender in senderList)
@@ -345,6 +346,67 @@ namespace LOVA.API.Services
                 }
             }
             builder.HtmlBody = mailRequest.Body;
+            email.Body = builder.ToMessageBody();
+            using var smtp = new SmtpClient();
+            smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
+            smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
+            await smtp.SendAsync(email);
+            smtp.Disconnect(true);
+        }
+
+        public async Task SendMaintenenceReminderEmailAsync()
+        {
+
+            var oneMonthFromNow = DateTime.Now.AddMonths(1);
+
+            IEnumerable<MaintenanceViewModel> data = await _context.LatestMaintenances
+                .Where(a => a.NextMaintenance <= oneMonthFromNow)
+                .Include(a => a.Maintenance)
+                .OrderByDescending(a => a.NextMaintenance)
+                .Select(x => new MaintenanceViewModel
+                {
+                    Name = x.Maintenance.Name,
+                    MaintenanceGroup = x.Maintenance.MaintenanceGroup,
+                    LastMaintenance = x.LastMaintenance,
+
+                })
+                .ToListAsync();
+
+            var email = new MimeMessage();
+            email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
+
+            // Dynamic sender list
+
+            var senderList = await _context.MailSubscriptions
+                .Include(a => a.MailType)
+                .Where(a => a.MailType.Type == "MaintenanceReminderEmail" && a.IsScription == true)
+                .ToListAsync();
+
+
+            foreach (var sender in senderList)
+            {
+                email.To.Add(MailboxAddress.Parse(sender.Email));
+            }
+
+
+            email.Subject = "Löva - Underhållsaktiviteter ";
+
+
+            string textBody = "<br>";
+            textBody += "<h3>Nedan tabell visar underhållsaktiviter som snart måste göras .</h3><br>";
+            textBody += "";
+            textBody += " <table border=" + 1 + " cellpadding=" + 0 + " cellspacing=" + 0 + " width = " + 400 + ">";
+            textBody += "<tr bgcolor='#4da6ff'><td><b>Underhållsaktivitet</b></td> <td> <b> Senaste </b> </td><td> <b> Nästa </b> </td></tr>";
+            foreach (var item in data)
+            {
+                textBody += "<tr><td>" + item.Name + "</td><td> " + item.LastMaintenance + "</td><td> " + item.NextMaintenance + "</td> </tr>";
+            }
+            textBody += "</table><br><br>";
+            textBody += "Automatiskt mailutskick varje natt från www.lottingelund.se";
+
+
+            var builder = new BodyBuilder();
+            builder.HtmlBody = textBody;
             email.Body = builder.ToMessageBody();
             using var smtp = new SmtpClient();
             smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
