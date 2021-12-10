@@ -43,16 +43,17 @@ namespace LOVA.API.Pages.Administration.Mail
             foreach(var item in s)
             {
 
-                var apa = new MailSubscriptionViewModel
+                var mailSubscriptionViewModel = new MailSubscriptionViewModel
                 {
                     MailSubscriptionId = item.mailSubscriptions == null ? 0 : item.mailSubscriptions.Id,
                     MailTypeId = item.mailTypes.Id,
                     Email = item.mailSubscriptions == null ? "" : item.mailSubscriptions.Email,
                     MailType = item.mailTypes.Type,
                     IsScription = item.mailSubscriptions == null ? false : item.mailSubscriptions.IsScription,
+                    Description = item.mailTypes.Description
                 };
                 
-               MailSubscriptions.Add(apa);
+               MailSubscriptions.Add(mailSubscriptionViewModel);
 
             }
 

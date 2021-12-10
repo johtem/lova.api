@@ -7,6 +7,8 @@ namespace LOVA.API.ViewModels.Admin
         public string? Email { get; set; }
         public string MailType { get; set; }
 
+        public string Description { get; set; }
+
         public bool IsScription { get; set; }
 
         public long MailSubscriptionId { get; set; }

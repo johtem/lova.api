@@ -91,11 +91,7 @@ namespace LOVA.API.Controllers
             await _hub.Clients.All.SendAsync("ReceiveMessage", insertData.Address, insertData);
         }
 
-        [HttpGet("LongActivation")]
-        public async Task GetLongActivation()
-        {
-            await mailService.SendEmailLongActivationTime();
-        }
+
 
 
 
