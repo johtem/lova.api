@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LOVA.API.Pages.Lottingelund
 {
-    [Authorize(Roles = "Admin, Styrelse")]
+    [Authorize(Roles = "Admin, Styrelse, User")]
     public class SurveyModel : PageModel
     {
 

@@ -28,7 +28,7 @@ connection.on("DrainActivity", function (user, message) {
 
         document.getElementById(message["address"]).classList.remove("tableLiveTdNonActive", "tableLiveTdActive");
 
-        document.getElementById(message["address"]).setAttribute("data-timeup", message["time"]);
+        document.getElementById(message["address"]).setAttribute("data-timeup", time); //message["time"]);
         document.getElementById(message["address"]).classList.add("active", "tableLiveTdActive");
        
     } else {
@@ -60,6 +60,8 @@ connection.on("Drain", function (user, message, dateNow) {
     aTime.setAttribute("data-time", message["timeUp"]);
     deATime.setAttribute("data-time", message["timeDown"]);
     
+    
+    
     document.getElementById("activationCount").textContent = message["hourlyCount"];
     document.getElementById("activationDailyCount").textContent = message["dailyCount"];
     document.getElementById("activationAverage").textContent = secondsToTime(message["averageActivity"]);
@@ -75,9 +77,16 @@ connection.on("Drain", function (user, message, dateNow) {
         deATime.textContent = moment(message["timeDown"]).format('ddd D/M HH:mm.ss ');
 
         //document.getElementById("activationRunningTime").textContent = secondsToTime(moment(dateNow).diff(moment(message["timeUp"]).add(0, 'hours'), "seconds", false));
-        document.getElementById("activationRunningTime").textContent = secondsToTime(moment(dateNow).diff(moment(message["timeUp"]), "seconds", false));
+
+        var activationDiff = moment(dateNow).diff(moment(message["timeUp"]));
+        document.getElementById("activationRunningTime").setAttribute("data-timediff", activationDiff);
+        document.getElementById("activationRunningTime").textContent = durationAsString(activationDiff);
+
+
         //document.getElementById("deActivationRunningTime").textContent = secondsToTime(moment(message["timeUp"]).diff(moment(message["timeDown"]).add(-2, 'hours'), "seconds", false));
-        document.getElementById("deActivationRunningTime").textContent = secondsToTime(moment(message["timeUp"]).diff(moment(message["timeDown"]), "seconds", false));
+        var deactivationDiff = moment(message["timeUp"]).diff(moment(message["timeDown"]));
+        document.getElementById("deActivationRunningTime").setAttribute("data-timediff", deactivationDiff);
+        document.getElementById("deActivationRunningTime").textContent = durationAsString(deactivationDiff);
        
 
         myVarActive = setInterval(myTimerActive, 1000);
@@ -91,14 +100,20 @@ connection.on("Drain", function (user, message, dateNow) {
         deATime.textContent = moment(message["timeDown"]).format('ddd D/M HH:mm.ss');
 
        // document.getElementById("activationRunningTime").textContent = secondsToTime(moment(message["timeDown"]).diff(moment(message["timeUp"]).add(2, 'hours'), "seconds", false));
-        document.getElementById("activationRunningTime").textContent = secondsToTime(moment(message["timeDown"]).diff(moment(message["timeUp"]), "seconds", false));
-        //document.getElementById("deActivationRunningTime").textContent = secondsToTime(moment(dateNow).diff(moment(message["timeDown"]).add(-2, 'hours'), "seconds", false));
-        document.getElementById("deActivationRunningTime").textContent = secondsToTime(moment(dateNow).diff(moment(message["timeDown"]), "seconds", false));
+        var activationDiff = moment(message["timeDown"]).diff(moment(message["timeUp"]));
+        document.getElementById("activationRunningTime").setAttribute("data-timediff", activationDiff);
+        document.getElementById("activationRunningTime").textContent = durationAsString(activationDiff);
+
+        //document.getElementById("deActivationRunningTime").textContent = secondsToTime(moment(dateNow).diff(moment(message["timeDown"]), "seconds", false));
+        var deactivationDiff = moment(dateNow).diff(moment(message["timeDown"]));
+        document.getElementById("deActivationRunningTime").setAttribute("data-timediff", deactivationDiff);
+        document.getElementById("deActivationRunningTime").textContent = durationAsString(deactivationDiff);
+
 
         myVarDeActive = setInterval(myTimerDeActive, 1000);
     }
 
-    //console.log(moment(message["timeUp"]).format('ddd HH:mm.SS '));
+
 });
 
 
@@ -143,9 +158,10 @@ function drainUpdate(drain) {
 
 function myTimerActive() {
     
-    var t = moment.duration(document.getElementById("activationRunningTime").innerHTML).asSeconds();
-    document.getElementById("activationRunningTime").innerHTML = secondsToTime(parseInt(t, 10) + 1);
-
+    var t = document.getElementById("activationRunningTime").dataset.timediff;
+    var diff = parseInt(t, 10) + 1000;
+    document.getElementById("activationRunningTime").innerHTML = durationAsString(diff);
+    document.getElementById("activationRunningTime").setAttribute("data-timediff", diff);
     
 }
 
@@ -155,8 +171,10 @@ function myStopFunctionActive() {
 
 function myTimerDeActive() {
 
-    var t = moment.duration(document.getElementById("deActivationRunningTime").innerHTML).asSeconds();
-    document.getElementById("deActivationRunningTime").innerHTML = secondsToTime(parseInt(t, 10) + 1); 
+    var t = document.getElementById("deActivationRunningTime").dataset.timediff;
+    var diff = parseInt(t, 10) + 1000;
+    document.getElementById("deActivationRunningTime").textContent = durationAsString(diff);
+    document.getElementById("deActivationRunningTime").setAttribute("data-timediff", diff);
 
 }
 
@@ -169,10 +187,38 @@ function secondsToTime(seconds) {
 
 
     return moment.utc(moment.duration(seconds, "seconds").asMilliseconds()).format("HH:mm:ss");
-
     
 }
 
+
+
+
+
+function durationAsString(diff) {
+    var duration = moment.duration(diff);
+
+
+
+    //Get Days
+    var days = Math.floor(duration.asDays()); // .asDays returns float but we are interested in full days only
+    var daysFormatted = days ? `${days}d ` : ''; // if no full days then do not display it at all
+
+    //Get Hours
+    var hours = duration.hours();
+    var hoursFormatted = `${hours}h `;
+
+    //Get Minutes
+    var minutes = duration.minutes();
+    var minutesFormatted = `${minutes}m `;
+
+    //Get Seconds
+    var seconds = duration.seconds();
+    var secondsFormatted = `${seconds}s`;
+
+    var str = [daysFormatted, hoursFormatted, minutesFormatted, secondsFormatted].join('');
+
+    return str;
+}
 
 
 

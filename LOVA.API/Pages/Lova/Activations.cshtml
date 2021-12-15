@@ -200,7 +200,7 @@
     <script>
 
        var longActivationTime = "@LOVA.API.Services.MyConsts.LongActivationTime";
-       console.log(longActivationTime);
+       //console.log(longActivationTime);
 
 
         moment.locale('sv');  // Set moment to Swedish date and time
@@ -210,8 +210,8 @@
             // Timer for reset button
             setInterval(function(){
                 var now = new Date();
-                console.log(now);
-                console.log("@ViewData["buttonText"]");
+               // console.log(now);
+               // console.log("@ViewData["buttonText"]");
                 if ("@ViewData["buttonText"]" != "Återställ grid i 2h" && now > new Date("@ViewData["buttonText"]"))
                 {
                     var savedDate = new Date("@ViewData["buttonText"]");
@@ -316,6 +316,9 @@
                     break;
                     case "2O2":
                     $("#masterNode").text(" B-larm");
+                    break;
+                    case "2C2":
+                    $("#masterNode").text(" Slinga 2 (Wassberg)");
                     break;
                     case "3L2":
                     $("#masterNode").text(" Slinga 3 (Westin)");

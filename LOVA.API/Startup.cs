@@ -26,6 +26,7 @@ using Hangfire;
 using Hangfire.SqlServer;
 using LOVA.API.Filter;
 using LOVA.API.Hubs;
+using Twilio.Clients;
 
 namespace LOVA.API
 {
@@ -64,6 +65,9 @@ namespace LOVA.API
 
 
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            // Twilio SMS service
+            services.AddHttpClient<ITwilioRestClient, TwilioClient>();
 
             services.AddRazorPages()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
