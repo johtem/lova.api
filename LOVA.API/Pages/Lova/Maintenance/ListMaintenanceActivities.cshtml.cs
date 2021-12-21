@@ -25,16 +25,20 @@ namespace LOVA.API.Pages.Lova.Maintenance
         public async Task OnGetAsync()
         {
             Maintenance = await _context.Maintenances
-                .Include(a => a.LatestMaintenances)
-                .OrderBy(a => a.MaintenanceGroup)
+                .Include(a => a.LatestMaintenances) 
+                .Include(a => a.Association)
+                .Include(a => a.MaintenanceGroup)
                 .Select(a => new MaintenanceViewModel
                 {
                     Id = a.Id,
                     LastMaintenance = a.LatestMaintenances.Max(d => d.LastMaintenance),
-                    MaintenanceGroup = a.MaintenanceGroup,
+                    Association = a.Association.ShortName,
+                    MaintenanceGroup = a.MaintenanceGroup.GroupName,
                     Name = a.Name,
-                    RecurringFrequence = a.RecurringFrequence
+                    RecurringFrequence = a.RecurringFrequence,
+                    NextMaintenance = a.LatestMaintenances.Max(d => d.NextMaintenance)
                 })
+                .OrderBy(a => a.NextMaintenance)
                 .ToListAsync();
 
 

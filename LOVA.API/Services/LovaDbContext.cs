@@ -69,5 +69,9 @@ namespace LOVA.API.Services
         public DbSet<LOVA.API.Models.Lova.LatestMaintenance> LatestMaintenances { get; set; }
 
         public DbSet<IncommingSms> IncommingSms { get; set; }
+
+        public DbSet<Association> Associations { get; set; }
+
+        public DbSet<MaintenanceGroup> MaintenanceGroups { get; set; }
     }
 }

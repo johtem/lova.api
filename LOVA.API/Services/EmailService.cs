@@ -217,15 +217,39 @@ namespace LOVA.API.Services
             IEnumerable<MaintenanceViewModel> data = await _context.LatestMaintenances
                 .Where(a => a.NextMaintenance <= oneMonthFromNow)
                 .Include(a => a.Maintenance)
+                .ThenInclude(a => a.MaintenanceGroup)
+                .ThenInclude(a => a.Association)
                 .OrderByDescending(a => a.NextMaintenance)
                 .Select(x => new MaintenanceViewModel
                 {
                     Name = x.Maintenance.Name,
-                    MaintenanceGroup = x.Maintenance.MaintenanceGroup,
+                    MaintenanceGroup = x.Maintenance.MaintenanceGroup.GroupName,
                     LastMaintenance = x.LastMaintenance,
+                    RecurringFrequence = x.Maintenance.RecurringFrequence,
+                    NextMaintenance = x.NextMaintenance,
+                    Association = x.Maintenance.Association.ShortName
 
                 })
+                .AsNoTracking()
                 .ToListAsync();
+
+
+            //IEnumerable<MaintenanceViewModel> data =  await _context.Maintenances
+            //    .Include(a => a.LatestMaintenances)
+
+            //    .Select(a => new MaintenanceViewModel
+            //    {
+            //        Id = a.Id,
+            //        LastMaintenance = a.LatestMaintenances.Max(d => d.LastMaintenance),
+            //        Association = a.Association,
+            //        MaintenanceGroup = a.MaintenanceGroup,
+            //        Name = a.Name,
+            //        RecurringFrequence = a.RecurringFrequence,
+            //        NextMaintenance = a.LatestMaintenances.Max(d => d.NextMaintenance)
+            //    })
+            //    .OrderBy(a => a.NextMaintenance)
+            //    .ToListAsync();
+
 
             var email = new MimeMessage();
             email.Sender = MailboxAddress.Parse(_mailSettings.Mail);

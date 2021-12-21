@@ -20,6 +20,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Maintenance[0].Association)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Maintenance[0].MaintenanceGroup)
             </th>
             <th>
@@ -34,12 +37,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.Maintenance[0].NextMaintenance)
             </th>
-            <th></th>
+            <th>Uppdatera underhållsdatum</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model.Maintenance) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Association)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MaintenanceGroup)
             </td>

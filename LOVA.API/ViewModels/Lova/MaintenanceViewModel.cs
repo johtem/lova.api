@@ -1,4 +1,5 @@
-﻿using LOVA.API.Models.Lova;
+﻿using LOVA.API.Models;
+using LOVA.API.Models.Lova;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,8 +9,13 @@ namespace LOVA.API.ViewModels.Lova
     {
         public int Id { get; set; }
 
+        [Display(Name = "Förening")]
+        public string Association { get; set; }
+        public int AssociationId { get; set; }
+
         [Display(Name = "Underhållsgrupp")]
-        public MaintenanceGroup MaintenanceGroup { get; set; }
+        public string MaintenanceGroup { get; set; }
+        public int MaintenanceGroupId { get; set; }
 
         [Display(Name = "Namn")]
         public string Name { get; set; }
@@ -23,13 +29,7 @@ namespace LOVA.API.ViewModels.Lova
 
         [DataType(DataType.Date)]
         [Display(Name = "Nästa")]
-        public DateTime NextMaintenance 
-        { 
-            get 
-            {
-                return LastMaintenance.AddMonths(RecurringFrequence);              
-            } 
+        public DateTime NextMaintenance { get; set; }
 
-        }
     }
 }

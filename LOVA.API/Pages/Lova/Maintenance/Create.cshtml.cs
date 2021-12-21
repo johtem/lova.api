@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using LOVA.API.Models.Lova;
 using LOVA.API.Services;
 using LOVA.API.ViewModels.Lova;
+using Microsoft.EntityFrameworkCore;
 
 namespace LOVA.API.Pages.Lova.Maintenance
 {
@@ -20,9 +21,22 @@ namespace LOVA.API.Pages.Lova.Maintenance
             _context = context;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGet()
         {
+            var apa = await _context.Associations.ToListAsync();
+            ViewData["AssociationList"] = new SelectList(apa, "Id", "ShortName");
+
+            
+            
             return Page();
+        }
+
+
+        public async Task<JsonResult> OngetGetMaintenanceGroups(int associationId)
+        {
+            var groups = await _context.MaintenanceGroups.Where(a => a.AssociationId == associationId).ToListAsync();
+
+            return new JsonResult(groups); 
         }
 
         [BindProperty]
@@ -36,11 +50,14 @@ namespace LOVA.API.Pages.Lova.Maintenance
                 return Page();
             }
 
+
+
             var main = new LOVA.API.Models.Lova.Maintenance
             {
                 RecurringFrequence = Maintenance.RecurringFrequence,
                 Name = Maintenance.Name,
-                MaintenanceGroup = Maintenance.MaintenanceGroup
+                MaintenanceGroupId = Maintenance.MaintenanceGroupId,
+                AssociationId = Maintenance.AssociationId
             };
 
 

@@ -4,14 +4,16 @@ using LOVA.API.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LOVA.API.Migrations
 {
     [DbContext(typeof(LovaDbContext))]
-    partial class LovaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211215145914_NewColumnAssociationToTableMaintenance")]
+    partial class NewColumnAssociationToTableMaintenance
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,27 +99,6 @@ namespace LOVA.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ActivityPerRows");
-                });
-
-            modelBuilder.Entity("LOVA.API.Models.Association", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ShortName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VAT")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Associations");
                 });
 
             modelBuilder.Entity("LOVA.API.Models.DrainPatrolAlarm", b =>
@@ -302,10 +283,10 @@ namespace LOVA.API.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AssociationId")
+                    b.Property<int>("Association")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MaintenanceGroupId")
+                    b.Property<int>("MaintenanceGroup")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -316,31 +297,7 @@ namespace LOVA.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssociationId");
-
-                    b.HasIndex("MaintenanceGroupId");
-
                     b.ToTable("Maintenances");
-                });
-
-            modelBuilder.Entity("LOVA.API.Models.Lova.MaintenanceGroup", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AssociationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("GroupName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssociationId");
-
-                    b.ToTable("MaintenanceGroups");
                 });
 
             modelBuilder.Entity("LOVA.API.Models.LovaIssue", b =>
@@ -801,32 +758,6 @@ namespace LOVA.API.Migrations
                     b.Navigation("Maintenance");
                 });
 
-            modelBuilder.Entity("LOVA.API.Models.Lova.Maintenance", b =>
-                {
-                    b.HasOne("LOVA.API.Models.Association", "Association")
-                        .WithMany()
-                        .HasForeignKey("AssociationId");
-
-                    b.HasOne("LOVA.API.Models.Lova.MaintenanceGroup", "MaintenanceGroup")
-                        .WithMany()
-                        .HasForeignKey("MaintenanceGroupId");
-
-                    b.Navigation("Association");
-
-                    b.Navigation("MaintenanceGroup");
-                });
-
-            modelBuilder.Entity("LOVA.API.Models.Lova.MaintenanceGroup", b =>
-                {
-                    b.HasOne("LOVA.API.Models.Association", "Association")
-                        .WithMany("MaintenanceGroups")
-                        .HasForeignKey("AssociationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Association");
-                });
-
             modelBuilder.Entity("LOVA.API.Models.MailSubscription", b =>
                 {
                     b.HasOne("LOVA.API.Models.MailType", "MailType")
@@ -891,11 +822,6 @@ namespace LOVA.API.Migrations
                         .IsRequired();
 
                     b.Navigation("Well");
-                });
-
-            modelBuilder.Entity("LOVA.API.Models.Association", b =>
-                {
-                    b.Navigation("MaintenanceGroups");
                 });
 
             modelBuilder.Entity("LOVA.API.Models.Lova.Maintenance", b =>

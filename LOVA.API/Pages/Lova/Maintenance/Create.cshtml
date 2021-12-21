@@ -22,10 +22,15 @@
         <div class="col-md-4">
             <form method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                 <div class="form-group">
+                    <label asp-for="Maintenance.Association" class="control-label">Förening</label>
+                    <select asp-for="Maintenance.AssociationId" id="associationId" asp-items="ViewBag.AssociationList" class="form-select"></select>
+                    <span asp-validation-for="Maintenance.AssociationId" class="text-danger"></span>
+                </div>
                 <div class="form-group">
                     <label asp-for="Maintenance.MaintenanceGroup" class="control-label"></label>
-                    <select asp-for="Maintenance.MaintenanceGroup" asp-items="Html.GetEnumSelectList<LOVA.API.Models.Lova.MaintenanceGroup>()" class="form-control"></select>
-                    <span asp-validation-for="Maintenance.MaintenanceGroup" class="text-danger"></span>
+                    <select asp-for="Maintenance.MaintenanceGroupId" id="maintenanceGroupId" class="form-select"></select>
+                    <span asp-validation-for="Maintenance.MaintenanceGroupId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Maintenance.Name" class="control-label"></label>
@@ -58,5 +63,36 @@
 @section Scripts {
     @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        getSubCategoryListByCategoryId();
+    })
+
+    $("#associationId").change(function () {
+        getSubCategoryListByCategoryId();
+    });
+
+    var getSubCategoryListByCategoryId = function () {
+         $.ajax({
+            url: '/Lova/Maintenance/Create?handler=GetMaintenanceGroups',
+            type: 'GET',
+            data: {
+                associationId:$('#associationId').val(),
+            },
+            success: function (data) {
+                $('#maintenanceGroupId').find('option').remove()
+                $(data).each(
+                    function (index, item) {
+                        $('#maintenanceGroupId').append('<option value="' + item.Id + '">' + item.GroupName + '</option>')
+                    });
+            },
+            error: function () {
+            }
+           });
+    }
+</script>
+
+
 }
 }
