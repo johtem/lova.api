@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <Content Remove="compilerconfig.json" />
+    <Content Remove="wwwroot\Images\emailconfig.jpg" />
     <Content Remove="wwwroot\Images\notification.png" />
     <Content Remove="wwwroot\Templates\HighActivities.txt" />
   </ItemGroup>
@@ -16,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="wwwroot\Images\emailconfig.jpg" />
     <EmbeddedResource Include="wwwroot\Images\notification.png" />
   </ItemGroup>
 

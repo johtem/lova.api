@@ -18,9 +18,11 @@
     },
     {
       "provider": "cdnjs",
-      "library": "font-awesome@5.15.2",
+      "library": "font-awesome@5.10.0-6",
       "destination": "wwwroot/lib/fontawesome/",
       "files": [
+        "css/all.css",
+        "js/all.js"
 
       ]
 
