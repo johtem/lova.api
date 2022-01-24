@@ -7,6 +7,7 @@ using LOVA.API.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace LOVA.API.Areas.Identity.Pages.Account.Manage
 {
@@ -14,13 +15,16 @@ namespace LOVA.API.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly LOVA.API.Services.LovaDbContext _context;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            LOVA.API.Services.LovaDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         public string Username { get; set; }
@@ -38,16 +42,26 @@ namespace LOVA.API.Areas.Identity.Pages.Account.Manage
             public string PhoneNumber { get; set; }
 
             public string Property { get; set; }
+            public string WellName { get; set; }
 
             public string ForeName { get; set; }
             public string LastName { get; set; }
+
+            public string ForeName2 { get; set; }
+            public string LastName2 { get; set; }
+
+            public string Email { get; set; }
+            public string Email2 { get; set; }
+
+            public string Phone { get; set; }
+            public string Phone2 { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
+            var wellObj = await _context.Premises.Include(a => a.Well).Where(a => a.Property == user.Property).FirstOrDefaultAsync();
             
 
             Username = userName;
@@ -55,9 +69,15 @@ namespace LOVA.API.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber,
+                WellName = wellObj.Well.WellName,
                 Property = user.Property,
                 ForeName = user.ForeName,
-                LastName = user.LastName
+                LastName = user.LastName,
+                Email = user.Email,
+                ForeName2 = user.ForeName2,
+                LastName2 = user.LastName2,
+                Email2 = user.Email2,
+                Phone2 = user.Phone2
             };
         }
 
@@ -120,10 +140,45 @@ namespace LOVA.API.Areas.Identity.Pages.Account.Manage
                 await _userManager.UpdateAsync(user);
             }
 
+            if (user.ForeName2 != Input.ForeName2)
+            {
+                user.ForeName2 = Input.ForeName2;
+
+                await _userManager.UpdateAsync(user);
+            }
+
+            if (user.LastName2 != Input.LastName2)
+            {
+                user.LastName2 = Input.LastName2;
+
+                await _userManager.UpdateAsync(user);
+            }
+
+            if (user.Email != Input.Email)
+            {
+                user.Email = Input.Email;
+
+                await _userManager.UpdateAsync(user);
+            }
+
+            if (user.Email2 != Input.Email2)
+            {
+                user.Email2 = Input.Email2;
+
+                await _userManager.UpdateAsync(user);
+            }
+
+            if (user.Phone2 != Input.Phone2)
+            {
+                user.Phone2 = Input.Phone2;
+
+                await _userManager.UpdateAsync(user);
+            }
+
 
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "Ditt konto är nu uppdaterat!";
             return RedirectToPage();
         }
     }
