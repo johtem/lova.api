@@ -20,6 +20,8 @@ namespace LOVA.API.Models
 
         public string City { get; set; }
 
+        public ICollection<PremiseContact> Contacts { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

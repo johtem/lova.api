@@ -73,5 +73,7 @@ namespace LOVA.API.Services
         public DbSet<Association> Associations { get; set; }
 
         public DbSet<MaintenanceGroup> MaintenanceGroups { get; set; }
+
+        public DbSet<PremiseContact> PremiseContacts { get; set; }
     }
 }

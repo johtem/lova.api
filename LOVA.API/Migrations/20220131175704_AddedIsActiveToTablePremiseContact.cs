@@ -2,23 +2,23 @@
 
 namespace LOVA.API.Migrations
 {
-    public partial class NewColumnAssociationToTableMaintenance : Migration
+    public partial class AddedIsActiveToTablePremiseContact : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "Association",
-                table: "Maintenances",
-                type: "int",
+            migrationBuilder.AddColumn<bool>(
+                name: "IsActive",
+                table: "PremiseContacts",
+                type: "bit",
                 nullable: false,
-                defaultValue: 0);
+                defaultValue: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Association",
-                table: "Maintenances");
+                name: "IsActive",
+                table: "PremiseContacts");
         }
     }
 }

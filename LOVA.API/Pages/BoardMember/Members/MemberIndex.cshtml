@@ -1,0 +1,62 @@
+﻿@page
+@model LOVA.API.Pages.BoardMember.Members.MemberIndexModel
+@{
+}
+<div class="container mt-5">
+    <div class="row mt-5">
+        <h4>Register</h4>
+    </div>
+    <div class="row">
+        <a asp-page="/BoardMember/Members/AddMember">Lägg till medlem</a>
+    </div>
+    
+    <div class="row">
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th>Namn</th>
+                    <th>Adress</th>
+                    <th>Epost</th>
+                    <th>Mobil</th>
+                    <th>Telefon</th>
+                    <th>Fastighet</th>
+                    <th>Intagsenhet</th>
+                    <th>Aktiv</th>
+                    <th>Uppdatera</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Members)
+                {
+                    <tr>
+                        <td>@item.FullName</td>
+                        <td>@item.Address</td>
+                        <td>@item.Email</td>
+                        <td>@item.MobileNumber</td>
+                        <td>@item.PhoneNumber</td>
+                        <td>@item.Property</td>
+                        <td>@item.WellName</td>
+                        
+                        <td>
+
+                            <div class="form-check form-switch">
+                                @if(item.IsActive)
+                                {
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked >
+                                }else
+                                {
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+                                }
+                                
+                            </div>
+                        </td>
+                        <td><a asp-page="./EditMember" asp-route-id="@item.PremiseContactId">Uppdatera</a></td>
+
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
