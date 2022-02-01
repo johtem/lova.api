@@ -14,7 +14,6 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Contact.Id" />
                 <input type="hidden" asp-for="Contact.PremiseId" />
-                <input type="hidden" asp-for="Contact.IsActive" />
                 <div class="form-group">
                     <label asp-for="Contact.FirstName" class="control-label">Titel</label>
                     <input asp-for="Contact.FirstName" class="form-control" />
@@ -39,6 +38,10 @@
                     <label asp-for="Contact.PhoneNumber" class="control-label"></label>
                     <input asp-for="Contact.PhoneNumber" class="form-control" />
                     <span asp-validation-for="Contact.PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-2">
+                    <input type="checkbox" asp-for="Contact.IsActive" class="form-check-input"/>
+                    <label asp-for="Contact.IsActive" class="form-check-label">Aktiv medlem</label>
                 </div>
 
                 <div class="form-group">
