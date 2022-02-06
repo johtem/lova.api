@@ -1,0 +1,84 @@
+﻿@page
+@model LOVA.API.Pages.User.ProfileIndexModel
+@{
+}
+
+
+<div class="container mt-5" style="height:80vh;">
+    <div class="row">
+        <h4>Din profil <i class="fa-regular fa-user"></i></h4>
+    </div>
+    <div class="row mt-5">
+        @if (!String.IsNullOrEmpty(Model.StatusMessage))
+        {
+            var statusMessageClass = Model.StatusMessage.StartsWith("Error") ? "danger" : "success";
+            <div class="alert alert-@statusMessageClass alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                @Model
+            </div>
+        }
+    </div>
+    <div class="row mt-5">
+
+        <div class="col-4">
+
+            <table class="table table-sm table-borderless">
+                <tr>
+                    <th>Användarnamn</th>
+                    <td>@Model.Username</td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Profiles.First().Address)</th>
+                    <td>@Html.DisplayFor(model => model.Profiles.First().Address)</td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Profiles.First().Property)</th>
+                    <td>@Html.DisplayFor(model => model.Profiles.First().Property)</td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Profiles.First().WellName)</th>
+                    <td>@Html.DisplayFor(model => model.Profiles.First().WellName)</td>
+                </tr>
+                <tr>
+                    <th>Avloppsslinga</th>
+                    <td>@Html.DisplayFor(model => model.Profiles.First().WellName[0])</td>
+                </tr>
+
+            </table>
+        </div>
+        <div class="col">
+        </div>
+
+    </div>
+    <div class="row mt-5">
+        <div class="table-responsive">
+        <table class="table table-sm table-borderless">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Profiles.First().FirstName)</th>
+                    <th>@Html.DisplayNameFor(model => model.Profiles.First().LastName)</th>
+                    <th>@Html.DisplayNameFor(model => model.Profiles.First().Email)</th>
+                    <th>@Html.DisplayNameFor(model => model.Profiles.First().MobileNumber)</th>
+                    <th>@Html.DisplayNameFor(model => model.Profiles.First().PhoneNumber)</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    @foreach (var item in Model.Profiles)
+                    {
+                        <td>@item.FirstName</td>
+                        <td>@item.LastName</td>
+                        <td>@item.Email</td>
+                        <td>@item.MobileNumber</td>
+                        <td>@item.PhoneNumber</td>
+                        <td><a asp-page="./ProfileEdit" asp-route-id="@item.Id">Uppdatera</a></td>
+                    }
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+    <div class="row">
+    </div>
+</div>

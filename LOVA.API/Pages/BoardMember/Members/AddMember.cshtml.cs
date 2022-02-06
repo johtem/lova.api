@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using LOVA.API.Models;
 using LOVA.API.Services;
 using LOVA.API.ViewModels.AddressList;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LOVA.API.Pages.BoardMember.Members
 {
+    [Authorize(Roles = "Admin, Styrelse")]
     public class AddMemberModel : PageModel
     {
         private readonly LOVA.API.Services.LovaDbContext _context;

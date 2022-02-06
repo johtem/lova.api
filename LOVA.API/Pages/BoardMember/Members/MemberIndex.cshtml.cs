@@ -1,5 +1,6 @@
 using LOVA.API.Services;
 using LOVA.API.ViewModels.AddressList;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace LOVA.API.Pages.BoardMember.Members
 {
+    [Authorize(Roles = "Admin, Styrelse")]
     public class MemberIndexModel : PageModel
     {
         private readonly LOVA.API.Services.LovaDbContext _context;

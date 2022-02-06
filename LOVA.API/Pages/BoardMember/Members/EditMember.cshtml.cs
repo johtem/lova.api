@@ -1,5 +1,6 @@
 using LOVA.API.Models;
 using LOVA.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace LOVA.API.Pages.BoardMember.Members
 {
+    [Authorize(Roles = "Admin, Styrelse")]
     public class EditMemberModel : PageModel
     {
         private readonly LovaDbContext _context;
