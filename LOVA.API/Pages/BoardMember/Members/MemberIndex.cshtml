@@ -2,19 +2,19 @@
 @model LOVA.API.Pages.BoardMember.Members.MemberIndexModel
 @{
 }
-<div class="container mt-5">
+<div class="container-fluid mt-5">
     <div class="row mt-5">
         <h4>Register</h4>
     </div>
-    <div class="row">
+    <div class="row m-t5">
         <a asp-page="/BoardMember/Members/AddMember">Lägg till medlem</a>
     </div>
     
-    <div class="row">
-        <table class="table table-sm table-condensed fs-6">
+    <div class="row mt-5">
+        <table class="cell-border compact stripe fs-6" id="table_id">
             <thead>
                 <tr>
-                    <th>Namn</th>
+                    <th onclick="sortTable(0)">Namn</th>
                     <th>Adress</th>
                     <th>Epost</th>
                     <th>Mobil</th>
@@ -60,3 +60,22 @@
 
     </div>
 </div>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.4/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.4/datatables.min.js"></script>
+
+
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+
+<script>
+    $(document).ready( function () {
+    $('#table_id').DataTable();
+} );
+</script>
+
+}

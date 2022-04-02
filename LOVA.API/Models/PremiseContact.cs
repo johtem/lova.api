@@ -27,6 +27,10 @@ namespace LOVA.API.Models
 
         public bool IsActive { get; set; }
 
+        public bool WantInfoSMS { get; set; }
+
+        public bool WantInfoEmail { get; set; }
+
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

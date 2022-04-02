@@ -6,7 +6,7 @@
 
 <div class="container mt-5" style="height:80vh;">
     <div class="row">
-        <h4>Din profil <i class="fa-regular fa-user"></i></h4>
+        <h4>Din profil</h4>
     </div>
     <div class="row mt-5">
         @if (!String.IsNullOrEmpty(Model.StatusMessage))
@@ -51,6 +51,7 @@
 
     </div>
     <div class="row mt-5">
+        <a asp-page="./ProfileNew" asp-route-id="@Model.Profiles.First().PremiseId">Lägg till</a>
         <div class="table-responsive">
         <table class="table table-sm table-borderless">
             <thead>
@@ -60,21 +61,29 @@
                     <th>@Html.DisplayNameFor(model => model.Profiles.First().Email)</th>
                     <th>@Html.DisplayNameFor(model => model.Profiles.First().MobileNumber)</th>
                     <th>@Html.DisplayNameFor(model => model.Profiles.First().PhoneNumber)</th>
+                    <th>@Html.DisplayNameFor(model => model.Profiles.First().WantInfoEmail)</th>
+                    <th>@Html.DisplayNameFor(model => model.Profiles.First().WantInfoSMS)</th>
+                    <th>@Html.DisplayNameFor(model => model.Profiles.First().IsActive)</th>
 
                 </tr>
             </thead>
             <tbody>
-                <tr>
+               
                     @foreach (var item in Model.Profiles)
                     {
+                         <tr>
                         <td>@item.FirstName</td>
                         <td>@item.LastName</td>
                         <td>@item.Email</td>
                         <td>@item.MobileNumber</td>
                         <td>@item.PhoneNumber</td>
+                        <td><input type="checkbox" asp-for="@item.WantInfoEmail" class="form-check-input" disabled /></td>
+                        <td><input type="checkbox" asp-for="@item.WantInfoSMS" class="form-check-input" disabled /></td>
+                        <td><input type="checkbox" asp-for="@item.IsActive" class="form-check-input" disabled /></td>
                         <td><a asp-page="./ProfileEdit" asp-route-id="@item.Id">Uppdatera</a></td>
+                        </tr>
                     }
-                </tr>
+                
             </tbody>
         </table>
         </div>

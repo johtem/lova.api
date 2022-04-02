@@ -64,7 +64,10 @@ namespace LOVA.API.Pages.User
                     PremiseId = s.PremiseId,
                     WellName = s.Premise.Well.WellName,
                     Address = s.Premise.Address,
-                    Property = s.Premise.Property
+                    Property = s.Premise.Property,
+                    WantInfoEmail = s.WantInfoEmail,
+                    WantInfoSMS = s.WantInfoSMS,
+                    IsActive = s.IsActive
                 })
                 .ToListAsync();
 
