@@ -39,6 +39,9 @@ namespace LOVA.API.Pages.BoardMember.Members
                     PhoneNumber = a.PhoneNumber,
                     PremiseContactId = a.Id,
                     IsActive = a.IsActive,
+                    WantInfoEmail = a.WantInfoEmail,
+                    WantInfoSMS = a.WantInfoSMS,
+                    IsDeleted = a.IsDeleted,
                     Property = a.Premise.Property,
                     SortDate = a.UpdatedAt
                 })

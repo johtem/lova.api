@@ -43,6 +43,14 @@
                         <input asp-for="Contact.PhoneNumber" class="form-control" />
                         <span asp-validation-for="Contact.PhoneNumber" class="text-danger"></span>
                     </div>
+                    <div class="form-group mt-2">
+                        <input type="checkbox" asp-for="Contact.WantInfoEmail" class="form-check-input" />
+                        <label asp-for="Contact.WantInfoEmail" class="form-check-label">E-post utskick</label>
+                    </div>
+                    <div class="form-group mt-2">
+                        <input type="checkbox" asp-for="Contact.WantInfoSMS" class="form-check-input" />
+                        <label asp-for="Contact.WantInfoSMS" class="form-check-label">SMS utskick</label>
+                    </div>
                     <div class="form-group">
                         <input type="submit" value="Create" class="btn btn-primary mt-3" />
                     </div>
@@ -52,8 +60,8 @@
     </div>
     <div class="row">
         <div>
-    <a asp-page="Index">Back to List</a>
-</div>
+            <a asp-page="Index">Back to List</a>
+        </div>
     </div>
 </div>
 

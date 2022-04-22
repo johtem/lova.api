@@ -6,7 +6,7 @@
 
 <div class="container mt-5" style="height:80vh;">
     <div class="row">
-        <h4>Din profil</h4>
+        <h4>Fastighetens profil</h4>
     </div>
     <div class="row mt-5">
         @if (!String.IsNullOrEmpty(Model.StatusMessage))
@@ -20,12 +20,13 @@
     </div>
     <div class="row mt-5">
 
-        <div class="col-4">
+        <div class="col-5">
 
             <table class="table table-sm table-borderless">
                 <tr>
                     <th>Användarnamn</th>
                     <td>@Model.Username</td>
+                    <td><a asp-page="./ProfileChangePassword" asp-route-userName="@Model.Username">Ändra lösenord</a></td>
                 </tr>
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.Profiles.First().Address)</th>
@@ -81,6 +82,8 @@
                         <td><input type="checkbox" asp-for="@item.WantInfoSMS" class="form-check-input" disabled /></td>
                         <td><input type="checkbox" asp-for="@item.IsActive" class="form-check-input" disabled /></td>
                         <td><a asp-page="./ProfileEdit" asp-route-id="@item.Id">Uppdatera</a></td>
+                        <td><a asp-page="./ProfileDelete" asp-route-id="@item.Id">Ta bort</a></td>
+                        
                         </tr>
                     }
                 

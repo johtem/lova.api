@@ -38,7 +38,9 @@ namespace LOVA.API.ViewModels.AddressList
         [Display(Name = "E-post utskick?")]
         public bool WantInfoEmail { get; set; }
 
-        [Display(Name="Aktiv?")]
+        [Display(Name="Aktiv för mail och sms utskick?")]
         public bool IsActive { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

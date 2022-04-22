@@ -21,7 +21,10 @@
                     <th>Telefon</th>
                     <th>Fastighet</th>
                     <th>Intagsenhet</th>
+                    <th>E-post utskick</th>
+                    <th>SMS Utskick</th>
                     <th>Aktiv</th>
+                    <th>Borttagen i profil</th>
                     <th>Uppdatera</th>
                 </tr>
             </thead>
@@ -36,20 +39,10 @@
                         <td>@item.PhoneNumber</td>
                         <td>@item.Property</td>
                         <td>@item.WellName</td>
-                        
-                        <td>
-
-                            <div class="form-check form-switch">
-                                @if(item.IsActive)
-                                {
-                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked >
-                                }else
-                                {
-                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
-                                }
-                                
-                            </div>
-                        </td>
+                        <td><input type="checkbox" asp-for="@item.WantInfoEmail" class="form-check-input" disabled /></td>
+                        <td><input type="checkbox" asp-for="@item.WantInfoSMS" class="form-check-input" disabled /></td>
+                        <td><input type="checkbox" asp-for="@item.IsActive" class="form-check-input" disabled /></td>
+                        <td><input type="checkbox" asp-for="@item.IsDeleted" class="form-check-input" disabled /></td>
                         <td><a asp-page="./EditMember" asp-route-id="@item.PremiseContactId">Uppdatera</a></td>
 
                     </tr>

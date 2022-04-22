@@ -50,6 +50,7 @@ namespace LOVA.API.Pages.BoardMember.Members
                 Email = Contact.Email,
                 PremiseId = Contact.PremiseId,
                 IsActive = true,
+                IsDeleted = false,
                 CreatedAt = now,
                 UpdatedAt = now
          

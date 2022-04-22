@@ -54,22 +54,23 @@
 </head>
 <body>
     <header id="header">
-        @if (SignInManager.IsSignedIn(User) && User.IsInRole("User"))
+
+
+        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))       
         {
-            <partial name="Menu/_user" />
-        }
-        else if (SignInManager.IsSignedIn(User) && User.IsInRole("Lova"))
-        {
-            <partial name="Menu/_lova" />
+            <partial name="Menu/_admin" />           
         }
         else if (SignInManager.IsSignedIn(User) && User.IsInRole("Styrelse"))
         {
             <partial name="Menu/_styrelse" />
         }
-        else if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+        else if (SignInManager.IsSignedIn(User) && User.IsInRole("Lova"))
         {
-            @*<partial name="Menu/_menuAdmin" />*@
-            <partial name="Menu/_admin" />
+            <partial name="Menu/_lova" />
+        }
+        else if (SignInManager.IsSignedIn(User) && User.IsInRole("User"))
+        {
+            <partial name="Menu/_user" />            
         }
         else if (SignInManager.IsSignedIn(User) && User.IsInRole("VA"))
         {

@@ -33,6 +33,7 @@ namespace LOVA.API.Pages.User
             }
 
             Contact.IsActive = true;
+            Contact.IsDeleted = false;
             Contact.CreatedAt = System.DateTime.Now;
             Contact.UpdatedAt = System.DateTime.Now;
 

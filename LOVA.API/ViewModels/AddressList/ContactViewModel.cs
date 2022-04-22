@@ -22,6 +22,12 @@ namespace LOVA.API.ViewModels.AddressList
         [Display(Name = "Hemtelefon")]
         public string PhoneNumber { get; set; }
 
-        
+        [Display(Name = "SMS utskick?")]
+        public bool WantInfoSMS { get; set; }
+
+        [Display(Name = "E-post utskick?")]
+        public bool WantInfoEmail { get; set; }
+
+
     }
 }

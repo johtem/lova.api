@@ -3,18 +3,45 @@
 @{
 }
 
+<script>
+    //Custom validation script for the RequiredIfTrue validator
+/*
+ * Note that, jQuery validation registers its rules before the DOM is loaded. 
+ * If you try to register your adapter after the DOM is loaded, your rules will
+ * not be processed. So wrap it in a self-executing function.
+ * */
+(function ($) {
 
-<div class="container mt-5">
+    var $jQval = $.validator;
+
+   $jQval.addMethod("requirediftrue",
+       function (value, element, parameters) {
+            return value !== "" && value != null;
+        }
+    );
+
+    var adapters = $jQval.unobtrusive.adapters;
+    adapters.addBool('requirediftrue');
+
+})(jQuery);
+</Script>
+
+
+<div class="container mt-5" style="height:80vh;">
     <div class="row">
-        <h4>Ändra notifiering</h4>
+        <h4>Uppdatera</h4>
     </div>
 
     <div class="row mt-5 mb-5">
+        <div class="col-md-4">
+
+        </div>
         <div class="col-md-4">
             <form method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Contact.Id" />
                 <input type="hidden" asp-for="Contact.PremiseId" />
+                <input type="hidden" asp-for="Contact.IsDeleted" />
                 <div class="form-group">
                     <label asp-for="Contact.FirstName" class="control-label">Titel</label>
                     <input asp-for="Contact.FirstName" class="form-control" />
@@ -46,17 +73,20 @@
                 </div>
                 <div class="form-group mt-2">
                     <input type="checkbox" asp-for="Contact.WantInfoEmail" class="form-check-input"/>
-                    <label asp-for="Contact.IsActive" class="form-check-label">E-post utskick</label>
+                    <label asp-for="Contact.WantInfoEmail" class="form-check-label">E-post utskick</label>
                 </div>
                 <div class="form-group mt-2">
                     <input type="checkbox" asp-for="Contact.WantInfoSMS" class="form-check-input"/>
-                    <label asp-for="Contact.IsActive" class="form-check-label">SMS utskick</label>
+                    <label asp-for="Contact.WantInfoSMS" class="form-check-label">SMS utskick</label>
                 </div>
 
                 <div class="form-group">
                     <input type="submit" value="Spara" class="btn btn-primary mt-3" />
                 </div>
             </form>
+        </div>
+        <div class="col-md-4">
+
         </div>
     </div>
 
@@ -71,4 +101,7 @@
     @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");
 }
+
+
+
 }

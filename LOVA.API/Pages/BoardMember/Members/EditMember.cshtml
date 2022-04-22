@@ -40,8 +40,20 @@
                     <span asp-validation-for="Contact.PhoneNumber" class="text-danger"></span>
                 </div>
                 <div class="form-group mt-2">
+                    <input type="checkbox" asp-for="Contact.WantInfoEmail" class="form-check-input"/>
+                    <label asp-for="Contact.WantInfoEmail" class="form-check-label">E-post utskick</label>
+                </div>
+                <div class="form-group mt-2">
+                    <input type="checkbox" asp-for="Contact.WantInfoSMS" class="form-check-input"/>
+                    <label asp-for="Contact.WantInfoSMS" class="form-check-label">SMS utskick</label>
+                </div>
+                <div class="form-group mt-2">
                     <input type="checkbox" asp-for="Contact.IsActive" class="form-check-input"/>
                     <label asp-for="Contact.IsActive" class="form-check-label">Aktiv medlem</label>
+                </div>
+                <div class="form-group mt-2">
+                    <input type="checkbox" asp-for="Contact.IsDeleted" class="form-check-input"/>
+                    <label asp-for="Contact.IsDeleted" class="form-check-label">Borttagen i profil</label>
                 </div>
 
                 <div class="form-group">

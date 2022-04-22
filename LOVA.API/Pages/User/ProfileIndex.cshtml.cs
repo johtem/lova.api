@@ -52,7 +52,7 @@ namespace LOVA.API.Pages.User
             Profiles = await _context.PremiseContacts
                 .Include(a => a.Premise)
                 .ThenInclude(b => b.Well)
-                .Where(a => a.Premise.Property == user.Property)
+                .Where(a => a.Premise.Property == user.Property && a.IsDeleted == false)
                 .Select(s => new ProfileEditViewModel
                 {
                     Id = s.Id,

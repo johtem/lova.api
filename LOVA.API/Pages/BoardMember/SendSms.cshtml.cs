@@ -19,12 +19,14 @@ namespace LOVA.API.Pages.BoardMember
         private readonly ITwilioRestClient _client;
         private readonly LovaDbContext _context;
         private readonly LOVAAPIContext _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public SendSmsModel(ITwilioRestClient client, LovaDbContext context, LOVAAPIContext userManager)
+        public SendSmsModel(ITwilioRestClient client, LovaDbContext context, LOVAAPIContext userManager, RoleManager<IdentityRole> roleManager)
         {
             _client = client;
             _context = context;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         [BindProperty]
@@ -50,21 +52,57 @@ namespace LOVA.API.Pages.BoardMember
            
         }
 
-        public void OnPost()
+        public async Task OnPost()
         {
 
             Message.From = "+46723499120";
 
             var numberConvert = new PhoneNumberConverter();
 
-            Message.To = numberConvert.ConvertPhoneNumber(Message.To);
+            var roles = _roleManager.Roles.Where(a => a.Name == Message.ListType);
+
+            var smslist = new List<PremiseContact>();
+            
+            
+            if (Message.ListType != "User")
+            {
+                var users = await (from user in _userManager.Users
+                                   join userRoles in _userManager.UserRoles on user.Id equals userRoles.UserId
+                                   join role in _userManager.Roles on userRoles.RoleId equals role.Id
+                                   where role.Name == Message.ListType
+                                   select new { UserId = user.Id, UserName = user.UserName, RoleId = role.Id, RoleName = role.Name })
+                        .ToListAsync();
+
+                foreach (var item in users)
+                {
+                    var temp = await _context.PremiseContacts
+                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true && a.Email == item.UserName)
+                        .FirstOrDefaultAsync();
+                    if (temp != null)
+                    {
+                       smslist.Add(temp);
+                    }
+                    
+                }
+            }
+            else
+            {
+                smslist = _context.PremiseContacts.Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true).ToList();
+            }
+                 
+
+            foreach(var sms in smslist)
+            {
+
+                var message = MessageResource.Create(
+                to: new PhoneNumber(numberConvert.ConvertPhoneNumber(sms.MobileNumber)),
+                from: new PhoneNumber(Message.From),
+                body: Message.Message,
+                client: _client); // pass in the custom client
+            }
 
 
-            var message = MessageResource.Create(
-            to: new PhoneNumber(Message.To),
-            from: new PhoneNumber(Message.From),
-            body: Message.Message,
-            client: _client); // pass in the custom client
+
 
 
         }
