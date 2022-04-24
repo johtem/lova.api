@@ -88,6 +88,10 @@ namespace LOVA.API.Pages.BoardMember.Members
                 return Page();
             }
 
+            var propertyMembers = _context.PremiseContacts.Where(a => a.PremiseId == property.Id).ToListAsync();
+
+            /// Uppdatera IsDeleted
+
 
             StatusMessage = $"Lösenordet är återställt för {property.Property}";
 
