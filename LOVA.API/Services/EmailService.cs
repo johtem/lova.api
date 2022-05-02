@@ -131,9 +131,10 @@ namespace LOVA.API.Services
 
             foreach (var sender in senderList)
             {
-                email.To.Add(MailboxAddress.Parse(sender.Email));
+                email.Cc.Add(MailboxAddress.Parse(sender.Email));
             }
 
+            email.To.Add(MailboxAddress.Parse("johan@tempelman.nu"));
 
             email.Subject = "Löva - Aktiviteter äldre än " + weekAgo;
 
