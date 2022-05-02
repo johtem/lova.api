@@ -88,7 +88,16 @@ namespace LOVA.API.Pages.BoardMember.Members
                 return Page();
             }
 
-            var propertyMembers = _context.PremiseContacts.Where(a => a.PremiseId == property.Id).ToListAsync();
+            var propertyMembers = await _context.PremiseContacts.Where(a => a.PremiseId == property.Id).ToArrayAsync();
+
+            foreach (var item in propertyMembers)
+            {
+                item.IsDeleted = true;
+
+            }
+
+            _context.UpdateRange(propertyMembers);
+            await _context.SaveChangesAsync();
 
             /// Uppdatera IsDeleted
 
