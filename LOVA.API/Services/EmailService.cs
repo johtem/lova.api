@@ -136,6 +136,7 @@ namespace LOVA.API.Services
 
             email.To.Add(MailboxAddress.Parse("johan@tempelman.nu"));
 
+
             email.Subject = "Löva - Aktiviteter äldre än " + weekAgo;
 
 

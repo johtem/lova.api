@@ -1,0 +1,93 @@
+﻿@page
+@model LOVA.API.Pages.Lottingelund.Surveys.SurveyReportModel
+
+@{
+    ViewData["Title"] = "SurveyReport";
+}
+
+<div class="container mt-5" style="height:80vh;">
+    <div class="offset-sm-2 col-sm-8">
+        <div class="row mt-5">
+            <h4>Resultat Enkät - Investeringar</h4>
+        </div>
+
+        <div class="row mt-5">
+            Antal svarande: @Model.NumberOfAnswer
+        </div>
+
+        <div class="row mt-5">
+            <div class="card">
+                <div class="card-header">
+                    Fråga 1 - Parkering
+                </div>
+                <div class="card-body">
+                    <ol start="1">
+                        <li><span class="ms-2">@Model.NumberOfAnswerQuestion1Alt1 st på @Model.TextOfAnswerQuestion1Alt1</span></li>
+                        <li><span class="ms-2">@Model.NumberOfAnswerQuestion1Alt2 st på @Model.TextOfAnswerQuestion1Alt2</span></li>
+                        <li><span class="ms-2">@Model.NumberOfAnswerQuestion1Alt3 st på @Model.TextOfAnswerQuestion1Alt3</span></li>
+                        <li><span class="ms-2">@Model.NumberOfAnswerQuestion1Alt4 st på @Model.TextOfAnswerQuestion1Alt4</span></li>
+                        <li><span class="ms-2">@Model.NumberOfAnswerQuestion1Alt5 st på @Model.TextOfAnswerQuestion1Alt5</span></li>
+                        <li><span class="ms-2">@Model.NumberOfAnswerQuestion1Alt6 st på @Model.TextOfAnswerQuestion1Alt6</span></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="card">
+                <div class="card-header">
+                    Fråga 3 - Väghinder
+                </div>
+                <div class="card-body">
+                    <ol start="1">
+                        <li><span class="ms-2">@Model.NumberOfAnswerQuestion3Alt1 st på @Model.TextOfAnswerQuestion3Alt1</span></li>
+                        <li><span class="ms-2">@Model.NumberOfAnswerQuestion3Alt2 st på @Model.TextOfAnswerQuestion3Alt2</span></li>
+                        <li><span class="ms-2">@Model.NumberOfAnswerQuestion3Alt3 st på @Model.TextOfAnswerQuestion3Alt3</span></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="card">
+                <div class="card-header">
+                    Fråga 2 och 4
+                </div>
+                <div class="card-body">
+                    <table start="1">
+                        <thead></thead>
+                        <tr>
+                            <th>Fråga 2</th>
+                            <th>Fråga 4</th>
+                        </tr>
+                        @foreach(var item in Model.Survey.Where(a => !(a.Query2 == "") && !(a.Query4 == "")))
+                        {
+                            <tr>
+                                <td>@item.Query2</td>
+                                <td>@item.Query4</td>
+                            </tr>
+                             
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("footer").css("visibility", "hidden");
+    })
+
+
+</script>
+
+
+
+}
