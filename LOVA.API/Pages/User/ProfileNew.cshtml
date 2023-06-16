@@ -37,12 +37,16 @@
                     <span asp-validation-for="Contact.PhoneNumber" class="text-danger"></span>
                 </div>
                 <div class="form-group mt-2">
+                    <input type="checkbox" asp-for="Contact.WantGrannsamverkanEmail" class="form-check-input"/>
+                    <label asp-for="Contact.IsActive" class="form-check-label">Utskick Grannsamverkan?</label>
+                </div>
+                <div class="form-group mt-2">
                     <input type="checkbox" asp-for="Contact.WantInfoEmail" class="form-check-input"/>
-                    <label asp-for="Contact.IsActive" class="form-check-label">E-post utskick</label>
+                    <label asp-for="Contact.IsActive" class="form-check-label">Utskick E-post?</label>
                 </div>
                 <div class="form-group mt-2">
                     <input type="checkbox" asp-for="Contact.WantInfoSMS" class="form-check-input"/>
-                    <label asp-for="Contact.IsActive" class="form-check-label">SMS utskick</label>
+                    <label asp-for="Contact.IsActive" class="form-check-label">Utskick SMS?</label>
                 </div>
 
                 <div class="form-group">

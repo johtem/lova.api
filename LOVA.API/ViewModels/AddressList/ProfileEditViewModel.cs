@@ -32,11 +32,14 @@ namespace LOVA.API.ViewModels.AddressList
         [Display(Name = "Fastighet")]
         public string Property { get; set; }
 
-        [Display(Name="SMS utskick?")]
+        [Display(Name="Utskick SMS?")]
         public bool WantInfoSMS { get; set; }
 
-        [Display(Name = "E-post utskick?")]
+        [Display(Name = "Utskick Epost?")]
         public bool WantInfoEmail { get; set; }
+
+        [Display(Name = "Utskick Grannsamverkan?")]
+        public bool WantGrannsamverkanEmail { get; set; }
 
         [Display(Name="Aktiv för mail och sms utskick?")]
         public bool IsActive { get; set; }

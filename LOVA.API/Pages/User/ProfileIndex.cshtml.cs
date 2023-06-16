@@ -67,6 +67,7 @@ namespace LOVA.API.Pages.User
                     Property = s.Premise.Property,
                     WantInfoEmail = s.WantInfoEmail,
                     WantInfoSMS = s.WantInfoSMS,
+                    WantGrannsamverkanEmail = s.WantGrannsamverkanEmail,
                     IsActive = s.IsActive
                 })
                 .ToListAsync();

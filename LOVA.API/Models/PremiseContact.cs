@@ -34,6 +34,8 @@ namespace LOVA.API.Models
 
         public bool WantInfoEmail { get; set; }
 
+        public bool WantGrannsamverkanEmail { get; set; }
+
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
