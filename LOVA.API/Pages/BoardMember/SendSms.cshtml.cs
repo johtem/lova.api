@@ -42,7 +42,6 @@ namespace LOVA.API.Pages.BoardMember
             Users = await _userManager.Users.Where(a => a.PhoneNumber != null).ToListAsync();
 
             
-
             foreach(var item in Users)
             {
                 var phoneNumber = item.PhoneNumber;

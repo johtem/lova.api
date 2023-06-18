@@ -423,7 +423,7 @@ namespace LOVA.API.Controllers
             {
                 await _mailService.SendToManyActivitiesEmailAsync(ac);
             }
-            catch (Exception ex)
+            catch
             {
 
             }
