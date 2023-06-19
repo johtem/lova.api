@@ -3,7 +3,6 @@ using LOVA.API.Data;
 using LOVA.API.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +20,7 @@ namespace LOVA.API.Areas.Identity
                         context.Configuration.GetConnectionString("LOVAAPIContextConnection")));
 
                 services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddRoles<IdentityRole>()    
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<LOVAAPIContext>();
 
                 services.Configure<IdentityOptions>(options =>

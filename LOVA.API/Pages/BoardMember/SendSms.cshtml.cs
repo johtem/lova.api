@@ -65,12 +65,14 @@ namespace LOVA.API.Pages.BoardMember
             
             if (Message.ListType != "User")
             {
-                var users = await (from user in _userManager.Users
-                                   join userRoles in _userManager.UserRoles on user.Id equals userRoles.UserId
-                                   join role in _userManager.Roles on userRoles.RoleId equals role.Id
-                                   where role.Name == Message.ListType
-                                   select new { UserId = user.Id, UserName = user.UserName, RoleId = role.Id, RoleName = role.Name })
-                        .ToListAsync();
+                //var users = await (from user in _userManager.Users
+                //                   join userRoles in _userManager.UserRoles on user.Id equals userRoles.UserId
+                //                   join role in _userManager.Roles on userRoles.RoleId equals role.Id
+                //                   where role.Name == Message.ListType
+                //                   select new { UserId = user.Id, UserName = user.UserName, RoleId = role.Id, RoleName = role.Name })
+                //        .ToListAsync();
+
+                var users = await _userManager.Users.Where(a => a.UserName == "johan@tempelman.nu" && a.PhoneNumber != null).ToListAsync();
 
                 foreach (var item in users)
                 {

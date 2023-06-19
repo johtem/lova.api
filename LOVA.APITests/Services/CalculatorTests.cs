@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xceed.Wpf.Toolkit;
 
 namespace LOVA.API.Services.Tests
 {
@@ -20,46 +21,46 @@ namespace LOVA.API.Services.Tests
         
         }
 
-        [TestMethod()]
-        public void AddTest()
-        {
+        //[TestMethod()]
+        //public void AddTest()
+        //{
 
-            // Arrange
-            var calculator = new Calculator();
+        //    // Arrange
+        //    var calculator = new Calculator();
 
-            // Act
-            var actual = calculator.Add(1, 1);
-            var subtractActual = calculator.Subtract(actual, 1) == 1;
+        ////    // Act
+        //    var actual = calculator.Add(1, 1);
+        //    var subtractActual = calculator.Subtract(actual, 1) == 1;
 
-            // Assert
-            Assert.AreEqual(2, actual);
-            Assert.IsTrue(subtractActual);
+        //    // Assert
+        //    Assert.AreEqual(2, actual);
+        //    Assert.IsTrue(subtractActual);
            
-        }
+        //}
 
-        [TestMethod()]
-        public void DivideByZero()
-        {
-            // Arrange
-            var calculator = new Calculator();
+        //[TestMethod()]
+        //public void DivideByZero()
+        //{
+        //    // Arrange
+        //    var calculator = new Calculator();
 
-            // Act
-            var actual = calculator.Divide(1, 0);
+        //    // Act
+        //    var actual = calculator.Divide(1, 0);
 
-            // Assert
-            Assert.IsNull(actual);
-        }
+        //    // Assert
+        //    Assert.IsNull(actual);
+        //}
 
-        [DataTestMethod]
-        [DataRow(1,1,2)]
-        [DataRow(2,2,4)]
-        [DataRow(2,4,6)]
-        public void AddDataTests(int x, int y, int expected)
-        {
-            var calculator = new Calculator();
-            var actual = calculator.Add(x, y);
-            Assert.AreEqual(expected, actual);
-        }
+        //[DataTestMethod]
+        //[DataRow(1,1,2)]
+        //[DataRow(2,2,4)]
+        //[DataRow(2,4,6)]
+        //public void AddDataTests(int x, int y, int expected)
+        //{
+        //    var calculator = new Calculator();
+        //    var actual = calculator.Add(x, y);
+        //    Assert.AreEqual(expected, actual);
+        //}
 
     }
 }

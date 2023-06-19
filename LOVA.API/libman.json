@@ -13,7 +13,7 @@
         "dist/js/bootstrap.min.js.map",
         "scss/bootstrap.scss",
         "dist/css/bootstrap.min.css"
-        
+
       ]
     },
     {
@@ -60,7 +60,11 @@
 
       ]
 
+    },
+    {
+      "provider": "unpkg",
+      "library": "@microsoft/signalr@latest",
+      "destination": "wwwroot/lib/signalr/"
     }
-
   ]
 }
