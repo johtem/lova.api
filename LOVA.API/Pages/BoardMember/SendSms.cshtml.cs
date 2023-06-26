@@ -30,25 +30,124 @@ namespace LOVA.API.Pages.BoardMember
         }
 
         [BindProperty]
-        public SmsMessage Message { get; set; }
+        public SmsMessage Message { get; set; } = new SmsMessage();
 
 
-        public string Test { get; set; }
+        [BindProperty]
+        public IList<PremiseContact> Smslist { get; set; } = new List<PremiseContact>();
 
-        public IEnumerable<ApplicationUser> Users { get; set; }
+        // public string Test { get; set; }
 
-        public async Task OnGetAsync()
+        // public IEnumerable<ApplicationUser> Users { get; set; }
+
+        public void OnGet()
         {
-            Users = await _userManager.Users.Where(a => a.PhoneNumber != null).ToListAsync();
 
-            
-            foreach(var item in Users)
+            Message.ListType = "Styrelse";
+            //Users = await _userManager.Users.Where(a => a.PhoneNumber != null).ToListAsync();
+
+
+            //foreach(var item in Users)
+            //{
+            //    var phoneNumber = item.PhoneNumber;
+            //    Test = phoneNumber;
+            //}
+
+
+        }
+
+
+
+        public async Task OnPostGetSelectedPersons()
+        {
+            var roles = _roleManager.Roles.Where(a => a.Name == Message.ListType);
+
+            // var smslist = new List<PremiseContact>();
+
+
+
+            if (Message.ListType != "User")
             {
-                var phoneNumber = item.PhoneNumber;
-                Test = phoneNumber;
+                var users = await (from user in _userManager.Users
+                                   join userRoles in _userManager.UserRoles on user.Id equals userRoles.UserId
+                                   join role in _userManager.Roles on userRoles.RoleId equals role.Id
+                                   where role.Name == Message.ListType
+                                   select new { UserId = user.Id, UserName = user.UserName, RoleId = role.Id, RoleName = role.Name })
+                        .ToListAsync();
+
+                // var users = await _userManager.Users.Where(a => a.UserName == "johan@tempelman.nu" && a.PhoneNumber != null).ToListAsync();
+
+
+
+                foreach (var item in users)
+                {
+                    var temp = await _context.PremiseContacts
+                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true && a.Email == item.UserName)
+                        .FirstOrDefaultAsync();
+                    if (temp != null)
+                    {
+                        Smslist.Add(temp);
+                    }
+
+                }
+            }
+            else
+            {
+                if (Message.IsNode1 == true && Message.IsNode2 == true && Message.IsNode3 == false)
+                {
+                    Smslist = _context.PremiseContacts
+                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true && a.Premise.Well.MasterNode != 3).ToList();
+                }
+                else if (Message.IsNode1 == true && Message.IsNode2 == false && Message.IsNode3 == false)
+                {
+                    Smslist = _context.PremiseContacts
+                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true && a.Premise.Well.MasterNode == 1).ToList();
+                }
+                else if (Message.IsNode1 == false && Message.IsNode2 == true && Message.IsNode3 == true)
+                {
+                    Smslist = _context.PremiseContacts
+                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true && a.Premise.Well.MasterNode != 1).ToList();
+                }
+                else if (Message.IsNode1 == false && Message.IsNode2 == true && Message.IsNode3 == false)
+                {
+                    Smslist = _context.PremiseContacts
+                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true && a.Premise.Well.MasterNode == 2).ToList();
+                }
+                else if (Message.IsNode1 == true && Message.IsNode2 == false && Message.IsNode3 == true)
+                {
+                    Smslist = _context.PremiseContacts
+                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true && a.Premise.Well.MasterNode != 2).ToList();
+                }
+                else if (Message.IsNode1 == false && Message.IsNode2 == false && Message.IsNode3 == true)
+                {
+                    Smslist = _context.PremiseContacts
+                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true && a.Premise.Well.MasterNode == 3).ToList();
+                }
+                else
+                {
+                    Smslist = _context.PremiseContacts.Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true).ToList();
+                }
+
+
+
             }
 
-           
+
+            //Smslist.Clear();
+            //Smslist.Add(new PremiseContact
+            //{
+            //    Id = 2,
+            //    PremiseId = 18,
+            //    FirstName = "Johan",
+            //    LastName = "Tempelman",
+            //    MobileNumber = "0734435407",
+            //    PhoneNumber = "",
+            //    IsActive = true,
+            //    WantGrannsamverkanEmail = true,
+            //    WantInfoEmail = true,
+            //    WantInfoSMS = true
+
+            //});
         }
 
         public async Task OnPost()
@@ -58,48 +157,19 @@ namespace LOVA.API.Pages.BoardMember
 
             var numberConvert = new PhoneNumberConverter();
 
-            var roles = _roleManager.Roles.Where(a => a.Name == Message.ListType);
+            // var smslist = new List<PremiseContact>();
 
-            var smslist = new List<PremiseContact>();
-            
-            
-            if (Message.ListType != "User")
+            foreach (var sms in Smslist)
             {
-                //var users = await (from user in _userManager.Users
-                //                   join userRoles in _userManager.UserRoles on user.Id equals userRoles.UserId
-                //                   join role in _userManager.Roles on userRoles.RoleId equals role.Id
-                //                   where role.Name == Message.ListType
-                //                   select new { UserId = user.Id, UserName = user.UserName, RoleId = role.Id, RoleName = role.Name })
-                //        .ToListAsync();
-
-                var users = await _userManager.Users.Where(a => a.UserName == "johan@tempelman.nu" && a.PhoneNumber != null).ToListAsync();
-
-                foreach (var item in users)
+                if (sms.WantInfoSMS)
                 {
-                    var temp = await _context.PremiseContacts
-                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true && a.Email == item.UserName)
-                        .FirstOrDefaultAsync();
-                    if (temp != null)
-                    {
-                       smslist.Add(temp);
-                    }
-                    
+                    var message = MessageResource.Create(
+                        to: new PhoneNumber(numberConvert.ConvertPhoneNumber(sms.MobileNumber)),
+                        from: new PhoneNumber(Message.From),
+                        body: Message.Message,
+                        client: _client); // pass in the custom client
                 }
-            }
-            else
-            {
-                smslist = _context.PremiseContacts.Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true).ToList();
-            }
-                 
 
-            foreach(var sms in smslist)
-            {
-
-                var message = MessageResource.Create(
-                to: new PhoneNumber(numberConvert.ConvertPhoneNumber(sms.MobileNumber)),
-                from: new PhoneNumber(Message.From),
-                body: Message.Message,
-                client: _client); // pass in the custom client
             }
 
 
