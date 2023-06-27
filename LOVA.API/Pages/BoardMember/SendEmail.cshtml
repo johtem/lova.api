@@ -1,0 +1,155 @@
+﻿@page
+@model LOVA.API.Pages.BoardMember.SendEmailModel
+@{
+}
+
+
+<div class="container mt-5" style="height:80vh;">
+    <div class="row mt-3">
+        <h4>Skicka SMS</h4>
+    </div>
+
+    <div class="row mt-5">
+
+        <div class="col-md-6">
+            <form method="post" asp-page-handler="GetSelectedPersons">
+                <div class="row">
+                    <h3>Sändlista</h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5>Välj medlemsgrupp</h5>
+                        <div class="form-group mt-2">
+                            <input class="form-check-input" type="radio" name="Message.ListType" id="exampleRadios1" value="User">
+                            <label asp-for="Message.ListType" class="form-check-label">Till alla</label>
+                        </div>
+                        <div class="form-group mt-2">
+                            <input class="form-check-input" type="radio" name="Message.ListType" id="exampleRadios1" value="Styrelse">
+                            <label asp-for="Message.ListType" class="form-check-label">Till styrelsen</label>
+                        </div>
+                        <div class="form-group mt-2">
+                            <input class="form-check-input" type="radio" name="Message.ListType" id="exampleRadios1" value="Lova">
+                            <label asp-for="Message.ListType" class="form-check-label">Till Löttingelund VA</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <h5>Välj VA slinga:</h5>
+                        <div class="form-group mt-2">
+                            <input type="checkbox" asp-for="Message.IsNode1" class="form-check-input" checked />
+                            <label asp-for="Message.IsNode1" class="form-check-label"></label>
+                        </div>
+                        <div class="form-group mt-2">
+                            <input type="checkbox" asp-for="Message.IsNode2" class="form-check-input" checked />
+                            <label asp-for="Message.IsNode2" class="form-check-label"></label>
+                        </div>
+                        <div class="form-group mt-2">
+                            <input type="checkbox" asp-for="Message.IsNode3" class="form-check-input" checked />
+                            <label asp-for="Message.IsNode3" class="form-check-label"></label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mt-3">
+                        <div class="form-group">
+                            @*<button type="submit" class="btn btn-primary">Hämta kontakter</button>*@
+                            <input type="submit" value="Hämta kontakter" class="btn btn-primary mt-3" />
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </form>
+
+
+        </div>
+    </div>
+
+    <div class="row mt-5">
+
+        <form method="post" asp-page-handler="OnPost">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Add or remove users from this role</h5>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.Emaillist.Count != 0)
+                            {
+
+                                @for (int i = 0; i < Model.Emaillist.Count; i++)
+                                {
+                                    <div class="form-check m-1">
+
+                                        <input type="hidden" asp-for="@Model.Emaillist[i].FirstName" />
+                                        <input type="hidden" asp-for="@Model.Emaillist[i].LastName" />
+                                        <input type="hidden" asp-for="@Model.Emaillist[i].Email" />
+                                        <input asp-for="@Model.Emaillist[i].WantInfoEmail" class="form-check-input" />
+                                        <label asp-for="@Model.Emaillist[i].WantInfoEmail" class="form-check-label">
+                                            @Model.Emaillist[i].FirstName @Model.Emaillist[i].LastName
+                                        </label>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Meddelande</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <textarea onkeydown="maximumChars(100,this)" asp-for="Message.Message" class="form-control" rows="5" cols="50" maxlength="100" style="resize: none;">
+                                 </textarea>
+                                <span asp-validation-for="Message.Message" class="text-danger"></span>
+                            </div>
+                            <div><span id="maxChars"> </span></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input type="submit" value="Skicka e-post" class="btn btn-primary mt-3" />
+                    </div>
+                </div>
+
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+
+    var maximumChars = function (maxChars, input) {
+
+        var totalChars = input.value.length;
+        var displayChars = document.getElementById('maxChars');
+
+        if (maxChars > totalChars) {
+            displayChars.innerHTML = totalChars + " av " + maxChars;
+            displayChars.style.color = "green";
+            input.style.borderColor = "green";
+        } else {
+            displayChars.innerHTML = "Max antal bokstäver är: " + maxChars;
+            displayChars.style.color = "red";
+            input.style.borderColor = "red";
+        }
+    }
+</script>
