@@ -4,17 +4,19 @@
 }
 
 
-<div class="container mt-5" style="height:80vh;">
-    <div class="row mt-3">
-        <h4>Skicka SMS</h4>
-    </div>
+<head>
+    <script src="https://cdn.tiny.cloud/1/hhmi5e0sj693fxy3sqharribecj1grulqsg9hk19fgqd7pqn/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+</head>
+
+<div class="container" style="height:100vh;">
+
 
     <div class="row mt-5">
 
         <div class="col-md-6">
             <form method="post" asp-page-handler="GetSelectedPersons">
                 <div class="row">
-                    <h3>Sändlista</h3>
+                    <h3>Sändlista Email</h3>
                 </div>
                 <div class="row">
                     <div class="col-md-4">
@@ -24,6 +26,10 @@
                             <label asp-for="Message.ListType" class="form-check-label">Till alla</label>
                         </div>
                         <div class="form-group mt-2">
+                            <input class="form-check-input" type="radio" name="Message.ListType" id="exampleRadios1" value="Grannsamverkan">
+                            <label asp-for="Message.ListType" class="form-check-label">Till Grannsamverkan</label>
+                        </div>
+                        <div class="form-group mt-2">
                             <input class="form-check-input" type="radio" name="Message.ListType" id="exampleRadios1" value="Styrelse">
                             <label asp-for="Message.ListType" class="form-check-label">Till styrelsen</label>
                         </div>
@@ -31,6 +37,7 @@
                             <input class="form-check-input" type="radio" name="Message.ListType" id="exampleRadios1" value="Lova">
                             <label asp-for="Message.ListType" class="form-check-label">Till Löttingelund VA</label>
                         </div>
+                        
                     </div>
 
                     <div class="col-md-4">
@@ -51,7 +58,7 @@
                     <div class="col-md-4 mt-3">
                         <div class="form-group">
                             @*<button type="submit" class="btn btn-primary">Hämta kontakter</button>*@
-                            <input type="submit" value="Hämta kontakter" class="btn btn-primary mt-3" />
+                            <input type="submit" value="Hämta sändlistan" class="btn btn-primary mt-3" />
                         </div>
                     </div>
                 </div>
@@ -62,6 +69,15 @@
 
 
         </div>
+        <div class="col-md-6">
+            <h3>Instruktioner</h3>
+            <ul>
+                <li>Hämta sändlistan innan meddelandet skrivs</li>
+                <li>Ta bort de som inte skall ha utskick</li>
+                <li>Skriv -Namn- i meddelandet så skickas förnamn och efternamn ut i mailet</li>
+
+            </ul>
+        </div>
     </div>
 
     <div class="row mt-5">
@@ -69,10 +85,10 @@
         <form method="post" asp-page-handler="OnPost">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="card">
                         <div class="card-header">
-                            <h5>Add or remove users from this role</h5>
+                            <h5>Ta bort från sändlistan: @Model.Sendlist</h5>
                         </div>
                         <div class="card-body">
                             @if (Model.Emaillist.Count != 0)
@@ -96,27 +112,43 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <div class="card">
                         <div class="card-header">
                             <h5>Meddelande</h5>
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <textarea onkeydown="maximumChars(100,this)" asp-for="Message.Message" class="form-control" rows="5" cols="50" maxlength="100" style="resize: none;">
+                                <label asp-for="Message.Subject" class="control-label">Ämne</label>
+                                <input asp-for="Message.Subject" class="form-control" />
+                                <span asp-validation-for="Message.Subject" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Message.Message" class="control-label">Meddelande</label>
+                                <textarea onkeydown="maximumChars(500,this)" asp-for="Message.Message" class="form-control" rows="6" cols="50" maxlength="100" style="resize: none;" id="my-text-area">
                                  </textarea>
                                 <span asp-validation-for="Message.Message" class="text-danger"></span>
                             </div>
                             <div><span id="maxChars"> </span></div>
+                            <div class="form-group col-12">
+                                <label>Dokument namn</label>
+                                @(Html.Kendo().Upload()
+                                    .Name("files")
+                                    .HtmlAttributes(new { style = "width:100%", aria_label = "files" })
+                                    .Multiple(true)
+                                   
+                                     
+                                    )
+                            </div>
                         </div>
 
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <div class="form-group">
                         <input type="submit" value="Skicka e-post" class="btn btn-primary mt-3" />
                     </div>
@@ -137,6 +169,7 @@
 <script type="text/javascript">
 
 
+
     var maximumChars = function (maxChars, input) {
 
         var totalChars = input.value.length;
@@ -152,4 +185,19 @@
             input.style.borderColor = "red";
         }
     }
+
+    tinymce.init({
+        selector: 'textarea#my-text-area',
+        height: 500,
+        plugins: [
+            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'media', 'table', 'help', 'wordcount'
+        ],
+        toolbar: 'undo redo | blocks fontfamily fontsize | ' +
+            'bold italic backcolor | alignleft aligncenter ' +
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'removeformat | help',
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+    });
 </script>

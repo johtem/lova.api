@@ -27,6 +27,7 @@ using Hangfire.SqlServer;
 using LOVA.API.Filter;
 using LOVA.API.Hubs;
 using Twilio.Clients;
+using SendGrid;
 
 namespace LOVA.API
 {
@@ -44,6 +45,9 @@ namespace LOVA.API
         {
             services.AddDbContext<LovaDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("AzureSQL")));
+
+
+         
 
 
             // Add Hangfire services.

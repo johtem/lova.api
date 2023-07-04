@@ -9,6 +9,8 @@ namespace LOVA.API.Models
         public string From { get; set; }
         public string Message { get; set; }
 
+        public string Subject { get; set; }
+
         [Display(Name = "Välj")]
         public string ListType { get; set; }
 
