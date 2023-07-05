@@ -87,7 +87,7 @@
                                         <input type="hidden" asp-for="@Model.Smslist[i].MobileNumber" />
                                         <input asp-for="@Model.Smslist[i].WantInfoSMS" class="form-check-input" />
                                         <label asp-for="@Model.Smslist[i].WantInfoSMS" class="form-check-label">
-                                            @Model.Smslist[i].LastName
+                                            @Model.Smslist[i].FirstName @Model.Smslist[i].LastName (@Model.Smslist[i].Premise.Property)
                                         </label>
                                     </div>
                                 }

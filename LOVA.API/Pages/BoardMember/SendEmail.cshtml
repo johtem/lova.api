@@ -103,7 +103,7 @@
                                         <input type="hidden" asp-for="@Model.Emaillist[i].Email" />
                                         <input asp-for="@Model.Emaillist[i].WantInfoEmail" class="form-check-input" />
                                         <label asp-for="@Model.Emaillist[i].WantInfoEmail" class="form-check-label">
-                                            @Model.Emaillist[i].FirstName @Model.Emaillist[i].LastName
+                                            @Model.Emaillist[i].FirstName @Model.Emaillist[i].LastName  (@Model.Emaillist[i].Premise.Property)
                                         </label>
                                     </div>
                                 }
@@ -188,7 +188,8 @@
 
     tinymce.init({
         selector: 'textarea#my-text-area',
-        height: 500,
+        height: 400,
+        language: 'sv_SE',
         plugins: [
             'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
             'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
@@ -198,6 +199,6 @@
             'bold italic backcolor | alignleft aligncenter ' +
             'alignright alignjustify | bullist numlist outdent indent | ' +
             'removeformat | help',
-        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:12px }'
     });
 </script>

@@ -51,22 +51,12 @@ namespace LOVA.API.Pages.BoardMember
         [BindProperty]
         public IList<PremiseContact> Emaillist { get; set; } = new List<PremiseContact>();
 
-        // public string Test { get; set; }
-
-        // public IEnumerable<ApplicationUser> Users { get; set; }
 
         public void OnGet()
         {
 
             Message.ListType = "Styrelse";
-            //Users = await _userManager.Users.Where(a => a.PhoneNumber != null).ToListAsync();
 
-
-            //foreach(var item in Users)
-            //{
-            //    var phoneNumber = item.PhoneNumber;
-            //    Test = phoneNumber;
-            //}
         }
 
 
@@ -96,6 +86,7 @@ namespace LOVA.API.Pages.BoardMember
                 foreach (var item in users)
                 {
                     var temp = await _context.PremiseContacts
+                        .Include(a => a.Premise)
                         .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true && a.Email == item.UserName)
                         .FirstOrDefaultAsync();
                     if (temp != null)
@@ -153,9 +144,7 @@ namespace LOVA.API.Pages.BoardMember
 
         public async Task OnPost(IEnumerable<IFormFile> files)
         {
-            // TODO: Change to send emailvia sendgrid
-
-
+            // TODO: Add check for subject row and message text
 
 
             var apiKey = _configuration.GetValue<string>("SendGridApiKey");
@@ -175,11 +164,12 @@ namespace LOVA.API.Pages.BoardMember
             {
                 if (email.WantInfoEmail)
                 {
-                    tos.Add(new SendGrid.Helpers.Mail.EmailAddress(email.Email, $"{email.FirstName} {email.LastName}"));
-                    
+                    tos.Add(new SendGrid.Helpers.Mail.EmailAddress(email.Email, $"{email.FirstName} {email.LastName}"));                   
                 }
 
-                var msg = new SendGridMessage()
+            }
+
+            var msg = new SendGridMessage()
                 {
                     From = new SendGrid.Helpers.Mail.EmailAddress(fromEmail, fromName),
                     Subject = Message.Subject,
@@ -194,9 +184,6 @@ namespace LOVA.API.Pages.BoardMember
                     }).ToList()
                 };
 
-     
-
-                msg.AddTo(email.Email);
 
                 foreach (var file in files)
                 {
@@ -220,22 +207,17 @@ namespace LOVA.API.Pages.BoardMember
                     }
                 };
 
- 
- 
-     
-                
-
+    
                 // Send message
                 var response = await client.SendEmailAsync(msg);
 
-            }
+            
 
             Sendlist = "";
             Emaillist.Clear();
-            Message.Message = "";
-            Message.Subject = "";
+            Message = new SmsMessage();
+            
         }
-
 
     }
 }

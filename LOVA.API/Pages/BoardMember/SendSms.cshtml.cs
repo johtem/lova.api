@@ -82,6 +82,7 @@ namespace LOVA.API.Pages.BoardMember
                 foreach (var item in users)
                 {
                     var temp = await _context.PremiseContacts
+                        .Include(a => a.Premise)
                         .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true && a.Email == item.UserName)
                         .FirstOrDefaultAsync();
                     if (temp != null)
