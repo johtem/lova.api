@@ -32,6 +32,9 @@ namespace LOVA.API.Pages.BoardMember
         [BindProperty]
         public SmsMessage Message { get; set; } = new SmsMessage();
 
+        [BindProperty]
+        public string Sendlist { get; set; }
+
 
         [BindProperty]
         public IList<PremiseContact> Smslist { get; set; } = new List<PremiseContact>();
@@ -62,9 +65,8 @@ namespace LOVA.API.Pages.BoardMember
         {
             var roles = _roleManager.Roles.Where(a => a.Name == Message.ListType);
 
-            // var smslist = new List<PremiseContact>();
 
-
+            Sendlist = Message.ListType;
 
             if (Message.ListType != "User")
             {
@@ -97,36 +99,40 @@ namespace LOVA.API.Pages.BoardMember
                 if (Message.IsNode1 == true && Message.IsNode2 == true && Message.IsNode3 == false)
                 {
                     Smslist = _context.PremiseContacts
+                        .Include(a => a.Premise)
                         .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true && a.Premise.Well.MasterNode != 3).ToList();
                 }
                 else if (Message.IsNode1 == true && Message.IsNode2 == false && Message.IsNode3 == false)
                 {
-                    Smslist = _context.PremiseContacts
+                    Smslist = _context.PremiseContacts.Include(a => a.Premise)
                         .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true && a.Premise.Well.MasterNode == 1).ToList();
                 }
                 else if (Message.IsNode1 == false && Message.IsNode2 == true && Message.IsNode3 == true)
                 {
-                    Smslist = _context.PremiseContacts
+                    Smslist = _context.PremiseContacts.Include(a => a.Premise)
                         .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true && a.Premise.Well.MasterNode != 1).ToList();
                 }
                 else if (Message.IsNode1 == false && Message.IsNode2 == true && Message.IsNode3 == false)
                 {
-                    Smslist = _context.PremiseContacts
+                    Smslist = _context.PremiseContacts.Include(a => a.Premise)
                         .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true && a.Premise.Well.MasterNode == 2).ToList();
                 }
                 else if (Message.IsNode1 == true && Message.IsNode2 == false && Message.IsNode3 == true)
                 {
-                    Smslist = _context.PremiseContacts
+                    Smslist = _context.PremiseContacts.Include(a => a.Premise)
                         .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true && a.Premise.Well.MasterNode != 2).ToList();
                 }
                 else if (Message.IsNode1 == false && Message.IsNode2 == false && Message.IsNode3 == true)
                 {
                     Smslist = _context.PremiseContacts
+                        .Include(a => a.Premise)
                         .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true && a.Premise.Well.MasterNode == 3).ToList();
                 }
                 else
                 {
-                    Smslist = _context.PremiseContacts.Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true).ToList();
+                    Smslist = _context.PremiseContacts
+                        .Include(a => a.Premise)
+                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoSMS == true).ToList();
                 }
 
 
@@ -134,24 +140,9 @@ namespace LOVA.API.Pages.BoardMember
             }
 
 
-            //Smslist.Clear();
-            //Smslist.Add(new PremiseContact
-            //{
-            //    Id = 2,
-            //    PremiseId = 18,
-            //    FirstName = "Johan",
-            //    LastName = "Tempelman",
-            //    MobileNumber = "0734435407",
-            //    PhoneNumber = "",
-            //    IsActive = true,
-            //    WantGrannsamverkanEmail = true,
-            //    WantInfoEmail = true,
-            //    WantInfoSMS = true
-
-            //});
         }
 
-        public async Task OnPost()
+        public void OnPost()
         {
 
             Message.From = "+46723499120";
@@ -167,16 +158,11 @@ namespace LOVA.API.Pages.BoardMember
                     var message = MessageResource.Create(
                         to: new PhoneNumber(numberConvert.ConvertPhoneNumber(sms.MobileNumber)),
                         from: new PhoneNumber(Message.From),
-                        body: Message.Message,
+                        body: Message.Message.Replace("-Namn-", $"{sms.FirstName}"),
                         client: _client); // pass in the custom client
                 }
-
             }
-
-
-
-
-
+            Smslist.Clear();
         }
     }
 }

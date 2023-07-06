@@ -19,22 +19,22 @@
                     <h3>Sändlista Email</h3>
                 </div>
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-4" id="radios">
                         <h5>Välj medlemsgrupp</h5>
                         <div class="form-group mt-2">
-                            <input class="form-check-input" type="radio" name="Message.ListType" id="exampleRadios1" value="User">
+                            <input class="form-check-input" type="radio" name="Message.ListType" id="User" value="User" asp-for="Message.ListType">
                             <label asp-for="Message.ListType" class="form-check-label">Till alla</label>
                         </div>
                         <div class="form-group mt-2">
-                            <input class="form-check-input" type="radio" name="Message.ListType" id="exampleRadios1" value="Grannsamverkan">
+                            <input class="form-check-input" type="radio" name="Message.ListType" id="exampleRadios2" value="Grannsamverkan">
                             <label asp-for="Message.ListType" class="form-check-label">Till Grannsamverkan</label>
                         </div>
                         <div class="form-group mt-2">
-                            <input class="form-check-input" type="radio" name="Message.ListType" id="exampleRadios1" value="Styrelse">
+                            <input class="form-check-input" type="radio" name="Message.ListType" id="exampleRadios3" value="Styrelse">
                             <label asp-for="Message.ListType" class="form-check-label">Till styrelsen</label>
                         </div>
                         <div class="form-group mt-2">
-                            <input class="form-check-input" type="radio" name="Message.ListType" id="exampleRadios1" value="Lova">
+                            <input class="form-check-input" type="radio" name="Message.ListType" id="exampleRadios4" value="Lova">
                             <label asp-for="Message.ListType" class="form-check-label">Till Löttingelund VA</label>
                         </div>
                         
@@ -43,7 +43,7 @@
                     <div class="col-md-4">
                         <h5>Välj VA slinga:</h5>
                         <div class="form-group mt-2">
-                            <input type="checkbox" asp-for="Message.IsNode1" class="form-check-input" checked />
+                            <input type="checkbox" asp-for="Message.IsNode1" class="form-check-input " checked />
                             <label asp-for="Message.IsNode1" class="form-check-label"></label>
                         </div>
                         <div class="form-group mt-2">
@@ -74,7 +74,8 @@
             <ul>
                 <li>Hämta sändlistan innan meddelandet skrivs</li>
                 <li>Ta bort de som inte skall ha utskick</li>
-                <li>Skriv -Namn- i meddelandet så skickas förnamn och efternamn ut i mailet</li>
+                <li>Skriv -Namn- i meddelandet så skickas förnamn och efternamn ut i mailet istället för -Namn-</li>
+                <li>åäö tas bort från den bifogade filens namn</li>
 
             </ul>
         </div>
@@ -162,7 +163,11 @@
 
 
 
-
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
 
 
 
@@ -201,4 +206,17 @@
             'removeformat | help',
         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:12px }'
     });
+
+    $(document).ready(function () {
+        $("#radios input").on("change", function () {
+            myID = $("#radios input:checked").attr("id");
+            alert(myId);
+        });
+    });
+
+   
+        
+            
+        
+    
 </script>

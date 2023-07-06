@@ -13,13 +13,15 @@ using SendGrid.Helpers.Mail;
 using System;
 using System.IO;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Twilio.Types;
 using NPOI.SS.Formula.Functions;
+using System.Text;
+using EllipticCurve;
+using System.Text.RegularExpressions;
 
 namespace LOVA.API.Pages.BoardMember
 {
@@ -99,6 +101,7 @@ namespace LOVA.API.Pages.BoardMember
             else if (Message.ListType == "Grannsamverkan")
             {
                 Emaillist = _context.PremiseContacts
+                    .Include(a => a.Premise)
                         .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantGrannsamverkanEmail == true ).ToList();
             }
             else
@@ -106,36 +109,44 @@ namespace LOVA.API.Pages.BoardMember
                 if (Message.IsNode1 == true && Message.IsNode2 == true && Message.IsNode3 == false)
                 {
                     Emaillist = _context.PremiseContacts
+                        .Include(a => a.Premise)
                         .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true && a.Premise.Well.MasterNode != 3).ToList();
                 }
                 else if (Message.IsNode1 == true && Message.IsNode2 == false && Message.IsNode3 == false)
                 {
                     Emaillist = _context.PremiseContacts
+                        .Include(a => a.Premise)
                         .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true && a.Premise.Well.MasterNode == 1).ToList();
                 }
                 else if (Message.IsNode1 == false && Message.IsNode2 == true && Message.IsNode3 == true)
                 {
                     Emaillist = _context.PremiseContacts
+                        .Include(a => a.Premise)
                         .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true && a.Premise.Well.MasterNode != 1).ToList();
                 }
                 else if (Message.IsNode1 == false && Message.IsNode2 == true && Message.IsNode3 == false)
                 {
                     Emaillist = _context.PremiseContacts
+                        .Include(a => a.Premise)
                         .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true && a.Premise.Well.MasterNode == 2).ToList();
                 }
                 else if (Message.IsNode1 == true && Message.IsNode2 == false && Message.IsNode3 == true)
                 {
                     Emaillist = _context.PremiseContacts
+                        .Include(a => a.Premise)
                         .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true && a.Premise.Well.MasterNode != 2).ToList();
                 }
                 else if (Message.IsNode1 == false && Message.IsNode2 == false && Message.IsNode3 == true)
                 {
                     Emaillist = _context.PremiseContacts
+                        .Include(a => a.Premise)
                         .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true && a.Premise.Well.MasterNode == 3).ToList();
                 }
                 else
                 {
-                    Emaillist = _context.PremiseContacts.Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true).ToList();
+                    Emaillist = _context.PremiseContacts
+                        .Include(a => a.Premise)
+                         .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true).ToList();
                 }
 
             }
@@ -169,11 +180,12 @@ namespace LOVA.API.Pages.BoardMember
 
             }
 
+            
             var msg = new SendGridMessage()
                 {
                     From = new SendGrid.Helpers.Mail.EmailAddress(fromEmail, fromName),
                     Subject = Message.Subject,
-                    HtmlContent = Message.Message,
+                    HtmlContent = Message.Message + "<br><span style=\"font-size: 8pt;\">Om du vill avsluta din prenumeration, <a href=\"https://www.lottingelund.se/User/ProfileIndex\" target=\"_blank\" rel=\"noopener\">klicka här</a>.</span>",
                     Personalizations = tos.Select(s => new Personalization
                     {
                         Tos = new List<SendGrid.Helpers.Mail.EmailAddress> { new SendGrid.Helpers.Mail.EmailAddress(s.Email, s.Name)},
@@ -194,13 +206,16 @@ namespace LOVA.API.Pages.BoardMember
                         var bytes = stream.ToArray();
 
 
+                    string fileName = file.FileName.Replace("å", "a").Replace("ä", "a").Replace("ö", "o").Replace("Å", "A").Replace("Ä", "A").Replace("Ö", "O");
+
+
                         Attachment att = new Attachment
                         { 
-                            Content = Convert.ToBase64String(bytes), //Convert.ToBase64String(new Byte[file.Length]),
+                            Content = Convert.ToBase64String(bytes), 
                             Type = file.ContentType,
-                            Filename = file.FileName,
+                            Filename = fileName,
                             Disposition = "attachment",
-                            ContentId = file.FileName
+                            ContentId = fileName
                         };
 
                         msg.AddAttachment(att);
@@ -216,8 +231,10 @@ namespace LOVA.API.Pages.BoardMember
             Sendlist = "";
             Emaillist.Clear();
             Message = new SmsMessage();
-            
-        }
 
+     
+
+        }
+ 
     }
 }

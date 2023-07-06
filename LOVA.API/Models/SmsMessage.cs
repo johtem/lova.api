@@ -7,8 +7,11 @@ namespace LOVA.API.Models
     {
         public string To { get; set; }
         public string From { get; set; }
+
+        [Required]
         public string Message { get; set; }
 
+        [Required]
         public string Subject { get; set; }
 
         [Display(Name = "Välj")]
