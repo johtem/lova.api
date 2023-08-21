@@ -180,7 +180,10 @@ namespace LOVA.API.Pages.BoardMember
 
             }
 
-            
+            //  Add a copy to info@lottingelund.se
+            tos.Add(new SendGrid.Helpers.Mail.EmailAddress("info@lottingelund.se", $"Info Löttingelund"));
+
+
             var msg = new SendGridMessage()
                 {
                     From = new SendGrid.Helpers.Mail.EmailAddress(fromEmail, fromName),
