@@ -185,6 +185,10 @@ namespace LOVA.API.Controllers
                 case "2O2":
                     await SendEmailAlarm(insertData, "B-larm");
                     break;
+                case "1B8":
+                    await SendEmailWellFull(insertData);
+                    break;
+
                 default:
                     if (insertData.Address.StartsWith("3") && insertData.Address.EndsWith("8"))
                     {
@@ -312,8 +316,6 @@ namespace LOVA.API.Controllers
                 }
 
 
-
-
                 var perRowData = new ActivityPerRow
                 {
                     Address = drain.RowKey,
@@ -394,7 +396,7 @@ namespace LOVA.API.Controllers
                 request.ToEmail = ""; // Will be added in EmailService.cs
 
 
-                request.Subject = "Intagsenhet full - slinga 3";
+                request.Subject = $"Intagsenhet full - {ac.Address}";
                 request.Body = $"Intagsenhet {ac.Address} är full. \n\r Mvh Löva";
 
 
@@ -407,7 +409,7 @@ namespace LOVA.API.Controllers
                 request.ToEmail = ""; // Will be added in EmailService.cs
 
 
-                request.Subject = "Intagsenhet tömd - slinga 3";
+                request.Subject = $"Intagsenhet tömd - {ac.Address}";
                 request.Body = $"Intagsenhet {ac.Address} är nu tömd. \n\r Mvh Löva";
 
 
