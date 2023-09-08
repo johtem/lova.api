@@ -167,9 +167,7 @@ namespace LOVA.API.Controllers
 
 
             // Save data in Azure Table Storage to flatten out the data.
-
             await SaveToTableStorage(drainPatrolViewModel);
-
 
 
             // Save activity in Azure SQL to table Activities
@@ -190,11 +188,10 @@ namespace LOVA.API.Controllers
                     break;
 
                 default:
-                    if (insertData.Address.StartsWith("3") && insertData.Address.EndsWith("8"))
-                    {
-                        await SendEmailWellFull(insertData);
-                    }
-
+                    //if (insertData.Address.StartsWith("3") && insertData.Address.EndsWith("8"))
+                    //{
+                    //    await SendEmailWellFull(insertData);
+                    //}
                     break;
             }
 
@@ -225,6 +222,8 @@ namespace LOVA.API.Controllers
                 drain.IsActive = drainPatrolViewModel.Active;
                 drain.AverageActivity = drainExistingRow.AverageActivity;
 
+
+                // Adjust the average rest time
                 var diff = (drainPatrolViewModel.Time - drainExistingRow.TimeDown).TotalSeconds;
                 if (drainExistingRow.AverageRest == 0)
                 {
@@ -304,8 +303,6 @@ namespace LOVA.API.Controllers
                     drain.AverageActivity = (int)((drainExistingRow.AverageActivity + diff) / 2);
                 }
 
-
-
                 await TableStorageUtils.InsertOrMergeEntityAsync(table, drain);
 
                 bool isGroup = false;
@@ -314,7 +311,6 @@ namespace LOVA.API.Controllers
                 {
                     isGroup = true;
                 }
-
 
                 var perRowData = new ActivityPerRow
                 {
@@ -329,7 +325,6 @@ namespace LOVA.API.Controllers
 
                 _context.ActivityPerRows.Add(perRowData);
                 await _context.SaveChangesAsync();
-
 
             }
         }
