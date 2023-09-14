@@ -14,6 +14,21 @@ namespace LOVA.API.Services
         public const int LongActivationTime = 100;
         public const int resetGridWaitTime = 2;
 
+        // Årsavgifter
+        public const string vagAvgift = "2 100";
+        public const string tomtAvgift = "800";
+        public const string vaAvgift = "2 750";
+        public const string enbartAvloppsAvgift = "2 750";
+        public const string vaAnslutningsAvgiftService = "156 781";
+        public const string vaAnslutningsAvgiftLagenhet = "53 799";
+        public const string vaAnslutningsAvgift = "210 580";
+        public const string tappvattenAvgift = "26,50";
+        public const string rensAvgift = "3 500";
+        
+        public const string bredbandsAvgift = "109";
+        public const string tvAvgift = "110";
+
+        
 
 
 
