@@ -102,7 +102,7 @@ namespace LOVA.API.Pages.BoardMember
             {
                 Emaillist = _context.PremiseContacts
                     .Include(a => a.Premise)
-                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantGrannsamverkanEmail == true ).ToList();
+                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantGrannsamverkanEmail == true && a.Email != null).ToList();
             }
             else
             {
@@ -110,43 +110,43 @@ namespace LOVA.API.Pages.BoardMember
                 {
                     Emaillist = _context.PremiseContacts
                         .Include(a => a.Premise)
-                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true && a.Premise.Well.MasterNode != 3).ToList();
+                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true && a.Email != null && a.Premise.Well.MasterNode != 3).ToList();
                 }
                 else if (Message.IsNode1 == true && Message.IsNode2 == false && Message.IsNode3 == false)
                 {
                     Emaillist = _context.PremiseContacts
                         .Include(a => a.Premise)
-                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true && a.Premise.Well.MasterNode == 1).ToList();
+                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true && a.Email != null && a.Premise.Well.MasterNode == 1).ToList();
                 }
                 else if (Message.IsNode1 == false && Message.IsNode2 == true && Message.IsNode3 == true)
                 {
                     Emaillist = _context.PremiseContacts
                         .Include(a => a.Premise)
-                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true && a.Premise.Well.MasterNode != 1).ToList();
+                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true && a.Email != null && a.Premise.Well.MasterNode != 1).ToList();
                 }
                 else if (Message.IsNode1 == false && Message.IsNode2 == true && Message.IsNode3 == false)
                 {
                     Emaillist = _context.PremiseContacts
                         .Include(a => a.Premise)
-                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true && a.Premise.Well.MasterNode == 2).ToList();
+                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true && a.Email != null && a.Premise.Well.MasterNode == 2).ToList();
                 }
                 else if (Message.IsNode1 == true && Message.IsNode2 == false && Message.IsNode3 == true)
                 {
                     Emaillist = _context.PremiseContacts
                         .Include(a => a.Premise)
-                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true && a.Premise.Well.MasterNode != 2).ToList();
+                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true && a.Email != null && a.Premise.Well.MasterNode != 2).ToList();
                 }
                 else if (Message.IsNode1 == false && Message.IsNode2 == false && Message.IsNode3 == true)
                 {
                     Emaillist = _context.PremiseContacts
                         .Include(a => a.Premise)
-                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true && a.Premise.Well.MasterNode == 3).ToList();
+                        .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true && a.Email != null && a.Premise.Well.MasterNode == 3).ToList();
                 }
                 else
                 {
                     Emaillist = _context.PremiseContacts
                         .Include(a => a.Premise)
-                         .Where(a => a.IsDeleted == false && a.IsActive == true && a.WantInfoEmail == true).ToList();
+                         .Where(a => a.IsDeleted == false && a.IsActive == true && a.Email != null && a.WantInfoEmail == true).ToList();
                 }
 
             }
