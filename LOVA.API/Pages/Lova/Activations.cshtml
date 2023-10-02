@@ -30,7 +30,8 @@
                 <i class="fas fa-square"></i>
             </span>
             <span class="tableLive mt-1">&nbsp; Ej aktiv på en vecka</span>
-            <button type="button" class="btn btn-outline-secondary btn-sm ml-2" id="resetSquare">@ViewData["buttonText"]</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm ml-2" id="resetSquare" hidden>@ViewData["buttonTextSlinga1"]</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm ml-2" id="testKnapp" hidden>Test av Johan</button>
         </div>
         
         
@@ -40,7 +41,11 @@
     <div class="row m-3">
         <div class="col-md-2 mr-2">
             <div class="row">
-                <h6>Slinga 1</h6>
+                
+                
+                <button type="button" class="btn btn-outline-secondary btn-sm mb-2" id="resetSquare1">@ViewData["buttonTextSlinga1"]</button>
+             
+                
             </div>
             <div class="row">
                 <table border="1" class="tableLive live">
@@ -61,7 +66,7 @@
         </div>
         <div class="col-md-2 mr-2">
             <div class="row">
-                <h6>Slinga 2</h6>
+                    <button type="button" class="btn btn-outline-secondary btn-sm mb-2" id="resetSquare2">@ViewData["buttonTextSlinga2"]</button>
             </div>
             <div class="row">
                 <table border="1" class="tableLive live">
@@ -82,7 +87,8 @@
         </div>
         <div class="col-md-2 mr-2">
             <div class="row">
-                <h6>Slinga 3</h6>
+
+                    <button type="button" class="btn btn-outline-secondary btn-sm mb-2" id="resetSquare3">@ViewData["buttonTextSlinga3"]</button>
             </div>
             <div class="row">
                 <table border="1" class="tableLive live">
@@ -353,12 +359,13 @@
             });
 
 
-            $("#resetSquare").click(function () {
+            $("#resetSquare1").click(function () {
                 $("td").removeClass("redSolidBorder");
-
+                var slinga = "1";
                 $.ajax({
                     type: "GET",
                     url: "/Lova/Activations?handler=ResetGrids",
+                    data: { slinga: slinga },
                     success: function (response) {
                         location.reload(); 
                        
@@ -370,6 +377,66 @@
                         alert(response.responseText);
                     }
                     });
+            });
+
+            $("#resetSquare2").click(function () {
+                $("td").removeClass("redSolidBorder");
+                var slinga = "2";
+                $.ajax({
+                    type: "GET",
+                    url: "/Lova/Activations?handler=ResetGrids",
+                    data: { slinga: slinga },
+                    success: function (response) {
+                        location.reload();
+
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+
+            $("#resetSquare3").click(function () {
+                $("td").removeClass("redSolidBorder");
+                var slinga = "3";
+                $.ajax({
+                    type: "GET",
+                    url: "/Lova/Activations?handler=ResetGrids",
+                    data: { slinga: slinga },
+                    success: function (response) {
+                        location.reload();
+
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+
+
+            $("#testKnapp").click(function () {
+                console.log("Heja");
+
+                $.ajax({
+                    type: "GET",
+                    url: "/Lova/Activations?handler=TestKnapp",
+                    success: function (response) {
+                        location.reload();
+
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
             });
 
             $(".btnDelete").click(function() {

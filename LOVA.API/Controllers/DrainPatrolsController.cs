@@ -171,8 +171,8 @@ namespace LOVA.API.Controllers
 
 
             // Save activity in Azure SQL to table Activities
-            _context.Activities.Add(insertData);
-            await _context.SaveChangesAsync();
+            // _context.Activities.Add(insertData);
+            // await _context.SaveChangesAsync();
 
             // Email if A or B-Alarm
             switch (insertData.Address)
@@ -204,11 +204,28 @@ namespace LOVA.API.Controllers
             // Create reference to an existing table
             CloudTable table = await TableStorageCommon.CreateTableAsync("Drains");
 
-            DrainTableStorageEntity drainExistingRow = new DrainTableStorageEntity();
+            // DrainTableStorageEntity drainExistingRow = new DrainTableStorageEntity();
 
             // Get existing data for a specific master_node and address
-            drainExistingRow = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
+            DrainTableStorageEntity drainExistingRow = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
+          
 
+           
+            // Verify if address in memory table
+            if (drainExistingRow == null)
+            {
+                drainExistingRow = new DrainTableStorageEntity(drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
+                drainExistingRow.Timestamp = DateTime.UtcNow;
+                drainExistingRow.TimeUp = DateTime.UtcNow.AddMinutes(-5);
+                drainExistingRow.TimeDown = DateTime.UtcNow.AddMinutes(-4);
+                drainExistingRow.IsActive = false;
+                drainExistingRow.AverageActivity = 0;
+                drainExistingRow.AverageRest = 0;
+                drainExistingRow.DailyCount = 0;
+                drainExistingRow.HourlyCount = 0;
+
+                await TableStorageUtils.InsertOrMergeEntityAsync(table, drainExistingRow);
+            }
 
             // Create a new/update record for Azure Table Storage
             DrainTableStorageEntity drain = new DrainTableStorageEntity(drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
