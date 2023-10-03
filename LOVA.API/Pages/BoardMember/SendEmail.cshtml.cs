@@ -63,7 +63,7 @@ namespace LOVA.API.Pages.BoardMember
 
 
 
-        public async Task OnPostGetSelectedPersons()
+        public async Task GetEmails()
         {
             var roles = _roleManager.Roles.Where(a => a.Name == Message.ListType);
 
@@ -157,6 +157,7 @@ namespace LOVA.API.Pages.BoardMember
         {
             // TODO: Add check for subject row and message text
 
+            await GetEmails();
 
             var apiKey = _configuration.GetValue<string>("SendGridApiKey");
             var fromEmail = _configuration.GetValue<string>("FromEmail");
