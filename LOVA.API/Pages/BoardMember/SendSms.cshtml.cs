@@ -61,7 +61,7 @@ namespace LOVA.API.Pages.BoardMember
 
 
 
-        public async Task OnPostGetSelectedPersons()
+        public async Task GetPersons()
         {
             var roles = _roleManager.Roles.Where(a => a.Name == Message.ListType);
 
@@ -142,7 +142,7 @@ namespace LOVA.API.Pages.BoardMember
 
         }
 
-        public void OnPost()
+        public async Task OnPost()
         {
 
             Message.From = "+46723499120";
@@ -150,6 +150,8 @@ namespace LOVA.API.Pages.BoardMember
             var numberConvert = new PhoneNumberConverter();
 
             // var smslist = new List<PremiseContact>();
+
+            await GetPersons();
 
             foreach (var sms in Smslist)
             {
