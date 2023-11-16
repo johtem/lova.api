@@ -1,4 +1,6 @@
-﻿using Microsoft.Azure.Cosmos.Table;
+﻿
+using Azure;
+using Microsoft.Azure.Cosmos.Table;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +20,7 @@ namespace LOVA.API.Models
             PartitionKey = masterNode;
             RowKey = address;
         }
+
 
         public DateTime TimeUp { get; set; }
         public DateTime TimeDown { get; set; }

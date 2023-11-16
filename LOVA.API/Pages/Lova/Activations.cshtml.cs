@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Azure.Data.Tables;
+using Azure;
 using LOVA.API.Extensions;
 using LOVA.API.Models;
 using LOVA.API.Services;
 using LOVA.API.ViewModels;
-using LOVA.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Azure.Cosmos.Table;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using NuGet.Protocol;
 
 namespace LOVA.API.Pages.Lova
 {
@@ -23,39 +25,57 @@ namespace LOVA.API.Pages.Lova
 
         public IEnumerable<DrainTableStorageEntity> qResult { get; set; }
         private readonly LovaDbContext _context;
+        public IConfiguration _configuration { get; }
 
-        public ActivationsModel(LovaDbContext context)
+        private string storageUri { get; set; }
+        private string accountName { get; set; }
+        private string storageAccountKey { get; set; }
+
+        public ActivationsModel(LovaDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
+
+            storageUri = _configuration["TableStorage:StorageUrl"];
+            accountName = _configuration["TableStorage:AccountName"];
+            storageAccountKey = _configuration["TableStorage:StorageAccountKey"];
         }
 
         public async Task OnGet()
         {
+
+            // Construct a new <see cref="TableClient" /> using a <see cref="TableSharedKeyCredential" />.
+            var tableDrainClient = new TableClient(
+                new Uri(storageUri),
+                "Drains",
+                new TableSharedKeyCredential(accountName, storageAccountKey));
+
+            // 
+            var tableResetGridClient = new TableClient(
+                new Uri(storageUri),
+                "ResetGrid",
+                new TableSharedKeyCredential(accountName, storageAccountKey));
+
+
+            ResetGridTableStorageModel resetGridSlinga1 = await TableStorageUtils.RetrieveResetGridModelUsingPointQueryAsync(tableResetGridClient, "slinga", "1");
+            ResetGridTableStorageModel resetGridSlinga2 = await TableStorageUtils.RetrieveResetGridModelUsingPointQueryAsync(tableResetGridClient, "slinga", "2");
+            ResetGridTableStorageModel resetGridSlinga3 = await TableStorageUtils.RetrieveResetGridModelUsingPointQueryAsync(tableResetGridClient, "slinga", "3");
+
             // Create reference an existing table
-            CloudTable table = await TableStorageCommon.CreateTableAsync("Drains");
 
+            //CloudTable table = await TableStorageCommon.CreateTableAsync("Drains");
+            
+            tableDrainClient.CreateIfNotExists();
 
-            // Get reset time from ResetGrid
-            CloudTable tableResetGrid = await TableStorageCommon.CreateTableAsync("ResetGrid");
-
-            ResetGridTableStorageEntity resetGridExistingSlinga1 = new ResetGridTableStorageEntity();
-            ResetGridTableStorageEntity resetGridExistingSlinga2 = new ResetGridTableStorageEntity();
-            ResetGridTableStorageEntity resetGridExistingSlinga3 = new ResetGridTableStorageEntity();
-
-            resetGridExistingSlinga1 = await TableStorageUtils.RetrieveResetGridEntityUsingPointQueryAsync(tableResetGrid, "slinga", "1");
-            resetGridExistingSlinga2 = await TableStorageUtils.RetrieveResetGridEntityUsingPointQueryAsync(tableResetGrid, "slinga", "2");
-            resetGridExistingSlinga3 = await TableStorageUtils.RetrieveResetGridEntityUsingPointQueryAsync(tableResetGrid, "slinga", "3");
-
-            // Get rows newer than that date
-
-            qResult = TableStorageUtils.GetAll(table);
+            //qResult = TableStorageUtils.GetAll(table);
+            Pageable<DrainTableStorageModel> qResult1 = tableDrainClient.Query<DrainTableStorageModel>(maxPerPage: 500);
 
             // Filter only data from resetDate. Valid 2 hours.
             var now = DateTime.Now;
 
-            ViewData["buttonTextSlinga1"] = $"Slinga 1 - Återställd {resetGridExistingSlinga1.ResetDate.ToLocalTime()}"; 
-            ViewData["buttonTextSlinga2"] = $"Slinga 2 - Återställd {resetGridExistingSlinga2.ResetDate.ToLocalTime()}";
-            ViewData["buttonTextSlinga3"] = $"Slinga 3 - Återställd {resetGridExistingSlinga3.ResetDate.ToLocalTime()}";
+            ViewData["buttonTextSlinga1"] = $"Slinga 1 - Återställd {resetGridSlinga1.ResetDate.ToLocalTime()}"; 
+            ViewData["buttonTextSlinga2"] = $"Slinga 2 - Återställd {resetGridSlinga2.ResetDate.ToLocalTime()}";
+            ViewData["buttonTextSlinga3"] = $"Slinga 3 - Återställd {resetGridSlinga3.ResetDate.ToLocalTime()}";
 
             //if (now > resetGridExistingRow.ResetDate.ToLocalTime() && now < resetGridExistingRow.ResetDate.ToLocalTime().AddHours(MyConsts.resetGridWaitTime))
             //{
@@ -63,12 +83,12 @@ namespace LOVA.API.Pages.Lova
             //    ViewData["buttonText"] = "Återställd " + resetGridExistingRow.ResetDate.ToLocalTime().ToString();
             //}
 
-            ViewData["qResult"] = JsonConvert.SerializeObject(qResult);
+            ViewData["qResult"] = JsonConvert.SerializeObject(qResult1);
 
 
             var weekAgo = DateTime.Now.AddDays(-6);
 
-            var data = qResult.Where(a => a.TimeUp <= weekAgo);
+            var data = qResult1.Where(a => a.TimeUp <= weekAgo);
 
 
             ViewData["noActivations"] = JsonConvert.SerializeObject(data);
@@ -117,13 +137,19 @@ namespace LOVA.API.Pages.Lova
 
         public async Task OnGetRemoveColumn(string drain, string apa)
         {
+
+            var tableDrainClient = new TableClient(
+                new Uri(storageUri),
+                "Drains",
+                new TableSharedKeyCredential(accountName, storageAccountKey));
+
             // Create reference an existing table
-            CloudTable table = await TableStorageCommon.CreateTableAsync("Drains");
+            // CloudTable table = await TableStorageCommon.CreateTableAsync("Drains");
             string b = apa;
 
             string a = drain.Substring(0, 1);
             // Get existing data for a specific master_node and address
-            var drainExistingRow = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, a, drain);
+            var drainExistingRow = await TableStorageUtils.RetrieveDrainTableStorageModelUsingPointQueryAsync(tableDrainClient, a, drain);
 
             switch (apa)
             {
@@ -135,7 +161,7 @@ namespace LOVA.API.Pages.Lova
                     break;
             }
 
-            await TableStorageUtils.InsertOrMergeEntityAsync(table, drainExistingRow);
+            await TableStorageUtils.InsertOrMergeModelAsync(tableDrainClient, drainExistingRow);
 
 
             // return "deleted";
@@ -144,13 +170,18 @@ namespace LOVA.API.Pages.Lova
         public async Task OnGetResetGrids(string slinga)
         {
 
-            // Create reference to an existing table
-            CloudTable table = await TableStorageCommon.CreateTableAsync("ResetGrid");
+            var tableResetGridClient = new TableClient(
+                new Uri(storageUri),
+                "ResetGrid",
+                new TableSharedKeyCredential(accountName, storageAccountKey));
 
-            ResetGridTableStorageEntity resetGridExistingRow = new ResetGridTableStorageEntity();
+            // Create reference to an existing table
+            //CloudTable table = await TableStorageCommon.CreateTableAsync("ResetGrid");
+
+            ResetGridTableStorageModel resetGridExistingRow = new ResetGridTableStorageModel();
 
             // Get existing data for a specific master_node and address
-            resetGridExistingRow = await TableStorageUtils.RetrieveResetGridEntityUsingPointQueryAsync(table, "slinga", slinga);
+            resetGridExistingRow = await TableStorageUtils.RetrieveResetGridModelUsingPointQueryAsync(tableResetGridClient, "slinga", slinga);
 
             // Create a new/update record for Azure Table Storage
 
@@ -165,9 +196,9 @@ namespace LOVA.API.Pages.Lova
             //}
 
 
-            ResetGridTableStorageEntity drain = new ResetGridTableStorageEntity("slinga", slinga, now);
+            ResetGridTableStorageModel drain = new ResetGridTableStorageModel("slinga", slinga, now);
 
-            await TableStorageUtils.InsertOrMergeResetGridEntityAsync(table, drain);
+            await TableStorageUtils.InsertOrMergeResetGridModelAsync(tableResetGridClient, drain);
 
             await DeleteRows(slinga);
 
@@ -178,14 +209,19 @@ namespace LOVA.API.Pages.Lova
             try
             {
                 // Create reference to an existing table
-                CloudTable table = await TableStorageCommon.CreateTableAsync("Drains");
+               // TableClient table = await TableStorageCommon.CreateTableAsync("Drains");
 
-                IEnumerable<DrainTableStorageEntity> dResult = table.ExecuteQuery(new TableQuery<DrainTableStorageEntity>()).Where(a => a.PartitionKey == slinga).ToList();
+                var tableDrainClient = new TableClient(
+                new Uri(storageUri),
+                "Drains",
+                new TableSharedKeyCredential(accountName, storageAccountKey));
 
-                foreach (DrainTableStorageEntity d in dResult)
+                IEnumerable<DrainTableStorageModel> dResult = tableDrainClient.Query<DrainTableStorageModel>(ent => ent.PartitionKey == slinga); //ExecuteQuery(new TableQuery<DrainTableStorageModel>()).Where(a => a.PartitionKey == slinga).ToList();
+
+                foreach (DrainTableStorageModel d in dResult)
                 {
-                    var oper = TableOperation.Delete(d);
-                    table.Execute(oper);
+                   // var oper = tableDrainClient.Delete(d);
+                    tableDrainClient.DeleteEntity(d.PartitionKey, d.RowKey);
                 }
             }
             catch
@@ -199,162 +235,10 @@ namespace LOVA.API.Pages.Lova
 
         public async Task OnGetTestKnapp()
         {
-            int master_node = 1;
-            string address = "1O7";
-
-            var drainPatrolViewModel = new LOVA.API.ViewModels.ActivityViewModel
-            {
-                Master_node = master_node,
-                Index = 0,
-                Address = address,
-                Time = DateTime.UtcNow,
-                Active = false
-            };
-
-            // Create reference to an existing table
-            CloudTable table = await TableStorageCommon.CreateTableAsync("Drains");
-
-            // DrainTableStorageEntity drainExistingRow = new DrainTableStorageEntity();
-
-            // Get existing data for a specific master_node and address
-            DrainTableStorageEntity drainExistingRow = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, master_node.ToString(), address);
-
-            if (drainExistingRow == null)
-            {
-                drainExistingRow = new DrainTableStorageEntity(master_node.ToString(), address);
-                drainExistingRow.Timestamp = DateTime.UtcNow;
-                drainExistingRow.TimeUp = DateTime.UtcNow.AddSeconds(-5);
-                drainExistingRow.TimeDown = DateTime.UtcNow.AddSeconds(-4);
-                drainExistingRow.IsActive = false;
-                drainExistingRow.AverageActivity = 0;
-                drainExistingRow.AverageRest = 0;
-                drainExistingRow.DailyCount = 0;
-                drainExistingRow.HourlyCount = 0;
-
-                await TableStorageUtils.InsertOrMergeEntityAsync(table, drainExistingRow);
-
-
-            }
-            var apa = drainExistingRow;
-
-
-            // Create a new/update record for Azure Table Storage
-            DrainTableStorageEntity drain = new DrainTableStorageEntity(drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
-
-            // Check if address is actice
-            if (drainPatrolViewModel.Active)
-            {
-                // Store data in Azure nosql table if Active == true
-                drain.TimeUp = drainPatrolViewModel.Time.ToLocalTime();
-                drain.TimeDown = drainExistingRow.TimeDown.ToLocalTime();
-                drain.IsActive = drainPatrolViewModel.Active;
-                drain.AverageActivity = drainExistingRow.AverageActivity;
-
-
-                // Adjust the average rest time
-                var diff = (drainPatrolViewModel.Time - drainExistingRow.TimeDown).TotalSeconds;
-                if (drainExistingRow.AverageRest == 0)
-                {
-                    drain.AverageRest = (int)diff;
-                }
-                else
-                {
-                    drain.AverageRest = (int)((drainExistingRow.AverageRest + diff) / 2);
-                }
-
-                // Add hourly counter if within same hour otherwise save count to Azure SQL table AcitvityCounts    
-                if (DateExtensions.NewHour(drainPatrolViewModel.Time.ToLocalTime(), drainExistingRow.TimeUp.ToLocalTime()))
-                {
-                    // New hour reset counter to one
-                    drain.HourlyCount = 1;
-
-                    if (DateExtensions.IsNewDay(drainPatrolViewModel.Time.ToLocalTime(), drainExistingRow.TimeUp.ToLocalTime()))
-                    {
-                        drain.DailyCount = 1;
-                    }
-                    else
-                    {
-                        drain.DailyCount = drain.DailyCount + 1;
-                    }
-
-                    var averageCount = drainExistingRow.AverageActivity;
-
-                    // Save counter
-                    ActivityCount ac = new ActivityCount
-                    {
-                        Address = drainExistingRow.RowKey,
-                        CountActivity = drainExistingRow.HourlyCount,
-                        Hourly = DateExtensions.RemoveMinutesAndSeconds(convertToLocalTimeZone(drainExistingRow.TimeUp)),
-                        AverageCount = averageCount
-                    };
-
-
-                    drain.AverageActivity = (averageCount + drainExistingRow.HourlyCount) / 2;
-
-                    await TableStorageUtils.InsertOrMergeEntityAsync(table, drain);
-
-                    _context.ActivityCounts.Add(ac);
-                    await _context.SaveChangesAsync();
-
-                }
-                else
-                {
-                    // withing the same hour add one to existing sum.
-                    drain.HourlyCount = drainExistingRow.HourlyCount + 1;
-                    drain.DailyCount = drainExistingRow.DailyCount + 1;
-
-
-
-                    // Save updated to the Azure nosql table 
-                    await TableStorageUtils.InsertOrMergeEntityAsync(table, drain);
-
-                }
-            }
-            else
-            {
-                // Get data from Azure table and store data in one row on ActivityPerRow
-
-                // drain = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
-                drain.TimeUp = drainExistingRow.TimeUp.ToLocalTime();
-                drain.TimeDown = drainPatrolViewModel.Time.ToLocalTime();
-                drain.IsActive = drainPatrolViewModel.Active;
-                drain.HourlyCount = drainExistingRow.HourlyCount;
-                drain.AverageRest = drainExistingRow.AverageRest;
-
-                var diff = (drain.TimeDown - drain.TimeUp).TotalSeconds;
-                if (drainExistingRow.AverageActivity == 0)
-                {
-                    drain.AverageActivity = (int)diff;
-                }
-                else
-                {
-                    drain.AverageActivity = (int)((drainExistingRow.AverageActivity + diff) / 2);
-                }
-
-                await TableStorageUtils.InsertOrMergeEntityAsync(table, drain);
-
-                bool isGroup = false;
-
-                if (drain.RowKey.Contains("7") || drain.RowKey.Contains("8"))
-                {
-                    isGroup = true;
-                }
-
-                var perRowData = new ActivityPerRow
-                {
-                    Address = drain.RowKey,
-                    TimeUp = drain.TimeUp,
-                    TimeDown = drain.TimeDown,
-                    TimeDiff = (drain.TimeDown - drain.TimeUp).TotalMilliseconds,
-                    //(drain.TimeDown - drain.TimeUp.AddHours(1)).TotalMilliseconds,
-                    IsGroupAddress = isGroup
-                };
-
-
-                _context.ActivityPerRows.Add(perRowData);
-                await _context.SaveChangesAsync();
-
-            }
+            
+            string aa = _configuration["TableStorage:StorageUrl"];
+            
+           
 
         }
 

@@ -1,5 +1,6 @@
 ﻿using LOVA.API.Services;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Table;
 using System;
 using System.Collections.Generic;

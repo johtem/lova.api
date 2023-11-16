@@ -10,12 +10,14 @@ using LOVA.API.Services;
 using LOVA.API.ViewModels;
 using LOVA.API.Filter;
 using System.ComponentModel;
-using Microsoft.Azure.Cosmos.Table;
+using Microsoft.Azure.Cosmos;
 using LOVA.API.Extensions;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using NPOI.SS.Formula.Functions;
 using LOVA.API.Hubs;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Configuration;
+using Azure.Data.Tables;
 
 namespace LOVA.API.Controllers
 {
@@ -29,12 +31,22 @@ namespace LOVA.API.Controllers
         private readonly LovaDbContext _context;
         private readonly IEmailService _mailService;
         private readonly IHubContext<ActivationHub> _hub;
+        public IConfiguration _configuration { get; }
 
-        public DrainPatrolsController(LovaDbContext context, IEmailService mailService, IHubContext<ActivationHub> hub)
+        private string storageUri { get; set; }
+        private string accountName { get; set; }
+        private string storageAccountKey { get; set; }
+
+        public DrainPatrolsController(LovaDbContext context, IEmailService mailService, IHubContext<ActivationHub> hub, IConfiguration configuration)
         {
             _context = context;
             _mailService = mailService;
             _hub = hub;
+            _configuration = configuration;
+
+            storageUri = _configuration["TableStorage:StorageUrl"];
+            accountName = _configuration["TableStorage:AccountName"];
+            storageAccountKey = _configuration["TableStorage:StorageAccountKey"];
         }
 
         //// GET: api/DrainPatrols
@@ -201,20 +213,20 @@ namespace LOVA.API.Controllers
         private async Task SaveToTableStorage(ActivityViewModel drainPatrolViewModel)
         {
 
-            // Create reference to an existing table
-            CloudTable table = await TableStorageCommon.CreateTableAsync("Drains");
-
-            // DrainTableStorageEntity drainExistingRow = new DrainTableStorageEntity();
+            var tableDrainClient = new TableClient(
+                new Uri(storageUri),
+                "Drains",
+                new TableSharedKeyCredential(accountName, storageAccountKey));
 
             // Get existing data for a specific master_node and address
-            DrainTableStorageEntity drainExistingRow = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
-          
+            DrainTableStorageModel drainExistingRow = await TableStorageUtils.RetrieveDrainTableStorageModelUsingPointQueryAsync(tableDrainClient, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
 
-           
             // Verify if address in memory table
             if (drainExistingRow == null)
             {
-                drainExistingRow = new DrainTableStorageEntity(drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
+                drainExistingRow = new DrainTableStorageModel();
+                drainExistingRow.PartitionKey = drainPatrolViewModel.Master_node.ToString();
+                drainExistingRow.RowKey = drainPatrolViewModel.Address;
                 drainExistingRow.Timestamp = DateTime.UtcNow;
                 drainExistingRow.TimeUp = DateTime.UtcNow.AddMinutes(-5);
                 drainExistingRow.TimeDown = DateTime.UtcNow.AddMinutes(-4);
@@ -224,11 +236,13 @@ namespace LOVA.API.Controllers
                 drainExistingRow.DailyCount = 0;
                 drainExistingRow.HourlyCount = 0;
 
-                await TableStorageUtils.InsertOrMergeEntityAsync(table, drainExistingRow);
+                await TableStorageUtils.InsertOrMergeModelAsync(tableDrainClient, drainExistingRow);
             }
 
             // Create a new/update record for Azure Table Storage
-            DrainTableStorageEntity drain = new DrainTableStorageEntity(drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
+            DrainTableStorageModel drain = new DrainTableStorageModel();
+            drain.PartitionKey = drainPatrolViewModel.Master_node.ToString();
+            drain.RowKey = drainPatrolViewModel.Address;
 
             // Check if address is actice
             if (drainPatrolViewModel.Active)
@@ -280,7 +294,7 @@ namespace LOVA.API.Controllers
 
                     drain.AverageActivity = (averageCount + drainExistingRow.HourlyCount) / 2;
 
-                    await TableStorageUtils.InsertOrMergeEntityAsync(table, drain);
+                    await TableStorageUtils.InsertOrMergeModelAsync(tableDrainClient, drain);
 
                     _context.ActivityCounts.Add(ac);
                     await _context.SaveChangesAsync();
@@ -295,7 +309,7 @@ namespace LOVA.API.Controllers
 
 
                     // Save updated to the Azure nosql table 
-                    await TableStorageUtils.InsertOrMergeEntityAsync(table, drain);
+                    await TableStorageUtils.InsertOrMergeModelAsync(tableDrainClient, drain);
 
                 }
             }
@@ -320,7 +334,7 @@ namespace LOVA.API.Controllers
                     drain.AverageActivity = (int)((drainExistingRow.AverageActivity + diff) / 2);
                 }
 
-                await TableStorageUtils.InsertOrMergeEntityAsync(table, drain);
+                await TableStorageUtils.InsertOrMergeModelAsync(tableDrainClient, drain);
 
                 bool isGroup = false;
 

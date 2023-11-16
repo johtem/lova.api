@@ -1,4 +1,7 @@
-﻿using LOVA.API.Models;
+﻿using Azure;
+using Azure.Data.Tables;
+using LOVA.API.Models;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -10,8 +13,46 @@ namespace LOVA.API.Services
 {
     public class TableStorageUtils
     {
-  
-        
+
+        public IConfiguration _configuration { get; }
+        public TableStorageUtils(IConfiguration config)
+        {
+            _configuration = config;
+
+        }
+
+        public static async Task<DrainTableStorageModel> RetrieveDrainTableStorageModelUsingPointQueryAsync(TableClient table, string partitionKey, string rowKey)
+        {
+            try
+            {
+
+                // Create the table in the service.
+                table.CreateIfNotExists();
+
+                Pageable<DrainTableStorageModel> queryResultsLINQ = table.Query<DrainTableStorageModel>(ent => ent.RowKey == rowKey && ent.PartitionKey == partitionKey);
+
+
+                //if (queryResultsLINQ != null)
+                //{
+                //    Console.WriteLine("\t{0}\t{1}\t{2}", customer.PartitionKey, customer.RowKey, customer.ResetDate);
+                //}
+
+                //if (result.RequestCharge.HasValue)
+                //{
+                //    Console.WriteLine("Request Charge of Retrieve Operation: " + result.RequestCharge);
+                //}
+
+                return queryResultsLINQ.First();
+            }
+            catch (StorageException e)
+            {
+                Console.WriteLine(e.Message);
+                Console.ReadLine();
+                throw;
+            }
+        }
+
+
         //  <QueryData>
         public static async Task<DrainTableStorageEntity> RetrieveEntityUsingPointQueryAsync(CloudTable table, string partitionKey, string rowKey)
         {
@@ -40,8 +81,38 @@ namespace LOVA.API.Services
             }
         }
 
+        public static async Task<ResetGridTableStorageModel> RetrieveResetGridModelUsingPointQueryAsync(TableClient table, string partitionKey, string rowKey)
+        {
+            try
+            {
 
-        public static async Task<ResetGridTableStorageEntity> RetrieveResetGridEntityUsingPointQueryAsync(CloudTable table, string partitionKey, string rowKey)
+                // Create the table in the service.
+                table.CreateIfNotExists();
+
+                Pageable<ResetGridTableStorageModel> queryResultsLINQ = table.Query<ResetGridTableStorageModel>(ent => ent.RowKey == rowKey && ent.PartitionKey == partitionKey);
+
+               
+                //if (queryResultsLINQ != null)
+                //{
+                //    Console.WriteLine("\t{0}\t{1}\t{2}", customer.PartitionKey, customer.RowKey, customer.ResetDate);
+                //}
+
+                //if (result.RequestCharge.HasValue)
+                //{
+                //    Console.WriteLine("Request Charge of Retrieve Operation: " + result.RequestCharge);
+                //}
+
+                return queryResultsLINQ.First();
+            }
+            catch (StorageException e)
+            {
+                Console.WriteLine(e.Message);
+                Console.ReadLine();
+                throw;
+            }
+        }
+
+            public static async Task<ResetGridTableStorageEntity> RetrieveResetGridEntityUsingPointQueryAsync(CloudTable table, string partitionKey, string rowKey)
         {
             try
             {
@@ -80,7 +151,7 @@ namespace LOVA.API.Services
 
 
         //  <InsertItem>
-        public static async Task<DrainTableStorageEntity> InsertOrMergeEntityAsync(CloudTable table, DrainTableStorageEntity entity)
+        public static async Task<DrainTableStorageModel> InsertOrMergeModelAsync(TableClient table, DrainTableStorageModel entity)
         {
             if (entity == null)
             {
@@ -89,19 +160,22 @@ namespace LOVA.API.Services
 
             try
             {
+                // Since no UpdateMode was passed, the request will default to Merge.
+                var result = await table.UpdateEntityAsync(entity, entity.ETag);
+
                 // Create the InsertOrReplace table operation
-                TableOperation insertOrMergeOperation = TableOperation.InsertOrMerge(entity);
+                //TableOperation insertOrMergeOperation = TableOperation.InsertOrMerge(entity);
 
-                // Execute the operation.
-                TableResult result = await table.ExecuteAsync(insertOrMergeOperation);
-                DrainTableStorageEntity insertedCustomer = result.Result as DrainTableStorageEntity;
+                //// Execute the operation.
+                //TableResult result = await table.ExecuteAsync(insertOrMergeOperation);
+                // DrainTableStorageModel insertedCustomer = result.Content. as DrainTableStorageEntity;
 
-                if (result.RequestCharge.HasValue)
-                {
-                    Console.WriteLine("Request Charge of InsertOrMerge Operation: " + result.RequestCharge);
-                }
+                //if (result.RequestCharge.HasValue)
+                //{
+                //    Console.WriteLine("Request Charge of InsertOrMerge Operation: " + result.RequestCharge);
+                //}
 
-                return insertedCustomer;
+                return entity;
             }
             catch (StorageException e)
             {
@@ -113,7 +187,7 @@ namespace LOVA.API.Services
         //  </InsertItem>
 
 
-        public static async Task<ResetGridTableStorageEntity> InsertOrMergeResetGridEntityAsync(CloudTable table, ResetGridTableStorageEntity entity)
+        public static async Task<ResetGridTableStorageModel> InsertOrMergeResetGridModelAsync(TableClient table, ResetGridTableStorageModel entity)
         {
             if (entity == null)
             {
@@ -122,19 +196,18 @@ namespace LOVA.API.Services
 
             try
             {
-                // Create the InsertOrReplace table operation
-                TableOperation insertOrMergeOperation = TableOperation.InsertOrMerge(entity);
+                var result = await table.UpdateEntityAsync(entity, entity.ETag);
 
-                // Execute the operation.
-                TableResult result = await table.ExecuteAsync(insertOrMergeOperation);
-                ResetGridTableStorageEntity insertedCustomer = result.Result as ResetGridTableStorageEntity;
+                //// Execute the operation.
+                //TableResult result = await table.ExecuteAsync(insertOrMergeOperation);
+                //ResetGridTableStorageEntity insertedCustomer = result.Result as ResetGridTableStorageEntity;
 
-                if (result.RequestCharge.HasValue)
-                {
-                    Console.WriteLine("Request Charge of InsertOrMerge Operation: " + result.RequestCharge);
-                }
+                //if (result.RequestCharge.HasValue)
+                //{
+                //    Console.WriteLine("Request Charge of InsertOrMerge Operation: " + result.RequestCharge);
+                //}
 
-                return insertedCustomer;
+                return entity;
             }
             catch (StorageException e)
             {
