@@ -67,11 +67,7 @@ namespace LOVA.API.Pages.Lova
             
             tableDrainClient.CreateIfNotExists();
 
-            //qResult = TableStorageUtils.GetAll(table);
-            Pageable<DrainTableStorageModel> qResult1 = tableDrainClient.Query<DrainTableStorageModel>(maxPerPage: 500);
-
-            // Filter only data from resetDate. Valid 2 hours.
-            var now = DateTime.Now;
+            
 
             ViewData["buttonTextSlinga1"] = $"Slinga 1 - Återställd {resetGridSlinga1.ResetDate.ToLocalTime()}"; 
             ViewData["buttonTextSlinga2"] = $"Slinga 2 - Återställd {resetGridSlinga2.ResetDate.ToLocalTime()}";
@@ -82,6 +78,12 @@ namespace LOVA.API.Pages.Lova
             //    // qResult = table.ExecuteQuery(new TableQuery<DrainTableStorageEntity>()).Where(a => a.TimeUp.ToLocalTime() > resetGridExistingRow.ResetDate.ToLocalTime()).ToList();
             //    ViewData["buttonText"] = "Återställd " + resetGridExistingRow.ResetDate.ToLocalTime().ToString();
             //}
+
+            //qResult = TableStorageUtils.GetAll(table);
+            Pageable<DrainTableStorageModel> qResult1 = tableDrainClient.Query<DrainTableStorageModel>(maxPerPage: 500);
+
+            // Filter only data from resetDate. Valid 2 hours.
+            var now = DateTime.Now;
 
             ViewData["qResult"] = JsonConvert.SerializeObject(qResult1);
 
@@ -185,7 +187,8 @@ namespace LOVA.API.Pages.Lova
 
             // Create a new/update record for Azure Table Storage
 
-            var now = DateTime.Now;
+            var n = DateTime.Now;
+            var now = DateTime.SpecifyKind(n, DateTimeKind.Utc);
             //if (now > resetGridExistingRow.ResetDate.ToLocalTime() && now < resetGridExistingRow.ResetDate.ToLocalTime().AddHours(MyConsts.resetGridWaitTime))
             //{
             //    now = now.AddDays(-1);
@@ -216,7 +219,7 @@ namespace LOVA.API.Pages.Lova
                 "Drains",
                 new TableSharedKeyCredential(accountName, storageAccountKey));
 
-                IEnumerable<DrainTableStorageModel> dResult = tableDrainClient.Query<DrainTableStorageModel>(ent => ent.PartitionKey == slinga); //ExecuteQuery(new TableQuery<DrainTableStorageModel>()).Where(a => a.PartitionKey == slinga).ToList();
+                IEnumerable<DrainTableStorageModel> dResult = tableDrainClient.Query<DrainTableStorageModel>(filter: $"PartitionKey eq '{slinga}'"); //ExecuteQuery(new TableQuery<DrainTableStorageModel>()).Where(a => a.PartitionKey == slinga).ToList();
 
                 foreach (DrainTableStorageModel d in dResult)
                 {
@@ -235,10 +238,164 @@ namespace LOVA.API.Pages.Lova
 
         public async Task OnGetTestKnapp()
         {
-            
-            string aa = _configuration["TableStorage:StorageUrl"];
-            
-           
+            ActivityViewModel drainPatrolViewModel = new ActivityViewModel();
+            drainPatrolViewModel.Address = "2G2";
+            drainPatrolViewModel.Active = false;
+            drainPatrolViewModel.Master_node = 2;
+            DateTime saveNow = DateTime.Now;
+            drainPatrolViewModel.Time = DateTime.SpecifyKind(saveNow, DateTimeKind.Utc);
+
+            string rowKey = drainPatrolViewModel.Address;
+
+            var tableDrainClient = new TableClient(
+                new Uri(storageUri),
+                "Drains",
+                new TableSharedKeyCredential(accountName, storageAccountKey));
+
+            // Get existing data for a specific master_node and address
+            DrainTableStorageModel drainExistingRow = await TableStorageUtils.RetrieveDrainTableStorageModelUsingPointQueryAsync(tableDrainClient, "2", rowKey);
+
+            // Verify if address in memory table
+            if (drainExistingRow == null)
+            {
+                drainExistingRow = new DrainTableStorageModel();
+                drainExistingRow.PartitionKey = "2";
+                drainExistingRow.RowKey = rowKey;
+                drainExistingRow.Timestamp = DateTime.UtcNow;
+                drainExistingRow.TimeUp = DateTime.UtcNow.AddMinutes(-5);
+                drainExistingRow.TimeDown = DateTime.UtcNow.AddMinutes(-4);
+                drainExistingRow.IsActive = false;
+                drainExistingRow.AverageActivity = 0;
+                drainExistingRow.AverageRest = 0;
+                drainExistingRow.DailyCount = 0;
+                drainExistingRow.HourlyCount = 0;
+
+                await TableStorageUtils.InsertOrMergeModelAsync(tableDrainClient, drainExistingRow);
+            }
+
+            // Create a new/update record for Azure Table Storage
+            DrainTableStorageModel drain = new DrainTableStorageModel();
+            drain.PartitionKey = drainPatrolViewModel.Master_node.ToString();
+            drain.RowKey = drainPatrolViewModel.Address;
+            // drain.Timestamp = DateTime.SpecifyKind(saveNow, DateTimeKind.Utc);
+
+            // Check if address is actice
+            if (drainPatrolViewModel.Active)
+            {
+                // Store data in Azure nosql table if Active == true
+                drain.TimeUp = DateTime.SpecifyKind(drainPatrolViewModel.Time, DateTimeKind.Utc);
+                drain.TimeDown = DateTime.SpecifyKind(drainExistingRow.TimeDown, DateTimeKind.Utc);
+                //drain.TimeDown = drainExistingRow.TimeDown;
+                drain.IsActive = drainPatrolViewModel.Active;
+                drain.AverageActivity = drainExistingRow.AverageActivity;
+
+
+                // Adjust the average rest time
+                var diff = (drainPatrolViewModel.Time - drainExistingRow.TimeDown).TotalSeconds;
+                if (drainExistingRow.AverageRest == 0)
+                {
+                    drain.AverageRest = (int)diff;
+                }
+                else
+                {
+                    drain.AverageRest = (int)((drainExistingRow.AverageRest + diff) / 2);
+                }
+
+                // Add hourly counter if within same hour otherwise save count to Azure SQL table AcitvityCounts    
+                if (DateExtensions.NewHour(drainPatrolViewModel.Time.ToLocalTime(), drainExistingRow.TimeUp.ToLocalTime()))
+                {
+                    // New hour reset counter to one
+                    drain.HourlyCount = 1;
+
+                    if (DateExtensions.IsNewDay(drainPatrolViewModel.Time.ToLocalTime(), drainExistingRow.TimeUp.ToLocalTime()))
+                    {
+                        drain.DailyCount = 1;
+                    }
+                    else
+                    {
+                        drain.DailyCount = drain.DailyCount + 1;
+                    }
+
+                    var averageCount = drainExistingRow.AverageActivity;
+
+                    // Save counter
+                    ActivityCount ac = new ActivityCount
+                    {
+                        Address = drainExistingRow.RowKey,
+                        CountActivity = drainExistingRow.HourlyCount,
+                        Hourly = DateExtensions.RemoveMinutesAndSeconds(convertToLocalTimeZone(drainExistingRow.TimeUp)),
+                        AverageCount = averageCount
+                    };
+
+
+                    drain.AverageActivity = (averageCount + drainExistingRow.HourlyCount) / 2;
+
+                    await TableStorageUtils.InsertOrMergeModelAsync(tableDrainClient, drain);
+
+                    _context.ActivityCounts.Add(ac);
+                    await _context.SaveChangesAsync();
+
+                }
+                else
+                {
+                    // withing the same hour add one to existing sum.
+                    drain.HourlyCount = drainExistingRow.HourlyCount + 1;
+                    drain.DailyCount = drainExistingRow.DailyCount + 1;
+
+
+
+                    // Save updated to the Azure nosql table 
+                    await TableStorageUtils.InsertOrMergeModelAsync(tableDrainClient, drain);
+
+                }
+            }
+            else
+            {
+                // Get data from Azure table and store data in one row on ActivityPerRow
+
+                // drain = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
+                drain.TimeUp = DateTime.SpecifyKind(drainExistingRow.TimeUp, DateTimeKind.Utc);
+                drain.TimeDown = DateTime.SpecifyKind(drainPatrolViewModel.Time, DateTimeKind.Utc);
+                drain.IsActive = drainPatrolViewModel.Active;
+                drain.HourlyCount = drainExistingRow.HourlyCount;
+                drain.AverageRest = drainExistingRow.AverageRest;
+
+                var diff = (drain.TimeDown - drain.TimeUp).TotalSeconds;
+                if (drainExistingRow.AverageActivity == 0)
+                {
+                    drain.AverageActivity = (int)diff;
+                }
+                else
+                {
+                    drain.AverageActivity = (int)((drainExistingRow.AverageActivity + diff) / 2);
+                }
+
+                await TableStorageUtils.InsertOrMergeModelAsync(tableDrainClient, drain);
+
+                bool isGroup = false;
+
+                if (drain.RowKey.Contains("7") || drain.RowKey.Contains("8"))
+                {
+                    isGroup = true;
+                }
+
+                var perRowData = new ActivityPerRow
+                {
+                    Address = drain.RowKey,
+                    TimeUp = drain.TimeUp,
+                    TimeDown = drain.TimeDown,
+                    TimeDiff = (drain.TimeDown - drain.TimeUp).TotalMilliseconds,
+                    //(drain.TimeDown - drain.TimeUp.AddHours(1)).TotalMilliseconds,
+                    IsGroupAddress = isGroup
+                };
+
+
+                _context.ActivityPerRows.Add(perRowData);
+                await _context.SaveChangesAsync();
+
+            }
+
+
 
         }
 

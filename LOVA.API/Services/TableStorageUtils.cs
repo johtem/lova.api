@@ -29,13 +29,15 @@ namespace LOVA.API.Services
                 // Create the table in the service.
                 table.CreateIfNotExists();
 
-                Pageable<DrainTableStorageModel> queryResultsLINQ = table.Query<DrainTableStorageModel>(ent => ent.RowKey == rowKey && ent.PartitionKey == partitionKey);
+                //Pageable<DrainTableStorageModel> queryResultsLINQ = table.Query<DrainTableStorageModel>(ent => ent.RowKey == rowKey && ent.PartitionKey == partitionKey);
+                Pageable<DrainTableStorageModel> queryResultsLINQ = table.Query<DrainTableStorageModel>(filter: $"RowKey eq '{rowKey}'");
+                
 
-
-                //if (queryResultsLINQ != null)
-                //{
-                //    Console.WriteLine("\t{0}\t{1}\t{2}", customer.PartitionKey, customer.RowKey, customer.ResetDate);
-                //}
+                if (!queryResultsLINQ.Any())
+                {
+                    Console.WriteLine("\t{0}\t{1}", partitionKey, rowKey);
+                    return null;
+                }
 
                 //if (result.RequestCharge.HasValue)
                 //{
@@ -161,7 +163,7 @@ namespace LOVA.API.Services
             try
             {
                 // Since no UpdateMode was passed, the request will default to Merge.
-                var result = await table.UpdateEntityAsync(entity, entity.ETag);
+                var result = await table.UpsertEntityAsync(entity);
 
                 // Create the InsertOrReplace table operation
                 //TableOperation insertOrMergeOperation = TableOperation.InsertOrMerge(entity);
@@ -196,7 +198,7 @@ namespace LOVA.API.Services
 
             try
             {
-                var result = await table.UpdateEntityAsync(entity, entity.ETag);
+                var result = await table.UpsertEntityAsync(entity);
 
                 //// Execute the operation.
                 //TableResult result = await table.ExecuteAsync(insertOrMergeOperation);

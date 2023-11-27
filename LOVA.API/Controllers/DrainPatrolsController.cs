@@ -248,8 +248,8 @@ namespace LOVA.API.Controllers
             if (drainPatrolViewModel.Active)
             {
                 // Store data in Azure nosql table if Active == true
-                drain.TimeUp = drainPatrolViewModel.Time.ToLocalTime();
-                drain.TimeDown = drainExistingRow.TimeDown.ToLocalTime();
+                drain.TimeUp = DateTime.SpecifyKind(drainPatrolViewModel.Time, DateTimeKind.Utc);
+                drain.TimeDown = DateTime.SpecifyKind(drainExistingRow.TimeDown, DateTimeKind.Utc);
                 drain.IsActive = drainPatrolViewModel.Active;
                 drain.AverageActivity = drainExistingRow.AverageActivity;
 
@@ -318,8 +318,8 @@ namespace LOVA.API.Controllers
                 // Get data from Azure table and store data in one row on ActivityPerRow
 
                 // drain = await TableStorageUtils.RetrieveEntityUsingPointQueryAsync(table, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
-                drain.TimeUp = drainExistingRow.TimeUp.ToLocalTime();
-                drain.TimeDown = drainPatrolViewModel.Time.ToLocalTime();
+                drain.TimeUp = DateTime.SpecifyKind(drainExistingRow.TimeUp, DateTimeKind.Utc);
+                drain.TimeDown = DateTime.SpecifyKind(drainPatrolViewModel.Time, DateTimeKind.Utc);
                 drain.IsActive = drainPatrolViewModel.Active;
                 drain.HourlyCount = drainExistingRow.HourlyCount;
                 drain.AverageRest = drainExistingRow.AverageRest;
@@ -346,8 +346,8 @@ namespace LOVA.API.Controllers
                 var perRowData = new ActivityPerRow
                 {
                     Address = drain.RowKey,
-                    TimeUp = drain.TimeUp,
-                    TimeDown = drain.TimeDown,
+                    TimeUp = DateTime.SpecifyKind(drain.TimeUp, DateTimeKind.Utc),
+                    TimeDown = DateTime.SpecifyKind(drain.TimeDown, DateTimeKind.Utc),
                     TimeDiff = (drain.TimeDown - drain.TimeUp).TotalMilliseconds,
                     //(drain.TimeDown - drain.TimeUp.AddHours(1)).TotalMilliseconds,
                     IsGroupAddress = isGroup
