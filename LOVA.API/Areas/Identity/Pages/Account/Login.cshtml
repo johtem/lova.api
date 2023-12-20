@@ -7,50 +7,57 @@
 
 
 
-<div class="container">
+
     <div class="row mt-5" style="height:80vh;">
-        <div class="card mx-auto my-auto" style="max-width: 30rem;min-height:10rem;">
+        <div class="col-4">
+
+        </div>
+    <div class="col-4">
+        <div class="card">
             <div class="card-header">
                 @ViewData["Title"]
             </div>
-            <div class="card-body mt-5">
-                <section>
-                    <form id="account" method="post">
+            <div class="card-body">
 
-                        <div asp-validation-summary="All" class="text-danger"></div>
-                        <div class="form-group">
-                            <label asp-for="Input.Email">Användarnamn</label>
-                            <input asp-for="Input.Email" class="form-control" />
-                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                <form id="account" method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Input.Email">Användarnamn</label>
+                        <input asp-for="Input.Email" class="form-control" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Password">Lösenord</label>
+                        <input asp-for="Input.Password" class="form-control" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label asp-for="Input.RememberMe">
+                                <input asp-for="Input.RememberMe" />
+                                @Html.DisplayNameFor(m => m.Input.RememberMe)
+                            </label>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="Input.Password">Lösenord</label>
-                            <input asp-for="Input.Password" class="form-control" />
-                            <span asp-validation-for="Input.Password" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <div class="checkbox">
-                                <label asp-for="Input.RememberMe">
-                                    <input asp-for="Input.RememberMe" />
-                                    @Html.DisplayNameFor(m => m.Input.RememberMe)
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group mt-5">
-                            <button type="submit" class="btn btn-primary">Logga in</button>
-                        </div>
-@*                        <div class="form-group">
-                            <p>
-                                <a id="forgot-password" asp-page="./ForgotPassword">Glömt lösenord?</a>
-                            </p>
+                    </div>
+                    <div class="form-group mt-5">
+                        <button type="submit" class="btn btn-primary">Logga in</button>
+                    </div>
+                    @*                        <div class="form-group">
+                    <p>
+                    <a id="forgot-password" asp-page="./ForgotPassword">Glömt lösenord?</a>
+                    </p>
 
-                        </div>*@
-                    </form>
-                </section>
+                    </div>*@
+                </form>
+
             </div>
         </div>
     </div>
-</div>
+    <div class="col-4">
+    </div>
+
+        
+    </div>
 
 
 

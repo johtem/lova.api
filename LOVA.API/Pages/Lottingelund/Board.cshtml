@@ -45,14 +45,14 @@
                     </a>
                 </div>
                 <div class="card-body">
-                    <h4 class="card-title">@Model.Kansli.Name</h4>
-                    <h6 class="card-category text-gray">Kanslichef</h6>
+                    <h4 class="card-title">@Model.Vag.Name</h4>
+                    <h6 class="card-category text-gray">Sekreterare & Väg ansvarig</h6>
                     <div class="card-text offset-1 mt-4">
                         <div class="row">
                             <i class="fa fa-phone mr-2" aria-hidden="true"></i>
-                            @Model.Kansli.Phone
+                            @Model.Vag.Phone
                             <i class="fa fa-envelope mr-2 ml-3" aria-hidden="false"></i>
-                            <a href="mailto:@Model.Kansli.Email" class="mb-1">@Model.Kansli.Email</a>
+                            <a href="mailto:@Model.Vag.Email" class="mb-1">@Model.Vag.Email</a>
                         </div>
                     </div>
 
@@ -62,7 +62,7 @@
 
     </div>
     <div class="row mt-2">
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="card card-profile text-center col-12">
                 <div class="card-avatar">
                     <a href="javascript:;">
@@ -83,8 +83,9 @@
 
                 </div>
             </div>
+            
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="card card-profile text-center col-12">
                 <div class="card-avatar">
                     <a href="javascript:;">
@@ -106,29 +107,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card card-profile text-center col-12">
-                <div class="card-avatar">
-                    <a href="javascript:;">
-                        <img class="img" src="~/Images/BoardMember/nopic.png" />
-                    </a>
-                </div>
-                <div class="card-body">
-                    <h4 class="card-title">@Model.Vag.Name</h4>
-                    <h6 class="card-category text-gray">Sekreterare & Väg ansvarig</h6>
-                    <div class="card-text offset-1 mt-4">
-                        <div class="row">
-                            <i class="fa fa-phone mr-2" aria-hidden="true"></i>
-                            @Model.Vag.Phone
-                            <i class="fa fa-envelope mr-2 ml-3" aria-hidden="false"></i>
-                            <a href="mailto:@Model.Vag.Email" class="mb-1">@Model.Vag.Email</a>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
+        
+        <div class="col-md-4">
             <div class="card card-profile text-center col-12">
                 <div class="card-avatar">
                     <a href="javascript:;">

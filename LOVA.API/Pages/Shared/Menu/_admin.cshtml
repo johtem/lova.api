@@ -57,7 +57,6 @@
                         <a class="nav-link" href="#" >Akuellt</a>
                         <ul>
                             <li><a class="nav-link" href="/Aktuellt/Dogs" >Hundar</a></li>
-                            <li><a class="nav-link" href="/Aktuellt/Dogs" >Hundar</a></li>
                             <li><a class="nav-link" href="/Aktuellt/EnviromentFunnel" >Miljötratt</a></li>
                             <li><a class="nav-link" href="/Aktuellt/WaterShortage" >Vattenbrist</a></li>
                             <li><a class="nav-link" href="/Aktuellt/Graffiti" >Anmäl klotter</a></li>
@@ -90,7 +89,6 @@
                 <a class="nav-link" href="" >Uthyrning</a>
                 <ul>
                     <li><a class="nav-link" href="/Rental/Workingplatform" >Byggställning</a></li>
-                    <li><a class="nav-link" href="/Rental/Kajak" >Kajak</a></li>
                     <li><a class="nav-link" href="/Rental/Party" >Party</a></li>
                     <li><a class="nav-link" href="/Rental/Trailer" >Släpvagn</a></li>
                 </ul>
@@ -188,11 +186,13 @@
                             <li><a class="nav-link" href="/Administration/Mail/List">E-post prenumeration</a></li>
                             <li><a class="nav-link" href="/User/ProfileIndex">Fastighetens profil</a></li>
                             <li>
-                                <!--<a class="nav-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">Logga ut</a> -->
-
+                                <!--
+                                <a class="nav-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">Logga ut</a>
+                                -->
                                  <form method="post" id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-                                    <button id="logout" type="submit" class="nav-link btn btn-link text-dark " style="font-size: 12px;">Logga ut</button>
+                                    <button id="logout" type="submit" class="ps-4 pt-2 nav-link btn btn-link text-dark " style="font-size: 12px;">Logga ut</button>              
                                 </form>
+                                  
                             </li>
                         </ul>
                     </li>
