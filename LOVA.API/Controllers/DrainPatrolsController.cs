@@ -221,6 +221,7 @@ namespace LOVA.API.Controllers
             // Get existing data for a specific master_node and address
             DrainTableStorageModel drainExistingRow = await TableStorageUtils.RetrieveDrainTableStorageModelUsingPointQueryAsync(tableDrainClient, drainPatrolViewModel.Master_node.ToString(), drainPatrolViewModel.Address);
 
+           
             // Verify if address in memory table
             if (drainExistingRow == null)
             {
@@ -277,7 +278,7 @@ namespace LOVA.API.Controllers
                     }
                     else
                     {
-                        drain.DailyCount = drain.DailyCount + 1;
+                        drain.DailyCount = drainExistingRow.DailyCount + 1;
                     }
 
                     var averageCount = drainExistingRow.AverageActivity;
@@ -322,6 +323,7 @@ namespace LOVA.API.Controllers
                 drain.TimeDown = DateTime.SpecifyKind(drainPatrolViewModel.Time, DateTimeKind.Utc);
                 drain.IsActive = drainPatrolViewModel.Active;
                 drain.HourlyCount = drainExistingRow.HourlyCount;
+                drain.DailyCount = drainExistingRow.DailyCount;
                 drain.AverageRest = drainExistingRow.AverageRest;
 
                 var diff = (drain.TimeDown - drain.TimeUp).TotalSeconds;
