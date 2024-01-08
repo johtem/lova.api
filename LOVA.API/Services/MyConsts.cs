@@ -18,7 +18,7 @@ namespace LOVA.API.Services
         public const string vagAvgift = "2 100";
         public const string tomtAvgift = "800";
         public const string vaAvgift = "2 750";
-        public const string enbartAvloppsAvgift = "2 750";
+        public const string enbartAvloppsAvgift = "3 750";
         public const string vaAnslutningsAvgiftService = "156 781";
         public const string vaAnslutningsAvgiftLagenhet = "53 799";
         public const string vaAnslutningsAvgift = "210 580";

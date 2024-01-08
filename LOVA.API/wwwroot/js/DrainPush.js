@@ -60,9 +60,21 @@ connection.on("Drain", function (user, message, dateNow) {
     aTime.setAttribute("data-time", message["timeUp"]);
     deATime.setAttribute("data-time", message["timeDown"]);
     
+    // console.log(dateNow);
+    // console.log(message["timeUp"]);
+    // console.log(dateNow.substring(11, 13));
+    // console.log(message["timeUp"].substring(11, 13));
+
+
+    // Checks if new hour if so set activationCount to 0 
+    if (dateNow.substring(11, 13) > message["timeUp"].substring(11, 13)) {
+        document.getElementById("activationCount").textContent = "0";
+       // console.log("hej");
+    } else {
+        document.getElementById("activationCount").textContent = message["hourlyCount"];
+    }
     
     
-    document.getElementById("activationCount").textContent = message["hourlyCount"];
     document.getElementById("activationDailyCount").textContent = message["dailyCount"];
     document.getElementById("activationAverage").textContent = secondsToTime(message["averageActivity"]);
     document.getElementById("deActivationRestAverage").textContent = secondsToTime(message["averageRest"]);
