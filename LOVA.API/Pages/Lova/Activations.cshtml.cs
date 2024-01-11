@@ -94,6 +94,11 @@ namespace LOVA.API.Pages.Lova
 
 
             ViewData["noActivations"] = JsonConvert.SerializeObject(data);
+
+            
+
+
+
         }
 
 
@@ -106,6 +111,9 @@ namespace LOVA.API.Pages.Lova
         /// <returns></returns>
         public async Task<PartialViewResult> OnGetDrainHistory(string drain)
         {
+
+            //var numbers = await _context.Premises.Where(x => x.Well.WellName == drain).ToListAsync();
+            //int n = numbers.Count();
 
             var dateNow = DateTime.Now;
             int daysAgo = -1;

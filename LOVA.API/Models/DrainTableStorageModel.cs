@@ -26,6 +26,8 @@ namespace LOVA.API.Models
 
         public int AverageRest { get; set; }
 
+        public int NumberOfHouses { get; set;}
+
 
     }
 }

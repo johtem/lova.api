@@ -27,7 +27,6 @@ connection.on("DrainActivity", function (user, message) {
         li.setAttribute('style', 'color: #fc9005;');
 
         document.getElementById(message["address"]).classList.remove("tableLiveTdNonActive", "tableLiveTdActive");
-
         document.getElementById(message["address"]).setAttribute("data-timeup", time); //message["time"]);
         document.getElementById(message["address"]).classList.add("active", "tableLiveTdActive");
        
@@ -74,8 +73,9 @@ connection.on("Drain", function (user, message, dateNow) {
         document.getElementById("activationCount").textContent = message["hourlyCount"];
     }
     
-    
+    console.log(message);
     document.getElementById("activationDailyCount").textContent = message["dailyCount"];
+    document.getElementById("numberOfHouses").textContent = message["numberOfHouses"];
     document.getElementById("activationAverage").textContent = secondsToTime(message["averageActivity"]);
     document.getElementById("deActivationRestAverage").textContent = secondsToTime(message["averageRest"]);
 

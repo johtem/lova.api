@@ -225,25 +225,36 @@ namespace LOVA.API.Controllers
             // Verify if address in memory table
             if (drainExistingRow == null)
             {
-                drainExistingRow = new DrainTableStorageModel();
-                drainExistingRow.PartitionKey = drainPatrolViewModel.Master_node.ToString();
-                drainExistingRow.RowKey = drainPatrolViewModel.Address;
-                drainExistingRow.Timestamp = DateTime.UtcNow;
-                drainExistingRow.TimeUp = DateTime.UtcNow.AddMinutes(-5);
-                drainExistingRow.TimeDown = DateTime.UtcNow.AddMinutes(-4);
-                drainExistingRow.IsActive = false;
-                drainExistingRow.AverageActivity = 0;
-                drainExistingRow.AverageRest = 0;
-                drainExistingRow.DailyCount = 0;
-                drainExistingRow.HourlyCount = 0;
+                var recordsNumbers = await _context.Premises.Where(x => x.Well.WellName == drainPatrolViewModel.Address).ToListAsync();
 
-                await TableStorageUtils.InsertOrMergeModelAsync(tableDrainClient, drainExistingRow);
+                int numbers = recordsNumbers.Count();
+
+                // await SendEmailTest(numbers, drainPatrolViewModel.Address);
+
+
+                drainExistingRow = new DrainTableStorageModel
+                {
+                    PartitionKey = drainPatrolViewModel.Master_node.ToString(),
+                    RowKey = drainPatrolViewModel.Address,
+                    Timestamp = DateTime.UtcNow,
+                    TimeUp = DateTime.UtcNow.AddMinutes(-5),
+                    TimeDown = DateTime.UtcNow.AddMinutes(-4),
+                    IsActive = false,
+                    AverageActivity = 0,
+                    AverageRest = 0,
+                    DailyCount = 0,
+                    HourlyCount = 0,
+                    NumberOfHouses = numbers
+                };
+
+                var result = await TableStorageUtils.InsertOrMergeModelAsync(tableDrainClient, drainExistingRow);
             }
 
             // Create a new/update record for Azure Table Storage
             DrainTableStorageModel drain = new DrainTableStorageModel();
             drain.PartitionKey = drainPatrolViewModel.Master_node.ToString();
             drain.RowKey = drainPatrolViewModel.Address;
+            drain.NumberOfHouses = drainExistingRow.NumberOfHouses;
 
             // Check if address is actice
             if (drainPatrolViewModel.Active)
@@ -325,6 +336,7 @@ namespace LOVA.API.Controllers
                 drain.HourlyCount = drainExistingRow.HourlyCount;
                 drain.DailyCount = drainExistingRow.DailyCount;
                 drain.AverageRest = drainExistingRow.AverageRest;
+                drain.NumberOfHouses = drainExistingRow.NumberOfHouses;
 
                 var diff = (drain.TimeDown - drain.TimeUp).TotalSeconds;
                 if (drainExistingRow.AverageActivity == 0)
@@ -376,6 +388,18 @@ namespace LOVA.API.Controllers
             request.ToEmail = "johan@tempelman.nu";
             request.Subject = ac.Address;
             request.Body = $"{ac.Address} har aktiverats mer än genomsnittet. {ac.CountActivity} gånger denna timme {ac.Hourly}\n\r Mvh Löva";
+
+
+            await _mailService.SendEmailAsync(request);
+        }
+
+        private async Task SendEmailTest(int ac, string well)
+        {
+            MailRequest request = new MailRequest();
+
+            request.ToEmail = "johan@tempelman.nu";
+            request.Subject = $"{well} - {ac.ToString()}";
+            request.Body = $"{ac} st fastigheter";
 
 
             await _mailService.SendEmailAsync(request);
