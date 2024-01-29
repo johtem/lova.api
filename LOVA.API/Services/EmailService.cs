@@ -214,7 +214,7 @@ namespace LOVA.API.Services
         public async Task SendMaintenenceReminderEmailAsync()
         {
 
-            var oneMonthFromNow = DateTime.Now.AddMonths(1);
+            var oneMonthFromNow = DateTime.Now.AddDays(20);
 
             IEnumerable<MaintenanceViewModel> data = await _context.LatestMaintenances
                 .Where(a => a.NextMaintenance <= oneMonthFromNow)
@@ -235,22 +235,6 @@ namespace LOVA.API.Services
                 .AsNoTracking()
                 .ToListAsync();
 
-
-            //IEnumerable<MaintenanceViewModel> data =  await _context.Maintenances
-            //    .Include(a => a.LatestMaintenances)
-
-            //    .Select(a => new MaintenanceViewModel
-            //    {
-            //        Id = a.Id,
-            //        LastMaintenance = a.LatestMaintenances.Max(d => d.LastMaintenance),
-            //        Association = a.Association,
-            //        MaintenanceGroup = a.MaintenanceGroup,
-            //        Name = a.Name,
-            //        RecurringFrequence = a.RecurringFrequence,
-            //        NextMaintenance = a.LatestMaintenances.Max(d => d.NextMaintenance)
-            //    })
-            //    .OrderBy(a => a.NextMaintenance)
-            //    .ToListAsync();
 
 
             var email = new MimeMessage();
@@ -274,13 +258,13 @@ namespace LOVA.API.Services
 
 
             string textBody = "<br>";
-            textBody += "<h3>Nedan tabell visar underhållsaktiviter som snart måste göras .</h3><br>";
+            textBody += "<h3>Nedan tabell visar underhållsaktiviter som inom 20 dagar måste åtgärdas.</h3><br>";
             textBody += "";
             textBody += " <table border=" + 1 + " cellpadding=" + 0 + " cellspacing=" + 0 + " width = " + 400 + ">";
-            textBody += "<tr bgcolor='#4da6ff'><td><b>Underhållsaktivitet</b></td> <td> <b> Senaste </b> </td><td> <b> Nästa </b> </td></tr>";
+            textBody += "<tr bgcolor='#4da6ff'><td><b>Underhållsgrupp</b></td><td><b>Underhållsaktivitet</b></td> <td> <b> Senaste </b> </td><td> <b> Nästa </b> </td></tr>";
             foreach (var item in data)
             {
-                textBody += "<tr><td>" + item.Name + "</td><td> " + item.LastMaintenance + "</td><td> " + item.NextMaintenance + "</td> </tr>";
+                textBody += "<tr><td>" + item.MaintenanceGroup + "</td><td> " + "<tr><td>" + item.Name + "</td><td> " + item.LastMaintenance + "</td><td> " + item.NextMaintenance + "</td> </tr>";
             }
             textBody += "</table><br><br>";
             textBody += "Automatiskt mailutskick varje natt från www.lottingelund.se";

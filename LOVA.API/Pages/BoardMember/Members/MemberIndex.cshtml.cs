@@ -27,6 +27,7 @@ namespace LOVA.API.Pages.BoardMember.Members
             Members = await _context.PremiseContacts
                 .Include(a => a.Premise)
                 .ThenInclude(b => b.Well)
+                .Where(a => a.IsDeleted == false)
                 .AsNoTracking()
                 .Select( a => new ContactIndexViewModel
                 {

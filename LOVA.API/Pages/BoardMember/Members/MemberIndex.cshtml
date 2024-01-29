@@ -24,7 +24,6 @@
                     <th>E-post utskick</th>
                     <th>SMS Utskick</th>
                     <th>Aktiv</th>
-                    <th>Borttagen i profil</th>
                     <th>Uppdatera</th>
                 </tr>
             </thead>
@@ -42,7 +41,6 @@
                         <td><input type="checkbox" asp-for="@item.WantInfoEmail" class="form-check-input" disabled /></td>
                         <td><input type="checkbox" asp-for="@item.WantInfoSMS" class="form-check-input" disabled /></td>
                         <td><input type="checkbox" asp-for="@item.IsActive" class="form-check-input" disabled /></td>
-                        <td><input type="checkbox" asp-for="@item.IsDeleted" class="form-check-input" disabled /></td>
                         <td><a asp-page="./EditMember" asp-route-id="@item.PremiseContactId">Uppdatera</a></td>
 
                     </tr>
