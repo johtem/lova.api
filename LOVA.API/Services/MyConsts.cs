@@ -16,17 +16,17 @@ namespace LOVA.API.Services
 
         // Årsavgifter
         public const string vagAvgift = "2 100";
-        public const string tomtAvgift = "800";
-        public const string vaAvgift = "2 750";
+        public const string tomtAvgift = "850";
+        public const string vaAvgift = "3 050";
         public const string enbartAvloppsAvgift = "3 750";
-        public const string vaAnslutningsAvgiftService = "156 781";
-        public const string vaAnslutningsAvgiftLagenhet = "53 799";
-        public const string vaAnslutningsAvgift = "210 580";
-        public const string tappvattenAvgift = "26,50";
+        public const string vaAnslutningsAvgiftService = "163 663";
+        public const string vaAnslutningsAvgiftLagenhet = "56 160";
+        public const string vaAnslutningsAvgift = "219 823";
+        public const string tappvattenAvgift = "30,50";
         public const string rensAvgift = "3 500";
         
         public const string bredbandsAvgift = "109";
-        public const string tvAvgift = "110";
+        public const string tvAvgift = "115";
 
         
 

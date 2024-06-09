@@ -21,40 +21,50 @@
     <div class="row mt-5">
 
         <div class="col-5">
+            
+                <table class="table table-sm table-borderless">
+                    <tr>
+                        <th>Användarnamn</th>
+                        <td>@Model.Username</td>
+                        <td><a asp-page="./ProfileChangePassword" asp-route-userName="@Model.Username">Ändra lösenord</a></td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Profiles.First().Address)</th>
+                        <td>@Html.DisplayFor(model => model.Profiles.First().Address)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Profiles.First().Property)</th>
+                        <td>@Html.DisplayFor(model => model.Profiles.First().Property)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Profiles.First().WellName)</th>
+                        <td>@Html.DisplayFor(model => model.Profiles.First().WellName)</td>
+                    </tr>
+                    <tr>
+                        <th>Avloppsslinga</th>
+                        <td>@Html.DisplayFor(model => model.Profiles.First().WellName[0])</td>
+                    </tr>
 
-            <table class="table table-sm table-borderless">
-                <tr>
-                    <th>Användarnamn</th>
-                    <td>@Model.Username</td>
-                    <td><a asp-page="./ProfileChangePassword" asp-route-userName="@Model.Username">Ändra lösenord</a></td>
-                </tr>
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.Profiles.First().Address)</th>
-                    <td>@Html.DisplayFor(model => model.Profiles.First().Address)</td>
-                </tr>
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.Profiles.First().Property)</th>
-                    <td>@Html.DisplayFor(model => model.Profiles.First().Property)</td>
-                </tr>
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.Profiles.First().WellName)</th>
-                    <td>@Html.DisplayFor(model => model.Profiles.First().WellName)</td>
-                </tr>
-                <tr>
-                    <th>Avloppsslinga</th>
-                    <td>@Html.DisplayFor(model => model.Profiles.First().WellName[0])</td>
-                </tr>
-
-            </table>
+                </table>
+          
+            
         </div>
         <div class="col">
         </div>
 
     </div>
     <div class="row mt-5">
+        @if (Model.Profiles.Count == 1 && Model.Profiles.First().FirstName == "")
+        {
+            <p>Finns inga personer inlagda. Klicka på Lägg till knappen för att registera dig för utskick.</p>
+        }
+        
         <a asp-page="./ProfileNew" asp-route-id="@Model.Profiles.First().PremiseId">Lägg till</a>
+            
         <div class="table-responsive">
-        <table class="table table-sm table-borderless">
+            @if (Model.Profiles.Count > 0 && Model.Profiles.First().FirstName != "")
+            {
+                 <table class="table table-sm table-borderless">
             <thead>
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.Profiles.First().FirstName)</th>
@@ -91,6 +101,8 @@
                 
             </tbody>
         </table>
+            }
+       
         </div>
     </div>
     <div class="row">

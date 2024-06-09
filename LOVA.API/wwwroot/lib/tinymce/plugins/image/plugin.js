@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.7.3 (2023-11-15)
+ * TinyMCE version 7.1.1 (2024-05-22)
  */
 
 (function () {
@@ -992,7 +992,8 @@
         name: 'src',
         type: 'urlinput',
         filetype: 'image',
-        label: 'Source'
+        label: 'Source',
+        picker_text: 'Browse files'
       };
       const imageList = info.imageList.map(items => ({
         name: 'images',
@@ -1278,6 +1279,7 @@
           });
           api.showTab('general');
           changeSrc(helpers, info, state, api);
+          api.focus('src');
         };
         blobToDataUri(file).then(dataUrl => {
           const blobInfo = helpers.createBlobCache(file, blobUri, dataUrl);

@@ -73,7 +73,7 @@ connection.on("Drain", function (user, message, dateNow) {
         document.getElementById("activationCount").textContent = message["hourlyCount"];
     }
     
-    console.log(message);
+    // console.log(message);
     document.getElementById("activationDailyCount").textContent = message["dailyCount"];
     document.getElementById("numberOfHouses").textContent = message["numberOfHouses"];
     document.getElementById("activationAverage").textContent = secondsToTime(message["averageActivity"]);
@@ -85,17 +85,12 @@ connection.on("Drain", function (user, message, dateNow) {
         deATime.style.color = "black";
 
         aTime.textContent = moment(message["timeUp"]).format('ddd D/M HH:mm.ss');
-       // deATime.textContent = moment(message["timeDown"]).add(-2, 'hours').format('ddd D/M HH:mm.ss ');
         deATime.textContent = moment(message["timeDown"]).format('ddd D/M HH:mm.ss ');
-
-        //document.getElementById("activationRunningTime").textContent = secondsToTime(moment(dateNow).diff(moment(message["timeUp"]).add(0, 'hours'), "seconds", false));
 
         var activationDiff = moment(dateNow).diff(moment(message["timeUp"]));
         document.getElementById("activationRunningTime").setAttribute("data-timediff", activationDiff);
         document.getElementById("activationRunningTime").textContent = durationAsString(activationDiff);
 
-
-        //document.getElementById("deActivationRunningTime").textContent = secondsToTime(moment(message["timeUp"]).diff(moment(message["timeDown"]).add(-2, 'hours'), "seconds", false));
         var deactivationDiff = moment(message["timeUp"]).diff(moment(message["timeDown"]));
         document.getElementById("deActivationRunningTime").setAttribute("data-timediff", deactivationDiff);
         document.getElementById("deActivationRunningTime").textContent = durationAsString(deactivationDiff);
@@ -121,6 +116,7 @@ connection.on("Drain", function (user, message, dateNow) {
         document.getElementById("deActivationRunningTime").setAttribute("data-timediff", deactivationDiff);
         document.getElementById("deActivationRunningTime").textContent = durationAsString(deactivationDiff);
 
+        //document.getElementById(id).classList.remove('redSolidBorder');
 
         myVarDeActive = setInterval(myTimerDeActive, 1000);
     }
@@ -154,8 +150,6 @@ function onDisconnected() {
 }
 
 
-
-
 startConnection();
 
 
@@ -165,7 +159,15 @@ function drainUpdate(drain) {
     myStopFunctionDeActive();
     connection.invoke("Drain", drain);
     
-};
+}
+
+function myStopFunctionActive() {
+    clearInterval(myVarActive);
+}
+
+function myStopFunctionDeActive() {
+    clearInterval(myVarDeActive);
+}
 
 
 function myTimerActive() {
@@ -177,39 +179,27 @@ function myTimerActive() {
     
 }
 
-function myStopFunctionActive() {
-    clearInterval(myVarActive);
-}
 
 function myTimerDeActive() {
 
     var t = document.getElementById("deActivationRunningTime").dataset.timediff;
     var diff = parseInt(t, 10) + 1000;
-    document.getElementById("deActivationRunningTime").textContent = durationAsString(diff);
+    document.getElementById("deActivationRunningTime").innerHTML = durationAsString(diff);
     document.getElementById("deActivationRunningTime").setAttribute("data-timediff", diff);
 
 }
 
-function myStopFunctionDeActive() {
-    clearInterval(myVarDeActive);
-}
+
 
 
 function secondsToTime(seconds) {
-
-
-    return moment.utc(moment.duration(seconds, "seconds").asMilliseconds()).format("HH:mm:ss");
-    
+    return moment.utc(moment.duration(seconds, "seconds").asMilliseconds()).format("HH:mm:ss");    
 }
-
-
 
 
 
 function durationAsString(diff) {
     var duration = moment.duration(diff);
-
-
 
     //Get Days
     var days = Math.floor(duration.asDays()); // .asDays returns float but we are interested in full days only
@@ -229,10 +219,10 @@ function durationAsString(diff) {
 
     var str = [daysFormatted, hoursFormatted, minutesFormatted, secondsFormatted].join('');
 
+    // console.log(str);
+
     return str;
 }
-
-
 
 
 // Check for long avtivation time every 5 seconds

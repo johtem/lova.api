@@ -73,6 +73,31 @@ namespace LOVA.API.Pages.User
                 .ToListAsync();
 
 
+            if (Profiles.Count == 0)
+            {
+                Profiles = await _context.Premises
+               .Include(b => b.Well)
+               .Where(a => a.Property == user.Property)
+               .Select(s => new ProfileEditViewModel
+               {
+                   Id = s.Id,
+                   FirstName = "",
+                   LastName = "",
+                   Email = "",
+                   MobileNumber = "",
+                   PhoneNumber = "",
+                   PremiseId = s.Id,
+                   WellName = s.Well.WellName,
+                   Address = s.Address,
+                   Property = s.Property,
+                   WantInfoEmail = true,
+                   WantInfoSMS =true,
+                   WantGrannsamverkanEmail = true,
+                   IsActive = true
+               })
+               .ToListAsync();
+            }
+
             // var wellObj = await _context.Premises.Include(a => a.Well).Where(a => a.Property == user.Property).FirstOrDefaultAsync();
 
 

@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.7.3 (2023-11-15)
+ * TinyMCE version 7.1.1 (2024-05-22)
  */
 
 (function () {
@@ -336,9 +336,9 @@
       copy.sort(comparator);
       return copy;
     };
-    const get$h = (xs, i) => i >= 0 && i < xs.length ? Optional.some(xs[i]) : Optional.none();
-    const head = xs => get$h(xs, 0);
-    const last$1 = xs => get$h(xs, xs.length - 1);
+    const get$i = (xs, i) => i >= 0 && i < xs.length ? Optional.some(xs[i]) : Optional.none();
+    const head = xs => get$i(xs, 0);
+    const last$1 = xs => get$i(xs, xs.length - 1);
     const from = isFunction(Array.from) ? Array.from : x => nativeSlice.call(x);
     const findMap = (arr, f) => {
       for (let i = 0; i < arr.length; i++) {
@@ -351,7 +351,7 @@
     };
 
     const keys = Object.keys;
-    const hasOwnProperty$1 = Object.hasOwnProperty;
+    const hasOwnProperty = Object.hasOwnProperty;
     const each = (obj, f) => {
       const props = keys(obj);
       for (let k = 0, len = props.length; k < len; k++) {
@@ -417,10 +417,10 @@
     const values = obj => {
       return mapToArray(obj, identity);
     };
-    const get$g = (obj, key) => {
+    const get$h = (obj, key) => {
       return has$2(obj, key) ? Optional.from(obj[key]) : Optional.none();
     };
-    const has$2 = (obj, key) => hasOwnProperty$1.call(obj, key);
+    const has$2 = (obj, key) => hasOwnProperty.call(obj, key);
     const hasNonNullableKey = (obj, key) => has$2(obj, key) && obj[key] !== undefined && obj[key] !== null;
 
     const is$1 = (lhs, rhs, comparator = tripleEquals) => lhs.exists(left => comparator(left, rhs));
@@ -712,11 +712,11 @@
         rawSet(dom, k, v);
       });
     };
-    const get$f = (element, key) => {
+    const get$g = (element, key) => {
       const v = element.dom.getAttribute(key);
       return v === null ? undefined : v;
     };
-    const getOpt = (element, key) => Optional.from(get$f(element, key));
+    const getOpt = (element, key) => Optional.from(get$g(element, key));
     const has$1 = (element, key) => {
       const dom = element.dom;
       return dom && dom.hasAttribute ? dom.hasAttribute(key) : false;
@@ -763,7 +763,7 @@
         });
       });
     };
-    const get$e = (element, property) => {
+    const get$f = (element, property) => {
       const dom = element.dom;
       const styles = window.getComputedStyle(dom);
       const r = styles.getPropertyValue(property);
@@ -814,14 +814,14 @@
       const get = element => {
         const r = getOffset(element);
         if (r <= 0 || r === null) {
-          const css = get$e(element, name);
+          const css = get$f(element, name);
           return parseFloat(css) || 0;
         }
         return r;
       };
       const getOuter = get;
       const aggregate = (element, properties) => foldl(properties, (acc, property) => {
-        const val = get$e(element, property);
+        const val = get$f(element, property);
         const value = val === undefined ? 0 : parseInt(val, 10);
         return isNaN(value) ? acc : acc + value;
       }, 0);
@@ -843,7 +843,7 @@
       const dom = element.dom;
       return inBody(element) ? dom.getBoundingClientRect().height : dom.offsetHeight;
     });
-    const get$d = element => api$2.get(element);
+    const get$e = element => api$2.get(element);
     const getOuter$2 = element => api$2.getOuter(element);
     const setMax$1 = (element, value) => {
       const inclusions = [
@@ -908,7 +908,7 @@
 
     const api$1 = Dimension('width', element => element.dom.offsetWidth);
     const set$7 = (element, h) => api$1.set(element, h);
-    const get$c = element => api$1.get(element);
+    const get$d = element => api$1.get(element);
     const getOuter$1 = element => api$1.getOuter(element);
     const setMax = (element, value) => {
       const inclusions = [
@@ -979,7 +979,7 @@
       };
       return nu$d(group(1), group(2));
     };
-    const detect$5 = (versionRegexes, agent) => {
+    const detect$4 = (versionRegexes, agent) => {
       const cleanedAgent = String(agent).toLowerCase();
       if (versionRegexes.length === 0) {
         return unknown$3();
@@ -997,7 +997,7 @@
     };
     const Version = {
       nu: nu$d,
-      detect: detect$5,
+      detect: detect$4,
       unknown: unknown$3
     };
 
@@ -1014,14 +1014,14 @@
       });
     };
 
-    const detect$4 = (candidates, userAgent) => {
+    const detect$3 = (candidates, userAgent) => {
       const agent = String(userAgent).toLowerCase();
       return find$5(candidates, candidate => {
         return candidate.search(agent);
       });
     };
     const detectBrowser = (browsers, userAgent) => {
-      return detect$4(browsers, userAgent).map(browser => {
+      return detect$3(browsers, userAgent).map(browser => {
         const version = Version.detect(browser.versionRegexes, userAgent);
         return {
           current: browser.name,
@@ -1030,7 +1030,7 @@
       });
     };
     const detectOs = (oses, userAgent) => {
-      return detect$4(oses, userAgent).map(os => {
+      return detect$3(oses, userAgent).map(os => {
         const version = Version.detect(os.versionRegexes, userAgent);
         return {
           current: os.name,
@@ -1233,7 +1233,7 @@
       chromeos: constant$1(chromeos)
     };
 
-    const detect$3 = (userAgent, userAgentDataOpt, mediaMatch) => {
+    const detect$2 = (userAgent, userAgentDataOpt, mediaMatch) => {
       const browsers = PlatformInfo.browsers();
       const oses = PlatformInfo.oses();
       const browser = userAgentDataOpt.bind(userAgentData => detectBrowser$1(browsers, userAgentData)).orThunk(() => detectBrowser(browsers, userAgent)).fold(Browser.unknown, Browser.nu);
@@ -1245,11 +1245,11 @@
         deviceType
       };
     };
-    const PlatformDetection = { detect: detect$3 };
+    const PlatformDetection = { detect: detect$2 };
 
     const mediaMatch = query => window.matchMedia(query).matches;
     let platform = cached(() => PlatformDetection.detect(navigator.userAgent, Optional.from(navigator.userAgentData), mediaMatch));
-    const detect$2 = () => platform();
+    const detect$1 = () => platform();
 
     const mkEvent = (target, x, y, stop, prevent, kill, raw) => ({
       target,
@@ -1338,7 +1338,7 @@
       }
     };
 
-    const get$b = _DOC => {
+    const get$c = _DOC => {
       const doc = _DOC !== undefined ? _DOC.dom : document;
       const x = doc.body.scrollLeft || doc.documentElement.scrollLeft;
       const y = doc.body.scrollTop || doc.documentElement.scrollTop;
@@ -1352,9 +1352,9 @@
       }
     };
 
-    const get$a = _win => {
+    const get$b = _win => {
       const win = _win === undefined ? window : _win;
-      if (detect$2().browser.isFirefox()) {
+      if (detect$1().browser.isFirefox()) {
         return Optional.none();
       } else {
         return Optional.from(win.visualViewport);
@@ -1371,8 +1371,8 @@
     const getBounds$3 = _win => {
       const win = _win === undefined ? window : _win;
       const doc = win.document;
-      const scroll = get$b(SugarElement.fromDom(doc));
-      return get$a(win).fold(() => {
+      const scroll = get$c(SugarElement.fromDom(doc));
+      return get$b(win).fold(() => {
         const html = win.document.documentElement;
         const width = html.clientWidth;
         const height = html.clientHeight;
@@ -1411,7 +1411,7 @@
 
     const find$2 = element => {
       const doc = getDocument();
-      const scroll = get$b(doc);
+      const scroll = get$c(doc);
       const path = pathTo(element, Navigation);
       return path.fold(curry(absolute$3, element), frames => {
         const offset = viewport$1(element);
@@ -1474,9 +1474,54 @@
     };
     const win = () => getBounds$3(window);
 
+    const Cell = initial => {
+      let value = initial;
+      const get = () => {
+        return value;
+      };
+      const set = v => {
+        value = v;
+      };
+      return {
+        get,
+        set
+      };
+    };
+
+    const singleton$1 = doRevoke => {
+      const subject = Cell(Optional.none());
+      const revoke = () => subject.get().each(doRevoke);
+      const clear = () => {
+        revoke();
+        subject.set(Optional.none());
+      };
+      const isSet = () => subject.get().isSome();
+      const get = () => subject.get();
+      const set = s => {
+        revoke();
+        subject.set(Optional.some(s));
+      };
+      return {
+        clear,
+        isSet,
+        get,
+        set
+      };
+    };
+    const destroyable = () => singleton$1(s => s.destroy());
+    const unbindable = () => singleton$1(s => s.unbind());
+    const value$4 = () => {
+      const subject = singleton$1(noop);
+      const on = f => subject.get().each(f);
+      return {
+        ...subject,
+        on
+      };
+    };
+
     var global$a = tinymce.util.Tools.resolve('tinymce.ThemeManager');
 
-    const value$4 = value => {
+    const value$3 = value => {
       const applyHelper = fn => fn(value);
       const constHelper = constant$1(value);
       const outputHelper = () => output;
@@ -1526,9 +1571,9 @@
       };
       return output;
     };
-    const fromOption = (optional, err) => optional.fold(() => error$1(err), value$4);
+    const fromOption = (optional, err) => optional.fold(() => error$1(err), value$3);
     const Result = {
-      value: value$4,
+      value: value$3,
       error: error$1,
       fromOption
     };
@@ -1631,7 +1676,7 @@
     const shallow$1 = (old, nu) => {
       return nu;
     };
-    const deep = (old, nu) => {
+    const deep$1 = (old, nu) => {
       const bothObjects = isPlainObject(old) && isPlainObject(nu);
       return bothObjects ? deepMerge(old, nu) : nu;
     };
@@ -1652,7 +1697,7 @@
         return ret;
       };
     };
-    const deepMerge = baseMerge(deep);
+    const deepMerge = baseMerge(deep$1);
     const merge$1 = baseMerge(shallow$1);
 
     const required$2 = () => ({
@@ -1714,7 +1759,7 @@
     const unsupportedFields = (path, unsupported) => nu$a(path, () => 'There are unsupported fields: [' + unsupported.join(', ') + '] specified');
     const custom = (path, err) => nu$a(path, constant$1(err));
 
-    const value$3 = validator => {
+    const value$2 = validator => {
       const extract = (path, val) => {
         return SimpleResult.bindError(validator(val), err => custom(path, err));
       };
@@ -1724,16 +1769,16 @@
         toString
       };
     };
-    const anyValue$1 = value$3(SimpleResult.svalue);
+    const anyValue$1 = value$2(SimpleResult.svalue);
 
-    const requiredAccess = (path, obj, key, bundle) => get$g(obj, key).fold(() => missingRequired(path, key, obj), bundle);
+    const requiredAccess = (path, obj, key, bundle) => get$h(obj, key).fold(() => missingRequired(path, key, obj), bundle);
     const fallbackAccess = (obj, key, fallback, bundle) => {
-      const v = get$g(obj, key).getOrThunk(() => fallback(obj));
+      const v = get$h(obj, key).getOrThunk(() => fallback(obj));
       return bundle(v);
     };
-    const optionAccess = (obj, key, bundle) => bundle(get$g(obj, key));
+    const optionAccess = (obj, key, bundle) => bundle(get$h(obj, key));
     const optionDefaultedAccess = (obj, key, fallback, bundle) => {
-      const opt = get$g(obj, key).map(val => val === true ? fallback(obj) : val);
+      const opt = get$h(obj, key).map(val => val === true ? fallback(obj) : val);
       return bundle(opt);
     };
     const extractField = (field, path, obj, key, prop) => {
@@ -1845,7 +1890,7 @@
       };
     };
     const setOf$1 = (validator, prop) => {
-      const validateKeys = (path, keys) => arrOf(value$3(validator)).extract(path, keys);
+      const validateKeys = (path, keys) => arrOf(value$2(validator)).extract(path, keys);
       const extract = (path, o) => {
         const keys$1 = keys(o);
         const validatedKeys = validateKeys(path, keys$1);
@@ -1874,7 +1919,7 @@
     const arrOfObj = compose(arrOf, objOf);
 
     const anyValue = constant$1(anyValue$1);
-    const typedValue = (validator, expectedType) => value$3(a => {
+    const typedValue = (validator, expectedType) => value$2(a => {
       const actualType = typeof a;
       return validator(a) ? SimpleResult.svalue(a) : SimpleResult.serror(`Expected type: ${ expectedType } but got: ${ actualType }`);
     });
@@ -1905,7 +1950,7 @@
         return false;
       }
     };
-    const postMessageable = value$3(a => {
+    const postMessageable = value$2(a => {
       if (isPostMessageable(a)) {
         return SimpleResult.svalue(a);
       } else {
@@ -1914,12 +1959,12 @@
     });
 
     const chooseFrom = (path, input, branches, ch) => {
-      const fields = get$g(branches, ch);
+      const fields = get$h(branches, ch);
       return fields.fold(() => missingBranch(path, branches, ch), vp => vp.extract(path.concat(['branch: ' + ch]), input));
     };
     const choose$2 = (key, branches) => {
       const extract = (path, input) => {
-        const choice = get$g(input, key);
+        const choice = get$h(input, key);
         return choice.fold(() => missingKey(path, key), chosen => chooseFrom(path, input, branches, chosen));
       };
       const toString = () => 'chooseOn(' + key + '). Possible values: ' + keys(branches);
@@ -1930,7 +1975,7 @@
     };
 
     const arrOfVal = () => arrOf(anyValue$1);
-    const valueOf = validator => value$3(v => validator(v).fold(SimpleResult.serror, SimpleResult.svalue));
+    const valueOf = validator => value$2(v => validator(v).fold(SimpleResult.serror, SimpleResult.svalue));
     const setOf = (validator, prop) => setOf$1(v => SimpleResult.fromResult(validator(v)), prop);
     const extractValue = (label, prop, obj) => {
       const res = prop.extract([label], obj);
@@ -1962,7 +2007,7 @@
     const requiredStringEnum = (key, values) => field$1(key, key, required$2(), validateEnum(values));
     const requiredBoolean = key => requiredOf(key, boolean);
     const requiredFunction = key => requiredOf(key, functionProcessor);
-    const forbid = (key, message) => field$1(key, key, asOption(), value$3(_v => SimpleResult.serror('The field: ' + key + ' is forbidden. ' + message)));
+    const forbid = (key, message) => field$1(key, key, asOption(), value$2(_v => SimpleResult.serror('The field: ' + key + ' is forbidden. ' + message)));
     const requiredObjOf = (key, objSchema) => field$1(key, key, required$2(), objOf(objSchema));
     const requiredArrayOfObj = (key, objFields) => field$1(key, key, required$2(), arrOfObj(objFields));
     const requiredArrayOf = (key, schema) => field$1(key, key, required$2(), arrOf(schema));
@@ -1985,20 +2030,6 @@
     const defaultedPostMsg = (key, fallback) => defaultedOf(key, fallback, postMessageable);
     const defaultedArrayOf = (key, fallback, schema) => defaultedOf(key, fallback, arrOf(schema));
     const defaultedObjOf = (key, fallback, objSchema) => defaultedOf(key, fallback, objOf(objSchema));
-
-    const Cell = initial => {
-      let value = initial;
-      const get = () => {
-        return value;
-      };
-      const set = v => {
-        value = v;
-      };
-      return {
-        get,
-        set
-      };
-    };
 
     const generate$7 = cases => {
       if (!isArray(cases)) {
@@ -2375,124 +2406,6 @@
     const runOnInit = runOnSourceName(systemInit());
     const runOnExecute$1 = runOnName(execute$5());
 
-    const fromHtml$1 = (html, scope) => {
-      const doc = scope || document;
-      const div = doc.createElement('div');
-      div.innerHTML = html;
-      return children(SugarElement.fromDom(div));
-    };
-
-    const get$9 = element => element.dom.innerHTML;
-    const set$6 = (element, content) => {
-      const owner = owner$4(element);
-      const docDom = owner.dom;
-      const fragment = SugarElement.fromDom(docDom.createDocumentFragment());
-      const contentElements = fromHtml$1(content, docDom);
-      append$1(fragment, contentElements);
-      empty(element);
-      append$2(element, fragment);
-    };
-    const getOuter = element => {
-      const container = SugarElement.fromTag('div');
-      const clone = SugarElement.fromDom(element.dom.cloneNode(true));
-      append$2(container, clone);
-      return get$9(container);
-    };
-
-    const clone$1 = (original, isDeep) => SugarElement.fromDom(original.dom.cloneNode(isDeep));
-    const shallow = original => clone$1(original, false);
-
-    const getHtml = element => {
-      if (isShadowRoot(element)) {
-        return '#shadow-root';
-      } else {
-        const clone = shallow(element);
-        return getOuter(clone);
-      }
-    };
-
-    const element = elem => getHtml(elem);
-
-    const isRecursive = (component, originator, target) => eq(originator, component.element) && !eq(originator, target);
-    const events$i = derive$2([can(focus$4(), (component, simulatedEvent) => {
-        const event = simulatedEvent.event;
-        const originator = event.originator;
-        const target = event.target;
-        if (isRecursive(component, originator, target)) {
-          console.warn(focus$4() + ' did not get interpreted by the desired target. ' + '\nOriginator: ' + element(originator) + '\nTarget: ' + element(target) + '\nCheck the ' + focus$4() + ' event handlers');
-          return false;
-        } else {
-          return true;
-        }
-      })]);
-
-    var DefaultEvents = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        events: events$i
-    });
-
-    let unique = 0;
-    const generate$6 = prefix => {
-      const date = new Date();
-      const time = date.getTime();
-      const random = Math.floor(Math.random() * 1000000000);
-      unique++;
-      return prefix + '_' + random + unique + String(time);
-    };
-
-    const prefix$1 = constant$1('alloy-id-');
-    const idAttr$1 = constant$1('data-alloy-id');
-
-    const prefix = prefix$1();
-    const idAttr = idAttr$1();
-    const write = (label, elem) => {
-      const id = generate$6(prefix + label);
-      writeOnly(elem, id);
-      return id;
-    };
-    const writeOnly = (elem, uid) => {
-      Object.defineProperty(elem.dom, idAttr, {
-        value: uid,
-        writable: true
-      });
-    };
-    const read$1 = elem => {
-      const id = isElement$1(elem) ? elem.dom[idAttr] : null;
-      return Optional.from(id);
-    };
-    const generate$5 = prefix => generate$6(prefix);
-
-    const make$8 = identity;
-
-    const NoContextApi = getComp => {
-      const getMessage = event => `The component must be in a context to execute: ${ event }` + (getComp ? '\n' + element(getComp().element) + ' is not in context.' : '');
-      const fail = event => () => {
-        throw new Error(getMessage(event));
-      };
-      const warn = event => () => {
-        console.warn(getMessage(event));
-      };
-      return {
-        debugInfo: constant$1('fake'),
-        triggerEvent: warn('triggerEvent'),
-        triggerFocus: warn('triggerFocus'),
-        triggerEscape: warn('triggerEscape'),
-        broadcast: warn('broadcast'),
-        broadcastOn: warn('broadcastOn'),
-        broadcastEvent: warn('broadcastEvent'),
-        build: fail('build'),
-        buildOrPatch: fail('buildOrPatch'),
-        addToWorld: fail('addToWorld'),
-        removeFromWorld: fail('removeFromWorld'),
-        addToGui: fail('addToGui'),
-        removeFromGui: fail('removeFromGui'),
-        getByUid: fail('getByUid'),
-        getByDom: fail('getByDom'),
-        isConnected: never
-      };
-    };
-    const singleton$1 = NoContextApi();
-
     const markAsBehaviourApi = (f, apiName, apiFunction) => {
       const delegate = apiFunction.toString();
       const endIndex = delegate.indexOf(')') + 1;
@@ -2528,6 +2441,896 @@
       return f;
     };
 
+    const nu$8 = s => ({
+      classes: isUndefined(s.classes) ? [] : s.classes,
+      attributes: isUndefined(s.attributes) ? {} : s.attributes,
+      styles: isUndefined(s.styles) ? {} : s.styles
+    });
+    const merge = (defnA, mod) => ({
+      ...defnA,
+      attributes: {
+        ...defnA.attributes,
+        ...mod.attributes
+      },
+      styles: {
+        ...defnA.styles,
+        ...mod.styles
+      },
+      classes: defnA.classes.concat(mod.classes)
+    });
+
+    const executeEvent = (bConfig, bState, executor) => runOnExecute$1(component => {
+      executor(component, bConfig, bState);
+    });
+    const loadEvent = (bConfig, bState, f) => runOnInit((component, _simulatedEvent) => {
+      f(component, bConfig, bState);
+    });
+    const create$5 = (schema, name, active, apis, extra, state) => {
+      const configSchema = objOfOnly(schema);
+      const schemaSchema = optionObjOf(name, [optionObjOfOnly('config', schema)]);
+      return doCreate(configSchema, schemaSchema, name, active, apis, extra, state);
+    };
+    const createModes$1 = (modes, name, active, apis, extra, state) => {
+      const configSchema = modes;
+      const schemaSchema = optionObjOf(name, [optionOf('config', modes)]);
+      return doCreate(configSchema, schemaSchema, name, active, apis, extra, state);
+    };
+    const wrapApi = (bName, apiFunction, apiName) => {
+      const f = (component, ...rest) => {
+        const args = [component].concat(rest);
+        return component.config({ name: constant$1(bName) }).fold(() => {
+          throw new Error('We could not find any behaviour configuration for: ' + bName + '. Using API: ' + apiName);
+        }, info => {
+          const rest = Array.prototype.slice.call(args, 1);
+          return apiFunction.apply(undefined, [
+            component,
+            info.config,
+            info.state
+          ].concat(rest));
+        });
+      };
+      return markAsBehaviourApi(f, apiName, apiFunction);
+    };
+    const revokeBehaviour = name => ({
+      key: name,
+      value: undefined
+    });
+    const doCreate = (configSchema, schemaSchema, name, active, apis, extra, state) => {
+      const getConfig = info => hasNonNullableKey(info, name) ? info[name]() : Optional.none();
+      const wrappedApis = map$1(apis, (apiF, apiName) => wrapApi(name, apiF, apiName));
+      const wrappedExtra = map$1(extra, (extraF, extraName) => markAsExtraApi(extraF, extraName));
+      const me = {
+        ...wrappedExtra,
+        ...wrappedApis,
+        revoke: curry(revokeBehaviour, name),
+        config: spec => {
+          const prepared = asRawOrDie$1(name + '-config', configSchema, spec);
+          return {
+            key: name,
+            value: {
+              config: prepared,
+              me,
+              configAsRaw: cached(() => asRawOrDie$1(name + '-config', configSchema, spec)),
+              initialConfig: spec,
+              state
+            }
+          };
+        },
+        schema: constant$1(schemaSchema),
+        exhibit: (info, base) => {
+          return lift2(getConfig(info), get$h(active, 'exhibit'), (behaviourInfo, exhibitor) => {
+            return exhibitor(base, behaviourInfo.config, behaviourInfo.state);
+          }).getOrThunk(() => nu$8({}));
+        },
+        name: constant$1(name),
+        handlers: info => {
+          return getConfig(info).map(behaviourInfo => {
+            const getEvents = get$h(active, 'events').getOr(() => ({}));
+            return getEvents(behaviourInfo.config, behaviourInfo.state);
+          }).getOr({});
+        }
+      };
+      return me;
+    };
+
+    const NoState = { init: () => nu$7({ readState: constant$1('No State required') }) };
+    const nu$7 = spec => spec;
+
+    const derive$1 = capabilities => wrapAll(capabilities);
+    const simpleSchema = objOfOnly([
+      required$1('fields'),
+      required$1('name'),
+      defaulted('active', {}),
+      defaulted('apis', {}),
+      defaulted('state', NoState),
+      defaulted('extra', {})
+    ]);
+    const create$4 = data => {
+      const value = asRawOrDie$1('Creating behaviour: ' + data.name, simpleSchema, data);
+      return create$5(value.fields, value.name, value.active, value.apis, value.extra, value.state);
+    };
+    const modeSchema = objOfOnly([
+      required$1('branchKey'),
+      required$1('branches'),
+      required$1('name'),
+      defaulted('active', {}),
+      defaulted('apis', {}),
+      defaulted('state', NoState),
+      defaulted('extra', {})
+    ]);
+    const createModes = data => {
+      const value = asRawOrDie$1('Creating behaviour: ' + data.name, modeSchema, data);
+      return createModes$1(choose$1(value.branchKey, value.branches), value.name, value.active, value.apis, value.extra, value.state);
+    };
+    const revoke = constant$1(undefined);
+
+    const read$1 = (element, attr) => {
+      const value = get$g(element, attr);
+      return value === undefined || value === '' ? [] : value.split(' ');
+    };
+    const add$4 = (element, attr, id) => {
+      const old = read$1(element, attr);
+      const nu = old.concat([id]);
+      set$9(element, attr, nu.join(' '));
+      return true;
+    };
+    const remove$4 = (element, attr, id) => {
+      const nu = filter$2(read$1(element, attr), v => v !== id);
+      if (nu.length > 0) {
+        set$9(element, attr, nu.join(' '));
+      } else {
+        remove$7(element, attr);
+      }
+      return false;
+    };
+
+    const supports = element => element.dom.classList !== undefined;
+    const get$a = element => read$1(element, 'class');
+    const add$3 = (element, clazz) => add$4(element, 'class', clazz);
+    const remove$3 = (element, clazz) => remove$4(element, 'class', clazz);
+    const toggle$5 = (element, clazz) => {
+      if (contains$2(get$a(element), clazz)) {
+        return remove$3(element, clazz);
+      } else {
+        return add$3(element, clazz);
+      }
+    };
+
+    const add$2 = (element, clazz) => {
+      if (supports(element)) {
+        element.dom.classList.add(clazz);
+      } else {
+        add$3(element, clazz);
+      }
+    };
+    const cleanClass = element => {
+      const classList = supports(element) ? element.dom.classList : get$a(element);
+      if (classList.length === 0) {
+        remove$7(element, 'class');
+      }
+    };
+    const remove$2 = (element, clazz) => {
+      if (supports(element)) {
+        const classList = element.dom.classList;
+        classList.remove(clazz);
+      } else {
+        remove$3(element, clazz);
+      }
+      cleanClass(element);
+    };
+    const toggle$4 = (element, clazz) => {
+      const result = supports(element) ? element.dom.classList.toggle(clazz) : toggle$5(element, clazz);
+      cleanClass(element);
+      return result;
+    };
+    const has = (element, clazz) => supports(element) && element.dom.classList.contains(clazz);
+
+    const add$1 = (element, classes) => {
+      each$1(classes, x => {
+        add$2(element, x);
+      });
+    };
+    const remove$1 = (element, classes) => {
+      each$1(classes, x => {
+        remove$2(element, x);
+      });
+    };
+    const toggle$3 = (element, classes) => {
+      each$1(classes, x => {
+        toggle$4(element, x);
+      });
+    };
+    const hasAll = (element, classes) => forall(classes, clazz => has(element, clazz));
+    const getNative = element => {
+      const classList = element.dom.classList;
+      const r = new Array(classList.length);
+      for (let i = 0; i < classList.length; i++) {
+        const item = classList.item(i);
+        if (item !== null) {
+          r[i] = item;
+        }
+      }
+      return r;
+    };
+    const get$9 = element => supports(element) ? getNative(element) : get$a(element);
+
+    const NuPositionCss = (position, left, top, right, bottom) => {
+      const toPx = num => num + 'px';
+      return {
+        position,
+        left: left.map(toPx),
+        top: top.map(toPx),
+        right: right.map(toPx),
+        bottom: bottom.map(toPx)
+      };
+    };
+    const toOptions = position => ({
+      ...position,
+      position: Optional.some(position.position)
+    });
+    const applyPositionCss = (element, position) => {
+      setOptions(element, toOptions(position));
+    };
+
+    const getOffsetParent = element => {
+      const isFixed = is$1(getRaw(element, 'position'), 'fixed');
+      const offsetParent$1 = isFixed ? Optional.none() : offsetParent(element);
+      return offsetParent$1.orThunk(() => {
+        const marker = SugarElement.fromTag('span');
+        return parent(element).bind(parent => {
+          append$2(parent, marker);
+          const offsetParent$1 = offsetParent(marker);
+          remove$5(marker);
+          return offsetParent$1;
+        });
+      });
+    };
+    const getOrigin = element => getOffsetParent(element).map(absolute$3).getOrThunk(() => SugarPosition(0, 0));
+
+    const appear = (component, contextualInfo) => {
+      const elem = component.element;
+      add$2(elem, contextualInfo.transitionClass);
+      remove$2(elem, contextualInfo.fadeOutClass);
+      add$2(elem, contextualInfo.fadeInClass);
+      contextualInfo.onShow(component);
+    };
+    const disappear = (component, contextualInfo) => {
+      const elem = component.element;
+      add$2(elem, contextualInfo.transitionClass);
+      remove$2(elem, contextualInfo.fadeInClass);
+      add$2(elem, contextualInfo.fadeOutClass);
+      contextualInfo.onHide(component);
+    };
+    const isPartiallyVisible = (box, bounds) => box.y < bounds.bottom && box.bottom > bounds.y;
+    const isTopCompletelyVisible = (box, bounds) => box.y >= bounds.y;
+    const isBottomCompletelyVisible = (box, bounds) => box.bottom <= bounds.bottom;
+    const forceTopPosition = (winBox, leftX, viewport) => ({
+      location: 'top',
+      leftX,
+      topY: viewport.bounds.y - winBox.y
+    });
+    const forceBottomPosition = (winBox, leftX, viewport) => ({
+      location: 'bottom',
+      leftX,
+      bottomY: winBox.bottom - viewport.bounds.bottom
+    });
+    const getDockedLeftPosition = bounds => {
+      return bounds.box.x - bounds.win.x;
+    };
+    const tryDockingPosition = (modes, bounds, viewport) => {
+      const winBox = bounds.win;
+      const box = bounds.box;
+      const leftX = getDockedLeftPosition(bounds);
+      return findMap(modes, mode => {
+        switch (mode) {
+        case 'bottom':
+          return !isBottomCompletelyVisible(box, viewport.bounds) ? Optional.some(forceBottomPosition(winBox, leftX, viewport)) : Optional.none();
+        case 'top':
+          return !isTopCompletelyVisible(box, viewport.bounds) ? Optional.some(forceTopPosition(winBox, leftX, viewport)) : Optional.none();
+        default:
+          return Optional.none();
+        }
+      }).getOr({ location: 'no-dock' });
+    };
+    const isVisibleForModes = (modes, box, viewport) => forall(modes, mode => {
+      switch (mode) {
+      case 'bottom':
+        return isBottomCompletelyVisible(box, viewport.bounds);
+      case 'top':
+        return isTopCompletelyVisible(box, viewport.bounds);
+      }
+    });
+    const getXYForRestoring = (pos, viewport) => {
+      const priorY = viewport.optScrollEnv.fold(constant$1(pos.bounds.y), scrollEnv => scrollEnv.scrollElmTop + (pos.bounds.y - scrollEnv.currentScrollTop));
+      return SugarPosition(pos.bounds.x, priorY);
+    };
+    const getXYForSaving = (box, viewport) => {
+      const priorY = viewport.optScrollEnv.fold(constant$1(box.y), scrollEnv => box.y + scrollEnv.currentScrollTop - scrollEnv.scrollElmTop);
+      return SugarPosition(box.x, priorY);
+    };
+    const getPrior = (elem, viewport, state) => state.getInitialPos().map(pos => {
+      const xy = getXYForRestoring(pos, viewport);
+      return {
+        box: bounds(xy.left, xy.top, get$d(elem), get$e(elem)),
+        location: pos.location
+      };
+    });
+    const storePrior = (elem, box, viewport, state, decision) => {
+      const xy = getXYForSaving(box, viewport);
+      const bounds$1 = bounds(xy.left, xy.top, box.width, box.height);
+      state.setInitialPos({
+        style: getAllRaw(elem),
+        position: get$f(elem, 'position') || 'static',
+        bounds: bounds$1,
+        location: decision.location
+      });
+    };
+    const storePriorIfNone = (elem, box, viewport, state, decision) => {
+      state.getInitialPos().fold(() => storePrior(elem, box, viewport, state, decision), () => noop);
+    };
+    const revertToOriginal = (elem, box, state) => state.getInitialPos().bind(position => {
+      var _a;
+      state.clearInitialPos();
+      switch (position.position) {
+      case 'static':
+        return Optional.some({ morph: 'static' });
+      case 'absolute':
+        const offsetParent = getOffsetParent(elem).getOr(body());
+        const offsetBox = box$1(offsetParent);
+        const scrollDelta = (_a = offsetParent.dom.scrollTop) !== null && _a !== void 0 ? _a : 0;
+        return Optional.some({
+          morph: 'absolute',
+          positionCss: NuPositionCss('absolute', get$h(position.style, 'left').map(_left => box.x - offsetBox.x), get$h(position.style, 'top').map(_top => box.y - offsetBox.y + scrollDelta), get$h(position.style, 'right').map(_right => offsetBox.right - box.right), get$h(position.style, 'bottom').map(_bottom => offsetBox.bottom - box.bottom))
+        });
+      default:
+        return Optional.none();
+      }
+    });
+    const tryMorphToOriginal = (elem, viewport, state) => getPrior(elem, viewport, state).filter(({box}) => isVisibleForModes(state.getModes(), box, viewport)).bind(({box}) => revertToOriginal(elem, box, state));
+    const tryDecisionToFixedMorph = decision => {
+      switch (decision.location) {
+      case 'top': {
+          return Optional.some({
+            morph: 'fixed',
+            positionCss: NuPositionCss('fixed', Optional.some(decision.leftX), Optional.some(decision.topY), Optional.none(), Optional.none())
+          });
+        }
+      case 'bottom': {
+          return Optional.some({
+            morph: 'fixed',
+            positionCss: NuPositionCss('fixed', Optional.some(decision.leftX), Optional.none(), Optional.none(), Optional.some(decision.bottomY))
+          });
+        }
+      default:
+        return Optional.none();
+      }
+    };
+    const tryMorphToFixed = (elem, viewport, state) => {
+      const box = box$1(elem);
+      const winBox = win();
+      const decision = tryDockingPosition(state.getModes(), {
+        win: winBox,
+        box
+      }, viewport);
+      if (decision.location === 'top' || decision.location === 'bottom') {
+        storePrior(elem, box, viewport, state, decision);
+        return tryDecisionToFixedMorph(decision);
+      } else {
+        return Optional.none();
+      }
+    };
+    const tryMorphToOriginalOrUpdateFixed = (elem, viewport, state) => {
+      return tryMorphToOriginal(elem, viewport, state).orThunk(() => {
+        return viewport.optScrollEnv.bind(_ => getPrior(elem, viewport, state)).bind(({box, location}) => {
+          const winBox = win();
+          const leftX = getDockedLeftPosition({
+            win: winBox,
+            box
+          });
+          const decision = location === 'top' ? forceTopPosition(winBox, leftX, viewport) : forceBottomPosition(winBox, leftX, viewport);
+          return tryDecisionToFixedMorph(decision);
+        });
+      });
+    };
+    const tryMorph = (component, viewport, state) => {
+      const elem = component.element;
+      const isDocked = is$1(getRaw(elem, 'position'), 'fixed');
+      return isDocked ? tryMorphToOriginalOrUpdateFixed(elem, viewport, state) : tryMorphToFixed(elem, viewport, state);
+    };
+    const calculateMorphToOriginal = (component, viewport, state) => {
+      const elem = component.element;
+      return getPrior(elem, viewport, state).bind(({box}) => revertToOriginal(elem, box, state));
+    };
+    const forceDockWith = (elem, viewport, state, getDecision) => {
+      const box = box$1(elem);
+      const winBox = win();
+      const leftX = getDockedLeftPosition({
+        win: winBox,
+        box
+      });
+      const decision = getDecision(winBox, leftX, viewport);
+      if (decision.location === 'bottom' || decision.location === 'top') {
+        storePriorIfNone(elem, box, viewport, state, decision);
+        return tryDecisionToFixedMorph(decision);
+      } else {
+        return Optional.none();
+      }
+    };
+
+    const morphToStatic = (component, config, state) => {
+      state.setDocked(false);
+      each$1([
+        'left',
+        'right',
+        'top',
+        'bottom',
+        'position'
+      ], prop => remove$6(component.element, prop));
+      config.onUndocked(component);
+    };
+    const morphToCoord = (component, config, state, position) => {
+      const isDocked = position.position === 'fixed';
+      state.setDocked(isDocked);
+      applyPositionCss(component.element, position);
+      const method = isDocked ? config.onDocked : config.onUndocked;
+      method(component);
+    };
+    const updateVisibility = (component, config, state, viewport, morphToDocked = false) => {
+      config.contextual.each(contextInfo => {
+        contextInfo.lazyContext(component).each(box => {
+          const isVisible = isPartiallyVisible(box, viewport.bounds);
+          if (isVisible !== state.isVisible()) {
+            state.setVisible(isVisible);
+            if (morphToDocked && !isVisible) {
+              add$1(component.element, [contextInfo.fadeOutClass]);
+              contextInfo.onHide(component);
+            } else {
+              const method = isVisible ? appear : disappear;
+              method(component, contextInfo);
+            }
+          }
+        });
+      });
+    };
+    const applyFixedMorph = (component, config, state, viewport, morph) => {
+      updateVisibility(component, config, state, viewport, true);
+      morphToCoord(component, config, state, morph.positionCss);
+    };
+    const applyMorph = (component, config, state, viewport, morph) => {
+      switch (morph.morph) {
+      case 'static': {
+          return morphToStatic(component, config, state);
+        }
+      case 'absolute': {
+          return morphToCoord(component, config, state, morph.positionCss);
+        }
+      case 'fixed': {
+          return applyFixedMorph(component, config, state, viewport, morph);
+        }
+      }
+    };
+    const refreshInternal = (component, config, state) => {
+      const viewport = config.lazyViewport(component);
+      updateVisibility(component, config, state, viewport);
+      tryMorph(component, viewport, state).each(morph => {
+        applyMorph(component, config, state, viewport, morph);
+      });
+    };
+    const resetInternal = (component, config, state) => {
+      const elem = component.element;
+      state.setDocked(false);
+      const viewport = config.lazyViewport(component);
+      calculateMorphToOriginal(component, viewport, state).each(staticOrAbsoluteMorph => {
+        switch (staticOrAbsoluteMorph.morph) {
+        case 'static': {
+            morphToStatic(component, config, state);
+            break;
+          }
+        case 'absolute': {
+            morphToCoord(component, config, state, staticOrAbsoluteMorph.positionCss);
+            break;
+          }
+        }
+      });
+      state.setVisible(true);
+      config.contextual.each(contextInfo => {
+        remove$1(elem, [
+          contextInfo.fadeInClass,
+          contextInfo.fadeOutClass,
+          contextInfo.transitionClass
+        ]);
+        contextInfo.onShow(component);
+      });
+      refresh$4(component, config, state);
+    };
+    const refresh$4 = (component, config, state) => {
+      if (component.getSystem().isConnected()) {
+        refreshInternal(component, config, state);
+      }
+    };
+    const reset$2 = (component, config, state) => {
+      if (state.isDocked()) {
+        resetInternal(component, config, state);
+      }
+    };
+    const forceDockWithDecision = getDecision => (component, config, state) => {
+      const viewport = config.lazyViewport(component);
+      const optMorph = forceDockWith(component.element, viewport, state, getDecision);
+      optMorph.each(morph => {
+        applyFixedMorph(component, config, state, viewport, morph);
+      });
+    };
+    const forceDockToTop = forceDockWithDecision(forceTopPosition);
+    const forceDockToBottom = forceDockWithDecision(forceBottomPosition);
+    const isDocked$2 = (component, config, state) => state.isDocked();
+    const setModes = (component, config, state, modes) => state.setModes(modes);
+    const getModes = (component, config, state) => state.getModes();
+
+    var DockingApis = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        refresh: refresh$4,
+        reset: reset$2,
+        isDocked: isDocked$2,
+        getModes: getModes,
+        setModes: setModes,
+        forceDockToTop: forceDockToTop,
+        forceDockToBottom: forceDockToBottom
+    });
+
+    const events$i = (dockInfo, dockState) => derive$2([
+      runOnSource(transitionend(), (component, simulatedEvent) => {
+        dockInfo.contextual.each(contextInfo => {
+          if (has(component.element, contextInfo.transitionClass)) {
+            remove$1(component.element, [
+              contextInfo.transitionClass,
+              contextInfo.fadeInClass
+            ]);
+            const notify = dockState.isVisible() ? contextInfo.onShown : contextInfo.onHidden;
+            notify(component);
+          }
+          simulatedEvent.stop();
+        });
+      }),
+      run$1(windowScroll(), (component, _) => {
+        refresh$4(component, dockInfo, dockState);
+      }),
+      run$1(externalElementScroll(), (component, _) => {
+        refresh$4(component, dockInfo, dockState);
+      }),
+      run$1(windowResize(), (component, _) => {
+        reset$2(component, dockInfo, dockState);
+      })
+    ]);
+
+    var ActiveDocking = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        events: events$i
+    });
+
+    const fromHtml$1 = (html, scope) => {
+      const doc = scope || document;
+      const div = doc.createElement('div');
+      div.innerHTML = html;
+      return children(SugarElement.fromDom(div));
+    };
+
+    const get$8 = element => element.dom.innerHTML;
+    const set$6 = (element, content) => {
+      const owner = owner$4(element);
+      const docDom = owner.dom;
+      const fragment = SugarElement.fromDom(docDom.createDocumentFragment());
+      const contentElements = fromHtml$1(content, docDom);
+      append$1(fragment, contentElements);
+      empty(element);
+      append$2(element, fragment);
+    };
+    const getOuter = element => {
+      const container = SugarElement.fromTag('div');
+      const clone = SugarElement.fromDom(element.dom.cloneNode(true));
+      append$2(container, clone);
+      return get$8(container);
+    };
+
+    const clone$1 = (original, isDeep) => SugarElement.fromDom(original.dom.cloneNode(isDeep));
+    const shallow = original => clone$1(original, false);
+    const deep = original => clone$1(original, true);
+
+    const getHtml = element => {
+      if (isShadowRoot(element)) {
+        return '#shadow-root';
+      } else {
+        const clone = shallow(element);
+        return getOuter(clone);
+      }
+    };
+
+    const element = elem => getHtml(elem);
+
+    const unknown = 'unknown';
+    var EventConfiguration;
+    (function (EventConfiguration) {
+      EventConfiguration[EventConfiguration['STOP'] = 0] = 'STOP';
+      EventConfiguration[EventConfiguration['NORMAL'] = 1] = 'NORMAL';
+      EventConfiguration[EventConfiguration['LOGGING'] = 2] = 'LOGGING';
+    }(EventConfiguration || (EventConfiguration = {})));
+    const eventConfig = Cell({});
+    const makeEventLogger = (eventName, initialTarget) => {
+      const sequence = [];
+      const startTime = new Date().getTime();
+      return {
+        logEventCut: (_name, target, purpose) => {
+          sequence.push({
+            outcome: 'cut',
+            target,
+            purpose
+          });
+        },
+        logEventStopped: (_name, target, purpose) => {
+          sequence.push({
+            outcome: 'stopped',
+            target,
+            purpose
+          });
+        },
+        logNoParent: (_name, target, purpose) => {
+          sequence.push({
+            outcome: 'no-parent',
+            target,
+            purpose
+          });
+        },
+        logEventNoHandlers: (_name, target) => {
+          sequence.push({
+            outcome: 'no-handlers-left',
+            target
+          });
+        },
+        logEventResponse: (_name, target, purpose) => {
+          sequence.push({
+            outcome: 'response',
+            purpose,
+            target
+          });
+        },
+        write: () => {
+          const finishTime = new Date().getTime();
+          if (contains$2([
+              'mousemove',
+              'mouseover',
+              'mouseout',
+              systemInit()
+            ], eventName)) {
+            return;
+          }
+          console.log(eventName, {
+            event: eventName,
+            time: finishTime - startTime,
+            target: initialTarget.dom,
+            sequence: map$2(sequence, s => {
+              if (!contains$2([
+                  'cut',
+                  'stopped',
+                  'response'
+                ], s.outcome)) {
+                return s.outcome;
+              } else {
+                return '{' + s.purpose + '} ' + s.outcome + ' at (' + element(s.target) + ')';
+              }
+            })
+          });
+        }
+      };
+    };
+    const processEvent = (eventName, initialTarget, f) => {
+      const status = get$h(eventConfig.get(), eventName).orThunk(() => {
+        const patterns = keys(eventConfig.get());
+        return findMap(patterns, p => eventName.indexOf(p) > -1 ? Optional.some(eventConfig.get()[p]) : Optional.none());
+      }).getOr(EventConfiguration.NORMAL);
+      switch (status) {
+      case EventConfiguration.NORMAL:
+        return f(noLogger());
+      case EventConfiguration.LOGGING: {
+          const logger = makeEventLogger(eventName, initialTarget);
+          const output = f(logger);
+          logger.write();
+          return output;
+        }
+      case EventConfiguration.STOP:
+        return true;
+      }
+    };
+    const path = [
+      'alloy/data/Fields',
+      'alloy/debugging/Debugging'
+    ];
+    const getTrace = () => {
+      const err = new Error();
+      if (err.stack !== undefined) {
+        const lines = err.stack.split('\n');
+        return find$5(lines, line => line.indexOf('alloy') > 0 && !exists(path, p => line.indexOf(p) > -1)).getOr(unknown);
+      } else {
+        return unknown;
+      }
+    };
+    const ignoreEvent = {
+      logEventCut: noop,
+      logEventStopped: noop,
+      logNoParent: noop,
+      logEventNoHandlers: noop,
+      logEventResponse: noop,
+      write: noop
+    };
+    const monitorEvent = (eventName, initialTarget, f) => processEvent(eventName, initialTarget, f);
+    const noLogger = constant$1(ignoreEvent);
+
+    const menuFields = constant$1([
+      required$1('menu'),
+      required$1('selectedMenu')
+    ]);
+    const itemFields = constant$1([
+      required$1('item'),
+      required$1('selectedItem')
+    ]);
+    constant$1(objOf(itemFields().concat(menuFields())));
+    const itemSchema$3 = constant$1(objOf(itemFields()));
+
+    const _initSize = requiredObjOf('initSize', [
+      required$1('numColumns'),
+      required$1('numRows')
+    ]);
+    const itemMarkers = () => requiredOf('markers', itemSchema$3());
+    const tieredMenuMarkers = () => requiredObjOf('markers', [required$1('backgroundMenu')].concat(menuFields()).concat(itemFields()));
+    const markers$1 = required => requiredObjOf('markers', map$2(required, required$1));
+    const onPresenceHandler = (label, fieldName, presence) => {
+      getTrace();
+      return field$1(fieldName, fieldName, presence, valueOf(f => Result.value((...args) => {
+        return f.apply(undefined, args);
+      })));
+    };
+    const onHandler = fieldName => onPresenceHandler('onHandler', fieldName, defaulted$1(noop));
+    const onKeyboardHandler = fieldName => onPresenceHandler('onKeyboardHandler', fieldName, defaulted$1(Optional.none));
+    const onStrictHandler = fieldName => onPresenceHandler('onHandler', fieldName, required$2());
+    const onStrictKeyboardHandler = fieldName => onPresenceHandler('onKeyboardHandler', fieldName, required$2());
+    const output$1 = (name, value) => customField(name, constant$1(value));
+    const snapshot = name => customField(name, identity);
+    const initSize = constant$1(_initSize);
+
+    var DockingSchema = [
+      optionObjOf('contextual', [
+        requiredString('fadeInClass'),
+        requiredString('fadeOutClass'),
+        requiredString('transitionClass'),
+        requiredFunction('lazyContext'),
+        onHandler('onShow'),
+        onHandler('onShown'),
+        onHandler('onHide'),
+        onHandler('onHidden')
+      ]),
+      defaultedFunction('lazyViewport', () => ({
+        bounds: win(),
+        optScrollEnv: Optional.none()
+      })),
+      defaultedArrayOf('modes', [
+        'top',
+        'bottom'
+      ], string),
+      onHandler('onDocked'),
+      onHandler('onUndocked')
+    ];
+
+    const init$g = spec => {
+      const docked = Cell(false);
+      const visible = Cell(true);
+      const initialBounds = value$4();
+      const modes = Cell(spec.modes);
+      const readState = () => `docked:  ${ docked.get() }, visible: ${ visible.get() }, modes: ${ modes.get().join(',') }`;
+      return nu$7({
+        isDocked: docked.get,
+        setDocked: docked.set,
+        getInitialPos: initialBounds.get,
+        setInitialPos: initialBounds.set,
+        clearInitialPos: initialBounds.clear,
+        isVisible: visible.get,
+        setVisible: visible.set,
+        getModes: modes.get,
+        setModes: modes.set,
+        readState
+      });
+    };
+
+    var DockingState = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        init: init$g
+    });
+
+    const Docking = create$4({
+      fields: DockingSchema,
+      name: 'docking',
+      active: ActiveDocking,
+      apis: DockingApis,
+      state: DockingState
+    });
+
+    const isRecursive = (component, originator, target) => eq(originator, component.element) && !eq(originator, target);
+    const events$h = derive$2([can(focus$4(), (component, simulatedEvent) => {
+        const event = simulatedEvent.event;
+        const originator = event.originator;
+        const target = event.target;
+        if (isRecursive(component, originator, target)) {
+          console.warn(focus$4() + ' did not get interpreted by the desired target. ' + '\nOriginator: ' + element(originator) + '\nTarget: ' + element(target) + '\nCheck the ' + focus$4() + ' event handlers');
+          return false;
+        } else {
+          return true;
+        }
+      })]);
+
+    var DefaultEvents = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        events: events$h
+    });
+
+    let unique = 0;
+    const generate$6 = prefix => {
+      const date = new Date();
+      const time = date.getTime();
+      const random = Math.floor(Math.random() * 1000000000);
+      unique++;
+      return prefix + '_' + random + unique + String(time);
+    };
+
+    const prefix$1 = constant$1('alloy-id-');
+    const idAttr$1 = constant$1('data-alloy-id');
+
+    const prefix = prefix$1();
+    const idAttr = idAttr$1();
+    const write = (label, elem) => {
+      const id = generate$6(prefix + label);
+      writeOnly(elem, id);
+      return id;
+    };
+    const writeOnly = (elem, uid) => {
+      Object.defineProperty(elem.dom, idAttr, {
+        value: uid,
+        writable: true
+      });
+    };
+    const read = elem => {
+      const id = isElement$1(elem) ? elem.dom[idAttr] : null;
+      return Optional.from(id);
+    };
+    const generate$5 = prefix => generate$6(prefix);
+
+    const make$8 = identity;
+
+    const NoContextApi = getComp => {
+      const getMessage = event => `The component must be in a context to execute: ${ event }` + (getComp ? '\n' + element(getComp().element) + ' is not in context.' : '');
+      const fail = event => () => {
+        throw new Error(getMessage(event));
+      };
+      const warn = event => () => {
+        console.warn(getMessage(event));
+      };
+      return {
+        debugInfo: constant$1('fake'),
+        triggerEvent: warn('triggerEvent'),
+        triggerFocus: warn('triggerFocus'),
+        triggerEscape: warn('triggerEscape'),
+        broadcast: warn('broadcast'),
+        broadcastOn: warn('broadcastOn'),
+        broadcastEvent: warn('broadcastEvent'),
+        build: fail('build'),
+        buildOrPatch: fail('buildOrPatch'),
+        addToWorld: fail('addToWorld'),
+        removeFromWorld: fail('removeFromWorld'),
+        addToGui: fail('addToGui'),
+        removeFromGui: fail('removeFromGui'),
+        getByUid: fail('getByUid'),
+        getByDom: fail('getByDom'),
+        isConnected: never
+      };
+    };
+    const singleton = NoContextApi();
+
     const premadeTag = generate$6('alloy-premade');
     const premade$1 = comp => {
       Object.defineProperty(comp.element.dom, premadeTag, {
@@ -2537,11 +3340,8 @@
       return wrap$1(premadeTag, comp);
     };
     const isPremade = element => has$2(element.dom, premadeTag);
-    const getPremade = spec => get$g(spec, premadeTag);
+    const getPremade = spec => get$h(spec, premadeTag);
     const makeApi = f => markAsSketchApi((component, ...rest) => f(component.getApis(), component, ...rest), f);
-
-    const NoState = { init: () => nu$8({ readState: constant$1('No State required') }) };
-    const nu$8 = spec => spec;
 
     const generateFrom$1 = (spec, all) => {
       const schema = map$2(all, a => optionObjOf(a.name(), [
@@ -2569,30 +3369,12 @@
       const r = {};
       each(data, (detail, key) => {
         each(detail, (value, indexKey) => {
-          const chain = get$g(r, indexKey).getOr([]);
+          const chain = get$h(r, indexKey).getOr([]);
           r[indexKey] = chain.concat([tuple(key, value)]);
         });
       });
       return r;
     };
-
-    const nu$7 = s => ({
-      classes: isUndefined(s.classes) ? [] : s.classes,
-      attributes: isUndefined(s.attributes) ? {} : s.attributes,
-      styles: isUndefined(s.styles) ? {} : s.styles
-    });
-    const merge = (defnA, mod) => ({
-      ...defnA,
-      attributes: {
-        ...defnA.attributes,
-        ...mod.attributes
-      },
-      styles: {
-        ...defnA.styles,
-        ...mod.styles
-      },
-      classes: defnA.classes.concat(mod.classes)
-    });
 
     const combine$2 = (info, baseMod, behaviours, base) => {
       const modsByBehaviour = { ...baseMod };
@@ -2610,7 +3392,7 @@
       const combinedClasses = foldr(byAspect.classes, (b, a) => a.modification.concat(b), []);
       const combinedAttributes = combineObjects(byAspect.attributes);
       const combinedStyles = combineObjects(byAspect.styles);
-      return nu$7({
+      return nu$8({
         classes: combinedClasses,
         attributes: combinedAttributes,
         styles: combinedStyles
@@ -2757,6 +3539,7 @@
           baseBehaviour,
           'representing',
           'item-events',
+          'toolbar-button-events',
           'tooltipping'
         ],
         [mousedown()]: [
@@ -2787,83 +3570,10 @@
       uid: detail.uid,
       domChildren: map$2(detail.components, comp => comp.element)
     });
-    const toModification = detail => detail.domModification.fold(() => nu$7({}), nu$7);
+    const toModification = detail => detail.domModification.fold(() => nu$8({}), nu$8);
     const toEvents = info => info.events;
 
-    const read = (element, attr) => {
-      const value = get$f(element, attr);
-      return value === undefined || value === '' ? [] : value.split(' ');
-    };
-    const add$4 = (element, attr, id) => {
-      const old = read(element, attr);
-      const nu = old.concat([id]);
-      set$9(element, attr, nu.join(' '));
-      return true;
-    };
-    const remove$4 = (element, attr, id) => {
-      const nu = filter$2(read(element, attr), v => v !== id);
-      if (nu.length > 0) {
-        set$9(element, attr, nu.join(' '));
-      } else {
-        remove$7(element, attr);
-      }
-      return false;
-    };
-
-    const supports = element => element.dom.classList !== undefined;
-    const get$8 = element => read(element, 'class');
-    const add$3 = (element, clazz) => add$4(element, 'class', clazz);
-    const remove$3 = (element, clazz) => remove$4(element, 'class', clazz);
-
-    const add$2 = (element, clazz) => {
-      if (supports(element)) {
-        element.dom.classList.add(clazz);
-      } else {
-        add$3(element, clazz);
-      }
-    };
-    const cleanClass = element => {
-      const classList = supports(element) ? element.dom.classList : get$8(element);
-      if (classList.length === 0) {
-        remove$7(element, 'class');
-      }
-    };
-    const remove$2 = (element, clazz) => {
-      if (supports(element)) {
-        const classList = element.dom.classList;
-        classList.remove(clazz);
-      } else {
-        remove$3(element, clazz);
-      }
-      cleanClass(element);
-    };
-    const has = (element, clazz) => supports(element) && element.dom.classList.contains(clazz);
-
-    const add$1 = (element, classes) => {
-      each$1(classes, x => {
-        add$2(element, x);
-      });
-    };
-    const remove$1 = (element, classes) => {
-      each$1(classes, x => {
-        remove$2(element, x);
-      });
-    };
-    const hasAll = (element, classes) => forall(classes, clazz => has(element, clazz));
-    const getNative = element => {
-      const classList = element.dom.classList;
-      const r = new Array(classList.length);
-      for (let i = 0; i < classList.length; i++) {
-        const item = classList.item(i);
-        if (item !== null) {
-          r[i] = item;
-        }
-      }
-      return r;
-    };
-    const get$7 = element => supports(element) ? getNative(element) : get$8(element);
-
-    const get$6 = element => element.dom.value;
+    const get$7 = element => element.dom.value;
     const set$5 = (element, value) => {
       if (value === undefined) {
         throw new Error('Value.set was undefined');
@@ -2948,7 +3658,7 @@
         each$1(stylesToRemove, s => remove$6(obsoleted, s));
         setAll(obsoleted, stylesToSet);
       };
-      const existingClasses = get$7(obsoleted);
+      const existingClasses = get$9(obsoleted);
       const classesToRemove = difference(existingClasses, definition.classes);
       const classesToAdd = difference(definition.classes, existingClasses);
       const updateClasses = () => {
@@ -2965,7 +3675,7 @@
       const updateValue = () => {
         const valueElement = obsoleted;
         const value = definition.value.getOrUndefined();
-        if (value !== get$6(valueElement)) {
+        if (value !== get$7(valueElement)) {
           set$5(valueElement, value !== null && value !== void 0 ? value : '');
         }
       };
@@ -3007,7 +3717,7 @@
     };
 
     const getBehaviours$2 = spec => {
-      const behaviours = get$g(spec, 'behaviours').getOr({});
+      const behaviours = get$h(spec, 'behaviours').getOr({});
       return bind$3(keys(behaviours), name => {
         const behaviour = behaviours[name];
         return isNonNullable(behaviour) ? [behaviour.me] : [];
@@ -3032,7 +3742,7 @@
     };
     const build$2 = (spec, obsoleted) => {
       const getMe = () => me;
-      const systemApi = Cell(singleton$1);
+      const systemApi = Cell(singleton);
       const info = getOrDie(toInfo(spec));
       const bBlob = generate$4(spec);
       const bList = getBehaviours$3(bBlob);
@@ -3081,7 +3791,7 @@
     };
 
     const buildSubcomponents = (spec, obsoleted) => {
-      const components = get$g(spec, 'components').getOr([]);
+      const components = get$h(spec, 'components').getOr([]);
       return obsoleted.fold(() => map$2(components, build$1), obs => map$2(components, (c, i) => {
         return buildOrPatch(c, child$2(obs, i));
       }));
@@ -3177,6 +3887,13 @@
       const is = (s, test) => test(s);
       return ClosestOrAncestor(is, ancestor$1, scope, predicate, isRoot);
     };
+    const sibling$1 = (scope, predicate) => {
+      const element = scope.dom;
+      if (!element.parentNode) {
+        return Optional.none();
+      }
+      return child$1(SugarElement.fromDom(element.parentNode), x => !eq(scope, x) && predicate(x));
+    };
     const child$1 = (scope, predicate) => {
       const pred = node => predicate(SugarElement.fromDom(node));
       const result = find$5(scope.dom.childNodes, pred);
@@ -3201,7 +3918,9 @@
 
     const closest$2 = (scope, predicate, isRoot) => closest$3(scope, predicate, isRoot).isSome();
 
+    const first$1 = selector => one(selector);
     const ancestor = (scope, selector, isRoot) => ancestor$1(scope, e => is(e, selector), isRoot);
+    const sibling = (scope, selector) => sibling$1(scope, e => is(e, selector));
     const child = (scope, selector) => child$1(scope, e => is(e, selector));
     const descendant = (scope, selector) => one(selector, scope);
     const closest$1 = (scope, selector, isRoot) => {
@@ -3215,11 +3934,11 @@
         if (!isElement$1(elem)) {
           return false;
         }
-        const id = get$f(elem, 'id');
+        const id = get$g(elem, 'id');
         return id !== undefined && id.indexOf(attribute) > -1;
       });
       return dependent.bind(dep => {
-        const id = get$f(dep, 'id');
+        const id = get$g(dep, 'id');
         const dos = getRootNode(dep);
         return descendant(dos, `[${ attribute }="${ id }"]`);
       });
@@ -3241,155 +3960,6 @@
 
     const isAriaPartOf = (component, queryElem) => find$1(queryElem).exists(owner => isPartOf$1(component, owner));
     const isPartOf$1 = (component, queryElem) => closest$2(queryElem, el => eq(el, component.element), never) || isAriaPartOf(component, queryElem);
-
-    const unknown = 'unknown';
-    var EventConfiguration;
-    (function (EventConfiguration) {
-      EventConfiguration[EventConfiguration['STOP'] = 0] = 'STOP';
-      EventConfiguration[EventConfiguration['NORMAL'] = 1] = 'NORMAL';
-      EventConfiguration[EventConfiguration['LOGGING'] = 2] = 'LOGGING';
-    }(EventConfiguration || (EventConfiguration = {})));
-    const eventConfig = Cell({});
-    const makeEventLogger = (eventName, initialTarget) => {
-      const sequence = [];
-      const startTime = new Date().getTime();
-      return {
-        logEventCut: (_name, target, purpose) => {
-          sequence.push({
-            outcome: 'cut',
-            target,
-            purpose
-          });
-        },
-        logEventStopped: (_name, target, purpose) => {
-          sequence.push({
-            outcome: 'stopped',
-            target,
-            purpose
-          });
-        },
-        logNoParent: (_name, target, purpose) => {
-          sequence.push({
-            outcome: 'no-parent',
-            target,
-            purpose
-          });
-        },
-        logEventNoHandlers: (_name, target) => {
-          sequence.push({
-            outcome: 'no-handlers-left',
-            target
-          });
-        },
-        logEventResponse: (_name, target, purpose) => {
-          sequence.push({
-            outcome: 'response',
-            purpose,
-            target
-          });
-        },
-        write: () => {
-          const finishTime = new Date().getTime();
-          if (contains$2([
-              'mousemove',
-              'mouseover',
-              'mouseout',
-              systemInit()
-            ], eventName)) {
-            return;
-          }
-          console.log(eventName, {
-            event: eventName,
-            time: finishTime - startTime,
-            target: initialTarget.dom,
-            sequence: map$2(sequence, s => {
-              if (!contains$2([
-                  'cut',
-                  'stopped',
-                  'response'
-                ], s.outcome)) {
-                return s.outcome;
-              } else {
-                return '{' + s.purpose + '} ' + s.outcome + ' at (' + element(s.target) + ')';
-              }
-            })
-          });
-        }
-      };
-    };
-    const processEvent = (eventName, initialTarget, f) => {
-      const status = get$g(eventConfig.get(), eventName).orThunk(() => {
-        const patterns = keys(eventConfig.get());
-        return findMap(patterns, p => eventName.indexOf(p) > -1 ? Optional.some(eventConfig.get()[p]) : Optional.none());
-      }).getOr(EventConfiguration.NORMAL);
-      switch (status) {
-      case EventConfiguration.NORMAL:
-        return f(noLogger());
-      case EventConfiguration.LOGGING: {
-          const logger = makeEventLogger(eventName, initialTarget);
-          const output = f(logger);
-          logger.write();
-          return output;
-        }
-      case EventConfiguration.STOP:
-        return true;
-      }
-    };
-    const path = [
-      'alloy/data/Fields',
-      'alloy/debugging/Debugging'
-    ];
-    const getTrace = () => {
-      const err = new Error();
-      if (err.stack !== undefined) {
-        const lines = err.stack.split('\n');
-        return find$5(lines, line => line.indexOf('alloy') > 0 && !exists(path, p => line.indexOf(p) > -1)).getOr(unknown);
-      } else {
-        return unknown;
-      }
-    };
-    const ignoreEvent = {
-      logEventCut: noop,
-      logEventStopped: noop,
-      logNoParent: noop,
-      logEventNoHandlers: noop,
-      logEventResponse: noop,
-      write: noop
-    };
-    const monitorEvent = (eventName, initialTarget, f) => processEvent(eventName, initialTarget, f);
-    const noLogger = constant$1(ignoreEvent);
-
-    const menuFields = constant$1([
-      required$1('menu'),
-      required$1('selectedMenu')
-    ]);
-    const itemFields = constant$1([
-      required$1('item'),
-      required$1('selectedItem')
-    ]);
-    constant$1(objOf(itemFields().concat(menuFields())));
-    const itemSchema$3 = constant$1(objOf(itemFields()));
-
-    const _initSize = requiredObjOf('initSize', [
-      required$1('numColumns'),
-      required$1('numRows')
-    ]);
-    const itemMarkers = () => requiredOf('markers', itemSchema$3());
-    const tieredMenuMarkers = () => requiredObjOf('markers', [required$1('backgroundMenu')].concat(menuFields()).concat(itemFields()));
-    const markers$1 = required => requiredObjOf('markers', map$2(required, required$1));
-    const onPresenceHandler = (label, fieldName, presence) => {
-      getTrace();
-      return field$1(fieldName, fieldName, presence, valueOf(f => Result.value((...args) => {
-        return f.apply(undefined, args);
-      })));
-    };
-    const onHandler = fieldName => onPresenceHandler('onHandler', fieldName, defaulted$1(noop));
-    const onKeyboardHandler = fieldName => onPresenceHandler('onKeyboardHandler', fieldName, defaulted$1(Optional.none));
-    const onStrictHandler = fieldName => onPresenceHandler('onHandler', fieldName, required$2());
-    const onStrictKeyboardHandler = fieldName => onPresenceHandler('onKeyboardHandler', fieldName, required$2());
-    const output$1 = (name, value) => customField(name, constant$1(value));
-    const snapshot = name => customField(name, identity);
-    const initSize = constant$1(_initSize);
 
     const nu$6 = (x, y, bubble, direction, placement, boundsRestriction, labelPrefix, alwaysFit = false) => ({
       x,
@@ -3453,7 +4023,7 @@
       'right',
       'top',
       'bottom'
-    ], dir => get$g(restrictions, dir).map(restriction => getRestriction(anchor, restriction)));
+    ], dir => get$h(restrictions, dir).map(restriction => getRestriction(anchor, restriction)));
     const adjustBounds = (bounds$1, restriction, bubbleOffset) => {
       const applyRestriction = (dir, current) => restriction[dir].map(pos => {
         const isVerticalAxis = dir === 'top' || dir === 'bottom';
@@ -3552,7 +4122,7 @@
     ];
 
     const chooseChannels = (channels, message) => message.universal ? channels : filter$2(channels, ch => contains$2(message.channels, ch));
-    const events$h = receiveConfig => derive$2([run$1(receive(), (component, message) => {
+    const events$g = receiveConfig => derive$2([run$1(receive(), (component, message) => {
         const channelMap = receiveConfig.channels;
         const channels = keys(channelMap);
         const receivingData = message;
@@ -3567,7 +4137,7 @@
 
     var ActiveReceiving = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        events: events$h
+        events: events$g
     });
 
     var ReceivingSchema = [requiredOf('channels', setOf(Result.value, objOfOnly([
@@ -3575,115 +4145,13 @@
         defaulted('schema', anyValue())
       ])))];
 
-    const executeEvent = (bConfig, bState, executor) => runOnExecute$1(component => {
-      executor(component, bConfig, bState);
-    });
-    const loadEvent = (bConfig, bState, f) => runOnInit((component, _simulatedEvent) => {
-      f(component, bConfig, bState);
-    });
-    const create$5 = (schema, name, active, apis, extra, state) => {
-      const configSchema = objOfOnly(schema);
-      const schemaSchema = optionObjOf(name, [optionObjOfOnly('config', schema)]);
-      return doCreate(configSchema, schemaSchema, name, active, apis, extra, state);
-    };
-    const createModes$1 = (modes, name, active, apis, extra, state) => {
-      const configSchema = modes;
-      const schemaSchema = optionObjOf(name, [optionOf('config', modes)]);
-      return doCreate(configSchema, schemaSchema, name, active, apis, extra, state);
-    };
-    const wrapApi = (bName, apiFunction, apiName) => {
-      const f = (component, ...rest) => {
-        const args = [component].concat(rest);
-        return component.config({ name: constant$1(bName) }).fold(() => {
-          throw new Error('We could not find any behaviour configuration for: ' + bName + '. Using API: ' + apiName);
-        }, info => {
-          const rest = Array.prototype.slice.call(args, 1);
-          return apiFunction.apply(undefined, [
-            component,
-            info.config,
-            info.state
-          ].concat(rest));
-        });
-      };
-      return markAsBehaviourApi(f, apiName, apiFunction);
-    };
-    const revokeBehaviour = name => ({
-      key: name,
-      value: undefined
-    });
-    const doCreate = (configSchema, schemaSchema, name, active, apis, extra, state) => {
-      const getConfig = info => hasNonNullableKey(info, name) ? info[name]() : Optional.none();
-      const wrappedApis = map$1(apis, (apiF, apiName) => wrapApi(name, apiF, apiName));
-      const wrappedExtra = map$1(extra, (extraF, extraName) => markAsExtraApi(extraF, extraName));
-      const me = {
-        ...wrappedExtra,
-        ...wrappedApis,
-        revoke: curry(revokeBehaviour, name),
-        config: spec => {
-          const prepared = asRawOrDie$1(name + '-config', configSchema, spec);
-          return {
-            key: name,
-            value: {
-              config: prepared,
-              me,
-              configAsRaw: cached(() => asRawOrDie$1(name + '-config', configSchema, spec)),
-              initialConfig: spec,
-              state
-            }
-          };
-        },
-        schema: constant$1(schemaSchema),
-        exhibit: (info, base) => {
-          return lift2(getConfig(info), get$g(active, 'exhibit'), (behaviourInfo, exhibitor) => {
-            return exhibitor(base, behaviourInfo.config, behaviourInfo.state);
-          }).getOrThunk(() => nu$7({}));
-        },
-        name: constant$1(name),
-        handlers: info => {
-          return getConfig(info).map(behaviourInfo => {
-            const getEvents = get$g(active, 'events').getOr(() => ({}));
-            return getEvents(behaviourInfo.config, behaviourInfo.state);
-          }).getOr({});
-        }
-      };
-      return me;
-    };
-
-    const derive$1 = capabilities => wrapAll(capabilities);
-    const simpleSchema = objOfOnly([
-      required$1('fields'),
-      required$1('name'),
-      defaulted('active', {}),
-      defaulted('apis', {}),
-      defaulted('state', NoState),
-      defaulted('extra', {})
-    ]);
-    const create$4 = data => {
-      const value = asRawOrDie$1('Creating behaviour: ' + data.name, simpleSchema, data);
-      return create$5(value.fields, value.name, value.active, value.apis, value.extra, value.state);
-    };
-    const modeSchema = objOfOnly([
-      required$1('branchKey'),
-      required$1('branches'),
-      required$1('name'),
-      defaulted('active', {}),
-      defaulted('apis', {}),
-      defaulted('state', NoState),
-      defaulted('extra', {})
-    ]);
-    const createModes = data => {
-      const value = asRawOrDie$1('Creating behaviour: ' + data.name, modeSchema, data);
-      return createModes$1(choose$1(value.branchKey, value.branches), value.name, value.active, value.apis, value.extra, value.state);
-    };
-    const revoke = constant$1(undefined);
-
     const Receiving = create$4({
       fields: ReceivingSchema,
       name: 'receiving',
       active: ActiveReceiving
     });
 
-    const exhibit$6 = (base, posConfig) => nu$7({
+    const exhibit$6 = (base, posConfig) => nu$8({
       classes: [],
       styles: posConfig.useFixed() ? {} : { position: 'relative' }
     });
@@ -3693,7 +4161,7 @@
         exhibit: exhibit$6
     });
 
-    const focus$3 = element => element.dom.focus();
+    const focus$3 = (element, preventScroll = false) => element.dom.focus({ preventScroll });
     const blur$1 = element => element.dom.blur();
     const hasFocus = element => {
       const root = getRootNode(element).dom;
@@ -3715,24 +4183,6 @@
         }, noop);
       });
       return result;
-    };
-
-    const NuPositionCss = (position, left, top, right, bottom) => {
-      const toPx = num => num + 'px';
-      return {
-        position,
-        left: left.map(toPx),
-        top: top.map(toPx),
-        right: right.map(toPx),
-        bottom: bottom.map(toPx)
-      };
-    };
-    const toOptions = position => ({
-      ...position,
-      position: Optional.some(position.position)
-    });
-    const applyPositionCss = (element, position) => {
-      setOptions(element, toOptions(position));
     };
 
     const adt$9 = Adt.generate([
@@ -3780,7 +4230,7 @@
     const toBox = (origin, element) => {
       const rel = curry(find$2, element);
       const position = origin.fold(rel, rel, () => {
-        const scroll = get$b();
+        const scroll = get$c();
         return find$2(element).translate(-scroll.left, -scroll.top);
       });
       const width = getOuter$1(element);
@@ -3794,7 +4244,7 @@
     const translate$2 = (origin, x, y) => {
       const pos = SugarPosition(x, y);
       const removeScroll = () => {
-        const outerScroll = get$b();
+        const outerScroll = get$c();
         return pos.translate(-outerScroll.left, -outerScroll.top);
       };
       return origin.fold(constant$1(pos), constant$1(pos), removeScroll);
@@ -3815,7 +4265,7 @@
       set$9(element, placementAttribute, placement);
     };
     const getPlacement = element => getOpt(element, placementAttribute);
-    const reset$2 = element => remove$7(element, placementAttribute);
+    const reset$1 = element => remove$7(element, placementAttribute);
 
     const adt$8 = Adt.generate([
       { fit: ['reposition'] },
@@ -3936,37 +4386,6 @@
       return abc.fold(identity, identity);
     };
 
-    const singleton = doRevoke => {
-      const subject = Cell(Optional.none());
-      const revoke = () => subject.get().each(doRevoke);
-      const clear = () => {
-        revoke();
-        subject.set(Optional.none());
-      };
-      const isSet = () => subject.get().isSome();
-      const get = () => subject.get();
-      const set = s => {
-        revoke();
-        subject.set(Optional.some(s));
-      };
-      return {
-        clear,
-        isSet,
-        get,
-        set
-      };
-    };
-    const destroyable = () => singleton(s => s.destroy());
-    const unbindable = () => singleton(s => s.unbind());
-    const value$2 = () => {
-      const subject = singleton(noop);
-      const on = f => subject.get().each(f);
-      return {
-        ...subject,
-        on
-      };
-    };
-
     const filter = always;
     const bind = (element, event, handler) => bind$2(element, event, filter, handler);
     const capture = (element, event, handler) => capture$1(element, event, filter, handler);
@@ -3996,7 +4415,7 @@
     };
     const getTransitionDuration = element => {
       const get = name => {
-        const style = get$e(element, name);
+        const style = get$f(element, name);
         const times = style.split(/\s*,\s*/);
         return filter$2(times, isNotEmpty);
       };
@@ -4171,7 +4590,7 @@
     const nu$5 = (xOffset, yOffset, classes, insetModifier = 1) => {
       const insetXOffset = xOffset * insetModifier;
       const insetYOffset = yOffset * insetModifier;
-      const getClasses = prop => get$g(classes, prop).getOr([]);
+      const getClasses = prop => get$h(classes, prop).getOr([]);
       const make = (xDelta, yDelta, alignmentsOn) => {
         const alignmentsOff = difference(allAlignments, alignmentsOn);
         return {
@@ -4260,7 +4679,7 @@
     const nu$4 = identity;
 
     const onDirection = (isLtr, isRtl) => element => getDirection(element) === 'rtl' ? isRtl : isLtr;
-    const getDirection = element => get$e(element, 'direction') === 'rtl' ? 'rtl' : 'ltr';
+    const getDirection = element => get$f(element, 'direction') === 'rtl' ? 'rtl' : 'ltr';
 
     var AttributeValue;
     (function (AttributeValue) {
@@ -4268,7 +4687,7 @@
       AttributeValue['BottomToTop'] = 'bottomtotop';
     }(AttributeValue || (AttributeValue = {})));
     const Attribute = 'data-alloy-vertical-dir';
-    const isBottomToTopDir = el => closest$2(el, current => isElement$1(current) && get$f(current, 'data-alloy-vertical-dir') === AttributeValue.BottomToTop);
+    const isBottomToTopDir = el => closest$2(el, current => isElement$1(current) && get$g(current, 'data-alloy-vertical-dir') === AttributeValue.BottomToTop);
 
     const schema$y = () => optionObjOf('layouts', [
       required$1('onLtr'),
@@ -4276,7 +4695,7 @@
       option$3('onBottomLtr'),
       option$3('onBottomRtl')
     ]);
-    const get$5 = (elem, info, defaultLtr, defaultRtl, defaultBottomLtr, defaultBottomRtl, dirElement) => {
+    const get$6 = (elem, info, defaultLtr, defaultRtl, defaultBottomLtr, defaultBottomRtl, dirElement) => {
       const isBottomToTop = dirElement.map(isBottomToTopDir).getOr(false);
       const customLtr = info.layouts.map(ls => ls.onLtr(elem));
       const customRtl = info.layouts.map(ls => ls.onRtl(elem));
@@ -4289,7 +4708,7 @@
     const placement$4 = (component, anchorInfo, origin) => {
       const hotspot = anchorInfo.hotspot;
       const anchorBox = toBox(origin, hotspot.element);
-      const layouts = get$5(component.element, anchorInfo, belowOrAbove(), belowOrAboveRtl(), aboveOrBelow(), aboveOrBelowRtl(), Optional.some(anchorInfo.hotspot.element));
+      const layouts = get$6(component.element, anchorInfo, belowOrAbove(), belowOrAboveRtl(), aboveOrBelow(), aboveOrBelowRtl(), Optional.some(anchorInfo.hotspot.element));
       return Optional.some(nu$4({
         anchorBox,
         bubble: anchorInfo.bubble.getOr(fallback()),
@@ -4308,7 +4727,7 @@
     const placement$3 = (component, anchorInfo, origin) => {
       const pos = translate$2(origin, anchorInfo.x, anchorInfo.y);
       const anchorBox = bounds(pos.left, pos.top, anchorInfo.width, anchorInfo.height);
-      const layouts = get$5(component.element, anchorInfo, all$1(), allRtl$1(), all$1(), allRtl$1(), Optional.none());
+      const layouts = get$6(component.element, anchorInfo, all$1(), allRtl$1(), all$1(), allRtl$1(), Optional.none());
       return Optional.some(nu$4({
         anchorBox,
         bubble: anchorInfo.bubble,
@@ -4362,7 +4781,7 @@
     };
     const getRootPoint = (component, origin, anchorInfo) => {
       const doc = owner$4(component.element);
-      const outerScroll = get$b(doc);
+      const outerScroll = get$c(doc);
       const offset = getOffset(component, origin, anchorInfo).getOr(outerScroll);
       return absolute$1(offset, outerScroll.left, outerScroll.top);
     };
@@ -4380,7 +4799,7 @@
       const anchorBox = rect(topLeft.left, topLeft.top, box.width, box.height);
       const layoutsLtr = anchorInfo.showAbove ? aboveOrBelow() : belowOrAbove();
       const layoutsRtl = anchorInfo.showAbove ? aboveOrBelowRtl() : belowOrAboveRtl();
-      const layouts = get$5(elem, anchorInfo, layoutsLtr, layoutsRtl, layoutsLtr, layoutsRtl, Optional.none());
+      const layouts = get$6(elem, anchorInfo, layoutsLtr, layoutsRtl, layoutsLtr, layoutsRtl, Optional.none());
       return nu$4({
         anchorBox,
         bubble: anchorInfo.bubble.getOr(fallback()),
@@ -4670,7 +5089,7 @@
     };
 
     const api = NodeValue(isText, 'text');
-    const get$4 = element => api.get(element);
+    const get$5 = element => api.get(element);
 
     const point = (element, offset) => ({
       element,
@@ -4684,7 +5103,7 @@
         return point(children$1[offset], 0);
       } else {
         const last = children$1[children$1.length - 1];
-        const len = isText(last) ? get$4(last).length : children(last).length;
+        const len = isText(last) ? get$5(last).length : children(last).length;
         return point(last, len);
       }
     };
@@ -4785,7 +5204,7 @@
 
     const placement = (component, submenuInfo, origin) => {
       const anchorBox = toBox(origin, submenuInfo.item.element);
-      const layouts = get$5(component.element, submenuInfo, all(), allRtl(), all(), allRtl(), Optional.none());
+      const layouts = get$6(component.element, submenuInfo, all(), allRtl(), all(), allRtl(), Optional.none());
       return Optional.some(nu$4({
         anchorBox,
         bubble: fallback(),
@@ -4868,7 +5287,7 @@
       }, element);
     };
     const getMode = (component, pConfig, _pState) => pConfig.useFixed() ? 'fixed' : 'absolute';
-    const reset$1 = (component, pConfig, posState, placee) => {
+    const reset = (component, pConfig, posState, placee) => {
       const element = placee.element;
       each$1([
         'position',
@@ -4877,7 +5296,7 @@
         'top',
         'bottom'
       ], prop => remove$6(element, prop));
-      reset$2(element);
+      reset$1(element);
       posState.clear(placee.uid);
     };
 
@@ -4886,15 +5305,15 @@
         position: position$1,
         positionWithinBounds: positionWithinBounds,
         getMode: getMode,
-        reset: reset$1
+        reset: reset
     });
 
-    const init$g = () => {
+    const init$f = () => {
       let state = {};
       const set = (id, data) => {
         state[id] = data;
       };
-      const get = id => get$g(state, id);
+      const get = id => get$h(state, id);
       const clear = id => {
         if (isNonNullable(id)) {
           delete state[id];
@@ -4902,7 +5321,7 @@
           state = {};
         }
       };
-      return nu$8({
+      return nu$7({
         readState: () => state,
         clear,
         set,
@@ -4912,7 +5331,7 @@
 
     var PositioningState = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        init: init$g
+        init: init$f
     });
 
     const Positioning = create$4({
@@ -5123,13 +5542,13 @@
         setContent: setContent
     });
 
-    const events$g = (sandboxConfig, sandboxState) => derive$2([run$1(sandboxClose(), (sandbox, _simulatedEvent) => {
+    const events$f = (sandboxConfig, sandboxState) => derive$2([run$1(sandboxClose(), (sandbox, _simulatedEvent) => {
         close$1(sandbox, sandboxConfig, sandboxState);
       })]);
 
     var ActiveSandbox = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        events: events$g
+        events: events$f
     });
 
     var SandboxSchema = [
@@ -5140,10 +5559,10 @@
       defaulted('cloakVisibilityAttr', 'data-precloak-visibility')
     ];
 
-    const init$f = () => {
-      const contents = value$2();
+    const init$e = () => {
+      const contents = value$4();
       const readState = constant$1('not-implemented');
-      return nu$8({
+      return nu$7({
         readState,
         isOpen: contents.isSet,
         clear: contents.clear,
@@ -5154,7 +5573,7 @@
 
     var SandboxState = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        init: init$f
+        init: init$e
     });
 
     const Sandboxing = create$4({
@@ -5228,7 +5647,7 @@
         getState: getState$1
     });
 
-    const events$f = (repConfig, repState) => {
+    const events$e = (repConfig, repState) => {
       const es = repConfig.resetOnDom ? [
         runOnAttached((comp, _se) => {
           onLoad$5(comp, repConfig, repState);
@@ -5242,7 +5661,7 @@
 
     var ActiveRepresenting = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        events: events$f
+        events: events$e
     });
 
     const memory$1 = () => {
@@ -5255,7 +5674,7 @@
       const clear = () => {
         data.set(null);
       };
-      return nu$8({
+      return nu$7({
         set: data.set,
         get: data.get,
         isNotSet,
@@ -5265,7 +5684,7 @@
     };
     const manual = () => {
       const readState = noop;
-      return nu$8({ readState });
+      return nu$7({ readState });
     };
     const dataset = () => {
       const dataByValue = Cell({});
@@ -5279,7 +5698,7 @@
         dataByValue.set({});
         dataByText.set({});
       };
-      const lookup = itemString => get$g(dataByValue.get(), itemString).orThunk(() => get$g(dataByText.get(), itemString));
+      const lookup = itemString => get$h(dataByValue.get(), itemString).orThunk(() => get$h(dataByText.get(), itemString));
       const update = items => {
         const currentDataByValue = dataByValue.get();
         const currentDataByText = dataByText.get();
@@ -5287,8 +5706,8 @@
         const newDataByText = {};
         each$1(items, item => {
           newDataByValue[item.value] = item;
-          get$g(item, 'meta').each(meta => {
-            get$g(meta, 'text').each(text => {
+          get$h(item, 'meta').each(meta => {
+            get$h(meta, 'text').each(text => {
               newDataByText[text] = item;
             });
           });
@@ -5302,21 +5721,21 @@
           ...newDataByText
         });
       };
-      return nu$8({
+      return nu$7({
         readState,
         lookup,
         update,
         clear
       });
     };
-    const init$e = spec => spec.store.manager.state(spec);
+    const init$d = spec => spec.store.manager.state(spec);
 
     var RepresentState = /*#__PURE__*/Object.freeze({
         __proto__: null,
         memory: memory$1,
         dataset: dataset,
         manual: manual,
-        init: init$e
+        init: init$d
     });
 
     const setValue$2 = (component, repConfig, repState, data) => {
@@ -5427,7 +5846,7 @@
     });
 
     const field = (name, forbidden) => defaultedObjOf(name, {}, map$2(forbidden, f => forbid(f.name(), 'Cannot configure ' + f.name() + ' for ' + name)).concat([customField('dump', identity)]));
-    const get$3 = data => data.dump;
+    const get$4 = data => data.dump;
     const augment = (data, original) => ({
       ...derive$1(original),
       ...data.dump
@@ -5435,7 +5854,7 @@
     const SketchBehaviours = {
       field,
       augment,
-      get: get$3
+      get: get$4
     };
 
     const _placeholder = 'placeholder';
@@ -5458,7 +5877,7 @@
       if (owner.exists(o => o !== compSpec.owner)) {
         return adt$3.single(true, constant$1(compSpec));
       }
-      return get$g(placeholders, compSpec.name).fold(() => {
+      return get$h(placeholders, compSpec.name).fold(() => {
         throw new Error('Unknown placeholder component: ' + compSpec.name + '\nKnown: [' + keys(placeholders) + ']\nNamespace: ' + owner.getOr('none') + '\nSpec: ' + JSON.stringify(compSpec, null, 2));
       }, newSpec => newSpec.replace());
     };
@@ -5473,7 +5892,7 @@
       const base = scan(owner, detail, compSpec, placeholders);
       return base.fold((req, valueThunk) => {
         const value = isSubstituted(compSpec) ? valueThunk(detail, compSpec.config, compSpec.validated) : valueThunk(detail);
-        const childSpecs = get$g(value, 'components').getOr([]);
+        const childSpecs = get$h(value, 'components').getOr([]);
         const substituted = bind$3(childSpecs, c => substitute(owner, detail, c, placeholders));
         return [{
             ...value,
@@ -5797,7 +6216,7 @@
       };
     };
 
-    const inside = target => isTag('input')(target) && get$f(target, 'type') !== 'radio' || isTag('textarea')(target);
+    const inside = target => isTag('input')(target) && get$g(target, 'type') !== 'radio' || isTag('textarea')(target);
 
     const getCurrent = (component, composeConfig, _composeState) => composeConfig.find(component);
 
@@ -5832,7 +6251,7 @@
     const nativeEnable = component => {
       remove$7(component.element, 'disabled');
     };
-    const ariaIsDisabled = component => get$f(component.element, 'aria-disabled') === 'true';
+    const ariaIsDisabled = component => get$g(component.element, 'aria-disabled') === 'true';
     const ariaDisable = component => {
       set$9(component.element, 'aria-disabled', 'true');
     };
@@ -5870,8 +6289,8 @@
         set: set$4
     });
 
-    const exhibit$5 = (base, disableConfig) => nu$7({ classes: disableConfig.disabled() ? disableConfig.disableClass.toArray() : [] });
-    const events$e = (disableConfig, disableState) => derive$2([
+    const exhibit$5 = (base, disableConfig) => nu$8({ classes: disableConfig.disabled() ? disableConfig.disableClass.toArray() : [] });
+    const events$d = (disableConfig, disableState) => derive$2([
       abort(execute$5(), (component, _simulatedEvent) => isDisabled(component, disableConfig)),
       loadEvent(disableConfig, disableState, onLoad$1)
     ]);
@@ -5879,7 +6298,7 @@
     var ActiveDisable = /*#__PURE__*/Object.freeze({
         __proto__: null,
         exhibit: exhibit$5,
-        events: events$e
+        events: events$d
     });
 
     var DisableSchema = [
@@ -6042,7 +6461,7 @@
       return contains$2(keys, raw.which);
     };
     const and = preds => event => forall(preds, pred => pred(event));
-    const isShift = event => {
+    const isShift$1 = event => {
       const raw = event.raw;
       return raw.shiftKey === true;
     };
@@ -6050,7 +6469,7 @@
       const raw = event.raw;
       return raw.ctrlKey === true;
     };
-    const isNotShift = not(isShift);
+    const isNotShift = not(isShift$1);
 
     const rule = (matches, action) => ({
       matches,
@@ -6171,7 +6590,7 @@
       ].concat([cyclicField]);
       const isVisible = (tabbingConfig, element) => {
         const target = tabbingConfig.visibilitySelector.bind(sel => closest$1(element, sel)).getOr(element);
-        return get$d(target) > 0;
+        return get$e(target) > 0;
       };
       const findInitial = (component, tabbingConfig) => {
         const tabstops = descendants(component.element, tabbingConfig.selector);
@@ -6210,7 +6629,7 @@
       const exit = (component, simulatedEvent, tabbingConfig) => tabbingConfig.onEscape.bind(f => f(component, simulatedEvent));
       const getKeydownRules = constant$1([
         rule(and([
-          isShift,
+          isShift$1,
           inSet(TAB)
         ]), goBackwards),
         rule(inSet(TAB), goForwards),
@@ -6262,7 +6681,7 @@
     var ExecutionType = typical(schema$v, NoState.init, getKeydownRules$5, getKeyupRules$5, () => Optional.none());
 
     const flatgrid$1 = () => {
-      const dimensions = value$2();
+      const dimensions = value$4();
       const setGridSize = (numRows, numColumns) => {
         dimensions.set({
           numRows,
@@ -6271,7 +6690,7 @@
       };
       const getNumRows = () => dimensions.get().map(d => d.numRows);
       const getNumColumns = () => dimensions.get().map(d => d.numColumns);
-      return nu$8({
+      return nu$7({
         readState: () => dimensions.get().map(d => ({
           numRows: String(d.numRows),
           numColumns: String(d.numColumns)
@@ -6284,12 +6703,12 @@
         getNumColumns
       });
     };
-    const init$d = spec => spec.state(spec);
+    const init$c = spec => spec.state(spec);
 
     var KeyingState = /*#__PURE__*/Object.freeze({
         __proto__: null,
         flatgrid: flatgrid$1,
-        init: init$d
+        init: init$c
     });
 
     const useH = movement => (component, simulatedEvent, config, state) => {
@@ -6391,7 +6810,7 @@
       rule(inSet(UP), north$1(moveNorth$1)),
       rule(inSet(DOWN), south$1(moveSouth$1)),
       rule(and([
-        isShift,
+        isShift$1,
         inSet(TAB)
       ]), handleTab),
       rule(and([
@@ -6407,7 +6826,7 @@
     var FlatgridType = typical(schema$u, flatgrid$1, getKeydownRules$4, getKeyupRules$4, () => Optional.some(focusIn$3));
 
     const f = (container, selector, current, delta, getNewIndex) => {
-      const isDisabledButton = candidate => name$3(candidate) === 'button' && get$f(candidate, 'disabled') === 'disabled';
+      const isDisabledButton = candidate => name$3(candidate) === 'button' && get$g(candidate, 'disabled') === 'disabled';
       const tryNewIndex = (initial, index, candidates) => getNewIndex(initial, index, delta, 0, candidates.length - 1, candidates[index], newIndex => isDisabledButton(candidates[newIndex]) ? tryNewIndex(initial, newIndex, candidates) : Optional.from(candidates[newIndex]));
       return locateVisible(container, current, selector).bind(identified => {
         const index = identified.index;
@@ -6565,7 +6984,7 @@
       rule(inSet(UP), move$1(moveUp)),
       rule(inSet(DOWN), move$1(moveDown)),
       rule(and([
-        isShift,
+        isShift$1,
         inSet(TAB)
       ]), fireShiftTab),
       rule(and([
@@ -6599,11 +7018,11 @@
         inSet(ENTER)
       ]), specialInfo.onEnter),
       rule(and([
-        isShift,
+        isShift$1,
         inSet(ENTER)
       ]), specialInfo.onShiftEnter),
       rule(and([
-        isShift,
+        isShift$1,
         inSet(TAB)
       ]), specialInfo.onShiftTab),
       rule(and([
@@ -6748,7 +7167,7 @@
       apis: ReplaceApis
     });
 
-    const events$d = (name, eventHandlers) => {
+    const events$c = (name, eventHandlers) => {
       const events = derive$2(eventHandlers);
       return create$4({
         fields: [required$1('enabled')],
@@ -6757,7 +7176,7 @@
       });
     };
     const config = (name, eventHandlers) => {
-      const me = events$d(name, eventHandlers);
+      const me = events$c(name, eventHandlers);
       return {
         key: name,
         value: {
@@ -6792,9 +7211,9 @@
 
     const exhibit$4 = (base, focusConfig) => {
       const mod = focusConfig.ignore ? {} : { attributes: { tabindex: '-1' } };
-      return nu$7(mod);
+      return nu$8(mod);
     };
-    const events$c = focusConfig => derive$2([run$1(focus$4(), (component, simulatedEvent) => {
+    const events$b = focusConfig => derive$2([run$1(focus$4(), (component, simulatedEvent) => {
         focus$2(component, focusConfig);
         simulatedEvent.stop();
       })].concat(focusConfig.stopMousedown ? [run$1(mousedown(), (_, simulatedEvent) => {
@@ -6804,7 +7223,7 @@
     var ActiveFocus = /*#__PURE__*/Object.freeze({
         __proto__: null,
         exhibit: exhibit$4,
-        events: events$c
+        events: events$b
     });
 
     var FocusSchema = [
@@ -6883,8 +7302,8 @@
         set: set$2
     });
 
-    const exhibit$3 = () => nu$7({});
-    const events$b = (toggleConfig, toggleState) => {
+    const exhibit$3 = () => nu$8({});
+    const events$a = (toggleConfig, toggleState) => {
       const execute = executeEvent(toggleConfig, toggleState, toggle$2);
       const load = loadEvent(toggleConfig, toggleState, onLoad);
       return derive$2(flatten([
@@ -6896,7 +7315,7 @@
     var ActiveToggle = /*#__PURE__*/Object.freeze({
         __proto__: null,
         exhibit: exhibit$3,
-        events: events$b
+        events: events$a
     });
 
     const updatePressed = (component, ariaInfo, status) => {
@@ -6952,7 +7371,7 @@
         cutter(mousedown())
       ];
     };
-    const events$a = optAction => {
+    const events$9 = optAction => {
       const executeHandler = action => runOnExecute$1((component, simulatedEvent) => {
         action(component);
         simulatedEvent.stop();
@@ -7253,7 +7672,8 @@
       defaulted('fakeFocus', false),
       defaulted('focusManager', dom$2()),
       onHandler('onHighlight'),
-      onHandler('onDehighlight')
+      onHandler('onDehighlight'),
+      defaulted('menuRole', true)
     ]);
 
     const focus = constant$1('alloy.menu-focus');
@@ -7306,14 +7726,14 @@
         }),
         run$1(toggled(), (menu, simulatedEvent) => {
           const {item, state} = simulatedEvent.event;
-          if (state && get$f(item.element, 'role') === 'menuitemradio') {
+          if (state && get$g(item.element, 'role') === 'menuitemradio') {
             deselectOtherRadioItems(menu, item);
           }
         })
       ]),
       components,
       eventOrder: detail.eventOrder,
-      domModification: { attributes: { role: 'menu' } }
+      ...detail.menuRole ? { domModification: { attributes: { role: 'menu' } } } : {}
     });
 
     const Menu = composite({
@@ -7327,7 +7747,7 @@
       k: v,
       v: k
     }));
-    const trace = (items, byItem, byMenu, finish) => get$g(byMenu, finish).bind(triggerItem => get$g(items, triggerItem).bind(triggerMenu => {
+    const trace = (items, byItem, byMenu, finish) => get$h(byMenu, finish).bind(triggerItem => get$h(items, triggerItem).bind(triggerMenu => {
       const rest = trace(items, byItem, byMenu, triggerMenu);
       return Optional.some([triggerMenu].concat(rest));
     })).getOr([]);
@@ -7341,14 +7761,14 @@
       const byItem = expansions;
       const byMenu = transpose$1(expansions);
       const menuPaths = map$1(byMenu, (_triggerItem, submenu) => [submenu].concat(trace(items, byItem, byMenu, submenu)));
-      return map$1(items, menu => get$g(menuPaths, menu).getOr([menu]));
+      return map$1(items, menu => get$h(menuPaths, menu).getOr([menu]));
     };
 
-    const init$c = () => {
+    const init$b = () => {
       const expansions = Cell({});
       const menus = Cell({});
       const paths = Cell({});
-      const primary = value$2();
+      const primary = value$4();
       const directory = Cell({});
       const clear = () => {
         expansions.set({});
@@ -7382,21 +7802,21 @@
       }))));
       const getTriggeringPath = (itemValue, getItemByValue) => {
         const extraPath = filter$2(lookupItem(itemValue).toArray(), menuValue => getPreparedMenu(menuValue).isSome());
-        return get$g(paths.get(), itemValue).bind(path => {
+        return get$h(paths.get(), itemValue).bind(path => {
           const revPath = reverse(extraPath.concat(path));
           const triggers = bind$3(revPath, (menuValue, menuIndex) => getTriggerData(menuValue, getItemByValue, revPath.slice(0, menuIndex + 1)).fold(() => is$1(primary.get(), menuValue) ? [] : [Optional.none()], data => [Optional.some(data)]));
           return sequence(triggers);
         });
       };
-      const expand = itemValue => get$g(expansions.get(), itemValue).map(menu => {
-        const current = get$g(paths.get(), itemValue).getOr([]);
+      const expand = itemValue => get$h(expansions.get(), itemValue).map(menu => {
+        const current = get$h(paths.get(), itemValue).getOr([]);
         return [menu].concat(current);
       });
-      const collapse = itemValue => get$g(paths.get(), itemValue).bind(path => path.length > 1 ? Optional.some(path.slice(1)) : Optional.none());
-      const refresh = itemValue => get$g(paths.get(), itemValue);
+      const collapse = itemValue => get$h(paths.get(), itemValue).bind(path => path.length > 1 ? Optional.some(path.slice(1)) : Optional.none());
+      const refresh = itemValue => get$h(paths.get(), itemValue);
       const getPreparedMenu = menuValue => lookupMenu(menuValue).bind(extractPreparedMenu);
-      const lookupMenu = menuValue => get$g(menus.get(), menuValue);
-      const lookupItem = itemValue => get$g(expansions.get(), itemValue);
+      const lookupMenu = menuValue => get$h(menus.get(), menuValue);
+      const lookupItem = itemValue => get$h(expansions.get(), itemValue);
       const otherMenus = path => {
         const menuValues = directory.get();
         return difference(keys(menuValues), path);
@@ -7421,7 +7841,7 @@
     };
     const extractPreparedMenu = prep => prep.type === 'prepared' ? Optional.some(prep.menu) : Optional.none();
     const LayeredState = {
-      init: init$c,
+      init: init$b,
       extractPreparedMenu
     };
 
@@ -7436,7 +7856,7 @@
     }(HighlightOnOpen || (HighlightOnOpen = {})));
 
     const make$6 = (detail, _rawUiSpec) => {
-      const submenuParentItems = value$2();
+      const submenuParentItems = value$4();
       const buildMenus = (container, primaryName, menus) => map$1(menus, (spec, name) => {
         const makeSketch = () => Menu.sketch({
           ...spec,
@@ -7507,7 +7927,7 @@
       const getSubmenuParents = container => submenuParentItems.get().getOrThunk(() => {
         const r = {};
         const items = descendants(container.element, `.${ detail.markers.item }`);
-        const parentItems = filter$2(items, i => get$f(i, 'aria-haspopup') === 'true');
+        const parentItems = filter$2(items, i => get$g(i, 'aria-haspopup') === 'true');
         each$1(parentItems, i => {
           container.getSystem().getByDom(i).each(itemComp => {
             const key = getItemValue(itemComp);
@@ -7660,7 +8080,7 @@
           setActiveMenuAndItem(container, primary);
         });
       };
-      const extractMenuFromContainer = container => Optional.from(container.components()[0]).filter(comp => get$f(comp.element, 'role') === 'menu');
+      const extractMenuFromContainer = container => Optional.from(container.components()[0]).filter(comp => get$g(comp.element, 'role') === 'menu');
       const repositionMenus = container => {
         const maybeActivePrimary = layeredState.getPrimary().bind(primary => getActiveItem(container).bind(currentItem => {
           const itemValue = getItemValue(currentItem);
@@ -7989,10 +8409,395 @@
 
     var global$9 = tinymce.util.Tools.resolve('tinymce.util.Delay');
 
+    var global$8 = tinymce.util.Tools.resolve('tinymce.dom.DOMUtils');
+
+    var global$7 = tinymce.util.Tools.resolve('tinymce.EditorManager');
+
+    var global$6 = tinymce.util.Tools.resolve('tinymce.Env');
+
+    var ToolbarMode$1;
+    (function (ToolbarMode) {
+      ToolbarMode['default'] = 'wrap';
+      ToolbarMode['floating'] = 'floating';
+      ToolbarMode['sliding'] = 'sliding';
+      ToolbarMode['scrolling'] = 'scrolling';
+    }(ToolbarMode$1 || (ToolbarMode$1 = {})));
+    var ToolbarLocation$1;
+    (function (ToolbarLocation) {
+      ToolbarLocation['auto'] = 'auto';
+      ToolbarLocation['top'] = 'top';
+      ToolbarLocation['bottom'] = 'bottom';
+    }(ToolbarLocation$1 || (ToolbarLocation$1 = {})));
+    const option$2 = name => editor => editor.options.get(name);
+    const wrapOptional = fn => editor => Optional.from(fn(editor));
+    const register$e = editor => {
+      const isPhone = global$6.deviceType.isPhone();
+      const isMobile = global$6.deviceType.isTablet() || isPhone;
+      const registerOption = editor.options.register;
+      const stringOrFalseProcessor = value => isString(value) || value === false;
+      const stringOrNumberProcessor = value => isString(value) || isNumber(value);
+      registerOption('skin', {
+        processor: value => isString(value) || value === false,
+        default: 'oxide'
+      });
+      registerOption('skin_url', { processor: 'string' });
+      registerOption('height', {
+        processor: stringOrNumberProcessor,
+        default: Math.max(editor.getElement().offsetHeight, 400)
+      });
+      registerOption('width', {
+        processor: stringOrNumberProcessor,
+        default: global$8.DOM.getStyle(editor.getElement(), 'width')
+      });
+      registerOption('min_height', {
+        processor: 'number',
+        default: 100
+      });
+      registerOption('min_width', { processor: 'number' });
+      registerOption('max_height', { processor: 'number' });
+      registerOption('max_width', { processor: 'number' });
+      registerOption('style_formats', { processor: 'object[]' });
+      registerOption('style_formats_merge', {
+        processor: 'boolean',
+        default: false
+      });
+      registerOption('style_formats_autohide', {
+        processor: 'boolean',
+        default: false
+      });
+      registerOption('line_height_formats', {
+        processor: 'string',
+        default: '1 1.1 1.2 1.3 1.4 1.5 2'
+      });
+      registerOption('font_family_formats', {
+        processor: 'string',
+        default: 'Andale Mono=andale mono,monospace;' + 'Arial=arial,helvetica,sans-serif;' + 'Arial Black=arial black,sans-serif;' + 'Book Antiqua=book antiqua,palatino,serif;' + 'Comic Sans MS=comic sans ms,sans-serif;' + 'Courier New=courier new,courier,monospace;' + 'Georgia=georgia,palatino,serif;' + 'Helvetica=helvetica,arial,sans-serif;' + 'Impact=impact,sans-serif;' + 'Symbol=symbol;' + 'Tahoma=tahoma,arial,helvetica,sans-serif;' + 'Terminal=terminal,monaco,monospace;' + 'Times New Roman=times new roman,times,serif;' + 'Trebuchet MS=trebuchet ms,geneva,sans-serif;' + 'Verdana=verdana,geneva,sans-serif;' + 'Webdings=webdings;' + 'Wingdings=wingdings,zapf dingbats'
+      });
+      registerOption('font_size_formats', {
+        processor: 'string',
+        default: '8pt 10pt 12pt 14pt 18pt 24pt 36pt'
+      });
+      registerOption('font_size_input_default_unit', {
+        processor: 'string',
+        default: 'pt'
+      });
+      registerOption('block_formats', {
+        processor: 'string',
+        default: 'Paragraph=p;' + 'Heading 1=h1;' + 'Heading 2=h2;' + 'Heading 3=h3;' + 'Heading 4=h4;' + 'Heading 5=h5;' + 'Heading 6=h6;' + 'Preformatted=pre'
+      });
+      registerOption('content_langs', { processor: 'object[]' });
+      registerOption('removed_menuitems', {
+        processor: 'string',
+        default: ''
+      });
+      registerOption('menubar', {
+        processor: value => isString(value) || isBoolean(value),
+        default: !isPhone
+      });
+      registerOption('menu', {
+        processor: 'object',
+        default: {}
+      });
+      registerOption('toolbar', {
+        processor: value => {
+          if (isBoolean(value) || isString(value) || isArray(value)) {
+            return {
+              value,
+              valid: true
+            };
+          } else {
+            return {
+              valid: false,
+              message: 'Must be a boolean, string or array.'
+            };
+          }
+        },
+        default: true
+      });
+      range$2(9, num => {
+        registerOption('toolbar' + (num + 1), { processor: 'string' });
+      });
+      registerOption('toolbar_mode', {
+        processor: 'string',
+        default: isMobile ? 'scrolling' : 'floating'
+      });
+      registerOption('toolbar_groups', {
+        processor: 'object',
+        default: {}
+      });
+      registerOption('toolbar_location', {
+        processor: 'string',
+        default: ToolbarLocation$1.auto
+      });
+      registerOption('toolbar_persist', {
+        processor: 'boolean',
+        default: false
+      });
+      registerOption('toolbar_sticky', {
+        processor: 'boolean',
+        default: editor.inline
+      });
+      registerOption('toolbar_sticky_offset', {
+        processor: 'number',
+        default: 0
+      });
+      registerOption('fixed_toolbar_container', {
+        processor: 'string',
+        default: ''
+      });
+      registerOption('fixed_toolbar_container_target', { processor: 'object' });
+      registerOption('ui_mode', {
+        processor: 'string',
+        default: 'combined'
+      });
+      registerOption('file_picker_callback', { processor: 'function' });
+      registerOption('file_picker_validator_handler', { processor: 'function' });
+      registerOption('file_picker_types', { processor: 'string' });
+      registerOption('typeahead_urls', {
+        processor: 'boolean',
+        default: true
+      });
+      registerOption('anchor_top', {
+        processor: stringOrFalseProcessor,
+        default: '#top'
+      });
+      registerOption('anchor_bottom', {
+        processor: stringOrFalseProcessor,
+        default: '#bottom'
+      });
+      registerOption('draggable_modal', {
+        processor: 'boolean',
+        default: false
+      });
+      registerOption('statusbar', {
+        processor: 'boolean',
+        default: true
+      });
+      registerOption('elementpath', {
+        processor: 'boolean',
+        default: true
+      });
+      registerOption('branding', {
+        processor: 'boolean',
+        default: true
+      });
+      registerOption('promotion', {
+        processor: 'boolean',
+        default: true
+      });
+      registerOption('resize', {
+        processor: value => value === 'both' || isBoolean(value),
+        default: !global$6.deviceType.isTouch()
+      });
+      registerOption('sidebar_show', { processor: 'string' });
+      registerOption('help_accessibility', {
+        processor: 'boolean',
+        default: editor.hasPlugin('help')
+      });
+      registerOption('default_font_stack', {
+        processor: 'string[]',
+        default: []
+      });
+    };
+    const isReadOnly = option$2('readonly');
+    const getHeightOption = option$2('height');
+    const getWidthOption = option$2('width');
+    const getMinWidthOption = wrapOptional(option$2('min_width'));
+    const getMinHeightOption = wrapOptional(option$2('min_height'));
+    const getMaxWidthOption = wrapOptional(option$2('max_width'));
+    const getMaxHeightOption = wrapOptional(option$2('max_height'));
+    const getUserStyleFormats = wrapOptional(option$2('style_formats'));
+    const shouldMergeStyleFormats = option$2('style_formats_merge');
+    const shouldAutoHideStyleFormats = option$2('style_formats_autohide');
+    const getContentLanguages = option$2('content_langs');
+    const getRemovedMenuItems = option$2('removed_menuitems');
+    const getToolbarMode = option$2('toolbar_mode');
+    const getToolbarGroups = option$2('toolbar_groups');
+    const getToolbarLocation = option$2('toolbar_location');
+    const fixedContainerSelector = option$2('fixed_toolbar_container');
+    const fixedToolbarContainerTarget = option$2('fixed_toolbar_container_target');
+    const isToolbarPersist = option$2('toolbar_persist');
+    const getStickyToolbarOffset = option$2('toolbar_sticky_offset');
+    const getMenubar = option$2('menubar');
+    const getToolbar = option$2('toolbar');
+    const getFilePickerCallback = option$2('file_picker_callback');
+    const getFilePickerValidatorHandler = option$2('file_picker_validator_handler');
+    const getFontSizeInputDefaultUnit = option$2('font_size_input_default_unit');
+    const getFilePickerTypes = option$2('file_picker_types');
+    const useTypeaheadUrls = option$2('typeahead_urls');
+    const getAnchorTop = option$2('anchor_top');
+    const getAnchorBottom = option$2('anchor_bottom');
+    const isDraggableModal$1 = option$2('draggable_modal');
+    const useStatusBar = option$2('statusbar');
+    const useElementPath = option$2('elementpath');
+    const useBranding = option$2('branding');
+    const getResize = option$2('resize');
+    const getPasteAsText = option$2('paste_as_text');
+    const getSidebarShow = option$2('sidebar_show');
+    const promotionEnabled = option$2('promotion');
+    const useHelpAccessibility = option$2('help_accessibility');
+    const getDefaultFontStack = option$2('default_font_stack');
+    const isSkinDisabled = editor => editor.options.get('skin') === false;
+    const isMenubarEnabled = editor => editor.options.get('menubar') !== false;
+    const getSkinUrl = editor => {
+      const skinUrl = editor.options.get('skin_url');
+      if (isSkinDisabled(editor)) {
+        return skinUrl;
+      } else {
+        if (skinUrl) {
+          return editor.documentBaseURI.toAbsolute(skinUrl);
+        } else {
+          const skin = editor.options.get('skin');
+          return global$7.baseURL + '/skins/ui/' + skin;
+        }
+      }
+    };
+    const getSkinUrlOption = editor => Optional.from(editor.options.get('skin_url'));
+    const getLineHeightFormats = editor => editor.options.get('line_height_formats').split(' ');
+    const isToolbarEnabled = editor => {
+      const toolbar = getToolbar(editor);
+      const isToolbarString = isString(toolbar);
+      const isToolbarObjectArray = isArray(toolbar) && toolbar.length > 0;
+      return !isMultipleToolbars(editor) && (isToolbarObjectArray || isToolbarString || toolbar === true);
+    };
+    const getMultipleToolbarsOption = editor => {
+      const toolbars = range$2(9, num => editor.options.get('toolbar' + (num + 1)));
+      const toolbarArray = filter$2(toolbars, isString);
+      return someIf(toolbarArray.length > 0, toolbarArray);
+    };
+    const isMultipleToolbars = editor => getMultipleToolbarsOption(editor).fold(() => {
+      const toolbar = getToolbar(editor);
+      return isArrayOf(toolbar, isString) && toolbar.length > 0;
+    }, always);
+    const isToolbarLocationBottom = editor => getToolbarLocation(editor) === ToolbarLocation$1.bottom;
+    const fixedContainerTarget = editor => {
+      var _a;
+      if (!editor.inline) {
+        return Optional.none();
+      }
+      const selector = (_a = fixedContainerSelector(editor)) !== null && _a !== void 0 ? _a : '';
+      if (selector.length > 0) {
+        return descendant(body(), selector);
+      }
+      const element = fixedToolbarContainerTarget(editor);
+      if (isNonNullable(element)) {
+        return Optional.some(SugarElement.fromDom(element));
+      }
+      return Optional.none();
+    };
+    const useFixedContainer = editor => editor.inline && fixedContainerTarget(editor).isSome();
+    const getUiContainer = editor => {
+      const fixedContainer = fixedContainerTarget(editor);
+      return fixedContainer.getOrThunk(() => getContentContainer(getRootNode(SugarElement.fromDom(editor.getElement()))));
+    };
+    const isDistractionFree = editor => editor.inline && !isMenubarEnabled(editor) && !isToolbarEnabled(editor) && !isMultipleToolbars(editor);
+    const isStickyToolbar = editor => {
+      const isStickyToolbar = editor.options.get('toolbar_sticky');
+      return (isStickyToolbar || editor.inline) && !useFixedContainer(editor) && !isDistractionFree(editor);
+    };
+    const isSplitUiMode = editor => !useFixedContainer(editor) && editor.options.get('ui_mode') === 'split';
+    const getMenus = editor => {
+      const menu = editor.options.get('menu');
+      return map$1(menu, menu => ({
+        ...menu,
+        items: menu.items
+      }));
+    };
+
+    var Options = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        get ToolbarMode () { return ToolbarMode$1; },
+        get ToolbarLocation () { return ToolbarLocation$1; },
+        register: register$e,
+        getSkinUrl: getSkinUrl,
+        getSkinUrlOption: getSkinUrlOption,
+        isReadOnly: isReadOnly,
+        isSkinDisabled: isSkinDisabled,
+        getHeightOption: getHeightOption,
+        getWidthOption: getWidthOption,
+        getMinWidthOption: getMinWidthOption,
+        getMinHeightOption: getMinHeightOption,
+        getMaxWidthOption: getMaxWidthOption,
+        getMaxHeightOption: getMaxHeightOption,
+        getUserStyleFormats: getUserStyleFormats,
+        shouldMergeStyleFormats: shouldMergeStyleFormats,
+        shouldAutoHideStyleFormats: shouldAutoHideStyleFormats,
+        getLineHeightFormats: getLineHeightFormats,
+        getContentLanguages: getContentLanguages,
+        getRemovedMenuItems: getRemovedMenuItems,
+        isMenubarEnabled: isMenubarEnabled,
+        isMultipleToolbars: isMultipleToolbars,
+        isToolbarEnabled: isToolbarEnabled,
+        isToolbarPersist: isToolbarPersist,
+        getMultipleToolbarsOption: getMultipleToolbarsOption,
+        getUiContainer: getUiContainer,
+        useFixedContainer: useFixedContainer,
+        isSplitUiMode: isSplitUiMode,
+        getToolbarMode: getToolbarMode,
+        isDraggableModal: isDraggableModal$1,
+        isDistractionFree: isDistractionFree,
+        isStickyToolbar: isStickyToolbar,
+        getStickyToolbarOffset: getStickyToolbarOffset,
+        getToolbarLocation: getToolbarLocation,
+        isToolbarLocationBottom: isToolbarLocationBottom,
+        getToolbarGroups: getToolbarGroups,
+        getMenus: getMenus,
+        getMenubar: getMenubar,
+        getToolbar: getToolbar,
+        getFilePickerCallback: getFilePickerCallback,
+        getFilePickerTypes: getFilePickerTypes,
+        useTypeaheadUrls: useTypeaheadUrls,
+        getAnchorTop: getAnchorTop,
+        getAnchorBottom: getAnchorBottom,
+        getFilePickerValidatorHandler: getFilePickerValidatorHandler,
+        getFontSizeInputDefaultUnit: getFontSizeInputDefaultUnit,
+        useStatusBar: useStatusBar,
+        useElementPath: useElementPath,
+        promotionEnabled: promotionEnabled,
+        useBranding: useBranding,
+        getResize: getResize,
+        getPasteAsText: getPasteAsText,
+        getSidebarShow: getSidebarShow,
+        useHelpAccessibility: useHelpAccessibility,
+        getDefaultFontStack: getDefaultFontStack
+    });
+
+    const nonScrollingOverflows = [
+      'visible',
+      'hidden',
+      'clip'
+    ];
+    const isScrollingOverflowValue = value => trim$1(value).length > 0 && !contains$2(nonScrollingOverflows, value);
+    const isScroller = elem => {
+      if (isHTMLElement(elem)) {
+        const overflowX = get$f(elem, 'overflow-x');
+        const overflowY = get$f(elem, 'overflow-y');
+        return isScrollingOverflowValue(overflowX) || isScrollingOverflowValue(overflowY);
+      } else {
+        return false;
+      }
+    };
+    const detect = popupSinkElem => {
+      const ancestorsScrollers = ancestors(popupSinkElem, isScroller);
+      const scrollers = ancestorsScrollers.length === 0 ? getShadowRoot(popupSinkElem).map(getShadowHost).map(x => ancestors(x, isScroller)).getOr([]) : ancestorsScrollers;
+      return head(scrollers).map(element => ({
+        element,
+        others: scrollers.slice(1)
+      }));
+    };
+    const detectWhenSplitUiMode = (editor, popupSinkElem) => isSplitUiMode(editor) ? detect(popupSinkElem) : Optional.none();
+    const getBoundsFrom = sc => {
+      const scrollableBoxes = [
+        ...map$2(sc.others, box$1),
+        win()
+      ];
+      return constrainByMany(box$1(sc.element), scrollableBoxes);
+    };
+
     const factory$n = detail => {
-      const events = events$a(detail.action);
+      const events = events$9(detail.action);
       const tag = detail.dom.tag;
-      const lookupAttr = attr => get$g(detail.dom, 'attributes').bind(attrs => get$g(attrs, attr));
+      const lookupAttr = attr => get$h(detail.dom, 'attributes').bind(attrs => get$h(attrs, attr));
       const getModAttributes = () => {
         if (tag === 'button') {
           const type = lookupAttr('type').getOr('button');
@@ -8059,7 +8864,7 @@
       const children$1 = children(elem);
       const attrs = getAttrs(elem);
       const classes = getClasses(elem);
-      const contents = children$1.length === 0 ? {} : { innerHtml: get$9(elem) };
+      const contents = children$1.length === 0 ? {} : { innerHtml: get$8(elem) };
       return {
         tag: name$3(elem),
         classes,
@@ -8083,89 +8888,299 @@
       };
     };
 
-    function _typeof(obj) {
-      '@babel/helpers - typeof';
-      return _typeof = 'function' == typeof Symbol && 'symbol' == typeof Symbol.iterator ? function (obj) {
-        return typeof obj;
-      } : function (obj) {
-        return obj && 'function' == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? 'symbol' : typeof obj;
-      }, _typeof(obj);
-    }
-    function _setPrototypeOf(o, p) {
-      _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-        o.__proto__ = p;
-        return o;
+    const exhibit$2 = (base, tabConfig) => nu$8({
+      attributes: wrapAll([{
+          key: tabConfig.tabAttr,
+          value: 'true'
+        }])
+    });
+
+    var ActiveTabstopping = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        exhibit: exhibit$2
+    });
+
+    var TabstopSchema = [defaulted('tabAttr', 'data-alloy-tabstop')];
+
+    const Tabstopping = create$4({
+      fields: TabstopSchema,
+      name: 'tabstopping',
+      active: ActiveTabstopping
+    });
+
+    const ExclusivityChannel = generate$6('tooltip.exclusive');
+    const ShowTooltipEvent = generate$6('tooltip.show');
+    const HideTooltipEvent = generate$6('tooltip.hide');
+    const ImmediateHideTooltipEvent = generate$6('tooltip.immediateHide');
+    const ImmediateShowTooltipEvent = generate$6('tooltip.immediateShow');
+
+    const hideAllExclusive = (component, _tConfig, _tState) => {
+      component.getSystem().broadcastOn([ExclusivityChannel], {});
+    };
+    const setComponents = (component, tConfig, tState, specs) => {
+      tState.getTooltip().each(tooltip => {
+        if (tooltip.getSystem().isConnected()) {
+          Replacing.set(tooltip, specs);
+        }
+      });
+    };
+
+    var TooltippingApis = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        hideAllExclusive: hideAllExclusive,
+        setComponents: setComponents
+    });
+
+    const events$8 = (tooltipConfig, state) => {
+      const hide = comp => {
+        state.getTooltip().each(p => {
+          if (p.getSystem().isConnected()) {
+            detach(p);
+            tooltipConfig.onHide(comp, p);
+            state.clearTooltip();
+          }
+        });
+        state.clearTimer();
       };
-      return _setPrototypeOf(o, p);
-    }
-    function _isNativeReflectConstruct() {
-      if (typeof Reflect === 'undefined' || !Reflect.construct)
-        return false;
-      if (Reflect.construct.sham)
-        return false;
-      if (typeof Proxy === 'function')
-        return true;
-      try {
-        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {
-        }));
-        return true;
-      } catch (e) {
-        return false;
-      }
-    }
-    function _construct(Parent, args, Class) {
-      if (_isNativeReflectConstruct()) {
-        _construct = Reflect.construct;
-      } else {
-        _construct = function _construct(Parent, args, Class) {
-          var a = [null];
-          a.push.apply(a, args);
-          var Constructor = Function.bind.apply(Parent, a);
-          var instance = new Constructor();
-          if (Class)
-            _setPrototypeOf(instance, Class.prototype);
-          return instance;
-        };
-      }
-      return _construct.apply(null, arguments);
-    }
-    function _toConsumableArray(arr) {
-      return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
-    }
-    function _arrayWithoutHoles(arr) {
-      if (Array.isArray(arr))
-        return _arrayLikeToArray(arr);
-    }
-    function _iterableToArray(iter) {
-      if (typeof Symbol !== 'undefined' && iter[Symbol.iterator] != null || iter['@@iterator'] != null)
-        return Array.from(iter);
-    }
-    function _unsupportedIterableToArray(o, minLen) {
-      if (!o)
-        return;
-      if (typeof o === 'string')
-        return _arrayLikeToArray(o, minLen);
-      var n = Object.prototype.toString.call(o).slice(8, -1);
-      if (n === 'Object' && o.constructor)
-        n = o.constructor.name;
-      if (n === 'Map' || n === 'Set')
-        return Array.from(o);
-      if (n === 'Arguments' || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-        return _arrayLikeToArray(o, minLen);
-    }
-    function _arrayLikeToArray(arr, len) {
-      if (len == null || len > arr.length)
-        len = arr.length;
-      for (var i = 0, arr2 = new Array(len); i < len; i++)
-        arr2[i] = arr[i];
-      return arr2;
-    }
-    function _nonIterableSpread() {
-      throw new TypeError('Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.');
-    }
-    var hasOwnProperty = Object.hasOwnProperty, setPrototypeOf = Object.setPrototypeOf, isFrozen = Object.isFrozen, getPrototypeOf = Object.getPrototypeOf, getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
-    var freeze = Object.freeze, seal = Object.seal, create$1 = Object.create;
-    var _ref = typeof Reflect !== 'undefined' && Reflect, apply = _ref.apply, construct = _ref.construct;
+      const show = comp => {
+        if (!state.isShowing()) {
+          hideAllExclusive(comp);
+          const sink = tooltipConfig.lazySink(comp).getOrDie();
+          const popup = comp.getSystem().build({
+            dom: tooltipConfig.tooltipDom,
+            components: tooltipConfig.tooltipComponents,
+            events: derive$2(tooltipConfig.mode === 'normal' ? [
+              run$1(mouseover(), _ => {
+                emit(comp, ShowTooltipEvent);
+              }),
+              run$1(mouseout(), _ => {
+                emit(comp, HideTooltipEvent);
+              })
+            ] : []),
+            behaviours: derive$1([Replacing.config({})])
+          });
+          state.setTooltip(popup);
+          attach(sink, popup);
+          tooltipConfig.onShow(comp, popup);
+          Positioning.position(sink, popup, { anchor: tooltipConfig.anchor(comp) });
+        }
+      };
+      const reposition = comp => {
+        state.getTooltip().each(tooltip => {
+          const sink = tooltipConfig.lazySink(comp).getOrDie();
+          Positioning.position(sink, tooltip, { anchor: tooltipConfig.anchor(comp) });
+        });
+      };
+      const getEvents = () => {
+        switch (tooltipConfig.mode) {
+        case 'normal':
+          return [
+            run$1(focusin(), comp => {
+              emit(comp, ImmediateShowTooltipEvent);
+            }),
+            run$1(postBlur(), comp => {
+              emit(comp, ImmediateHideTooltipEvent);
+            }),
+            run$1(mouseover(), comp => {
+              emit(comp, ShowTooltipEvent);
+            }),
+            run$1(mouseout(), comp => {
+              emit(comp, HideTooltipEvent);
+            })
+          ];
+        case 'follow-highlight':
+          return [
+            run$1(highlight$1(), (comp, _se) => {
+              emit(comp, ShowTooltipEvent);
+            }),
+            run$1(dehighlight$1(), comp => {
+              emit(comp, HideTooltipEvent);
+            })
+          ];
+        case 'children-normal':
+          return [
+            run$1(focusin(), (comp, se) => {
+              search(comp.element).each(_ => {
+                if (is(se.event.target, '[data-mce-tooltip]')) {
+                  state.getTooltip().fold(() => {
+                    emit(comp, ImmediateShowTooltipEvent);
+                  }, tooltip => {
+                    if (state.isShowing()) {
+                      tooltipConfig.onShow(comp, tooltip);
+                      reposition(comp);
+                    }
+                  });
+                }
+              });
+            }),
+            run$1(postBlur(), comp => {
+              search(comp.element).fold(() => {
+                emit(comp, ImmediateHideTooltipEvent);
+              }, noop);
+            }),
+            run$1(mouseover(), comp => {
+              descendant(comp.element, '[data-mce-tooltip]:hover').each(_ => {
+                state.getTooltip().fold(() => {
+                  emit(comp, ShowTooltipEvent);
+                }, tooltip => {
+                  if (state.isShowing()) {
+                    tooltipConfig.onShow(comp, tooltip);
+                    reposition(comp);
+                  }
+                });
+              });
+            }),
+            run$1(mouseout(), comp => {
+              descendant(comp.element, '[data-mce-tooltip]:hover').fold(() => {
+                emit(comp, HideTooltipEvent);
+              }, noop);
+            })
+          ];
+        default:
+          return [
+            run$1(focusin(), (comp, se) => {
+              search(comp.element).each(_ => {
+                if (is(se.event.target, '[data-mce-tooltip]')) {
+                  state.getTooltip().fold(() => {
+                    emit(comp, ImmediateShowTooltipEvent);
+                  }, tooltip => {
+                    if (state.isShowing()) {
+                      tooltipConfig.onShow(comp, tooltip);
+                      reposition(comp);
+                    }
+                  });
+                }
+              });
+            }),
+            run$1(postBlur(), comp => {
+              search(comp.element).fold(() => {
+                emit(comp, ImmediateHideTooltipEvent);
+              }, noop);
+            })
+          ];
+        }
+      };
+      return derive$2(flatten([
+        [
+          run$1(ShowTooltipEvent, comp => {
+            state.resetTimer(() => {
+              show(comp);
+            }, tooltipConfig.delayForShow());
+          }),
+          run$1(HideTooltipEvent, comp => {
+            state.resetTimer(() => {
+              hide(comp);
+            }, tooltipConfig.delayForHide());
+          }),
+          run$1(ImmediateShowTooltipEvent, comp => {
+            state.resetTimer(() => {
+              show(comp);
+            }, 0);
+          }),
+          run$1(ImmediateHideTooltipEvent, comp => {
+            state.resetTimer(() => {
+              hide(comp);
+            }, 0);
+          }),
+          run$1(receive(), (comp, message) => {
+            const receivingData = message;
+            if (!receivingData.universal) {
+              if (contains$2(receivingData.channels, ExclusivityChannel)) {
+                hide(comp);
+              }
+            }
+          }),
+          runOnDetached(comp => {
+            hide(comp);
+          })
+        ],
+        getEvents()
+      ]));
+    };
+
+    var ActiveTooltipping = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        events: events$8
+    });
+
+    var TooltippingSchema = [
+      required$1('lazySink'),
+      required$1('tooltipDom'),
+      defaulted('exclusive', true),
+      defaulted('tooltipComponents', []),
+      defaultedFunction('delayForShow', constant$1(300)),
+      defaultedFunction('delayForHide', constant$1(300)),
+      defaultedStringEnum('mode', 'normal', [
+        'normal',
+        'follow-highlight',
+        'children-keyboard-focus',
+        'children-normal'
+      ]),
+      defaulted('anchor', comp => ({
+        type: 'hotspot',
+        hotspot: comp,
+        layouts: {
+          onLtr: constant$1([
+            south$2,
+            north$2,
+            southeast$2,
+            northeast$2,
+            southwest$2,
+            northwest$2
+          ]),
+          onRtl: constant$1([
+            south$2,
+            north$2,
+            southeast$2,
+            northeast$2,
+            southwest$2,
+            northwest$2
+          ])
+        },
+        bubble: nu$5(0, -2, {})
+      })),
+      onHandler('onHide'),
+      onHandler('onShow')
+    ];
+
+    const init$a = () => {
+      const timer = value$4();
+      const popup = value$4();
+      const clearTimer = () => {
+        timer.on(clearTimeout);
+      };
+      const resetTimer = (f, delay) => {
+        clearTimer();
+        timer.set(setTimeout(f, delay));
+      };
+      const readState = constant$1('not-implemented');
+      return nu$7({
+        getTooltip: popup.get,
+        isShowing: popup.isSet,
+        setTooltip: popup.set,
+        clearTooltip: popup.clear,
+        clearTimer,
+        resetTimer,
+        readState
+      });
+    };
+
+    var TooltippingState = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        init: init$a
+    });
+
+    const Tooltipping = create$4({
+      fields: TooltippingSchema,
+      name: 'tooltipping',
+      active: ActiveTooltipping,
+      state: TooltippingState,
+      apis: TooltippingApis
+    });
+
+    const {entries, setPrototypeOf, isFrozen, getPrototypeOf, getOwnPropertyDescriptor} = Object;
+    let {freeze, seal, create: create$1} = Object;
+    let {apply, construct} = typeof Reflect !== 'undefined' && Reflect;
     if (!apply) {
       apply = function apply(fun, thisValue, args) {
         return fun.apply(thisValue, args);
@@ -8183,19 +9198,20 @@
     }
     if (!construct) {
       construct = function construct(Func, args) {
-        return _construct(Func, _toConsumableArray(args));
+        return new Func(...args);
       };
     }
-    var arrayForEach = unapply(Array.prototype.forEach);
-    var arrayPop = unapply(Array.prototype.pop);
-    var arrayPush = unapply(Array.prototype.push);
-    var stringToLowerCase = unapply(String.prototype.toLowerCase);
-    var stringMatch = unapply(String.prototype.match);
-    var stringReplace = unapply(String.prototype.replace);
-    var stringIndexOf = unapply(String.prototype.indexOf);
-    var stringTrim = unapply(String.prototype.trim);
-    var regExpTest = unapply(RegExp.prototype.test);
-    var typeErrorCreate = unconstruct(TypeError);
+    const arrayForEach = unapply(Array.prototype.forEach);
+    const arrayPop = unapply(Array.prototype.pop);
+    const arrayPush = unapply(Array.prototype.push);
+    const stringToLowerCase = unapply(String.prototype.toLowerCase);
+    const stringToString = unapply(String.prototype.toString);
+    const stringMatch = unapply(String.prototype.match);
+    const stringReplace = unapply(String.prototype.replace);
+    const stringIndexOf = unapply(String.prototype.indexOf);
+    const stringTrim = unapply(String.prototype.trim);
+    const regExpTest = unapply(RegExp.prototype.test);
+    const typeErrorCreate = unconstruct(TypeError);
     function unapply(func) {
       return function (thisArg) {
         for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -8212,15 +9228,17 @@
         return construct(func, args);
       };
     }
-    function addToSet(set, array) {
+    function addToSet(set, array, transformCaseFunc) {
+      var _transformCaseFunc;
+      transformCaseFunc = (_transformCaseFunc = transformCaseFunc) !== null && _transformCaseFunc !== void 0 ? _transformCaseFunc : stringToLowerCase;
       if (setPrototypeOf) {
         setPrototypeOf(set, null);
       }
-      var l = array.length;
+      let l = array.length;
       while (l--) {
-        var element = array[l];
+        let element = array[l];
         if (typeof element === 'string') {
-          var lcElement = stringToLowerCase(element);
+          const lcElement = transformCaseFunc(element);
           if (lcElement !== element) {
             if (!isFrozen(array)) {
               array[l] = lcElement;
@@ -8233,18 +9251,15 @@
       return set;
     }
     function clone(object) {
-      var newObject = create$1(null);
-      var property;
-      for (property in object) {
-        if (apply(hasOwnProperty, object, [property])) {
-          newObject[property] = object[property];
-        }
+      const newObject = create$1(null);
+      for (const [property, value] of entries(object)) {
+        newObject[property] = value;
       }
       return newObject;
     }
     function lookupGetter(object, prop) {
       while (object !== null) {
-        var desc = getOwnPropertyDescriptor(object, prop);
+        const desc = getOwnPropertyDescriptor(object, prop);
         if (desc) {
           if (desc.get) {
             return unapply(desc.get);
@@ -8261,7 +9276,7 @@
       }
       return fallbackValue;
     }
-    var html$1 = freeze([
+    const html$1 = freeze([
       'a',
       'abbr',
       'acronym',
@@ -8380,7 +9395,7 @@
       'video',
       'wbr'
     ]);
-    var svg$1 = freeze([
+    const svg$1 = freeze([
       'svg',
       'a',
       'altglyph',
@@ -8425,7 +9440,7 @@
       'view',
       'vkern'
     ]);
-    var svgFilters = freeze([
+    const svgFilters = freeze([
       'feBlend',
       'feColorMatrix',
       'feComponentTransfer',
@@ -8434,6 +9449,7 @@
       'feDiffuseLighting',
       'feDisplacementMap',
       'feDistantLight',
+      'feDropShadow',
       'feFlood',
       'feFuncA',
       'feFuncB',
@@ -8451,12 +9467,11 @@
       'feTile',
       'feTurbulence'
     ]);
-    var svgDisallowed = freeze([
+    const svgDisallowed = freeze([
       'animate',
       'color-profile',
       'cursor',
       'discard',
-      'fedropshadow',
       'font-face',
       'font-face-format',
       'font-face-name',
@@ -8476,7 +9491,7 @@
       'unknown',
       'use'
     ]);
-    var mathMl$1 = freeze([
+    const mathMl$1 = freeze([
       'math',
       'menclose',
       'merror',
@@ -8505,9 +9520,10 @@
       'mtext',
       'mtr',
       'munder',
-      'munderover'
+      'munderover',
+      'mprescripts'
     ]);
-    var mathMlDisallowed = freeze([
+    const mathMlDisallowed = freeze([
       'maction',
       'maligngroup',
       'malignmark',
@@ -8524,8 +9540,8 @@
       'mprescripts',
       'none'
     ]);
-    var text$1 = freeze(['#text']);
-    var html = freeze([
+    const text$1 = freeze(['#text']);
+    const html = freeze([
       'accept',
       'action',
       'align',
@@ -8636,7 +9652,7 @@
       'xmlns',
       'slot'
     ]);
-    var svg = freeze([
+    const svg = freeze([
       'accent-height',
       'accumulate',
       'additive',
@@ -8820,7 +9836,7 @@
       'z',
       'zoomandpan'
     ]);
-    var mathMl = freeze([
+    const mathMl = freeze([
       'accent',
       'accentunder',
       'align',
@@ -8875,38 +9891,52 @@
       'width',
       'xmlns'
     ]);
-    var xml = freeze([
+    const xml = freeze([
       'xlink:href',
       'xml:id',
       'xlink:title',
       'xml:space',
       'xmlns:xlink'
     ]);
-    var MUSTACHE_EXPR = seal(/\{\{[\w\W]*|[\w\W]*\}\}/gm);
-    var ERB_EXPR = seal(/<%[\w\W]*|[\w\W]*%>/gm);
-    var DATA_ATTR = seal(/^data-[\-\w.\u00B7-\uFFFF]/);
-    var ARIA_ATTR = seal(/^aria-[\-\w]+$/);
-    var IS_ALLOWED_URI = seal(/^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i);
-    var IS_SCRIPT_OR_DATA = seal(/^(?:\w+script|data):/i);
-    var ATTR_WHITESPACE = seal(/[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205F\u3000]/g);
-    var DOCTYPE_NAME = seal(/^html$/i);
-    var getGlobal = function getGlobal() {
-      return typeof window === 'undefined' ? null : window;
-    };
-    var _createTrustedTypesPolicy = function _createTrustedTypesPolicy(trustedTypes, document) {
-      if (_typeof(trustedTypes) !== 'object' || typeof trustedTypes.createPolicy !== 'function') {
+    const MUSTACHE_EXPR = seal(/\{\{[\w\W]*|[\w\W]*\}\}/gm);
+    const ERB_EXPR = seal(/<%[\w\W]*|[\w\W]*%>/gm);
+    const TMPLIT_EXPR = seal(/\${[\w\W]*}/gm);
+    const DATA_ATTR = seal(/^data-[\-\w.\u00B7-\uFFFF]/);
+    const ARIA_ATTR = seal(/^aria-[\-\w]+$/);
+    const IS_ALLOWED_URI = seal(/^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i);
+    const IS_SCRIPT_OR_DATA = seal(/^(?:\w+script|data):/i);
+    const ATTR_WHITESPACE = seal(/[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205F\u3000]/g);
+    const DOCTYPE_NAME = seal(/^html$/i);
+    var EXPRESSIONS = Object.freeze({
+      __proto__: null,
+      MUSTACHE_EXPR: MUSTACHE_EXPR,
+      ERB_EXPR: ERB_EXPR,
+      TMPLIT_EXPR: TMPLIT_EXPR,
+      DATA_ATTR: DATA_ATTR,
+      ARIA_ATTR: ARIA_ATTR,
+      IS_ALLOWED_URI: IS_ALLOWED_URI,
+      IS_SCRIPT_OR_DATA: IS_SCRIPT_OR_DATA,
+      ATTR_WHITESPACE: ATTR_WHITESPACE,
+      DOCTYPE_NAME: DOCTYPE_NAME
+    });
+    const getGlobal = () => typeof window === 'undefined' ? null : window;
+    const _createTrustedTypesPolicy = function _createTrustedTypesPolicy(trustedTypes, purifyHostElement) {
+      if (typeof trustedTypes !== 'object' || typeof trustedTypes.createPolicy !== 'function') {
         return null;
       }
-      var suffix = null;
-      var ATTR_NAME = 'data-tt-policy-suffix';
-      if (document.currentScript && document.currentScript.hasAttribute(ATTR_NAME)) {
-        suffix = document.currentScript.getAttribute(ATTR_NAME);
+      let suffix = null;
+      const ATTR_NAME = 'data-tt-policy-suffix';
+      if (purifyHostElement && purifyHostElement.hasAttribute(ATTR_NAME)) {
+        suffix = purifyHostElement.getAttribute(ATTR_NAME);
       }
-      var policyName = 'dompurify' + (suffix ? '#' + suffix : '');
+      const policyName = 'dompurify' + (suffix ? '#' + suffix : '');
       try {
         return trustedTypes.createPolicy(policyName, {
-          createHTML: function createHTML(html) {
+          createHTML(html) {
             return html;
+          },
+          createScriptURL(scriptUrl) {
+            return scriptUrl;
           }
         });
       } catch (_) {
@@ -8915,48 +9945,53 @@
       }
     };
     function createDOMPurify() {
-      var window = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getGlobal();
-      var DOMPurify = function DOMPurify(root) {
-        return createDOMPurify(root);
-      };
-      DOMPurify.version = '2.3.8';
+      let window = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getGlobal();
+      const DOMPurify = root => createDOMPurify(root);
+      DOMPurify.version = '3.0.5';
       DOMPurify.removed = [];
       if (!window || !window.document || window.document.nodeType !== 9) {
         DOMPurify.isSupported = false;
         return DOMPurify;
       }
-      var originalDocument = window.document;
-      var document = window.document;
-      var DocumentFragment = window.DocumentFragment, HTMLTemplateElement = window.HTMLTemplateElement, Node = window.Node, Element = window.Element, NodeFilter = window.NodeFilter, _window$NamedNodeMap = window.NamedNodeMap, NamedNodeMap = _window$NamedNodeMap === void 0 ? window.NamedNodeMap || window.MozNamedAttrMap : _window$NamedNodeMap, HTMLFormElement = window.HTMLFormElement, DOMParser = window.DOMParser, trustedTypes = window.trustedTypes;
-      var ElementPrototype = Element.prototype;
-      var cloneNode = lookupGetter(ElementPrototype, 'cloneNode');
-      var getNextSibling = lookupGetter(ElementPrototype, 'nextSibling');
-      var getChildNodes = lookupGetter(ElementPrototype, 'childNodes');
-      var getParentNode = lookupGetter(ElementPrototype, 'parentNode');
+      const originalDocument = window.document;
+      const currentScript = originalDocument.currentScript;
+      let {document} = window;
+      const {DocumentFragment, HTMLTemplateElement, Node, Element, NodeFilter, NamedNodeMap = window.NamedNodeMap || window.MozNamedAttrMap, HTMLFormElement, DOMParser, trustedTypes} = window;
+      const ElementPrototype = Element.prototype;
+      const cloneNode = lookupGetter(ElementPrototype, 'cloneNode');
+      const getNextSibling = lookupGetter(ElementPrototype, 'nextSibling');
+      const getChildNodes = lookupGetter(ElementPrototype, 'childNodes');
+      const getParentNode = lookupGetter(ElementPrototype, 'parentNode');
       if (typeof HTMLTemplateElement === 'function') {
-        var template = document.createElement('template');
+        const template = document.createElement('template');
         if (template.content && template.content.ownerDocument) {
           document = template.content.ownerDocument;
         }
       }
-      var trustedTypesPolicy = _createTrustedTypesPolicy(trustedTypes, originalDocument);
-      var emptyHTML = trustedTypesPolicy ? trustedTypesPolicy.createHTML('') : '';
-      var _document = document, implementation = _document.implementation, createNodeIterator = _document.createNodeIterator, createDocumentFragment = _document.createDocumentFragment, getElementsByTagName = _document.getElementsByTagName;
-      var importNode = originalDocument.importNode;
-      var documentMode = {};
-      try {
-        documentMode = clone(document).documentMode ? document.documentMode : {};
-      } catch (_) {
-      }
-      var hooks = {};
-      DOMPurify.isSupported = typeof getParentNode === 'function' && implementation && typeof implementation.createHTMLDocument !== 'undefined' && documentMode !== 9;
-      var MUSTACHE_EXPR$1 = MUSTACHE_EXPR, ERB_EXPR$1 = ERB_EXPR, DATA_ATTR$1 = DATA_ATTR, ARIA_ATTR$1 = ARIA_ATTR, IS_SCRIPT_OR_DATA$1 = IS_SCRIPT_OR_DATA, ATTR_WHITESPACE$1 = ATTR_WHITESPACE;
-      var IS_ALLOWED_URI$1 = IS_ALLOWED_URI;
-      var ALLOWED_TAGS = null;
-      var DEFAULT_ALLOWED_TAGS = addToSet({}, [].concat(_toConsumableArray(html$1), _toConsumableArray(svg$1), _toConsumableArray(svgFilters), _toConsumableArray(mathMl$1), _toConsumableArray(text$1)));
-      var ALLOWED_ATTR = null;
-      var DEFAULT_ALLOWED_ATTR = addToSet({}, [].concat(_toConsumableArray(html), _toConsumableArray(svg), _toConsumableArray(mathMl), _toConsumableArray(xml)));
-      var CUSTOM_ELEMENT_HANDLING = Object.seal(Object.create(null, {
+      let trustedTypesPolicy;
+      let emptyHTML = '';
+      const {implementation, createNodeIterator, createDocumentFragment, getElementsByTagName} = document;
+      const {importNode} = originalDocument;
+      let hooks = {};
+      DOMPurify.isSupported = typeof entries === 'function' && typeof getParentNode === 'function' && implementation && implementation.createHTMLDocument !== undefined;
+      const {MUSTACHE_EXPR, ERB_EXPR, TMPLIT_EXPR, DATA_ATTR, ARIA_ATTR, IS_SCRIPT_OR_DATA, ATTR_WHITESPACE} = EXPRESSIONS;
+      let {IS_ALLOWED_URI: IS_ALLOWED_URI$1} = EXPRESSIONS;
+      let ALLOWED_TAGS = null;
+      const DEFAULT_ALLOWED_TAGS = addToSet({}, [
+        ...html$1,
+        ...svg$1,
+        ...svgFilters,
+        ...mathMl$1,
+        ...text$1
+      ]);
+      let ALLOWED_ATTR = null;
+      const DEFAULT_ALLOWED_ATTR = addToSet({}, [
+        ...html,
+        ...svg,
+        ...mathMl,
+        ...xml
+      ]);
+      let CUSTOM_ELEMENT_HANDLING = Object.seal(Object.create(null, {
         tagNameCheck: {
           writable: true,
           configurable: false,
@@ -8976,24 +10011,27 @@
           value: false
         }
       }));
-      var FORBID_TAGS = null;
-      var FORBID_ATTR = null;
-      var ALLOW_ARIA_ATTR = true;
-      var ALLOW_DATA_ATTR = true;
-      var ALLOW_UNKNOWN_PROTOCOLS = false;
-      var SAFE_FOR_TEMPLATES = false;
-      var WHOLE_DOCUMENT = false;
-      var SET_CONFIG = false;
-      var FORCE_BODY = false;
-      var RETURN_DOM = false;
-      var RETURN_DOM_FRAGMENT = false;
-      var RETURN_TRUSTED_TYPE = false;
-      var SANITIZE_DOM = true;
-      var KEEP_CONTENT = true;
-      var IN_PLACE = false;
-      var USE_PROFILES = {};
-      var FORBID_CONTENTS = null;
-      var DEFAULT_FORBID_CONTENTS = addToSet({}, [
+      let FORBID_TAGS = null;
+      let FORBID_ATTR = null;
+      let ALLOW_ARIA_ATTR = true;
+      let ALLOW_DATA_ATTR = true;
+      let ALLOW_UNKNOWN_PROTOCOLS = false;
+      let ALLOW_SELF_CLOSE_IN_ATTR = true;
+      let SAFE_FOR_TEMPLATES = false;
+      let WHOLE_DOCUMENT = false;
+      let SET_CONFIG = false;
+      let FORCE_BODY = false;
+      let RETURN_DOM = false;
+      let RETURN_DOM_FRAGMENT = false;
+      let RETURN_TRUSTED_TYPE = false;
+      let SANITIZE_DOM = true;
+      let SANITIZE_NAMED_PROPS = false;
+      const SANITIZE_NAMED_PROPS_PREFIX = 'user-content-';
+      let KEEP_CONTENT = true;
+      let IN_PLACE = false;
+      let USE_PROFILES = {};
+      let FORBID_CONTENTS = null;
+      const DEFAULT_FORBID_CONTENTS = addToSet({}, [
         'annotation-xml',
         'audio',
         'colgroup',
@@ -9020,8 +10058,8 @@
         'video',
         'xmp'
       ]);
-      var DATA_URI_TAGS = null;
-      var DEFAULT_DATA_URI_TAGS = addToSet({}, [
+      let DATA_URI_TAGS = null;
+      const DEFAULT_DATA_URI_TAGS = addToSet({}, [
         'audio',
         'video',
         'img',
@@ -9029,8 +10067,8 @@
         'image',
         'track'
       ]);
-      var URI_SAFE_ATTRIBUTES = null;
-      var DEFAULT_URI_SAFE_ATTRIBUTES = addToSet({}, [
+      let URI_SAFE_ATTRIBUTES = null;
+      const DEFAULT_URI_SAFE_ATTRIBUTES = addToSet({}, [
         'alt',
         'class',
         'for',
@@ -9046,42 +10084,52 @@
         'style',
         'xmlns'
       ]);
-      var MATHML_NAMESPACE = 'http://www.w3.org/1998/Math/MathML';
-      var SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
-      var HTML_NAMESPACE = 'http://www.w3.org/1999/xhtml';
-      var NAMESPACE = HTML_NAMESPACE;
-      var IS_EMPTY_INPUT = false;
-      var PARSER_MEDIA_TYPE;
-      var SUPPORTED_PARSER_MEDIA_TYPES = [
+      const MATHML_NAMESPACE = 'http://www.w3.org/1998/Math/MathML';
+      const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
+      const HTML_NAMESPACE = 'http://www.w3.org/1999/xhtml';
+      let NAMESPACE = HTML_NAMESPACE;
+      let IS_EMPTY_INPUT = false;
+      let ALLOWED_NAMESPACES = null;
+      const DEFAULT_ALLOWED_NAMESPACES = addToSet({}, [
+        MATHML_NAMESPACE,
+        SVG_NAMESPACE,
+        HTML_NAMESPACE
+      ], stringToString);
+      let PARSER_MEDIA_TYPE;
+      const SUPPORTED_PARSER_MEDIA_TYPES = [
         'application/xhtml+xml',
         'text/html'
       ];
-      var DEFAULT_PARSER_MEDIA_TYPE = 'text/html';
-      var transformCaseFunc;
-      var CONFIG = null;
-      var formElement = document.createElement('form');
-      var isRegexOrFunction = function isRegexOrFunction(testValue) {
+      const DEFAULT_PARSER_MEDIA_TYPE = 'text/html';
+      let transformCaseFunc;
+      let CONFIG = null;
+      const formElement = document.createElement('form');
+      const isRegexOrFunction = function isRegexOrFunction(testValue) {
         return testValue instanceof RegExp || testValue instanceof Function;
       };
-      var _parseConfig = function _parseConfig(cfg) {
+      const _parseConfig = function _parseConfig(cfg) {
         if (CONFIG && CONFIG === cfg) {
           return;
         }
-        if (!cfg || _typeof(cfg) !== 'object') {
+        if (!cfg || typeof cfg !== 'object') {
           cfg = {};
         }
         cfg = clone(cfg);
-        ALLOWED_TAGS = 'ALLOWED_TAGS' in cfg ? addToSet({}, cfg.ALLOWED_TAGS) : DEFAULT_ALLOWED_TAGS;
-        ALLOWED_ATTR = 'ALLOWED_ATTR' in cfg ? addToSet({}, cfg.ALLOWED_ATTR) : DEFAULT_ALLOWED_ATTR;
-        URI_SAFE_ATTRIBUTES = 'ADD_URI_SAFE_ATTR' in cfg ? addToSet(clone(DEFAULT_URI_SAFE_ATTRIBUTES), cfg.ADD_URI_SAFE_ATTR) : DEFAULT_URI_SAFE_ATTRIBUTES;
-        DATA_URI_TAGS = 'ADD_DATA_URI_TAGS' in cfg ? addToSet(clone(DEFAULT_DATA_URI_TAGS), cfg.ADD_DATA_URI_TAGS) : DEFAULT_DATA_URI_TAGS;
-        FORBID_CONTENTS = 'FORBID_CONTENTS' in cfg ? addToSet({}, cfg.FORBID_CONTENTS) : DEFAULT_FORBID_CONTENTS;
-        FORBID_TAGS = 'FORBID_TAGS' in cfg ? addToSet({}, cfg.FORBID_TAGS) : {};
-        FORBID_ATTR = 'FORBID_ATTR' in cfg ? addToSet({}, cfg.FORBID_ATTR) : {};
+        PARSER_MEDIA_TYPE = SUPPORTED_PARSER_MEDIA_TYPES.indexOf(cfg.PARSER_MEDIA_TYPE) === -1 ? PARSER_MEDIA_TYPE = DEFAULT_PARSER_MEDIA_TYPE : PARSER_MEDIA_TYPE = cfg.PARSER_MEDIA_TYPE;
+        transformCaseFunc = PARSER_MEDIA_TYPE === 'application/xhtml+xml' ? stringToString : stringToLowerCase;
+        ALLOWED_TAGS = 'ALLOWED_TAGS' in cfg ? addToSet({}, cfg.ALLOWED_TAGS, transformCaseFunc) : DEFAULT_ALLOWED_TAGS;
+        ALLOWED_ATTR = 'ALLOWED_ATTR' in cfg ? addToSet({}, cfg.ALLOWED_ATTR, transformCaseFunc) : DEFAULT_ALLOWED_ATTR;
+        ALLOWED_NAMESPACES = 'ALLOWED_NAMESPACES' in cfg ? addToSet({}, cfg.ALLOWED_NAMESPACES, stringToString) : DEFAULT_ALLOWED_NAMESPACES;
+        URI_SAFE_ATTRIBUTES = 'ADD_URI_SAFE_ATTR' in cfg ? addToSet(clone(DEFAULT_URI_SAFE_ATTRIBUTES), cfg.ADD_URI_SAFE_ATTR, transformCaseFunc) : DEFAULT_URI_SAFE_ATTRIBUTES;
+        DATA_URI_TAGS = 'ADD_DATA_URI_TAGS' in cfg ? addToSet(clone(DEFAULT_DATA_URI_TAGS), cfg.ADD_DATA_URI_TAGS, transformCaseFunc) : DEFAULT_DATA_URI_TAGS;
+        FORBID_CONTENTS = 'FORBID_CONTENTS' in cfg ? addToSet({}, cfg.FORBID_CONTENTS, transformCaseFunc) : DEFAULT_FORBID_CONTENTS;
+        FORBID_TAGS = 'FORBID_TAGS' in cfg ? addToSet({}, cfg.FORBID_TAGS, transformCaseFunc) : {};
+        FORBID_ATTR = 'FORBID_ATTR' in cfg ? addToSet({}, cfg.FORBID_ATTR, transformCaseFunc) : {};
         USE_PROFILES = 'USE_PROFILES' in cfg ? cfg.USE_PROFILES : false;
         ALLOW_ARIA_ATTR = cfg.ALLOW_ARIA_ATTR !== false;
         ALLOW_DATA_ATTR = cfg.ALLOW_DATA_ATTR !== false;
         ALLOW_UNKNOWN_PROTOCOLS = cfg.ALLOW_UNKNOWN_PROTOCOLS || false;
+        ALLOW_SELF_CLOSE_IN_ATTR = cfg.ALLOW_SELF_CLOSE_IN_ATTR !== false;
         SAFE_FOR_TEMPLATES = cfg.SAFE_FOR_TEMPLATES || false;
         WHOLE_DOCUMENT = cfg.WHOLE_DOCUMENT || false;
         RETURN_DOM = cfg.RETURN_DOM || false;
@@ -9089,10 +10137,12 @@
         RETURN_TRUSTED_TYPE = cfg.RETURN_TRUSTED_TYPE || false;
         FORCE_BODY = cfg.FORCE_BODY || false;
         SANITIZE_DOM = cfg.SANITIZE_DOM !== false;
+        SANITIZE_NAMED_PROPS = cfg.SANITIZE_NAMED_PROPS || false;
         KEEP_CONTENT = cfg.KEEP_CONTENT !== false;
         IN_PLACE = cfg.IN_PLACE || false;
-        IS_ALLOWED_URI$1 = cfg.ALLOWED_URI_REGEXP || IS_ALLOWED_URI$1;
+        IS_ALLOWED_URI$1 = cfg.ALLOWED_URI_REGEXP || IS_ALLOWED_URI;
         NAMESPACE = cfg.NAMESPACE || HTML_NAMESPACE;
+        CUSTOM_ELEMENT_HANDLING = cfg.CUSTOM_ELEMENT_HANDLING || {};
         if (cfg.CUSTOM_ELEMENT_HANDLING && isRegexOrFunction(cfg.CUSTOM_ELEMENT_HANDLING.tagNameCheck)) {
           CUSTOM_ELEMENT_HANDLING.tagNameCheck = cfg.CUSTOM_ELEMENT_HANDLING.tagNameCheck;
         }
@@ -9102,10 +10152,6 @@
         if (cfg.CUSTOM_ELEMENT_HANDLING && typeof cfg.CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements === 'boolean') {
           CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements = cfg.CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements;
         }
-        PARSER_MEDIA_TYPE = SUPPORTED_PARSER_MEDIA_TYPES.indexOf(cfg.PARSER_MEDIA_TYPE) === -1 ? PARSER_MEDIA_TYPE = DEFAULT_PARSER_MEDIA_TYPE : PARSER_MEDIA_TYPE = cfg.PARSER_MEDIA_TYPE;
-        transformCaseFunc = PARSER_MEDIA_TYPE === 'application/xhtml+xml' ? function (x) {
-          return x;
-        } : stringToLowerCase;
         if (SAFE_FOR_TEMPLATES) {
           ALLOW_DATA_ATTR = false;
         }
@@ -9113,7 +10159,7 @@
           RETURN_DOM = true;
         }
         if (USE_PROFILES) {
-          ALLOWED_TAGS = addToSet({}, _toConsumableArray(text$1));
+          ALLOWED_TAGS = addToSet({}, [...text$1]);
           ALLOWED_ATTR = [];
           if (USE_PROFILES.html === true) {
             addToSet(ALLOWED_TAGS, html$1);
@@ -9139,22 +10185,22 @@
           if (ALLOWED_TAGS === DEFAULT_ALLOWED_TAGS) {
             ALLOWED_TAGS = clone(ALLOWED_TAGS);
           }
-          addToSet(ALLOWED_TAGS, cfg.ADD_TAGS);
+          addToSet(ALLOWED_TAGS, cfg.ADD_TAGS, transformCaseFunc);
         }
         if (cfg.ADD_ATTR) {
           if (ALLOWED_ATTR === DEFAULT_ALLOWED_ATTR) {
             ALLOWED_ATTR = clone(ALLOWED_ATTR);
           }
-          addToSet(ALLOWED_ATTR, cfg.ADD_ATTR);
+          addToSet(ALLOWED_ATTR, cfg.ADD_ATTR, transformCaseFunc);
         }
         if (cfg.ADD_URI_SAFE_ATTR) {
-          addToSet(URI_SAFE_ATTRIBUTES, cfg.ADD_URI_SAFE_ATTR);
+          addToSet(URI_SAFE_ATTRIBUTES, cfg.ADD_URI_SAFE_ATTR, transformCaseFunc);
         }
         if (cfg.FORBID_CONTENTS) {
           if (FORBID_CONTENTS === DEFAULT_FORBID_CONTENTS) {
             FORBID_CONTENTS = clone(FORBID_CONTENTS);
           }
-          addToSet(FORBID_CONTENTS, cfg.FORBID_CONTENTS);
+          addToSet(FORBID_CONTENTS, cfg.FORBID_CONTENTS, transformCaseFunc);
         }
         if (KEEP_CONTENT) {
           ALLOWED_TAGS['#text'] = true;
@@ -9170,46 +10216,66 @@
           addToSet(ALLOWED_TAGS, ['tbody']);
           delete FORBID_TAGS.tbody;
         }
+        if (cfg.TRUSTED_TYPES_POLICY) {
+          if (typeof cfg.TRUSTED_TYPES_POLICY.createHTML !== 'function') {
+            throw typeErrorCreate('TRUSTED_TYPES_POLICY configuration option must provide a "createHTML" hook.');
+          }
+          if (typeof cfg.TRUSTED_TYPES_POLICY.createScriptURL !== 'function') {
+            throw typeErrorCreate('TRUSTED_TYPES_POLICY configuration option must provide a "createScriptURL" hook.');
+          }
+          trustedTypesPolicy = cfg.TRUSTED_TYPES_POLICY;
+          emptyHTML = trustedTypesPolicy.createHTML('');
+        } else {
+          if (trustedTypesPolicy === undefined) {
+            trustedTypesPolicy = _createTrustedTypesPolicy(trustedTypes, currentScript);
+          }
+          if (trustedTypesPolicy !== null && typeof emptyHTML === 'string') {
+            emptyHTML = trustedTypesPolicy.createHTML('');
+          }
+        }
         if (freeze) {
           freeze(cfg);
         }
         CONFIG = cfg;
       };
-      var MATHML_TEXT_INTEGRATION_POINTS = addToSet({}, [
+      const MATHML_TEXT_INTEGRATION_POINTS = addToSet({}, [
         'mi',
         'mo',
         'mn',
         'ms',
         'mtext'
       ]);
-      var HTML_INTEGRATION_POINTS = addToSet({}, [
+      const HTML_INTEGRATION_POINTS = addToSet({}, [
         'foreignobject',
         'desc',
         'title',
         'annotation-xml'
       ]);
-      var COMMON_SVG_AND_HTML_ELEMENTS = addToSet({}, [
+      const COMMON_SVG_AND_HTML_ELEMENTS = addToSet({}, [
         'title',
         'style',
         'font',
         'a',
         'script'
       ]);
-      var ALL_SVG_TAGS = addToSet({}, svg$1);
+      const ALL_SVG_TAGS = addToSet({}, svg$1);
       addToSet(ALL_SVG_TAGS, svgFilters);
       addToSet(ALL_SVG_TAGS, svgDisallowed);
-      var ALL_MATHML_TAGS = addToSet({}, mathMl$1);
+      const ALL_MATHML_TAGS = addToSet({}, mathMl$1);
       addToSet(ALL_MATHML_TAGS, mathMlDisallowed);
-      var _checkValidNamespace = function _checkValidNamespace(element) {
-        var parent = getParentNode(element);
+      const _checkValidNamespace = function _checkValidNamespace(element) {
+        let parent = getParentNode(element);
         if (!parent || !parent.tagName) {
           parent = {
-            namespaceURI: HTML_NAMESPACE,
+            namespaceURI: NAMESPACE,
             tagName: 'template'
           };
         }
-        var tagName = stringToLowerCase(element.tagName);
-        var parentTagName = stringToLowerCase(parent.tagName);
+        const tagName = stringToLowerCase(element.tagName);
+        const parentTagName = stringToLowerCase(parent.tagName);
+        if (!ALLOWED_NAMESPACES[element.namespaceURI]) {
+          return false;
+        }
         if (element.namespaceURI === SVG_NAMESPACE) {
           if (parent.namespaceURI === HTML_NAMESPACE) {
             return tagName === 'svg';
@@ -9237,21 +10303,20 @@
           }
           return !ALL_MATHML_TAGS[tagName] && (COMMON_SVG_AND_HTML_ELEMENTS[tagName] || !ALL_SVG_TAGS[tagName]);
         }
+        if (PARSER_MEDIA_TYPE === 'application/xhtml+xml' && ALLOWED_NAMESPACES[element.namespaceURI]) {
+          return true;
+        }
         return false;
       };
-      var _forceRemove = function _forceRemove(node) {
+      const _forceRemove = function _forceRemove(node) {
         arrayPush(DOMPurify.removed, { element: node });
         try {
           node.parentNode.removeChild(node);
         } catch (_) {
-          try {
-            node.outerHTML = emptyHTML;
-          } catch (_) {
-            node.remove();
-          }
+          node.remove();
         }
       };
-      var _removeAttribute = function _removeAttribute(name, node) {
+      const _removeAttribute = function _removeAttribute(name, node) {
         try {
           arrayPush(DOMPurify.removed, {
             attribute: node.getAttributeNode(name),
@@ -9278,19 +10343,19 @@
           }
         }
       };
-      var _initDocument = function _initDocument(dirty) {
-        var doc;
-        var leadingWhitespace;
+      const _initDocument = function _initDocument(dirty) {
+        let doc;
+        let leadingWhitespace;
         if (FORCE_BODY) {
           dirty = '<remove></remove>' + dirty;
         } else {
-          var matches = stringMatch(dirty, /^[\r\n\t ]+/);
+          const matches = stringMatch(dirty, /^[\r\n\t ]+/);
           leadingWhitespace = matches && matches[0];
         }
-        if (PARSER_MEDIA_TYPE === 'application/xhtml+xml') {
+        if (PARSER_MEDIA_TYPE === 'application/xhtml+xml' && NAMESPACE === HTML_NAMESPACE) {
           dirty = '<html xmlns="http://www.w3.org/1999/xhtml"><head></head><body>' + dirty + '</body></html>';
         }
-        var dirtyPayload = trustedTypesPolicy ? trustedTypesPolicy.createHTML(dirty) : dirty;
+        const dirtyPayload = trustedTypesPolicy ? trustedTypesPolicy.createHTML(dirty) : dirty;
         if (NAMESPACE === HTML_NAMESPACE) {
           try {
             doc = new DOMParser().parseFromString(dirtyPayload, PARSER_MEDIA_TYPE);
@@ -9300,11 +10365,11 @@
         if (!doc || !doc.documentElement) {
           doc = implementation.createDocument(NAMESPACE, 'template', null);
           try {
-            doc.documentElement.innerHTML = IS_EMPTY_INPUT ? '' : dirtyPayload;
+            doc.documentElement.innerHTML = IS_EMPTY_INPUT ? emptyHTML : dirtyPayload;
           } catch (_) {
           }
         }
-        var body = doc.body || doc.documentElement;
+        const body = doc.body || doc.documentElement;
         if (dirty && leadingWhitespace) {
           body.insertBefore(document.createTextNode(leadingWhitespace), body.childNodes[0] || null);
         }
@@ -9313,44 +10378,36 @@
         }
         return WHOLE_DOCUMENT ? doc.documentElement : body;
       };
-      var _createIterator = function _createIterator(root) {
+      const _createIterator = function _createIterator(root) {
         return createNodeIterator.call(root.ownerDocument || root, root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_COMMENT | NodeFilter.SHOW_TEXT, null, false);
       };
-      var _isClobbered = function _isClobbered(elm) {
-        return elm instanceof HTMLFormElement && (typeof elm.nodeName !== 'string' || typeof elm.textContent !== 'string' || typeof elm.removeChild !== 'function' || !(elm.attributes instanceof NamedNodeMap) || typeof elm.removeAttribute !== 'function' || typeof elm.setAttribute !== 'function' || typeof elm.namespaceURI !== 'string' || typeof elm.insertBefore !== 'function');
+      const _isClobbered = function _isClobbered(elm) {
+        return elm instanceof HTMLFormElement && (typeof elm.nodeName !== 'string' || typeof elm.textContent !== 'string' || typeof elm.removeChild !== 'function' || !(elm.attributes instanceof NamedNodeMap) || typeof elm.removeAttribute !== 'function' || typeof elm.setAttribute !== 'function' || typeof elm.namespaceURI !== 'string' || typeof elm.insertBefore !== 'function' || typeof elm.hasChildNodes !== 'function');
       };
-      var _isNode = function _isNode(object) {
-        return _typeof(Node) === 'object' ? object instanceof Node : object && _typeof(object) === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string';
+      const _isNode = function _isNode(object) {
+        return typeof Node === 'object' ? object instanceof Node : object && typeof object === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string';
       };
-      var _executeHook = function _executeHook(entryPoint, currentNode, data) {
+      const _executeHook = function _executeHook(entryPoint, currentNode, data) {
         if (!hooks[entryPoint]) {
           return;
         }
-        arrayForEach(hooks[entryPoint], function (hook) {
+        arrayForEach(hooks[entryPoint], hook => {
           hook.call(DOMPurify, currentNode, data, CONFIG);
         });
       };
-      var _sanitizeElements = function _sanitizeElements(currentNode) {
-        var content;
+      const _sanitizeElements = function _sanitizeElements(currentNode) {
+        let content;
         _executeHook('beforeSanitizeElements', currentNode, null);
         if (_isClobbered(currentNode)) {
           _forceRemove(currentNode);
           return true;
         }
-        if (regExpTest(/[\u0080-\uFFFF]/, currentNode.nodeName)) {
-          _forceRemove(currentNode);
-          return true;
-        }
-        var tagName = transformCaseFunc(currentNode.nodeName);
+        const tagName = transformCaseFunc(currentNode.nodeName);
         _executeHook('uponSanitizeElement', currentNode, {
-          tagName: tagName,
+          tagName,
           allowedTags: ALLOWED_TAGS
         });
         if (currentNode.hasChildNodes() && !_isNode(currentNode.firstElementChild) && (!_isNode(currentNode.content) || !_isNode(currentNode.content.firstElementChild)) && regExpTest(/<[/\w]/g, currentNode.innerHTML) && regExpTest(/<[/\w]/g, currentNode.textContent)) {
-          _forceRemove(currentNode);
-          return true;
-        }
-        if (tagName === 'select' && regExpTest(/<template/i, currentNode.innerHTML)) {
           _forceRemove(currentNode);
           return true;
         }
@@ -9362,11 +10419,11 @@
               return false;
           }
           if (KEEP_CONTENT && !FORBID_CONTENTS[tagName]) {
-            var parentNode = getParentNode(currentNode) || currentNode.parentNode;
-            var childNodes = getChildNodes(currentNode) || currentNode.childNodes;
+            const parentNode = getParentNode(currentNode) || currentNode.parentNode;
+            const childNodes = getChildNodes(currentNode) || currentNode.childNodes;
             if (childNodes && parentNode) {
-              var childCount = childNodes.length;
-              for (var i = childCount - 1; i >= 0; --i) {
+              const childCount = childNodes.length;
+              for (let i = childCount - 1; i >= 0; --i) {
                 parentNode.insertBefore(cloneNode(childNodes[i], true), getNextSibling(currentNode));
               }
             }
@@ -9378,14 +10435,15 @@
           _forceRemove(currentNode);
           return true;
         }
-        if ((tagName === 'noscript' || tagName === 'noembed') && regExpTest(/<\/no(script|embed)/i, currentNode.innerHTML)) {
+        if ((tagName === 'noscript' || tagName === 'noembed' || tagName === 'noframes') && regExpTest(/<\/no(script|embed|frames)/i, currentNode.innerHTML)) {
           _forceRemove(currentNode);
           return true;
         }
         if (SAFE_FOR_TEMPLATES && currentNode.nodeType === 3) {
           content = currentNode.textContent;
-          content = stringReplace(content, MUSTACHE_EXPR$1, ' ');
-          content = stringReplace(content, ERB_EXPR$1, ' ');
+          content = stringReplace(content, MUSTACHE_EXPR, ' ');
+          content = stringReplace(content, ERB_EXPR, ' ');
+          content = stringReplace(content, TMPLIT_EXPR, ' ');
           if (currentNode.textContent !== content) {
             arrayPush(DOMPurify.removed, { element: currentNode.cloneNode() });
             currentNode.textContent = content;
@@ -9394,41 +10452,40 @@
         _executeHook('afterSanitizeElements', currentNode, null);
         return false;
       };
-      var _isValidAttribute = function _isValidAttribute(lcTag, lcName, value) {
+      const _isValidAttribute = function _isValidAttribute(lcTag, lcName, value) {
         if (SANITIZE_DOM && (lcName === 'id' || lcName === 'name') && (value in document || value in formElement)) {
           return false;
         }
-        if (ALLOW_DATA_ATTR && !FORBID_ATTR[lcName] && regExpTest(DATA_ATTR$1, lcName));
-        else if (ALLOW_ARIA_ATTR && regExpTest(ARIA_ATTR$1, lcName));
+        if (ALLOW_DATA_ATTR && !FORBID_ATTR[lcName] && regExpTest(DATA_ATTR, lcName));
+        else if (ALLOW_ARIA_ATTR && regExpTest(ARIA_ATTR, lcName));
         else if (!ALLOWED_ATTR[lcName] || FORBID_ATTR[lcName]) {
           if (_basicCustomElementTest(lcTag) && (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, lcTag) || CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(lcTag)) && (CUSTOM_ELEMENT_HANDLING.attributeNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.attributeNameCheck, lcName) || CUSTOM_ELEMENT_HANDLING.attributeNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.attributeNameCheck(lcName)) || lcName === 'is' && CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements && (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, value) || CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(value)));
           else {
             return false;
           }
         } else if (URI_SAFE_ATTRIBUTES[lcName]);
-        else if (regExpTest(IS_ALLOWED_URI$1, stringReplace(value, ATTR_WHITESPACE$1, '')));
+        else if (regExpTest(IS_ALLOWED_URI$1, stringReplace(value, ATTR_WHITESPACE, '')));
         else if ((lcName === 'src' || lcName === 'xlink:href' || lcName === 'href') && lcTag !== 'script' && stringIndexOf(value, 'data:') === 0 && DATA_URI_TAGS[lcTag]);
-        else if (ALLOW_UNKNOWN_PROTOCOLS && !regExpTest(IS_SCRIPT_OR_DATA$1, stringReplace(value, ATTR_WHITESPACE$1, '')));
-        else if (!value);
-        else {
+        else if (ALLOW_UNKNOWN_PROTOCOLS && !regExpTest(IS_SCRIPT_OR_DATA, stringReplace(value, ATTR_WHITESPACE, '')));
+        else if (value) {
           return false;
-        }
+        } else ;
         return true;
       };
-      var _basicCustomElementTest = function _basicCustomElementTest(tagName) {
+      const _basicCustomElementTest = function _basicCustomElementTest(tagName) {
         return tagName.indexOf('-') > 0;
       };
-      var _sanitizeAttributes = function _sanitizeAttributes(currentNode) {
-        var attr;
-        var value;
-        var lcName;
-        var l;
+      const _sanitizeAttributes = function _sanitizeAttributes(currentNode) {
+        let attr;
+        let value;
+        let lcName;
+        let l;
         _executeHook('beforeSanitizeAttributes', currentNode, null);
-        var attributes = currentNode.attributes;
+        const {attributes} = currentNode;
         if (!attributes) {
           return;
         }
-        var hookEvent = {
+        const hookEvent = {
           attrName: '',
           attrValue: '',
           keepAttr: true,
@@ -9437,10 +10494,10 @@
         l = attributes.length;
         while (l--) {
           attr = attributes[l];
-          var _attr = attr, name = _attr.name, namespaceURI = _attr.namespaceURI;
+          const {name, namespaceURI} = attr;
           value = name === 'value' ? attr.value : stringTrim(attr.value);
+          const initValue = value;
           lcName = transformCaseFunc(name);
-          var initValue = value;
           hookEvent.attrName = lcName;
           hookEvent.attrValue = value;
           hookEvent.keepAttr = true;
@@ -9454,18 +10511,38 @@
             _removeAttribute(name, currentNode);
             continue;
           }
-          if (regExpTest(/\/>/i, value)) {
+          if (!ALLOW_SELF_CLOSE_IN_ATTR && regExpTest(/\/>/i, value)) {
             _removeAttribute(name, currentNode);
             continue;
           }
           if (SAFE_FOR_TEMPLATES) {
-            value = stringReplace(value, MUSTACHE_EXPR$1, ' ');
-            value = stringReplace(value, ERB_EXPR$1, ' ');
+            value = stringReplace(value, MUSTACHE_EXPR, ' ');
+            value = stringReplace(value, ERB_EXPR, ' ');
+            value = stringReplace(value, TMPLIT_EXPR, ' ');
           }
-          var lcTag = transformCaseFunc(currentNode.nodeName);
+          const lcTag = transformCaseFunc(currentNode.nodeName);
           if (!_isValidAttribute(lcTag, lcName, value)) {
             _removeAttribute(name, currentNode);
             continue;
+          }
+          if (SANITIZE_NAMED_PROPS && (lcName === 'id' || lcName === 'name')) {
+            _removeAttribute(name, currentNode);
+            value = SANITIZE_NAMED_PROPS_PREFIX + value;
+          }
+          if (trustedTypesPolicy && typeof trustedTypes === 'object' && typeof trustedTypes.getAttributeType === 'function') {
+            if (namespaceURI);
+            else {
+              switch (trustedTypes.getAttributeType(lcTag, lcName)) {
+              case 'TrustedHTML': {
+                  value = trustedTypesPolicy.createHTML(value);
+                  break;
+                }
+              case 'TrustedScriptURL': {
+                  value = trustedTypesPolicy.createScriptURL(value);
+                  break;
+                }
+              }
+            }
           }
           if (value !== initValue) {
             try {
@@ -9481,9 +10558,9 @@
         }
         _executeHook('afterSanitizeAttributes', currentNode, null);
       };
-      var _sanitizeShadowDOM = function _sanitizeShadowDOM(fragment) {
-        var shadowNode;
-        var shadowIterator = _createIterator(fragment);
+      const _sanitizeShadowDOM = function _sanitizeShadowDOM(fragment) {
+        let shadowNode;
+        const shadowIterator = _createIterator(fragment);
         _executeHook('beforeSanitizeShadowDOM', fragment, null);
         while (shadowNode = shadowIterator.nextNode()) {
           _executeHook('uponSanitizeShadowNode', shadowNode, null);
@@ -9497,35 +10574,27 @@
         }
         _executeHook('afterSanitizeShadowDOM', fragment, null);
       };
-      DOMPurify.sanitize = function (dirty, cfg) {
-        var body;
-        var importedNode;
-        var currentNode;
-        var oldNode;
-        var returnNode;
+      DOMPurify.sanitize = function (dirty) {
+        let cfg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+        let body;
+        let importedNode;
+        let currentNode;
+        let returnNode;
         IS_EMPTY_INPUT = !dirty;
         if (IS_EMPTY_INPUT) {
           dirty = '<!-->';
         }
         if (typeof dirty !== 'string' && !_isNode(dirty)) {
-          if (typeof dirty.toString !== 'function') {
-            throw typeErrorCreate('toString is not a function');
-          } else {
+          if (typeof dirty.toString === 'function') {
             dirty = dirty.toString();
             if (typeof dirty !== 'string') {
               throw typeErrorCreate('dirty is not a string, aborting');
             }
+          } else {
+            throw typeErrorCreate('toString is not a function');
           }
         }
         if (!DOMPurify.isSupported) {
-          if (_typeof(window.toStaticHTML) === 'object' || typeof window.toStaticHTML === 'function') {
-            if (typeof dirty === 'string') {
-              return window.toStaticHTML(dirty);
-            }
-            if (_isNode(dirty)) {
-              return window.toStaticHTML(dirty.outerHTML);
-            }
-          }
           return dirty;
         }
         if (!SET_CONFIG) {
@@ -9537,7 +10606,7 @@
         }
         if (IN_PLACE) {
           if (dirty.nodeName) {
-            var tagName = transformCaseFunc(dirty.nodeName);
+            const tagName = transformCaseFunc(dirty.nodeName);
             if (!ALLOWED_TAGS[tagName] || FORBID_TAGS[tagName]) {
               throw typeErrorCreate('root node is forbidden and cannot be sanitized in-place');
             }
@@ -9564,11 +10633,8 @@
         if (body && FORCE_BODY) {
           _forceRemove(body.firstChild);
         }
-        var nodeIterator = _createIterator(IN_PLACE ? dirty : body);
+        const nodeIterator = _createIterator(IN_PLACE ? dirty : body);
         while (currentNode = nodeIterator.nextNode()) {
-          if (currentNode.nodeType === 3 && currentNode === oldNode) {
-            continue;
-          }
           if (_sanitizeElements(currentNode)) {
             continue;
           }
@@ -9576,9 +10642,7 @@
             _sanitizeShadowDOM(currentNode.content);
           }
           _sanitizeAttributes(currentNode);
-          oldNode = currentNode;
         }
-        oldNode = null;
         if (IN_PLACE) {
           return dirty;
         }
@@ -9591,18 +10655,19 @@
           } else {
             returnNode = body;
           }
-          if (ALLOWED_ATTR.shadowroot) {
+          if (ALLOWED_ATTR.shadowroot || ALLOWED_ATTR.shadowrootmode) {
             returnNode = importNode.call(originalDocument, returnNode, true);
           }
           return returnNode;
         }
-        var serializedHTML = WHOLE_DOCUMENT ? body.outerHTML : body.innerHTML;
+        let serializedHTML = WHOLE_DOCUMENT ? body.outerHTML : body.innerHTML;
         if (WHOLE_DOCUMENT && ALLOWED_TAGS['!doctype'] && body.ownerDocument && body.ownerDocument.doctype && body.ownerDocument.doctype.name && regExpTest(DOCTYPE_NAME, body.ownerDocument.doctype.name)) {
           serializedHTML = '<!DOCTYPE ' + body.ownerDocument.doctype.name + '>\n' + serializedHTML;
         }
         if (SAFE_FOR_TEMPLATES) {
-          serializedHTML = stringReplace(serializedHTML, MUSTACHE_EXPR$1, ' ');
-          serializedHTML = stringReplace(serializedHTML, ERB_EXPR$1, ' ');
+          serializedHTML = stringReplace(serializedHTML, MUSTACHE_EXPR, ' ');
+          serializedHTML = stringReplace(serializedHTML, ERB_EXPR, ' ');
+          serializedHTML = stringReplace(serializedHTML, TMPLIT_EXPR, ' ');
         }
         return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML(serializedHTML) : serializedHTML;
       };
@@ -9618,8 +10683,8 @@
         if (!CONFIG) {
           _parseConfig({});
         }
-        var lcTag = transformCaseFunc(tag);
-        var lcName = transformCaseFunc(attr);
+        const lcTag = transformCaseFunc(tag);
+        const lcName = transformCaseFunc(attr);
         return _isValidAttribute(lcTag, lcName, value);
       };
       DOMPurify.addHook = function (entryPoint, hookFunction) {
@@ -9648,7 +10713,7 @@
 
     const sanitizeHtmlString = html => purify().sanitize(html);
 
-    var global$8 = tinymce.util.Tools.resolve('tinymce.util.I18n');
+    var global$5 = tinymce.util.Tools.resolve('tinymce.util.I18n');
 
     const rtlTransform = {
       'indent': true,
@@ -9663,18 +10728,18 @@
       'list-bull-square': true
     };
     const defaultIconName = 'temporary-placeholder';
-    const defaultIcon = icons => () => get$g(icons, defaultIconName).getOr('!not found!');
+    const defaultIcon = icons => () => get$h(icons, defaultIconName).getOr('!not found!');
     const getIconName = (name, icons) => {
       const lcName = name.toLowerCase();
-      if (global$8.isRtl()) {
+      if (global$5.isRtl()) {
         const rtlName = ensureTrailing(lcName, '-rtl');
         return has$2(icons, rtlName) ? rtlName : lcName;
       } else {
         return lcName;
       }
     };
-    const lookupIcon = (name, icons) => get$g(icons, getIconName(name, icons));
-    const get$2 = (name, iconProvider) => {
+    const lookupIcon = (name, icons) => get$h(icons, getIconName(name, icons));
+    const get$3 = (name, iconProvider) => {
       const icons = iconProvider();
       return lookupIcon(name, icons).getOrThunk(defaultIcon(icons));
     };
@@ -9682,14 +10747,14 @@
       const icons = iconProvider();
       return lookupIcon(name, icons).or(fallbackIcon).getOrThunk(defaultIcon(icons));
     };
-    const needsRtlTransform = iconName => global$8.isRtl() ? has$2(rtlTransform, iconName) : false;
+    const needsRtlTransform = iconName => global$5.isRtl() ? has$2(rtlTransform, iconName) : false;
     const addFocusableBehaviour = () => config('add-focusable', [runOnAttached(comp => {
         child(comp.element, 'svg').each(svg => set$9(svg, 'focusable', 'false'));
       })]);
     const renderIcon$3 = (spec, iconName, icons, fallbackIcon) => {
       var _a, _b;
       const rtlIconClasses = needsRtlTransform(iconName) ? ['tox-icon--flip'] : [];
-      const iconHtml = get$g(icons, getIconName(iconName, icons)).or(fallbackIcon).getOrThunk(defaultIcon(icons));
+      const iconHtml = get$h(icons, getIconName(iconName, icons)).or(fallbackIcon).getOrThunk(defaultIcon(icons));
       return {
         dom: {
           tag: spec.tag,
@@ -9719,8 +10784,9 @@
       info: 'info'
     };
     const factory$m = detail => {
+      const notificationTextId = generate$6('notification-text');
       const memBannerText = record({
-        dom: fromHtml(`<p>${ sanitizeHtmlString(detail.translationProvider(detail.text)) }</p>`),
+        dom: fromHtml(`<p id=${ notificationTextId }>${ sanitizeHtmlString(detail.backstageProvider.translate(detail.text)) }</p>`),
         behaviours: derive$1([Replacing.config({})])
       });
       const renderPercentBar = percent => ({
@@ -9796,13 +10862,17 @@
             'tox-button',
             'tox-button--naked',
             'tox-button--icon'
-          ]
+          ],
+          attributes: { 'aria-label': detail.backstageProvider.translate('Close') }
         },
         components: [render$3('close', {
             tag: 'span',
-            classes: ['tox-icon'],
-            attributes: { 'aria-label': detail.translationProvider('Close') }
+            classes: ['tox-icon']
           }, detail.iconProvider)],
+        buttonBehaviours: derive$1([
+          Tabstopping.config({}),
+          Tooltipping.config({ ...detail.backstageProvider.tooltips.getConfig({ tooltipText: detail.backstageProvider.translate('Close') }) })
+        ]),
         action: comp => {
           detail.onAction(comp);
         }
@@ -9827,7 +10897,10 @@
         uid: detail.uid,
         dom: {
           tag: 'div',
-          attributes: { role: 'alert' },
+          attributes: {
+            'role': 'alert',
+            'aria-labelledby': notificationTextId
+          },
           classes: detail.level.map(level => [
             'tox-notification',
             'tox-notification--in',
@@ -9838,12 +10911,17 @@
           ])
         },
         behaviours: derive$1([
+          Tabstopping.config({}),
           Focusing.config({}),
-          config('notification-events', [run$1(focusin(), comp => {
-              memButton.getOpt(comp).each(Focusing.focus);
-            })])
+          Keying.config({
+            mode: 'special',
+            onEscape: comp => {
+              detail.onAction(comp);
+              return Optional.some(true);
+            }
+          })
         ]),
-        components: components.concat(detail.progress ? [memBannerProgress.asSpec()] : []).concat(!detail.closeButton ? [] : [memButton.asSpec()]),
+        components: components.concat(detail.progress ? [memBannerProgress.asSpec()] : []).concat([memButton.asSpec()]),
         apis
       };
     };
@@ -9857,8 +10935,7 @@
         required$1('onAction'),
         required$1('text'),
         required$1('iconProvider'),
-        required$1('translationProvider'),
-        defaultedBoolean('closeButton', true)
+        required$1('backstageProvider')
       ],
       apis: {
         updateProgress: (apis, comp, percent) => {
@@ -9870,21 +10947,52 @@
       }
     });
 
-    var NotificationManagerImpl = (editor, extras, uiMothership) => {
+    var NotificationManagerImpl = (editor, extras, uiMothership, notificationRegion) => {
       const sharedBackstage = extras.backstage.shared;
       const getBounds = () => {
         const contentArea = box$1(SugarElement.fromDom(editor.getContentAreaContainer()));
-        const win$1 = win();
-        const x = clamp(win$1.x, contentArea.x, contentArea.right);
-        const y = clamp(win$1.y, contentArea.y, contentArea.bottom);
-        const right = Math.max(contentArea.right, win$1.right);
-        const bottom = Math.max(contentArea.bottom, win$1.bottom);
-        return Optional.some(bounds(x, y, right - x, bottom - y));
+        return Optional.some(contentArea);
       };
-      const open = (settings, closeCallback) => {
+      const clampComponentsToBounds = components => {
+        getBounds().each(bounds => {
+          each$1(components, comp => {
+            if (get$d(comp.element) > bounds.width) {
+              set$8(comp.element, 'width', bounds.width + 'px');
+            }
+          });
+        });
+      };
+      const open = (settings, closeCallback, isEditorOrUIFocused) => {
         const close = () => {
-          closeCallback();
-          InlineView.hide(notificationWrapper);
+          const removeNotificationAndReposition = region => {
+            Replacing.remove(region, notification);
+            reposition();
+          };
+          const manageRegionVisibility = (region, editorOrUiFocused) => {
+            if (children(region.element).length === 0) {
+              handleEmptyRegion(region, editorOrUiFocused);
+            } else {
+              handleRegionWithChildren(region, editorOrUiFocused);
+            }
+          };
+          const handleEmptyRegion = (region, editorOrUIFocused) => {
+            InlineView.hide(region);
+            notificationRegion.clear();
+            if (editorOrUIFocused) {
+              editor.focus();
+            }
+          };
+          const handleRegionWithChildren = (region, editorOrUIFocused) => {
+            if (editorOrUIFocused) {
+              Keying.focusIn(region);
+            }
+          };
+          notificationRegion.on(region => {
+            closeCallback();
+            const editorOrUIFocused = isEditorOrUIFocused();
+            removeNotificationAndReposition(region);
+            manageRegionVisibility(region, editorOrUIFocused);
+          });
         };
         const notification = build$1(Notification.sketch({
           text: settings.text,
@@ -9897,52 +11005,85 @@
           ], settings.type) ? settings.type : undefined,
           progress: settings.progressBar === true,
           icon: settings.icon,
-          closeButton: settings.closeButton,
           onAction: close,
           iconProvider: sharedBackstage.providers.icons,
-          translationProvider: sharedBackstage.providers.translate
+          backstageProvider: sharedBackstage.providers
         }));
-        const notificationWrapper = build$1(InlineView.sketch({
-          dom: {
-            tag: 'div',
-            classes: ['tox-notifications-container']
-          },
-          lazySink: sharedBackstage.getSink,
-          fireDismissalEventInstead: {},
-          ...sharedBackstage.header.isPositionedAtTop() ? {} : { fireRepositionEventInstead: {} }
-        }));
-        uiMothership.add(notificationWrapper);
+        if (!notificationRegion.isSet()) {
+          const notificationWrapper = build$1(InlineView.sketch({
+            dom: {
+              tag: 'div',
+              classes: ['tox-notifications-container'],
+              attributes: {
+                'aria-label': 'Notifications',
+                'role': 'region'
+              }
+            },
+            lazySink: sharedBackstage.getSink,
+            fireDismissalEventInstead: {},
+            ...sharedBackstage.header.isPositionedAtTop() ? {} : { fireRepositionEventInstead: {} },
+            inlineBehaviours: derive$1([
+              Keying.config({
+                mode: 'cyclic',
+                selector: '.tox-notification, .tox-notification a, .tox-notification button'
+              }),
+              Replacing.config({}),
+              ...isStickyToolbar(editor) && !sharedBackstage.header.isPositionedAtTop() ? [] : [Docking.config({
+                  contextual: {
+                    lazyContext: () => Optional.some(box$1(SugarElement.fromDom(editor.getContentAreaContainer()))),
+                    fadeInClass: 'tox-notification-container-dock-fadein',
+                    fadeOutClass: 'tox-notification-container-dock-fadeout',
+                    transitionClass: 'tox-notification-container-dock-transition'
+                  },
+                  modes: ['top'],
+                  lazyViewport: comp => {
+                    const optScrollingContext = detectWhenSplitUiMode(editor, comp.element);
+                    return optScrollingContext.map(sc => {
+                      const combinedBounds = getBoundsFrom(sc);
+                      return {
+                        bounds: combinedBounds,
+                        optScrollEnv: Optional.some({
+                          currentScrollTop: sc.element.dom.scrollTop,
+                          scrollElmTop: absolute$3(sc.element).top
+                        })
+                      };
+                    }).getOrThunk(() => ({
+                      bounds: win(),
+                      optScrollEnv: Optional.none()
+                    }));
+                  }
+                })]
+            ])
+          }));
+          const notificationSpec = premade(notification);
+          const anchorOverrides = { maxHeightFunction: expandable$1() };
+          const anchor = {
+            ...sharedBackstage.anchors.banner(),
+            overrides: anchorOverrides
+          };
+          notificationRegion.set(notificationWrapper);
+          uiMothership.add(notificationWrapper);
+          InlineView.showWithinBounds(notificationWrapper, notificationSpec, { anchor }, getBounds);
+        } else {
+          const notificationSpec = premade(notification);
+          notificationRegion.on(notificationWrapper => {
+            Replacing.append(notificationWrapper, notificationSpec);
+            InlineView.reposition(notificationWrapper);
+            Docking.refresh(notificationWrapper);
+            clampComponentsToBounds(notificationWrapper.components());
+          });
+        }
         if (isNumber(settings.timeout) && settings.timeout > 0) {
           global$9.setEditorTimeout(editor, () => {
             close();
           }, settings.timeout);
         }
         const reposition = () => {
-          const notificationSpec = premade(notification);
-          const anchorOverrides = { maxHeightFunction: expandable$1() };
-          const allNotifications = editor.notificationManager.getNotifications();
-          if (allNotifications[0] === thisNotification) {
-            const anchor = {
-              ...sharedBackstage.anchors.banner(),
-              overrides: anchorOverrides
-            };
-            InlineView.showWithinBounds(notificationWrapper, notificationSpec, { anchor }, getBounds);
-          } else {
-            indexOf(allNotifications, thisNotification).each(idx => {
-              const previousNotification = allNotifications[idx - 1].getEl();
-              const nodeAnchor = {
-                type: 'node',
-                root: body(),
-                node: Optional.some(SugarElement.fromDom(previousNotification)),
-                overrides: anchorOverrides,
-                layouts: {
-                  onRtl: () => [south$2],
-                  onLtr: () => [south$2]
-                }
-              };
-              InlineView.showWithinBounds(notificationWrapper, notificationSpec, { anchor: nodeAnchor }, getBounds);
-            });
-          }
+          notificationRegion.on(region => {
+            InlineView.reposition(region);
+            Docking.refresh(region);
+            clampComponentsToBounds(region.components());
+          });
         };
         const thisNotification = {
           close,
@@ -9972,355 +11113,6 @@
         getArgs
       };
     };
-
-    var global$7 = tinymce.util.Tools.resolve('tinymce.dom.DOMUtils');
-
-    var global$6 = tinymce.util.Tools.resolve('tinymce.EditorManager');
-
-    var global$5 = tinymce.util.Tools.resolve('tinymce.Env');
-
-    var ToolbarMode$1;
-    (function (ToolbarMode) {
-      ToolbarMode['default'] = 'wrap';
-      ToolbarMode['floating'] = 'floating';
-      ToolbarMode['sliding'] = 'sliding';
-      ToolbarMode['scrolling'] = 'scrolling';
-    }(ToolbarMode$1 || (ToolbarMode$1 = {})));
-    var ToolbarLocation$1;
-    (function (ToolbarLocation) {
-      ToolbarLocation['auto'] = 'auto';
-      ToolbarLocation['top'] = 'top';
-      ToolbarLocation['bottom'] = 'bottom';
-    }(ToolbarLocation$1 || (ToolbarLocation$1 = {})));
-    const option$2 = name => editor => editor.options.get(name);
-    const wrapOptional = fn => editor => Optional.from(fn(editor));
-    const register$e = editor => {
-      const isPhone = global$5.deviceType.isPhone();
-      const isMobile = global$5.deviceType.isTablet() || isPhone;
-      const registerOption = editor.options.register;
-      const stringOrFalseProcessor = value => isString(value) || value === false;
-      const stringOrNumberProcessor = value => isString(value) || isNumber(value);
-      registerOption('skin', {
-        processor: value => isString(value) || value === false,
-        default: 'oxide'
-      });
-      registerOption('skin_url', { processor: 'string' });
-      registerOption('height', {
-        processor: stringOrNumberProcessor,
-        default: Math.max(editor.getElement().offsetHeight, 400)
-      });
-      registerOption('width', {
-        processor: stringOrNumberProcessor,
-        default: global$7.DOM.getStyle(editor.getElement(), 'width')
-      });
-      registerOption('min_height', {
-        processor: 'number',
-        default: 100
-      });
-      registerOption('min_width', { processor: 'number' });
-      registerOption('max_height', { processor: 'number' });
-      registerOption('max_width', { processor: 'number' });
-      registerOption('style_formats', { processor: 'object[]' });
-      registerOption('style_formats_merge', {
-        processor: 'boolean',
-        default: false
-      });
-      registerOption('style_formats_autohide', {
-        processor: 'boolean',
-        default: false
-      });
-      registerOption('line_height_formats', {
-        processor: 'string',
-        default: '1 1.1 1.2 1.3 1.4 1.5 2'
-      });
-      registerOption('font_family_formats', {
-        processor: 'string',
-        default: 'Andale Mono=andale mono,monospace;' + 'Arial=arial,helvetica,sans-serif;' + 'Arial Black=arial black,sans-serif;' + 'Book Antiqua=book antiqua,palatino,serif;' + 'Comic Sans MS=comic sans ms,sans-serif;' + 'Courier New=courier new,courier,monospace;' + 'Georgia=georgia,palatino,serif;' + 'Helvetica=helvetica,arial,sans-serif;' + 'Impact=impact,sans-serif;' + 'Symbol=symbol;' + 'Tahoma=tahoma,arial,helvetica,sans-serif;' + 'Terminal=terminal,monaco,monospace;' + 'Times New Roman=times new roman,times,serif;' + 'Trebuchet MS=trebuchet ms,geneva,sans-serif;' + 'Verdana=verdana,geneva,sans-serif;' + 'Webdings=webdings;' + 'Wingdings=wingdings,zapf dingbats'
-      });
-      registerOption('font_size_formats', {
-        processor: 'string',
-        default: '8pt 10pt 12pt 14pt 18pt 24pt 36pt'
-      });
-      registerOption('font_size_input_default_unit', {
-        processor: 'string',
-        default: 'pt'
-      });
-      registerOption('block_formats', {
-        processor: 'string',
-        default: 'Paragraph=p;' + 'Heading 1=h1;' + 'Heading 2=h2;' + 'Heading 3=h3;' + 'Heading 4=h4;' + 'Heading 5=h5;' + 'Heading 6=h6;' + 'Preformatted=pre'
-      });
-      registerOption('content_langs', { processor: 'object[]' });
-      registerOption('removed_menuitems', {
-        processor: 'string',
-        default: ''
-      });
-      registerOption('menubar', {
-        processor: value => isString(value) || isBoolean(value),
-        default: !isPhone
-      });
-      registerOption('menu', {
-        processor: 'object',
-        default: {}
-      });
-      registerOption('toolbar', {
-        processor: value => {
-          if (isBoolean(value) || isString(value) || isArray(value)) {
-            return {
-              value,
-              valid: true
-            };
-          } else {
-            return {
-              valid: false,
-              message: 'Must be a boolean, string or array.'
-            };
-          }
-        },
-        default: true
-      });
-      range$2(9, num => {
-        registerOption('toolbar' + (num + 1), { processor: 'string' });
-      });
-      registerOption('toolbar_mode', {
-        processor: 'string',
-        default: isMobile ? 'scrolling' : 'floating'
-      });
-      registerOption('toolbar_groups', {
-        processor: 'object',
-        default: {}
-      });
-      registerOption('toolbar_location', {
-        processor: 'string',
-        default: ToolbarLocation$1.auto
-      });
-      registerOption('toolbar_persist', {
-        processor: 'boolean',
-        default: false
-      });
-      registerOption('toolbar_sticky', {
-        processor: 'boolean',
-        default: editor.inline
-      });
-      registerOption('toolbar_sticky_offset', {
-        processor: 'number',
-        default: 0
-      });
-      registerOption('fixed_toolbar_container', {
-        processor: 'string',
-        default: ''
-      });
-      registerOption('fixed_toolbar_container_target', { processor: 'object' });
-      registerOption('ui_mode', {
-        processor: 'string',
-        default: 'combined'
-      });
-      registerOption('file_picker_callback', { processor: 'function' });
-      registerOption('file_picker_validator_handler', { processor: 'function' });
-      registerOption('file_picker_types', { processor: 'string' });
-      registerOption('typeahead_urls', {
-        processor: 'boolean',
-        default: true
-      });
-      registerOption('anchor_top', {
-        processor: stringOrFalseProcessor,
-        default: '#top'
-      });
-      registerOption('anchor_bottom', {
-        processor: stringOrFalseProcessor,
-        default: '#bottom'
-      });
-      registerOption('draggable_modal', {
-        processor: 'boolean',
-        default: false
-      });
-      registerOption('statusbar', {
-        processor: 'boolean',
-        default: true
-      });
-      registerOption('elementpath', {
-        processor: 'boolean',
-        default: true
-      });
-      registerOption('branding', {
-        processor: 'boolean',
-        default: true
-      });
-      registerOption('promotion', {
-        processor: 'boolean',
-        default: true
-      });
-      registerOption('resize', {
-        processor: value => value === 'both' || isBoolean(value),
-        default: !global$5.deviceType.isTouch()
-      });
-      registerOption('sidebar_show', { processor: 'string' });
-      registerOption('help_accessibility', {
-        processor: 'boolean',
-        default: editor.hasPlugin('help')
-      });
-    };
-    const isReadOnly = option$2('readonly');
-    const getHeightOption = option$2('height');
-    const getWidthOption = option$2('width');
-    const getMinWidthOption = wrapOptional(option$2('min_width'));
-    const getMinHeightOption = wrapOptional(option$2('min_height'));
-    const getMaxWidthOption = wrapOptional(option$2('max_width'));
-    const getMaxHeightOption = wrapOptional(option$2('max_height'));
-    const getUserStyleFormats = wrapOptional(option$2('style_formats'));
-    const shouldMergeStyleFormats = option$2('style_formats_merge');
-    const shouldAutoHideStyleFormats = option$2('style_formats_autohide');
-    const getContentLanguages = option$2('content_langs');
-    const getRemovedMenuItems = option$2('removed_menuitems');
-    const getToolbarMode = option$2('toolbar_mode');
-    const getToolbarGroups = option$2('toolbar_groups');
-    const getToolbarLocation = option$2('toolbar_location');
-    const fixedContainerSelector = option$2('fixed_toolbar_container');
-    const fixedToolbarContainerTarget = option$2('fixed_toolbar_container_target');
-    const isToolbarPersist = option$2('toolbar_persist');
-    const getStickyToolbarOffset = option$2('toolbar_sticky_offset');
-    const getMenubar = option$2('menubar');
-    const getToolbar = option$2('toolbar');
-    const getFilePickerCallback = option$2('file_picker_callback');
-    const getFilePickerValidatorHandler = option$2('file_picker_validator_handler');
-    const getFontSizeInputDefaultUnit = option$2('font_size_input_default_unit');
-    const getFilePickerTypes = option$2('file_picker_types');
-    const useTypeaheadUrls = option$2('typeahead_urls');
-    const getAnchorTop = option$2('anchor_top');
-    const getAnchorBottom = option$2('anchor_bottom');
-    const isDraggableModal$1 = option$2('draggable_modal');
-    const useStatusBar = option$2('statusbar');
-    const useElementPath = option$2('elementpath');
-    const useBranding = option$2('branding');
-    const getResize = option$2('resize');
-    const getPasteAsText = option$2('paste_as_text');
-    const getSidebarShow = option$2('sidebar_show');
-    const promotionEnabled = option$2('promotion');
-    const useHelpAccessibility = option$2('help_accessibility');
-    const isSkinDisabled = editor => editor.options.get('skin') === false;
-    const isMenubarEnabled = editor => editor.options.get('menubar') !== false;
-    const getSkinUrl = editor => {
-      const skinUrl = editor.options.get('skin_url');
-      if (isSkinDisabled(editor)) {
-        return skinUrl;
-      } else {
-        if (skinUrl) {
-          return editor.documentBaseURI.toAbsolute(skinUrl);
-        } else {
-          const skin = editor.options.get('skin');
-          return global$6.baseURL + '/skins/ui/' + skin;
-        }
-      }
-    };
-    const getLineHeightFormats = editor => editor.options.get('line_height_formats').split(' ');
-    const isToolbarEnabled = editor => {
-      const toolbar = getToolbar(editor);
-      const isToolbarString = isString(toolbar);
-      const isToolbarObjectArray = isArray(toolbar) && toolbar.length > 0;
-      return !isMultipleToolbars(editor) && (isToolbarObjectArray || isToolbarString || toolbar === true);
-    };
-    const getMultipleToolbarsOption = editor => {
-      const toolbars = range$2(9, num => editor.options.get('toolbar' + (num + 1)));
-      const toolbarArray = filter$2(toolbars, isString);
-      return someIf(toolbarArray.length > 0, toolbarArray);
-    };
-    const isMultipleToolbars = editor => getMultipleToolbarsOption(editor).fold(() => {
-      const toolbar = getToolbar(editor);
-      return isArrayOf(toolbar, isString) && toolbar.length > 0;
-    }, always);
-    const isToolbarLocationBottom = editor => getToolbarLocation(editor) === ToolbarLocation$1.bottom;
-    const fixedContainerTarget = editor => {
-      var _a;
-      if (!editor.inline) {
-        return Optional.none();
-      }
-      const selector = (_a = fixedContainerSelector(editor)) !== null && _a !== void 0 ? _a : '';
-      if (selector.length > 0) {
-        return descendant(body(), selector);
-      }
-      const element = fixedToolbarContainerTarget(editor);
-      if (isNonNullable(element)) {
-        return Optional.some(SugarElement.fromDom(element));
-      }
-      return Optional.none();
-    };
-    const useFixedContainer = editor => editor.inline && fixedContainerTarget(editor).isSome();
-    const getUiContainer = editor => {
-      const fixedContainer = fixedContainerTarget(editor);
-      return fixedContainer.getOrThunk(() => getContentContainer(getRootNode(SugarElement.fromDom(editor.getElement()))));
-    };
-    const isDistractionFree = editor => editor.inline && !isMenubarEnabled(editor) && !isToolbarEnabled(editor) && !isMultipleToolbars(editor);
-    const isStickyToolbar = editor => {
-      const isStickyToolbar = editor.options.get('toolbar_sticky');
-      return (isStickyToolbar || editor.inline) && !useFixedContainer(editor) && !isDistractionFree(editor);
-    };
-    const isSplitUiMode = editor => !useFixedContainer(editor) && editor.options.get('ui_mode') === 'split';
-    const getMenus = editor => {
-      const menu = editor.options.get('menu');
-      return map$1(menu, menu => ({
-        ...menu,
-        items: menu.items
-      }));
-    };
-
-    var Options = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        get ToolbarMode () { return ToolbarMode$1; },
-        get ToolbarLocation () { return ToolbarLocation$1; },
-        register: register$e,
-        getSkinUrl: getSkinUrl,
-        isReadOnly: isReadOnly,
-        isSkinDisabled: isSkinDisabled,
-        getHeightOption: getHeightOption,
-        getWidthOption: getWidthOption,
-        getMinWidthOption: getMinWidthOption,
-        getMinHeightOption: getMinHeightOption,
-        getMaxWidthOption: getMaxWidthOption,
-        getMaxHeightOption: getMaxHeightOption,
-        getUserStyleFormats: getUserStyleFormats,
-        shouldMergeStyleFormats: shouldMergeStyleFormats,
-        shouldAutoHideStyleFormats: shouldAutoHideStyleFormats,
-        getLineHeightFormats: getLineHeightFormats,
-        getContentLanguages: getContentLanguages,
-        getRemovedMenuItems: getRemovedMenuItems,
-        isMenubarEnabled: isMenubarEnabled,
-        isMultipleToolbars: isMultipleToolbars,
-        isToolbarEnabled: isToolbarEnabled,
-        isToolbarPersist: isToolbarPersist,
-        getMultipleToolbarsOption: getMultipleToolbarsOption,
-        getUiContainer: getUiContainer,
-        useFixedContainer: useFixedContainer,
-        isSplitUiMode: isSplitUiMode,
-        getToolbarMode: getToolbarMode,
-        isDraggableModal: isDraggableModal$1,
-        isDistractionFree: isDistractionFree,
-        isStickyToolbar: isStickyToolbar,
-        getStickyToolbarOffset: getStickyToolbarOffset,
-        getToolbarLocation: getToolbarLocation,
-        isToolbarLocationBottom: isToolbarLocationBottom,
-        getToolbarGroups: getToolbarGroups,
-        getMenus: getMenus,
-        getMenubar: getMenubar,
-        getToolbar: getToolbar,
-        getFilePickerCallback: getFilePickerCallback,
-        getFilePickerTypes: getFilePickerTypes,
-        useTypeaheadUrls: useTypeaheadUrls,
-        getAnchorTop: getAnchorTop,
-        getAnchorBottom: getAnchorBottom,
-        getFilePickerValidatorHandler: getFilePickerValidatorHandler,
-        getFontSizeInputDefaultUnit: getFontSizeInputDefaultUnit,
-        useStatusBar: useStatusBar,
-        useElementPath: useElementPath,
-        promotionEnabled: promotionEnabled,
-        useBranding: useBranding,
-        getResize: getResize,
-        getPasteAsText: getPasteAsText,
-        getSidebarShow: getSidebarShow,
-        useHelpAccessibility: useHelpAccessibility
-    });
-
-    const autocompleteSelector = '[data-mce-autocompleter]';
-    const detect$1 = elm => closest$1(elm, autocompleteSelector);
-    const findIn = elm => descendant(elm, autocompleteSelector);
 
     const setup$e = (api, editor) => {
       const redirectKeyToItem = (item, e) => {
@@ -10357,8 +11149,8 @@
           }
         }
       });
-      editor.on('NodeChange', e => {
-        if (api.isActive() && !api.isProcessingAction() && detect$1(SugarElement.fromDom(e.element)).isNone()) {
+      editor.on('NodeChange', () => {
+        if (api.isActive() && !api.isProcessingAction() && !editor.queryCommandState('mceAutoCompleterInRange')) {
           api.cancelIfNecessary();
         }
       });
@@ -10395,7 +11187,7 @@
     const containerValignTopClass = 'tox-collection__item-container--valign-top';
     const containerValignMiddleClass = 'tox-collection__item-container--valign-middle';
     const containerValignBottomClass = 'tox-collection__item-container--valign-bottom';
-    const classForPreset = presets => get$g(presetClasses, presets).getOr(navClass);
+    const classForPreset = presets => get$h(presetClasses, presets).getOr(navClass);
 
     const forMenu = presets => {
       if (presets === 'color') {
@@ -10467,7 +11259,7 @@
     const focusBehaviours = detail => derive$1([Focusing.config({
         onFocus: !detail.selectOnFocus ? noop : component => {
           const input = component.element;
-          const value = get$6(input);
+          const value = get$7(input);
           input.dom.setSelectionRange(0, value.length);
         }
       })]);
@@ -10478,10 +11270,10 @@
             mode: 'manual',
             ...detail.data.map(data => ({ initialValue: data })).getOr({}),
             getValue: input => {
-              return get$6(input.element);
+              return get$7(input.element);
             },
             setValue: (input, data) => {
-              const current = get$6(input.element);
+              const current = get$7(input.element);
               if (current !== data) {
                 set$5(input.element, data);
               }
@@ -10744,7 +11536,7 @@
         },
         components: [
           renderMenuSearcher({
-            i18n: global$8.translate,
+            i18n: global$5.translate,
             placeholder: searchField.placeholder
           }),
           {
@@ -10894,14 +11686,16 @@
     ];
     const toolbarButtonSchema = objOf([
       type,
-      onAction
+      onAction,
+      optionalShortcut
     ].concat(baseToolbarButtonFields));
     const createToolbarButton = spec => asRaw('toolbarbutton', toolbarButtonSchema, spec);
 
     const baseToolbarToggleButtonFields = [active].concat(baseToolbarButtonFields);
     const toggleButtonSchema = objOf(baseToolbarToggleButtonFields.concat([
       type,
-      onAction
+      onAction,
+      optionalShortcut
     ]));
     const createToggleButton = spec => asRaw('ToggleButton', toggleButtonSchema, spec);
 
@@ -11076,183 +11870,6 @@
       unnamedEvents
     };
 
-    const ExclusivityChannel = generate$6('tooltip.exclusive');
-    const ShowTooltipEvent = generate$6('tooltip.show');
-    const HideTooltipEvent = generate$6('tooltip.hide');
-
-    const hideAllExclusive = (component, _tConfig, _tState) => {
-      component.getSystem().broadcastOn([ExclusivityChannel], {});
-    };
-    const setComponents = (component, tConfig, tState, specs) => {
-      tState.getTooltip().each(tooltip => {
-        if (tooltip.getSystem().isConnected()) {
-          Replacing.set(tooltip, specs);
-        }
-      });
-    };
-
-    var TooltippingApis = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        hideAllExclusive: hideAllExclusive,
-        setComponents: setComponents
-    });
-
-    const events$9 = (tooltipConfig, state) => {
-      const hide = comp => {
-        state.getTooltip().each(p => {
-          detach(p);
-          tooltipConfig.onHide(comp, p);
-          state.clearTooltip();
-        });
-        state.clearTimer();
-      };
-      const show = comp => {
-        if (!state.isShowing()) {
-          hideAllExclusive(comp);
-          const sink = tooltipConfig.lazySink(comp).getOrDie();
-          const popup = comp.getSystem().build({
-            dom: tooltipConfig.tooltipDom,
-            components: tooltipConfig.tooltipComponents,
-            events: derive$2(tooltipConfig.mode === 'normal' ? [
-              run$1(mouseover(), _ => {
-                emit(comp, ShowTooltipEvent);
-              }),
-              run$1(mouseout(), _ => {
-                emit(comp, HideTooltipEvent);
-              })
-            ] : []),
-            behaviours: derive$1([Replacing.config({})])
-          });
-          state.setTooltip(popup);
-          attach(sink, popup);
-          tooltipConfig.onShow(comp, popup);
-          Positioning.position(sink, popup, { anchor: tooltipConfig.anchor(comp) });
-        }
-      };
-      return derive$2(flatten([
-        [
-          run$1(ShowTooltipEvent, comp => {
-            state.resetTimer(() => {
-              show(comp);
-            }, tooltipConfig.delay);
-          }),
-          run$1(HideTooltipEvent, comp => {
-            state.resetTimer(() => {
-              hide(comp);
-            }, tooltipConfig.delay);
-          }),
-          run$1(receive(), (comp, message) => {
-            const receivingData = message;
-            if (!receivingData.universal) {
-              if (contains$2(receivingData.channels, ExclusivityChannel)) {
-                hide(comp);
-              }
-            }
-          }),
-          runOnDetached(comp => {
-            hide(comp);
-          })
-        ],
-        tooltipConfig.mode === 'normal' ? [
-          run$1(focusin(), comp => {
-            emit(comp, ShowTooltipEvent);
-          }),
-          run$1(postBlur(), comp => {
-            emit(comp, HideTooltipEvent);
-          }),
-          run$1(mouseover(), comp => {
-            emit(comp, ShowTooltipEvent);
-          }),
-          run$1(mouseout(), comp => {
-            emit(comp, HideTooltipEvent);
-          })
-        ] : [
-          run$1(highlight$1(), (comp, _se) => {
-            emit(comp, ShowTooltipEvent);
-          }),
-          run$1(dehighlight$1(), comp => {
-            emit(comp, HideTooltipEvent);
-          })
-        ]
-      ]));
-    };
-
-    var ActiveTooltipping = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        events: events$9
-    });
-
-    var TooltippingSchema = [
-      required$1('lazySink'),
-      required$1('tooltipDom'),
-      defaulted('exclusive', true),
-      defaulted('tooltipComponents', []),
-      defaulted('delay', 300),
-      defaultedStringEnum('mode', 'normal', [
-        'normal',
-        'follow-highlight'
-      ]),
-      defaulted('anchor', comp => ({
-        type: 'hotspot',
-        hotspot: comp,
-        layouts: {
-          onLtr: constant$1([
-            south$2,
-            north$2,
-            southeast$2,
-            northeast$2,
-            southwest$2,
-            northwest$2
-          ]),
-          onRtl: constant$1([
-            south$2,
-            north$2,
-            southeast$2,
-            northeast$2,
-            southwest$2,
-            northwest$2
-          ])
-        }
-      })),
-      onHandler('onHide'),
-      onHandler('onShow')
-    ];
-
-    const init$b = () => {
-      const timer = value$2();
-      const popup = value$2();
-      const clearTimer = () => {
-        timer.on(clearTimeout);
-      };
-      const resetTimer = (f, delay) => {
-        clearTimer();
-        timer.set(setTimeout(f, delay));
-      };
-      const readState = constant$1('not-implemented');
-      return nu$8({
-        getTooltip: popup.get,
-        isShowing: popup.isSet,
-        setTooltip: popup.set,
-        clearTooltip: popup.clear,
-        clearTimer,
-        resetTimer,
-        readState
-      });
-    };
-
-    var TooltippingState = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        init: init$b
-    });
-
-    const Tooltipping = create$4({
-      fields: TooltippingSchema,
-      name: 'tooltipping',
-      active: ActiveTooltipping,
-      state: TooltippingState,
-      apis: TooltippingApis
-    });
-
     const escape = text => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
     const ReadOnlyChannel = 'silver.readonly';
@@ -11382,7 +11999,7 @@
     });
 
     const convertText = source => {
-      const isMac = global$5.os.isMacOS() || global$5.os.isiOS();
+      const isMac = global$6.os.isMacOS() || global$6.os.isiOS();
       const mac = {
         alt: '\u2325',
         ctrl: '\u2303',
@@ -11412,7 +12029,7 @@
         tag: 'div',
         classes: [textClass]
       },
-      components: [text$2(global$8.translate(text))]
+      components: [text$2(global$5.translate(text))]
     });
     const renderHtml = (html, classes) => ({
       dom: {
@@ -11431,7 +12048,7 @@
             tag: style.tag,
             styles: style.styles
           },
-          components: [text$2(global$8.translate(text))]
+          components: [text$2(global$5.translate(text))]
         }]
     });
     const renderShortcut = shortcut => ({
@@ -11484,13 +12101,15 @@
     const renderColorStructure = (item, providerBackstage, fallbackIcon) => {
       const colorPickerCommand = 'custom';
       const removeColorCommand = 'remove';
-      const itemText = item.ariaLabel;
       const itemValue = item.value;
       const iconSvg = item.iconContent.map(name => getOr(name, providerBackstage.icons, fallbackIcon));
+      const attributes = item.ariaLabel.map(al => ({
+        'aria-label': providerBackstage.translate(al),
+        'data-mce-name': al
+      })).getOr({});
       const getDom = () => {
         const common = colorClass;
         const icon = iconSvg.getOr('');
-        const attributes = itemText.map(text => ({ title: providerBackstage.translate(text) })).getOr({});
         const baseDom = {
           tag: 'div',
           attributes,
@@ -11537,8 +12156,8 @@
     const renderItemDomStructure = ariaLabel => {
       const domTitle = ariaLabel.map(label => ({
         attributes: {
-          title: global$8.translate(label),
-          id: generate$6('menu-item')
+          'id': generate$6('menu-item'),
+          'aria-label': global$5.translate(label)
         }
       })).getOr({});
       return {
@@ -11581,7 +12200,7 @@
       }
     };
 
-    const tooltipBehaviour = (meta, sharedBackstage) => get$g(meta, 'tooltipWorker').map(tooltipWorker => [Tooltipping.config({
+    const tooltipBehaviour = (meta, sharedBackstage, tooltipText) => get$h(meta, 'tooltipWorker').map(tooltipWorker => [Tooltipping.config({
         lazySink: sharedBackstage.getSink,
         tooltipDom: {
           tag: 'div',
@@ -11599,10 +12218,15 @@
             Tooltipping.setComponents(component, [external$1({ element: SugarElement.fromDom(elm) })]);
           });
         }
-      })]).getOr([]);
-    const encodeText = text => global$7.DOM.encode(text);
+      })]).getOrThunk(() => {
+      return tooltipText.map(text => [Tooltipping.config({
+          ...sharedBackstage.providers.tooltips.getConfig({ tooltipText: text }),
+          mode: 'follow-highlight'
+        })]).getOr([]);
+    });
+    const encodeText = text => global$8.DOM.encode(text);
     const replaceText = (text, matchText) => {
-      const translated = global$8.translate(text);
+      const translated = global$5.translate(text);
       const encoded = encodeText(translated);
       if (matchText.length > 0) {
         const escapedMatchRegex = new RegExp(escape(matchText), 'gi');
@@ -11623,6 +12247,7 @@
         caret: Optional.none(),
         value: spec.value
       }, sharedBackstage.providers, renderIcons, spec.icon);
+      const tooltipString = spec.text.filter(text => !useText && text !== '');
       return renderCommonItem({
         data: buildData(spec),
         enabled: spec.enabled,
@@ -11630,7 +12255,7 @@
         onAction: _api => onItemValueHandler(spec.value, spec.meta),
         onSetup: constant$1(noop),
         triggersSubmenu: false,
-        itemBehaviours: tooltipBehaviour(spec.meta, sharedBackstage)
+        itemBehaviours: tooltipBehaviour(spec, sharedBackstage, tooltipString)
       }, structure, itemResponse, sharedBackstage.providers);
     };
 
@@ -11707,6 +12332,7 @@
         caret: Optional.none(),
         value: spec.value
       }, providersBackstage, renderIcons);
+      const optTooltipping = spec.text.filter(constant$1(!useText)).map(t => Tooltipping.config(providersBackstage.tooltips.getConfig({ tooltipText: providersBackstage.translate(t) })));
       return deepMerge(renderCommonItem({
         data: buildData(spec),
         enabled: spec.enabled,
@@ -11717,7 +12343,7 @@
           return noop;
         },
         triggersSubmenu: false,
-        itemBehaviours: []
+        itemBehaviours: [...optTooltipping.toArray()]
       }, structure, itemResponse, providersBackstage), {
         toggling: {
           toggleClass: tickedClass,
@@ -11889,6 +12515,24 @@
     const fireToggleToolbarDrawer = (editor, state) => {
       editor.dispatch('ToggleToolbarDrawer', { state });
     };
+    const fireStylesTextUpdate = (editor, data) => {
+      editor.dispatch('StylesTextUpdate', data);
+    };
+    const fireAlignTextUpdate = (editor, data) => {
+      editor.dispatch('AlignTextUpdate', data);
+    };
+    const fireFontSizeTextUpdate = (editor, data) => {
+      editor.dispatch('FontSizeTextUpdate', data);
+    };
+    const fireFontSizeInputTextUpdate = (editor, data) => {
+      editor.dispatch('FontSizeInputTextUpdate', data);
+    };
+    const fireBlocksTextUpdate = (editor, data) => {
+      editor.dispatch('BlocksTextUpdate', data);
+    };
+    const fireFontFamilyTextUpdate = (editor, data) => {
+      editor.dispatch('FontFamilyTextUpdate', data);
+    };
 
     const composeUnbinders = (f, g) => () => {
       f();
@@ -11966,7 +12610,7 @@
         state
       };
     };
-    const getCacheForId = id => get$g(cacheStorage, id).getOrThunk(() => {
+    const getCacheForId = id => get$h(cacheStorage, id).getOrThunk(() => {
       const storageId = `tinymce-custom-colors-${ id }`;
       const currentData = global$4.getItem(storageId);
       if (isNullable(currentData)) {
@@ -12193,7 +12837,7 @@
     const getClosestCssBackgroundColorValue = scope => {
       return closest$4(scope, node => {
         if (isElement$1(node)) {
-          const color = get$e(node, 'background-color');
+          const color = get$f(node, 'background-color');
           return someIf(isValidBackgroundColor(color), color);
         } else {
           return Optional.none();
@@ -12202,7 +12846,7 @@
     };
     const getCurrentColor = (editor, format) => {
       const node = SugarElement.fromDom(editor.selection.getStart());
-      const cssRgbValue = format === 'hilitecolor' ? getClosestCssBackgroundColorValue(node) : get$e(node, 'color');
+      const cssRgbValue = format === 'hilitecolor' ? getClosestCssBackgroundColorValue(node) : get$f(node, 'color');
       return fromString(cssRgbValue).map(rgba => '#' + fromRgba(rgba).value);
     };
     const applyFormat = (editor, format, value) => {
@@ -12272,13 +12916,28 @@
       const id = name === 'forecolor' ? 'tox-icon-text-color__color' : 'tox-icon-highlight-bg-color__color';
       splitButtonApi.setIconFill(id, newColor);
     };
+    const setTooltip = (buttonApi, tooltip) => {
+      buttonApi.setTooltip(tooltip);
+    };
     const select$1 = (editor, format) => value => {
       const optCurrentHex = getCurrentColor(editor, format);
       return is$1(optCurrentHex, value.toUpperCase());
     };
-    const registerTextColorButton = (editor, name, format, tooltip, lastColor) => {
+    const getToolTipText = (editor, format, lastColor) => {
+      if (isEmpty(lastColor)) {
+        return format === 'forecolor' ? 'Text color' : 'Background color';
+      }
+      const tooltipPrefix = format === 'forecolor' ? 'Text color {0}' : 'Background color {0}';
+      const colors = getColors$1(getColors$2(editor, format), format, false);
+      const colorText = find$5(colors, c => c.value === lastColor).getOr({ text: '' }).text;
+      return editor.translate([
+        tooltipPrefix,
+        editor.translate(colorText)
+      ]);
+    };
+    const registerTextColorButton = (editor, name, format, lastColor) => {
       editor.ui.registry.addSplitButton(name, {
-        tooltip,
+        tooltip: getToolTipText(editor, format, lastColor.get()),
         presets: 'color',
         icon: name === 'forecolor' ? 'text-color' : 'highlight-bg-color',
         select: select$1(editor, format),
@@ -12301,6 +12960,7 @@
           const handler = e => {
             if (e.name === name) {
               setIconColor(splitButtonApi, e.name, e.color);
+              setTooltip(splitButtonApi, getToolTipText(editor, format, e.color));
             }
           };
           editor.on('TextColorChange', handler);
@@ -12315,6 +12975,7 @@
         text,
         icon: name === 'forecolor' ? 'text-color' : 'highlight-bg-color',
         onSetup: api => {
+          setTooltip(api, getToolTipText(editor, format, lastColor.get()));
           setIconColor(api, name, lastColor.get());
           return onSetupEditableToggle(editor)(api);
         },
@@ -12395,8 +13056,8 @@
       const fallbackColorBackground = getDefaultBackgroundColor(editor);
       const lastForeColor = Cell(fallbackColorForeground);
       const lastBackColor = Cell(fallbackColorBackground);
-      registerTextColorButton(editor, 'forecolor', 'forecolor', 'Text color', lastForeColor);
-      registerTextColorButton(editor, 'backcolor', 'hilitecolor', 'Background color', lastBackColor);
+      registerTextColorButton(editor, 'forecolor', 'forecolor', lastForeColor);
+      registerTextColorButton(editor, 'backcolor', 'hilitecolor', lastBackColor);
       registerTextColorMenuItem(editor, 'forecolor', 'forecolor', 'Text color', lastForeColor);
       registerTextColorMenuItem(editor, 'backcolor', 'hilitecolor', 'Background color', lastBackColor);
     };
@@ -12480,7 +13141,8 @@
       const widgetSpec = {
         ...menuSpec,
         markers: markers(presets),
-        movement: deriveMenuMovement(columns, presets)
+        movement: deriveMenuMovement(columns, presets),
+        menuRole: false
       };
       return {
         type: 'widget',
@@ -12500,7 +13162,11 @@
 
     const cellOverEvent = generate$6('cell-over');
     const cellExecuteEvent = generate$6('cell-execute');
-    const makeAnnouncementText = backstage => (row, col) => backstage.shared.providers.translate(`${ col } columns, ${ row } rows`);
+    const makeAnnouncementText = backstage => (row, col) => backstage.shared.providers.translate([
+      '{0} columns, {1} rows',
+      col,
+      row
+    ]);
     const makeCell = (row, col, label) => {
       const emitCellOver = c => emitWith(c, cellOverEvent, {
         row,
@@ -12622,7 +13288,7 @@
       inserttable: renderInsertTableMenuItem,
       colorswatch: renderColorSwatchItem
     };
-    const renderFancyMenuItem = (spec, backstage) => get$g(fancyMenuItems, spec.fancytype).map(render => render(spec, backstage));
+    const renderFancyMenuItem = (spec, backstage) => get$h(fancyMenuItems, spec.fancytype).map(render => render(spec, backstage));
 
     const renderNestedItem = (spec, itemResponse, providersBackstage, renderIcons = true, downwardsCaret = false) => {
       const caret = downwardsCaret ? renderDownwardsCaret(providersBackstage.icons) : renderSubmenuCaret(providersBackstage.icons);
@@ -12633,6 +13299,10 @@
           descendant(component.element, `svg path[class="${ id }"], rect[class="${ id }"]`).each(underlinePath => {
             set$9(underlinePath, 'fill', value);
           });
+        },
+        setTooltip: tooltip => {
+          const translatedTooltip = providersBackstage.translate(tooltip);
+          set$9(component.element, 'aria-label', translatedTooltip);
         }
       });
       const structure = renderItemStructure({
@@ -12750,19 +13420,19 @@
 
     var CouplingSchema = [requiredOf('others', setOf(Result.value, anyValue()))];
 
-    const init$a = () => {
+    const init$9 = () => {
       const coupled = {};
       const lookupCoupled = (coupleConfig, coupledName) => {
         const available = keys(coupleConfig.others);
         if (available.length === 0) {
           throw new Error('Cannot find any known coupled components');
         } else {
-          return get$g(coupled, coupledName);
+          return get$h(coupled, coupledName);
         }
       };
       const getOrCreate = (component, coupleConfig, name) => {
         return lookupCoupled(coupleConfig, name).getOrThunk(() => {
-          const builder = get$g(coupleConfig.others, name).getOrDie('No information found for coupled component: ' + name);
+          const builder = get$h(coupleConfig.others, name).getOrDie('No information found for coupled component: ' + name);
           const spec = builder(component);
           const built = component.getSystem().build(spec);
           coupled[name] = built;
@@ -12771,12 +13441,12 @@
       };
       const getExisting = (component, coupleConfig, name) => {
         return lookupCoupled(coupleConfig, name).orThunk(() => {
-          get$g(coupleConfig.others, name).getOrDie('No information found for coupled component: ' + name);
+          get$h(coupleConfig.others, name).getOrDie('No information found for coupled component: ' + name);
           return Optional.none();
         });
       };
       const readState = constant$1({});
-      return nu$8({
+      return nu$7({
         readState,
         getExisting,
         getOrCreate
@@ -12785,7 +13455,7 @@
 
     var CouplingState = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        init: init$a
+        init: init$9
     });
 
     const Coupling = create$4({
@@ -12998,7 +13668,7 @@
     };
     const matchWidth = (hotspot, container, useMinWidth) => {
       const menu = Composing.getCurrent(container).getOr(container);
-      const buttonWidth = get$c(hotspot.element);
+      const buttonWidth = get$d(hotspot.element);
       if (useMinWidth) {
         set$8(menu.element, 'min-width', buttonWidth + 'px');
       } else {
@@ -13026,6 +13696,7 @@
       };
       const onClose = (component, menu) => {
         ariaControls.unlink(hotspot.element);
+        lazySink().getOr(menu).element.dom.dispatchEvent(new window.FocusEvent('focusout'));
         if (extras !== undefined && extras.onClose !== undefined) {
           extras.onClose(component, menu);
         }
@@ -13122,7 +13793,7 @@
     ]);
 
     const factory$k = (detail, components, _spec, externals) => {
-      const lookupAttr = attr => get$g(detail.dom, 'attributes').bind(attrs => get$g(attrs, attr));
+      const lookupAttr = attr => get$h(detail.dom, 'attributes').bind(attrs => get$h(attrs, attr));
       const switchToMenu = sandbox => {
         Sandboxing.getState(sandbox).each(tmenu => {
           tieredMenu.highlightPrimary(tmenu);
@@ -13213,7 +13884,7 @@
           }),
           Focusing.config({})
         ]),
-        events: events$a(Optional.some(action)),
+        events: events$9(Optional.some(action)),
         eventOrder: {
           ...detail.eventOrder,
           [execute$5()]: [
@@ -13344,7 +14015,7 @@
               onItemValueHandler(d.value, d.meta);
             }
           }, itemResponse, sharedBackstage, {
-            itemBehaviours: tooltipBehaviour(d.meta, sharedBackstage),
+            itemBehaviours: tooltipBehaviour(d.meta, sharedBackstage, Optional.none()),
             cardText: {
               matchText,
               highlightOn
@@ -13395,24 +14066,26 @@
       };
     };
 
-    const getAutocompleterRange = (dom, initRange) => {
-      return detect$1(SugarElement.fromDom(initRange.startContainer)).map(elm => {
-        const range = dom.createRng();
-        range.selectNode(elm.dom);
-        return range;
-      });
-    };
+    const rangeToSimRange = r => SimRange.create(SugarElement.fromDom(r.startContainer), r.startOffset, SugarElement.fromDom(r.endContainer), r.endOffset);
     const register$b = (editor, sharedBackstage) => {
+      const autocompleterId = generate$6('autocompleter');
       const processingAction = Cell(false);
       const activeState = Cell(false);
+      const activeRange = value$4();
       const autocompleter = build$1(InlineView.sketch({
         dom: {
           tag: 'div',
-          classes: ['tox-autocompleter']
+          classes: ['tox-autocompleter'],
+          attributes: { id: autocompleterId }
         },
         components: [],
         fireDismissalEventInstead: {},
-        inlineBehaviours: derive$1([config('dismissAutocompleter', [run$1(dismissRequested(), () => cancelIfNecessary())])]),
+        inlineBehaviours: derive$1([config('dismissAutocompleter', [
+            run$1(dismissRequested(), () => cancelIfNecessary()),
+            run$1(highlight$1(), (_, se) => {
+              getOpt(se.event.target, 'id').each(id => set$9(SugarElement.fromDom(editor.getBody()), 'aria-activedescendant', id));
+            })
+          ])]),
         lazySink: sharedBackstage.getSink
       }));
       const isMenuOpen = () => InlineView.isOpen(autocompleter);
@@ -13420,10 +14093,16 @@
       const hideIfNecessary = () => {
         if (isMenuOpen()) {
           InlineView.hide(autocompleter);
+          editor.dom.remove(autocompleterId, false);
+          const editorBody = SugarElement.fromDom(editor.getBody());
+          getOpt(editorBody, 'aria-owns').filter(ariaOwnsAttr => ariaOwnsAttr === autocompleterId).each(() => {
+            remove$7(editorBody, 'aria-owns');
+            remove$7(editorBody, 'aria-activedescendant');
+          });
         }
       };
       const getMenu = () => InlineView.getContent(autocompleter).bind(tmenu => {
-        return get$h(tmenu.components(), 0);
+        return get$i(tmenu.components(), 0);
       });
       const cancelIfNecessary = () => editor.execCommand('mceAutocompleterClose');
       const getCombinedItems = matches => {
@@ -13431,15 +14110,15 @@
         return bind$3(matches, match => {
           const choices = match.items;
           return createAutocompleteItems(choices, match.matchText, (itemValue, itemMeta) => {
-            const nr = editor.selection.getRng();
-            getAutocompleterRange(editor.dom, nr).each(range => {
-              const autocompleterApi = {
-                hide: () => cancelIfNecessary(),
-                reload: fetchOptions => {
-                  hideIfNecessary();
-                  editor.execCommand('mceAutocompleterReload', false, { fetchOptions });
-                }
-              };
+            const autocompleterApi = {
+              hide: () => cancelIfNecessary(),
+              reload: fetchOptions => {
+                hideIfNecessary();
+                editor.execCommand('mceAutocompleterReload', false, { fetchOptions });
+              }
+            };
+            editor.execCommand('mceAutocompleterRefreshActiveRange');
+            activeRange.get().each(range => {
               processingAction.set(true);
               match.onAction(autocompleterApi, range, itemValue, itemMeta);
               processingAction.set(false);
@@ -13448,25 +14127,52 @@
         });
       };
       const display = (lookupData, items) => {
-        findIn(SugarElement.fromDom(editor.getBody())).each(element => {
-          const columns = findMap(lookupData, ld => Optional.from(ld.columns)).getOr(1);
-          InlineView.showMenuAt(autocompleter, {
-            anchor: {
-              type: 'node',
-              root: SugarElement.fromDom(editor.getBody()),
-              node: Optional.from(element)
-            }
-          }, createInlineMenuFrom(createPartialMenuWithAlloyItems('autocompleter-value', true, items, columns, { menuType: 'normal' }), columns, FocusMode.ContentFocus, 'normal'));
-        });
+        const columns = findMap(lookupData, ld => Optional.from(ld.columns)).getOr(1);
+        InlineView.showMenuAt(autocompleter, {
+          anchor: {
+            type: 'selection',
+            getSelection: () => activeRange.get().map(rangeToSimRange),
+            root: SugarElement.fromDom(editor.getBody())
+          }
+        }, createInlineMenuFrom(createPartialMenuWithAlloyItems('autocompleter-value', true, items, columns, { menuType: 'normal' }), columns, FocusMode.ContentFocus, 'normal'));
         getMenu().each(Highlighting.highlightFirst);
       };
       const updateDisplay = lookupData => {
         const combinedItems = getCombinedItems(lookupData);
         if (combinedItems.length > 0) {
           display(lookupData, combinedItems);
+          set$9(SugarElement.fromDom(editor.getBody()), 'aria-owns', autocompleterId);
+          if (!editor.inline) {
+            cloneAutocompleterToEditorDoc();
+          }
         } else {
           hideIfNecessary();
         }
+      };
+      const cloneAutocompleterToEditorDoc = () => {
+        if (editor.dom.get(autocompleterId)) {
+          editor.dom.remove(autocompleterId, false);
+        }
+        const docElm = editor.getDoc().documentElement;
+        const selection = editor.selection.getNode();
+        const newElm = deep(autocompleter.element);
+        setAll(newElm, {
+          border: '0',
+          clip: 'rect(0 0 0 0)',
+          height: '1px',
+          margin: '-1px',
+          overflow: 'hidden',
+          padding: '0',
+          position: 'absolute',
+          width: '1px',
+          top: `${ selection.offsetTop }px`,
+          left: `${ selection.offsetLeft }px`
+        });
+        editor.dom.add(docElm, newElm.dom);
+        descendant(newElm, '[role="menu"]').each(child => {
+          remove$6(child, 'position');
+          remove$6(child, 'max-height');
+        });
       };
       editor.on('AutocompleterStart', ({lookupData}) => {
         activeState.set(true);
@@ -13474,10 +14180,12 @@
         updateDisplay(lookupData);
       });
       editor.on('AutocompleterUpdate', ({lookupData}) => updateDisplay(lookupData));
+      editor.on('AutocompleterUpdateActiveRange', ({range}) => activeRange.set(range));
       editor.on('AutocompleterEnd', () => {
         hideIfNecessary();
         activeState.set(false);
         processingAction.set(false);
+        activeRange.clear();
       });
       const autocompleterUiApi = {
         cancelIfNecessary,
@@ -13489,38 +14197,6 @@
       AutocompleterEditorEvents.setup(autocompleterUiApi, editor);
     };
     const Autocompleter = { register: register$b };
-
-    const nonScrollingOverflows = [
-      'visible',
-      'hidden',
-      'clip'
-    ];
-    const isScrollingOverflowValue = value => trim$1(value).length > 0 && !contains$2(nonScrollingOverflows, value);
-    const isScroller = elem => {
-      if (isHTMLElement(elem)) {
-        const overflowX = get$e(elem, 'overflow-x');
-        const overflowY = get$e(elem, 'overflow-y');
-        return isScrollingOverflowValue(overflowX) || isScrollingOverflowValue(overflowY);
-      } else {
-        return false;
-      }
-    };
-    const detect = popupSinkElem => {
-      const ancestorsScrollers = ancestors(popupSinkElem, isScroller);
-      const scrollers = ancestorsScrollers.length === 0 ? getShadowRoot(popupSinkElem).map(getShadowHost).map(x => ancestors(x, isScroller)).getOr([]) : ancestorsScrollers;
-      return head(scrollers).map(element => ({
-        element,
-        others: scrollers.slice(1)
-      }));
-    };
-    const detectWhenSplitUiMode = (editor, popupSinkElem) => isSplitUiMode(editor) ? detect(popupSinkElem) : Optional.none();
-    const getBoundsFrom = sc => {
-      const scrollableBoxes = [
-        ...map$2(sc.others, box$1),
-        win()
-      ];
-      return constrainByMany(box$1(sc.element), scrollableBoxes);
-    };
 
     const closest = (scope, selector, isRoot) => closest$1(scope, selector, isRoot).isSome();
 
@@ -13559,7 +14235,7 @@
       return distX > SIGNIFICANT_MOVE || distY > SIGNIFICANT_MOVE;
     };
     const monitor = settings => {
-      const startData = value$2();
+      const startData = value$4();
       const longpressFired = Cell(false);
       const longpress$1 = DelayedFunction(event => {
         settings.triggerEvent(longpress(), event);
@@ -13616,7 +14292,7 @@
           value: handleTouchend
         }
       ]);
-      const fireIfReady = (event, type) => get$g(handlers, type).bind(handler => handler(event));
+      const fireIfReady = (event, type) => get$h(handlers, type).bind(handler => handler(event));
       return { fireIfReady };
     };
 
@@ -13672,7 +14348,7 @@
           event.kill();
         }
       }));
-      const pasteTimeout = value$2();
+      const pasteTimeout = value$4();
       const onPaste = bind(container, 'paste', event => {
         tapEvent.fireIfReady(event, 'paste').each(tapStopped => {
           if (tapStopped) {
@@ -13701,7 +14377,7 @@
           event.kill();
         }
       });
-      const focusoutTimeout = value$2();
+      const focusoutTimeout = value$4();
       const onFocusOut = bind(container, 'focusout', event => {
         const stopped = settings.triggerEvent('focusout', event);
         if (stopped) {
@@ -13726,7 +14402,7 @@
     };
 
     const derive = (rawEvent, rawTarget) => {
-      const source = get$g(rawEvent, 'target').getOr(rawTarget);
+      const source = get$h(rawEvent, 'target').getOr(rawTarget);
       return Cell(source);
     };
 
@@ -13834,9 +14510,9 @@
           registry[k] = handlers;
         });
       };
-      const findHandler = (handlers, elem) => read$1(elem).bind(id => get$g(handlers, id)).map(descHandler => eventHandler(elem, descHandler));
-      const filterByType = type => get$g(registry, type).map(handlers => mapToArray(handlers, (f, id) => broadcastHandler(id, f))).getOr([]);
-      const find = (isAboveRoot, type, target) => get$g(registry, type).bind(handlers => closest$4(target, elem => findHandler(handlers, elem), isAboveRoot));
+      const findHandler = (handlers, elem) => read(elem).bind(id => get$h(handlers, id)).map(descHandler => eventHandler(elem, descHandler));
+      const filterByType = type => get$h(registry, type).map(handlers => mapToArray(handlers, (f, id) => broadcastHandler(id, f))).getOr([]);
+      const find = (isAboveRoot, type, target) => get$h(registry, type).bind(handlers => closest$4(target, elem => findHandler(handlers, elem), isAboveRoot));
       const unregisterId = id => {
         each(registry, (handlersById, _eventName) => {
           if (has$2(handlersById, id)) {
@@ -13857,7 +14533,7 @@
       const components = {};
       const readOrTag = component => {
         const elem = component.element;
-        return read$1(elem).getOrThunk(() => write('uid-', component.element));
+        return read(elem).getOrThunk(() => write('uid-', component.element));
       };
       const failOnDuplicate = (component, tagId) => {
         const conflict = components[tagId];
@@ -13877,14 +14553,14 @@
         components[tagId] = component;
       };
       const unregister = component => {
-        read$1(component.element).each(tagId => {
+        read(component.element).each(tagId => {
           delete components[tagId];
           events.unregisterId(tagId);
         });
       };
       const filter = type => events.filterByType(type);
       const find = (isAboveRoot, type, target) => events.find(isAboveRoot, type, target);
-      const getById = id => get$g(components, id);
+      const getById = id => get$h(components, id);
       return {
         find,
         filter,
@@ -13907,7 +14583,7 @@
           ...domWithoutAttributes
         },
         components: detail.components,
-        behaviours: get$3(detail.containerBehaviours),
+        behaviours: get$4(detail.containerBehaviours),
         events: detail.events,
         domModification: detail.domModification,
         eventOrder: detail.eventOrder
@@ -13940,7 +14616,7 @@
           monitorEvent(eventName, target, logger => triggerOnUntilStopped(lookup, eventName, data, target, logger));
         },
         triggerFocus: (target, originator) => {
-          read$1(target).fold(() => {
+          read(target).fold(() => {
             focus$3(target);
           }, _alloyId => {
             monitorEvent(focus$4(), target, logger => {
@@ -14040,7 +14716,7 @@
       };
       const getByUid = uid => registry.getById(uid).fold(() => Result.error(new Error('Could not find component with uid: "' + uid + '" in system.')), Result.value);
       const getByDom = elem => {
-        const uid = read$1(elem).getOr('not found');
+        const uid = read(elem).getOr('not found');
         return getByUid(uid);
       };
       addToWorld(root);
@@ -14176,26 +14852,6 @@
       }
     });
 
-    const exhibit$2 = (base, tabConfig) => nu$7({
-      attributes: wrapAll([{
-          key: tabConfig.tabAttr,
-          value: 'true'
-        }])
-    });
-
-    var ActiveTabstopping = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        exhibit: exhibit$2
-    });
-
-    var TabstopSchema = [defaulted('tabAttr', 'data-alloy-tabstop')];
-
-    const Tabstopping = create$4({
-      fields: TabstopSchema,
-      name: 'tabstopping',
-      active: ActiveTabstopping
-    });
-
     var global$3 = tinymce.util.Tools.resolve('tinymce.html.Entities');
 
     const renderFormFieldWith = (pLabel, pField, extraClasses, extraBehaviours) => {
@@ -14233,16 +14889,21 @@
 
     const renderCollection = (spec, providersBackstage, initialData) => {
       const pLabel = spec.label.map(label => renderLabel$3(label, providersBackstage));
+      const icons = providersBackstage.icons();
+      const getIcon = icon => {
+        var _a;
+        return (_a = icons[icon]) !== null && _a !== void 0 ? _a : icon;
+      };
       const runOnItem = f => (comp, se) => {
         closest$1(se.event.target, '[data-collection-item-value]').each(target => {
-          f(comp, se, target, get$f(target, 'data-collection-item-value'));
+          f(comp, se, target, get$g(target, 'data-collection-item-value'));
         });
       };
       const setContents = (comp, items) => {
         const htmlLines = map$2(items, item => {
-          const itemText = global$8.translate(item.text);
+          const itemText = global$5.translate(item.text);
           const textContent = spec.columns === 1 ? `<div class="tox-collection__item-label">${ itemText }</div>` : '';
-          const iconContent = `<div class="tox-collection__item-icon">${ item.icon }</div>`;
+          const iconContent = `<div class="tox-collection__item-icon">${ getIcon(item.icon) }</div>`;
           const mapItemName = {
             '_': ' ',
             ' - ': ' ',
@@ -14250,7 +14911,7 @@
           };
           const ariaLabel = itemText.replace(/\_| \- |\-/g, match => mapItemName[match]);
           const disabledClass = providersBackstage.isDisabled() ? ' tox-collection__item--state-disabled' : '';
-          return `<div class="tox-collection__item${ disabledClass }" tabindex="-1" data-collection-item-value="${ global$3.encodeAllRaw(item.value) }" title="${ ariaLabel }" aria-label="${ ariaLabel }">${ iconContent }${ textContent }</div>`;
+          return `<div data-mce-tooltip="${ ariaLabel }" class="tox-collection__item${ disabledClass }" tabindex="-1" data-collection-item-value="${ global$3.encodeAllRaw(item.value) }" aria-label="${ ariaLabel }">${ iconContent }${ textContent }</div>`;
         });
         const chunks = spec.columns !== 'auto' && spec.columns > 1 ? chunk$1(htmlLines, spec.columns) : [htmlLines];
         const html = map$2(chunks, ch => `<div class="tox-collection__group">${ ch.join('') }</div>`);
@@ -14280,6 +14941,7 @@
         run$1(focusout(), runOnItem(comp => {
           descendant(comp.element, '.' + activeClass).each(currentActive => {
             remove$2(currentActive, activeClass);
+            blur$1(currentActive);
           });
         })),
         runOnExecute$1(runOnItem((comp, se, tgt, itemValue) => {
@@ -14315,6 +14977,43 @@
           }),
           receivingConfig(),
           Replacing.config({}),
+          Tooltipping.config({
+            ...providersBackstage.tooltips.getConfig({
+              tooltipText: '',
+              onShow: comp => {
+                descendant(comp.element, '.' + activeClass + '[data-mce-tooltip]').each(current => {
+                  getOpt(current, 'data-mce-tooltip').each(text => {
+                    Tooltipping.setComponents(comp, providersBackstage.tooltips.getComponents({ tooltipText: text }));
+                  });
+                });
+              }
+            }),
+            mode: 'children-keyboard-focus',
+            anchor: comp => ({
+              type: 'node',
+              node: descendant(comp.element, '.' + activeClass).orThunk(() => first$1('.tox-collection__item')),
+              root: comp.element,
+              layouts: {
+                onLtr: constant$1([
+                  south$2,
+                  north$2,
+                  southeast$2,
+                  northeast$2,
+                  southwest$2,
+                  northwest$2
+                ]),
+                onRtl: constant$1([
+                  south$2,
+                  north$2,
+                  southeast$2,
+                  northeast$2,
+                  southwest$2,
+                  northwest$2
+                ])
+              },
+              bubble: nu$5(0, -2, {})
+            })
+          }),
           Representing.config({
             store: {
               mode: 'memory',
@@ -14339,6 +15038,10 @@
             'disabling',
             'alloy.base.behaviour',
             'collection-events'
+          ],
+          [focusin()]: [
+            'collection-events',
+            'tooltipping'
           ]
         }
       });
@@ -14413,7 +15116,7 @@
         isInvalid: isInvalid
     });
 
-    const events$8 = (invalidConfig, invalidState) => invalidConfig.validator.map(validatorInfo => derive$2([run$1(validatorInfo.onEvent, component => {
+    const events$7 = (invalidConfig, invalidState) => invalidConfig.validator.map(validatorInfo => derive$2([run$1(validatorInfo.onEvent, component => {
         run(component, invalidConfig, invalidState).get(identity);
       })].concat(validatorInfo.validateOnLoad ? [runOnAttached(component => {
         run(component, invalidConfig, invalidState).get(noop);
@@ -14421,7 +15124,7 @@
 
     var ActiveInvalidate = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        events: events$8
+        events: events$7
     });
 
     var InvalidateSchema = [
@@ -14457,7 +15160,7 @@
       }
     });
 
-    const exhibit$1 = () => nu$7({
+    const exhibit$1 = () => nu$8({
       styles: {
         '-webkit-user-select': 'none',
         'user-select': 'none',
@@ -14466,11 +15169,11 @@
       },
       attributes: { unselectable: 'on' }
     });
-    const events$7 = () => derive$2([abort(selectstart(), always)]);
+    const events$6 = () => derive$2([abort(selectstart(), always)]);
 
     var ActiveUnselecting = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        events: events$7,
+        events: events$6,
         exhibit: exhibit$1
     });
 
@@ -14664,6 +15367,7 @@
         };
       }
     });
+    const isShift = event => isShift$1(event.event);
     const spectrumPart = required({
       schema: [customField('mouseIsDown', () => Cell(false))],
       name: 'spectrum',
@@ -14675,11 +15379,12 @@
           behaviours: derive$1([
             Keying.config({
               mode: 'special',
-              onLeft: spectrum => model.onLeft(spectrum, detail),
-              onRight: spectrum => model.onRight(spectrum, detail),
-              onUp: spectrum => model.onUp(spectrum, detail),
-              onDown: spectrum => model.onDown(spectrum, detail)
+              onLeft: (spectrum, event) => model.onLeft(spectrum, detail, isShift(event)),
+              onRight: (spectrum, event) => model.onRight(spectrum, detail, isShift(event)),
+              onUp: (spectrum, event) => model.onUp(spectrum, detail, isShift(event)),
+              onDown: (spectrum, event) => model.onDown(spectrum, detail, isShift(event))
             }),
+            Tabstopping.config({}),
             Focusing.config({})
           ]),
           events: derive$2([
@@ -14737,7 +15442,7 @@
     const yRange = detail => range(detail, maxY, minY);
     const halfX = detail => xRange(detail) / 2;
     const halfY = detail => yRange(detail) / 2;
-    const step = detail => detail.stepSize;
+    const step = (detail, useMultiplier) => useMultiplier ? detail.stepSize * detail.speedMultiplier : detail.stepSize;
     const snap = detail => detail.snapToGrid;
     const snapStart = detail => detail.snapStart;
     const rounded = detail => detail.rounded;
@@ -14940,13 +15645,13 @@
       const max = maxX(detail);
       fireSliderChange$2(spectrum, max);
     };
-    const moveBy$2 = (direction, spectrum, detail) => {
+    const moveBy$2 = (direction, spectrum, detail, useMultiplier) => {
       const f = direction > 0 ? increaseBy : reduceBy;
-      const xValue = f(currentValue(detail), minX(detail), maxX(detail), step(detail));
+      const xValue = f(currentValue(detail), minX(detail), maxX(detail), step(detail, useMultiplier));
       fireSliderChange$2(spectrum, xValue);
       return Optional.some(xValue);
     };
-    const handleMovement$2 = direction => (spectrum, detail) => moveBy$2(direction, spectrum, detail).map(always);
+    const handleMovement$2 = direction => (spectrum, detail, useMultiplier) => moveBy$2(direction, spectrum, detail, useMultiplier).map(always);
     const getValueFromEvent$2 = simulatedEvent => {
       const pos = getEventSource(simulatedEvent);
       return pos.map(p => p.left);
@@ -14979,7 +15684,7 @@
     const setPositionFromValue$2 = (slider, thumb, detail, edges) => {
       const value = currentValue(detail);
       const pos = findPositionOfValue$1(slider, edges.getSpectrum(slider), value, edges.getLeftEdge(slider), edges.getRightEdge(slider), detail);
-      const thumbRadius = get$c(thumb.element) / 2;
+      const thumbRadius = get$d(thumb.element) / 2;
       set$8(thumb.element, 'left', pos - thumbRadius + 'px');
     };
     const onLeft$2 = handleMovement$2(-1);
@@ -15048,13 +15753,13 @@
       const max = maxY(detail);
       fireSliderChange$1(spectrum, max);
     };
-    const moveBy$1 = (direction, spectrum, detail) => {
+    const moveBy$1 = (direction, spectrum, detail, useMultiplier) => {
       const f = direction > 0 ? increaseBy : reduceBy;
-      const yValue = f(currentValue(detail), minY(detail), maxY(detail), step(detail));
+      const yValue = f(currentValue(detail), minY(detail), maxY(detail), step(detail, useMultiplier));
       fireSliderChange$1(spectrum, yValue);
       return Optional.some(yValue);
     };
-    const handleMovement$1 = direction => (spectrum, detail) => moveBy$1(direction, spectrum, detail).map(always);
+    const handleMovement$1 = direction => (spectrum, detail, useMultiplier) => moveBy$1(direction, spectrum, detail, useMultiplier).map(always);
     const getValueFromEvent$1 = simulatedEvent => {
       const pos = getEventSource(simulatedEvent);
       return pos.map(p => {
@@ -15089,7 +15794,7 @@
     const setPositionFromValue$1 = (slider, thumb, detail, edges) => {
       const value = currentValue(detail);
       const pos = findPositionOfValue(slider, edges.getSpectrum(slider), value, edges.getTopEdge(slider), edges.getBottomEdge(slider), detail);
-      const thumbRadius = get$d(thumb.element) / 2;
+      const thumbRadius = get$e(thumb.element) / 2;
       set$8(thumb.element, 'top', pos - thumbRadius + 'px');
     };
     const onLeft$1 = Optional.none;
@@ -15137,14 +15842,14 @@
       fireSliderChange(spectrum, val);
       return val;
     };
-    const moveBy = (direction, isVerticalMovement, spectrum, detail) => {
+    const moveBy = (direction, isVerticalMovement, spectrum, detail, useMultiplier) => {
       const f = direction > 0 ? increaseBy : reduceBy;
-      const xValue = isVerticalMovement ? currentValue(detail).x : f(currentValue(detail).x, minX(detail), maxX(detail), step(detail));
-      const yValue = !isVerticalMovement ? currentValue(detail).y : f(currentValue(detail).y, minY(detail), maxY(detail), step(detail));
+      const xValue = isVerticalMovement ? currentValue(detail).x : f(currentValue(detail).x, minX(detail), maxX(detail), step(detail, useMultiplier));
+      const yValue = !isVerticalMovement ? currentValue(detail).y : f(currentValue(detail).y, minY(detail), maxY(detail), step(detail, useMultiplier));
       fireSliderChange(spectrum, sliderValue(xValue, yValue));
       return Optional.some(xValue);
     };
-    const handleMovement = (direction, isVerticalMovement) => (spectrum, detail) => moveBy(direction, isVerticalMovement, spectrum, detail).map(always);
+    const handleMovement = (direction, isVerticalMovement) => (spectrum, detail, useMultiplier) => moveBy(direction, isVerticalMovement, spectrum, detail, useMultiplier).map(always);
     const setToMin = (spectrum, detail) => {
       const mX = minX(detail);
       const mY = minY(detail);
@@ -15160,8 +15865,8 @@
       const value = currentValue(detail);
       const xPos = findPositionOfValue$1(slider, edges.getSpectrum(slider), value.x, edges.getLeftEdge(slider), edges.getRightEdge(slider), detail);
       const yPos = findPositionOfValue(slider, edges.getSpectrum(slider), value.y, edges.getTopEdge(slider), edges.getBottomEdge(slider), detail);
-      const thumbXRadius = get$c(thumb.element) / 2;
-      const thumbYRadius = get$d(thumb.element) / 2;
+      const thumbXRadius = get$d(thumb.element) / 2;
+      const thumbYRadius = get$e(thumb.element) / 2;
       set$8(thumb.element, 'left', xPos - thumbXRadius + 'px');
       set$8(thumb.element, 'top', yPos - thumbYRadius + 'px');
     };
@@ -15196,6 +15901,7 @@
 
     const SliderSchema = [
       defaulted('stepSize', 1),
+      defaulted('speedMultiplier', 10),
       defaulted('onChange', noop),
       defaulted('onChoose', noop),
       defaulted('onInit', noop),
@@ -15297,6 +16003,9 @@
         detail.onDragEnd(slider, getThumb(slider));
         choose(slider);
       };
+      const focusWidget = component => {
+        getPart(component, detail, 'spectrum').map(Keying.focusIn);
+      };
       return {
         uid: detail.uid,
         dom: detail.dom,
@@ -15304,9 +16013,7 @@
         behaviours: augment(detail.sliderBehaviours, [
           Keying.config({
             mode: 'special',
-            focusIn: slider => {
-              return getPart(slider, detail, 'spectrum').map(Keying.focusIn).map(always);
-            }
+            focusIn: focusWidget
           }),
           Representing.config({
             store: {
@@ -15333,7 +16040,10 @@
           }),
           run$1(touchstart(), onDragStart),
           run$1(touchend(), onDragEnd),
-          run$1(mousedown(), onDragStart),
+          run$1(mousedown(), (component, event) => {
+            focusWidget(component);
+            onDragStart(component, event);
+          }),
           run$1(mouseup(), onDragEnd)
         ]),
         apis: {
@@ -15390,7 +16100,12 @@
         dom: {
           tag: 'div',
           classes: [getClass('hue-slider')],
-          attributes: { role: 'presentation' }
+          attributes: {
+            'role': 'slider',
+            'aria-valuemin': 0,
+            'aria-valuemax': 360,
+            'aria-valuenow': 120
+          }
         },
         rounded: false,
         model: {
@@ -15403,6 +16118,7 @@
         ],
         sliderBehaviours: derive$1([Focusing.config({})]),
         onChange: (slider, _thumb, value) => {
+          set$9(slider.element, 'aria-valuenow', Math.floor(360 - value * 3.6));
           emitWith(slider, sliderUpdate, { value });
         }
       });
@@ -15689,7 +16405,7 @@
       return rgbFormSketcher;
     };
 
-    const paletteFactory = (_translate, getClass) => {
+    const paletteFactory = (translate, getClass) => {
       const spectrumPart = Slider.parts.spectrum({
         dom: {
           tag: 'canvas',
@@ -15736,6 +16452,11 @@
           x: hsv.saturation,
           y: 100 - hsv.value
         });
+        set$9(slider.element, 'aria-valuetext', translate([
+          'Saturation {0}%, Brightness {1}%',
+          hsv.saturation,
+          hsv.value
+        ]));
       };
       const factory = _detail => {
         const getInitialValue = constant$1({
@@ -15743,6 +16464,13 @@
           y: 0
         });
         const onChange = (slider, _thumb, value) => {
+          if (!isNumber(value)) {
+            set$9(slider.element, 'aria-valuetext', translate([
+              'Saturation {0}%, Brightness {1}%',
+              Math.floor(value.x),
+              Math.floor(100 - value.y)
+            ]));
+          }
           emitWith(slider, paletteUpdate, { value });
         };
         const onInit = (_slider, _thumb, spectrum, _value) => {
@@ -15755,7 +16483,14 @@
         return Slider.sketch({
           dom: {
             tag: 'div',
-            attributes: { role: 'presentation' },
+            attributes: {
+              'role': 'slider',
+              'aria-valuetext': translate([
+                'Saturation {0}%, Brightness {1}%',
+                0,
+                0
+              ])
+            },
             classes: [getClass('sv-palette')]
           },
           model: {
@@ -15940,7 +16675,7 @@
       }
     });
     const withElement = (initialValue, getter, setter) => withComp(initialValue, c => getter(c.element), (c, v) => setter(c.element, v));
-    const domHtml = optInitialValue => withElement(optInitialValue, get$9, set$6);
+    const domHtml = optInitialValue => withElement(optInitialValue, get$8, set$6);
     const memory = initialValue => Representing.config({
       store: {
         mode: 'memory',
@@ -15962,7 +16697,11 @@
       'aria.input.invalid': 'Invalid input'
     };
     const translate$1 = providerBackstage => key => {
-      return providerBackstage.translate(english[key]);
+      if (isString(key)) {
+        return providerBackstage.translate(english[key]);
+      } else {
+        return providerBackstage.translate(key);
+      }
     };
     const renderColorPicker = (_spec, providerBackstage, initialData) => {
       const getClass = key => 'tox-' + key;
@@ -16002,7 +16741,7 @@
             return optHex.map(hex => '#' + removeLeading(hex, '#')).getOr('');
           }, (comp, newValue) => {
             const pattern = /^#([a-fA-F0-9]{3}(?:[a-fA-F0-9]{3})?)/;
-            const valOpt = Optional.from(pattern.exec(newValue)).bind(matches => get$h(matches, 1));
+            const valOpt = Optional.from(pattern.exec(newValue)).bind(matches => get$i(matches, 1));
             const picker = memPicker.get(comp);
             const optRgbForm = Composing.getCurrent(picker);
             optRgbForm.fold(() => {
@@ -16023,9 +16762,19 @@
 
     const isOldCustomEditor = spec => has$2(spec, 'init');
     const renderCustomEditor = spec => {
-      const editorApi = value$2();
+      const editorApi = value$4();
       const memReplaced = record({ dom: { tag: spec.tag } });
-      const initialValue = value$2();
+      const initialValue = value$4();
+      const focusBehaviour = !isOldCustomEditor(spec) && spec.onFocus.isSome() ? [
+        Focusing.config({
+          onFocus: comp => {
+            spec.onFocus.each(onFocusFn => {
+              onFocusFn(comp.element.dom);
+            });
+          }
+        }),
+        Tabstopping.config({})
+      ] : [];
       return {
         dom: {
           tag: 'div',
@@ -16043,11 +16792,11 @@
                 });
               });
             })]),
-          withComp(Optional.none(), () => editorApi.get().fold(() => initialValue.get().getOr(''), ed => ed.getValue()), (component, value) => {
+          withComp(Optional.none(), () => editorApi.get().fold(() => initialValue.get().getOr(''), ed => ed.getValue()), (_component, value) => {
             editorApi.get().fold(() => initialValue.set(value), ed => ed.setValue(value));
           }),
           ComposingConfigs.self()
-        ]),
+        ].concat(focusBehaviour)),
         components: [memReplaced.asSpec()]
       };
     };
@@ -16318,7 +17067,7 @@
     const bodySendMessageChannel = generate$6('body-send-message');
     const dialogFocusShiftedChannel = generate$6('dialog-focus-shifted');
 
-    const browser = detect$2().browser;
+    const browser = detect$1().browser;
     const isSafari = browser.isSafari();
     const isFirefox = browser.isFirefox();
     const isSafariOrFirefox = isSafari || isFirefox;
@@ -16454,8 +17203,8 @@
       };
     };
     const zoomToFit = (panel, width, height) => {
-      const panelW = get$c(panel);
-      const panelH = get$d(panel);
+      const panelW = get$d(panel);
+      const panelH = get$e(panel);
       return Math.min(panelW / width, panelH / height, 1);
     };
     const renderImagePreview = (spec, initialData) => {
@@ -16488,7 +17237,7 @@
               const z = zoomToFit(frameComponent.element, cachedWidth, cachedHeight);
               translatedData.zoom = z;
             }
-            const position = calculateImagePosition(get$c(frameComponent.element), get$d(frameComponent.element), cachedWidth, cachedHeight, translatedData.zoom);
+            const position = calculateImagePosition(get$d(frameComponent.element), get$e(frameComponent.element), cachedWidth, cachedHeight, translatedData.zoom);
             memContainer.getOpt(frameComponent).each(container => {
               setAll(container.element, position);
             });
@@ -16496,7 +17245,7 @@
         };
         memImage.getOpt(frameComponent).each(imageComponent => {
           const img = imageComponent.element;
-          if (data.url !== get$f(img, 'src')) {
+          if (data.url !== get$g(img, 'src')) {
             set$9(img, 'src', data.url);
             remove$2(frameComponent.element, 'tox-imagepreview__loaded');
           }
@@ -16581,11 +17330,17 @@
         'disabling',
         'alloy.base.behaviour',
         'toggling',
-        'toolbar-button-events'
+        'toolbar-button-events',
+        'tooltipping'
       ],
       [attachedToDom()]: [
         'toolbar-button-events',
         commonButtonDisplayEvent
+      ],
+      [detachedFromDom()]: [
+        'toolbar-button-events',
+        'dropdown-events',
+        'tooltipping'
       ],
       [mousedown()]: [
         'focusing',
@@ -16594,7 +17349,7 @@
       ]
     };
 
-    const forceInitialSize = comp => set$8(comp.element, 'width', get$e(comp.element, 'width'));
+    const forceInitialSize = comp => set$8(comp.element, 'width', get$f(comp.element, 'width'));
 
     const renderIcon$1 = (iconName, iconsProvider, behaviours) => render$3(iconName, {
       tag: 'span',
@@ -16617,7 +17372,7 @@
 
     const updateMenuText = generate$6('update-menu-text');
     const updateMenuIcon = generate$6('update-menu-icon');
-    const renderCommonDropdown = (spec, prefix, sharedBackstage) => {
+    const renderCommonDropdown = (spec, prefix, sharedBackstage, btnName) => {
       const editorOffCell = Cell(noop);
       const optMemDisplayText = spec.text.map(text => record(renderLabel$1(text, prefix, sharedBackstage.providers)));
       const optMemDisplayIcon = spec.icon.map(iconName => record(renderReplaceableIconFromPack(iconName, sharedBackstage.providers.icons)));
@@ -16629,18 +17384,16 @@
         return Optional.some(true);
       };
       const role = spec.role.fold(() => ({}), role => ({ role }));
-      const tooltipAttributes = spec.tooltip.fold(() => ({}), tooltip => {
-        const translatedTooltip = sharedBackstage.providers.translate(tooltip);
-        return {
-          'title': translatedTooltip,
-          'aria-label': translatedTooltip
-        };
+      const ariaLabelAttribute = spec.ariaLabel.fold(() => ({}), ariaLabel => {
+        const translatedAriaLabel = sharedBackstage.providers.translate(ariaLabel);
+        return { 'aria-label': translatedAriaLabel };
       });
       const iconSpec = render$3('chevron-down', {
         tag: 'div',
         classes: [`${ prefix }__select-chevron`]
       }, sharedBackstage.providers.icons);
       const fixWidthBehaviourName = generate$6('common-button-display-events');
+      const customEventsName = 'dropdown-events';
       const memDropdown = record(Dropdown.sketch({
         ...spec.uid ? { uid: spec.uid } : {},
         ...role,
@@ -16650,7 +17403,10 @@
             prefix,
             `${ prefix }--select`
           ].concat(map$2(spec.classes, c => `${ prefix }--${ c }`)),
-          attributes: { ...tooltipAttributes }
+          attributes: {
+            ...ariaLabelAttribute,
+            ...isNonNullable(btnName) ? { 'data-mce-name': btnName } : {}
+          }
         },
         components: componentRenderPipeline([
           optMemDisplayIcon.map(mem => mem.asSpec()),
@@ -16670,7 +17426,8 @@
           receivingConfig(),
           Unselecting.config({}),
           Replacing.config({}),
-          config('dropdown-events', [
+          ...spec.tooltip.map(t => Tooltipping.config(sharedBackstage.providers.tooltips.getConfig({ tooltipText: sharedBackstage.providers.translate(t) }))).toArray(),
+          config(customEventsName, [
             onControlAttached(spec, editorOffCell),
             onControlDetached(spec, editorOffCell)
           ]),
@@ -16689,7 +17446,7 @@
           ])
         ]),
         eventOrder: deepMerge(toolbarButtonEventOrder, {
-          mousedown: [
+          [mousedown()]: [
             'focusing',
             'alloy.base.behaviour',
             'item-type-events',
@@ -16697,7 +17454,8 @@
           ],
           [attachedToDom()]: [
             'toolbar-button-events',
-            'dropdown-events',
+            Tooltipping.name(),
+            customEventsName,
             fixWidthBehaviourName
           ]
         }),
@@ -16782,7 +17540,7 @@
       };
     };
     const generateValueIfRequired = item => {
-      const itemValue = get$g(item, 'value').getOrThunk(() => generate$6('generated-menu-item'));
+      const itemValue = get$h(item, 'value').getOrThunk(() => generate$6('generated-menu-item'));
       return deepMerge({ value: itemValue }, item);
     };
     const expand = (items, menuItems) => {
@@ -16879,8 +17637,9 @@
             uid: sketchSpec.uid,
             text: initialItem.map(item => item.text),
             icon: Optional.none(),
-            tooltip: spec.label,
+            tooltip: Optional.none(),
             role: Optional.none(),
+            ariaLabel: spec.label,
             fetch: (comp, callback) => {
               const items = fetchItems(comp, spec.name, spec.items, Representing.getValue(comp));
               callback(build(items, ItemResponse$1.CLOSE_ON_EXECUTE, backstage, {
@@ -16895,7 +17654,7 @@
             classes: [],
             dropdownBehaviours: [
               Tabstopping.config({}),
-              withComp(initialItem.map(item => item.value), comp => get$f(comp.element, dataAttribute), (comp, data) => {
+              withComp(initialItem.map(item => item.value), comp => get$g(comp.element, dataAttribute), (comp, data) => {
                 findItemByValue(spec.items, data).each(item => {
                   set$9(comp.element, dataAttribute, item.value);
                   emitWith(comp, updateMenuText, { text: item.text });
@@ -16964,7 +17723,7 @@
             store: {
               mode: 'manual',
               getValue: select => {
-                return get$6(select.element);
+                return get$7(select.element);
               },
               setValue: (select, newValue) => {
                 const firstOption = head(detail.options);
@@ -17234,6 +17993,8 @@
           'tox-lock-icon__' + iconName
         ]
       }, providersBackstage.icons);
+      const label = spec.label.getOr('Constrain proportions');
+      const translatedLabel = providersBackstage.translate(label);
       const pLock = FormCoupledInputs.parts.lock({
         dom: {
           tag: 'button',
@@ -17243,7 +18004,10 @@
             'tox-button--naked',
             'tox-button--icon'
           ],
-          attributes: { title: providersBackstage.translate(spec.label.getOr('Constrain proportions')) }
+          attributes: {
+            'aria-label': translatedLabel,
+            'data-mce-name': label
+          }
         },
         components: [
           makeIcon('lock'),
@@ -17252,7 +18016,8 @@
         buttonBehaviours: derive$1([
           Disabling.config({ disabled: () => !spec.enabled || providersBackstage.isDisabled() }),
           receivingConfig(),
-          Tabstopping.config({})
+          Tabstopping.config({}),
+          Tooltipping.config(providersBackstage.tooltips.getConfig({ tooltipText: translatedLabel }))
         ])
       });
       const formGroup = components => ({
@@ -17622,7 +18387,7 @@
       slideState.setExpanded();
       slideConfig.onStartGrow(component);
     };
-    const refresh$4 = (component, slideConfig, slideState) => {
+    const refresh$3 = (component, slideConfig, slideState) => {
       if (slideState.isExpanded()) {
         remove$6(component.element, getDimensionProperty(slideConfig));
         const fullSize = getDimension(slideConfig, component.element);
@@ -17672,7 +18437,7 @@
 
     var SlidingApis = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        refresh: refresh$4,
+        refresh: refresh$3,
         grow: grow,
         shrink: shrink,
         immediateShrink: immediateShrink,
@@ -17688,15 +18453,15 @@
 
     const exhibit = (base, slideConfig, _slideState) => {
       const expanded = slideConfig.expanded;
-      return expanded ? nu$7({
+      return expanded ? nu$8({
         classes: [slideConfig.openClass],
         styles: {}
-      }) : nu$7({
+      }) : nu$8({
         classes: [slideConfig.closedClass],
         styles: wrap$1(slideConfig.dimension.property, '0px')
       });
     };
-    const events$6 = (slideConfig, slideState) => derive$2([runOnSource(transitionend(), (component, simulatedEvent) => {
+    const events$5 = (slideConfig, slideState) => derive$2([runOnSource(transitionend(), (component, simulatedEvent) => {
         const raw = simulatedEvent.event.raw;
         if (raw.propertyName === slideConfig.dimension.property) {
           disableTransitions(component, slideConfig);
@@ -17711,7 +18476,7 @@
     var ActiveSliding = /*#__PURE__*/Object.freeze({
         __proto__: null,
         exhibit: exhibit,
-        events: events$6
+        events: events$5
     });
 
     var SlidingSchema = [
@@ -17728,19 +18493,19 @@
       requiredOf('dimension', choose$1('property', {
         width: [
           output$1('property', 'width'),
-          output$1('getDimension', elem => get$c(elem) + 'px')
+          output$1('getDimension', elem => get$d(elem) + 'px')
         ],
         height: [
           output$1('property', 'height'),
-          output$1('getDimension', elem => get$d(elem) + 'px')
+          output$1('getDimension', elem => get$e(elem) + 'px')
         ]
       }))
     ];
 
-    const init$9 = spec => {
+    const init$8 = spec => {
       const state = Cell(spec.expanded);
       const readState = () => 'expanded: ' + state.get();
-      return nu$8({
+      return nu$7({
         isExpanded: () => state.get() === true,
         isCollapsed: () => state.get() === false,
         setCollapsed: curry(state.set, false),
@@ -17751,7 +18516,7 @@
 
     var SlidingState = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        init: init$9
+        init: init$8
     });
 
     const Sliding = create$4({
@@ -17781,11 +18546,12 @@
       },
       setIcon: icon => emitWith(component, updateMenuIcon, { icon })
     });
-    const renderMenuButton = (spec, prefix, backstage, role, tabstopping = true) => {
+    const renderMenuButton = (spec, prefix, backstage, role, tabstopping = true, btnName) => {
       return renderCommonDropdown({
         text: spec.text,
         icon: spec.icon,
         tooltip: spec.tooltip,
+        ariaLabel: spec.tooltip,
         searchable: spec.search.isSome(),
         role,
         fetch: (dropdownComp, callback) => {
@@ -17803,7 +18569,7 @@
         presets: 'normal',
         classes: [],
         dropdownBehaviours: [...tabstopping ? [Tabstopping.config({})] : []]
-      }, prefix, backstage.shared);
+      }, prefix, backstage.shared, btnName);
     };
     const getFetch = (items, getButton, backstage) => {
       const getMenuItemAction = item => api => {
@@ -17841,10 +18607,7 @@
       dom: {
         tag: 'span',
         classes: ['tox-tree__label'],
-        attributes: {
-          'title': text,
-          'aria-label': text
-        }
+        attributes: { 'aria-label': text }
       },
       components: [text$2(text)]
     });
@@ -18176,7 +18939,7 @@
       };
     };
 
-    const events$5 = (streamConfig, streamState) => {
+    const events$4 = (streamConfig, streamState) => {
       const streams = streamConfig.stream.streams;
       const processor = streams.setup(streamConfig, streamState);
       return derive$2([
@@ -18187,7 +18950,7 @@
 
     var ActiveStreaming = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        events: events$5
+        events: events$4
     });
 
     const throttle = _config => {
@@ -18202,18 +18965,18 @@
           t.cancel();
         }
       };
-      return nu$8({
+      return nu$7({
         readState,
         setTimer,
         cancel
       });
     };
-    const init$8 = spec => spec.stream.streams.state(spec);
+    const init$7 = spec => spec.stream.streams.state(spec);
 
     var StreamingState = /*#__PURE__*/Object.freeze({
         __proto__: null,
         throttle: throttle,
-        init: init$8
+        init: init$7
     });
 
     const setup$c = (streamInfo, streamState) => {
@@ -18257,9 +19020,9 @@
     };
     const setSelectionOn = (input, f) => {
       const el = input.element;
-      const value = get$6(el);
+      const value = get$7(el);
       const node = el.dom;
-      if (get$f(el, 'type') !== 'number') {
+      if (get$g(el, 'type') !== 'number') {
         f(node, value);
       }
     };
@@ -18321,7 +19084,7 @@
           onSetValue: detail.onSetValue,
           store: {
             mode: 'dataset',
-            getDataKey: comp => get$6(comp.element),
+            getDataKey: comp => get$7(comp.element),
             getFallbackEntry: itemString => ({
               value: itemString,
               meta: {}
@@ -18342,7 +19105,7 @@
             const sandbox = Coupling.getCoupled(component, 'sandbox');
             const focusInInput = Focusing.isFocused(component);
             if (focusInInput) {
-              if (get$6(component.element).length >= detail.minChars) {
+              if (get$7(component.element).length >= detail.minChars) {
                 const previousValue = getActiveMenu(sandbox).bind(activeMenu => Highlighting.getHighlighted(activeMenu).map(Representing.getValue));
                 detail.previewing.set(true);
                 const onOpenSync = _sandbox => {
@@ -18646,13 +19409,14 @@
       fromPromise
     };
 
-    const renderCommonSpec = (spec, actionOpt, extraBehaviours = [], dom, components, providersBackstage) => {
+    const renderCommonSpec = (spec, actionOpt, extraBehaviours = [], dom, components, tooltip, providersBackstage) => {
       const action = actionOpt.fold(() => ({}), action => ({ action }));
       const common = {
         buttonBehaviours: derive$1([
           DisablingConfigs.button(() => !spec.enabled || providersBackstage.isDisabled()),
           receivingConfig(),
           Tabstopping.config({}),
+          ...tooltip.map(t => Tooltipping.config(providersBackstage.tooltips.getConfig({ tooltipText: providersBackstage.translate(t) }))).toArray(),
           config('button press', [
             preventDefault('click'),
             preventDefault('mousedown')
@@ -18673,19 +19437,19 @@
       const domFinal = deepMerge(common, { dom });
       return deepMerge(domFinal, { components });
     };
-    const renderIconButtonSpec = (spec, action, providersBackstage, extraBehaviours = []) => {
-      const tooltipAttributes = spec.tooltip.map(tooltip => ({
-        'aria-label': providersBackstage.translate(tooltip),
-        'title': providersBackstage.translate(tooltip)
-      })).getOr({});
+    const renderIconButtonSpec = (spec, action, providersBackstage, extraBehaviours = [], btnName) => {
+      const tooltipAttributes = spec.tooltip.map(tooltip => ({ 'aria-label': providersBackstage.translate(tooltip) })).getOr({});
       const dom = {
         tag: 'button',
         classes: ['tox-tbtn'],
-        attributes: tooltipAttributes
+        attributes: {
+          ...tooltipAttributes,
+          'data-mce-name': btnName
+        }
       };
       const icon = spec.icon.map(iconName => renderIconFromPack$1(iconName, providersBackstage.icons));
       const components = componentRenderPipeline([icon]);
-      return renderCommonSpec(spec, action, extraBehaviours, dom, components, providersBackstage);
+      return renderCommonSpec(spec, action, extraBehaviours, dom, components, spec.tooltip, providersBackstage);
     };
     const calculateClassesFromButtonType = buttonType => {
       switch (buttonType) {
@@ -18716,9 +19480,13 @@
       const dom = {
         tag: 'button',
         classes,
-        attributes: { title: translatedText }
+        attributes: {
+          'aria-label': translatedText,
+          'data-mce-name': spec.text
+        }
       };
-      return renderCommonSpec(spec, action, extraBehaviours, dom, components, providersBackstage);
+      const optTooltip = spec.icon.map(constant$1(translatedText));
+      return renderCommonSpec(spec, action, extraBehaviours, dom, components, optTooltip, providersBackstage);
     };
     const renderButton$1 = (spec, action, providersBackstage, extraBehaviours = [], extraClasses = []) => {
       const buttonSpec = renderButtonSpec(spec, Optional.some(action), providersBackstage, extraBehaviours, extraClasses);
@@ -18741,7 +19509,7 @@
     const isMenuFooterButtonSpec = (spec, buttonType) => buttonType === 'menu';
     const isNormalFooterButtonSpec = (spec, buttonType) => buttonType === 'custom' || buttonType === 'cancel' || buttonType === 'submit';
     const isToggleButtonSpec = (spec, buttonType) => buttonType === 'togglebutton';
-    const renderToggleButton = (spec, providers) => {
+    const renderToggleButton = (spec, providers, btnName) => {
       var _a, _b;
       const optMemIcon = spec.icon.map(memIcon => renderReplaceableIconFromPack(memIcon, providers.icons)).map(record);
       const action = comp => {
@@ -18761,14 +19529,11 @@
         ...spec,
         name: (_a = spec.name) !== null && _a !== void 0 ? _a : '',
         primary: buttonType === 'primary',
-        tooltip: Optional.from(spec.tooltip),
+        tooltip: spec.tooltip,
         enabled: (_b = spec.enabled) !== null && _b !== void 0 ? _b : false,
         borderless: false
       };
-      const tooltipAttributes = buttonSpec.tooltip.map(tooltip => ({
-        'aria-label': providers.translate(tooltip),
-        'title': providers.translate(tooltip)
-      })).getOr({});
+      const tooltipAttributes = buttonSpec.tooltip.or(spec.text).map(tooltip => ({ 'aria-label': providers.translate(tooltip) })).getOr({});
       const buttonTypeClasses = calculateClassesFromButtonType(buttonType !== null && buttonType !== void 0 ? buttonType : 'secondary');
       const showIconAndText = spec.icon.isSome() && spec.text.isSome();
       const dom = {
@@ -18778,7 +19543,10 @@
           ...spec.active ? ['tox-button--enabled'] : [],
           ...showIconAndText ? ['tox-button--icon-and-text'] : []
         ],
-        attributes: tooltipAttributes
+        attributes: {
+          ...tooltipAttributes,
+          ...isNonNullable(btnName) ? { 'data-mce-name': btnName } : {}
+        }
       };
       const extraBehaviours = [];
       const translatedText = providers.translate(spec.text.getOr(''));
@@ -18788,7 +19556,7 @@
         ...iconComp,
         ...spec.text.isSome() ? [translatedTextComponed] : []
       ];
-      const iconButtonSpec = renderCommonSpec(buttonSpec, Optional.some(action), extraBehaviours, dom, components, providers);
+      const iconButtonSpec = renderCommonSpec(buttonSpec, Optional.some(action), extraBehaviours, dom, components, spec.tooltip, providers);
       return Button.sketch(iconButtonSpec);
     };
     const renderFooterButton = (spec, buttonType, backstage) => {
@@ -18805,7 +19573,7 @@
           },
           fetch: getFetch(menuButtonSpec.items, getButton, backstage)
         };
-        const memButton = record(renderMenuButton(fixedSpec, 'tox-tbtn', backstage, Optional.none()));
+        const memButton = record(renderMenuButton(fixedSpec, 'tox-tbtn', backstage, Optional.none(), true, spec.text.or(spec.tooltip).getOrUndefined()));
         return memButton.asSpec();
       } else if (isNormalFooterButtonSpec(spec, buttonType)) {
         const action = getAction(spec.name, buttonType);
@@ -18815,7 +19583,7 @@
         };
         return renderButton$1(buttonSpec, action, backstage.shared.providers, []);
       } else if (isToggleButtonSpec(spec, buttonType)) {
-        return renderToggleButton(spec, backstage.shared.providers);
+        return renderToggleButton(spec, backstage.shared.providers, spec.text.or(spec.tooltip).getOrUndefined());
       } else {
         console.error('Unknown footer button type: ', buttonType);
         throw new Error('Unknown footer button type');
@@ -18957,7 +19725,7 @@
           Tabstopping.config({}),
           config('urlinput-events', [
             run$1(input(), comp => {
-              const currentValue = get$6(comp.element);
+              const currentValue = get$7(comp.element);
               const trimmedValue = currentValue.trim();
               if (trimmedValue !== currentValue) {
                 set$5(comp.element, trimmedValue);
@@ -19040,7 +19808,7 @@
       const memUrlPickerButton = record(renderButton$1({
         name: spec.name,
         icon: Optional.some('browse'),
-        text: spec.label.getOr(''),
+        text: spec.picker_text.or(spec.label).getOr(''),
         enabled: spec.enabled,
         primary: false,
         buttonType: Optional.none(),
@@ -19093,7 +19861,7 @@
     };
 
     const renderAlertBanner = (spec, providersBackstage) => {
-      const icon = get$2(spec.icon, providersBackstage.icons);
+      const icon = get$3(spec.icon, providersBackstage.icons);
       return Container.sketch({
         dom: {
           tag: 'div',
@@ -19143,7 +19911,7 @@
     const set$1 = (element, status) => {
       element.dom.checked = status;
     };
-    const get$1 = element => element.dom.checked;
+    const get$2 = element => element.dom.checked;
 
     const renderCheckbox = (spec, providerBackstage, initialData) => {
       const toggleCheckboxHandler = comp => {
@@ -19170,7 +19938,7 @@
           }),
           Tabstopping.config({}),
           Focusing.config({}),
-          withElement(initialData, get$1, set$1),
+          withElement(initialData, get$2, set$1),
           Keying.config({
             mode: 'special',
             onEnter: toggleCheckboxHandler,
@@ -19227,14 +19995,51 @@
       });
     };
 
-    const renderHtmlPanel = spec => {
+    const renderHtmlPanel = (spec, providersBackstage) => {
       if (spec.presets === 'presentation') {
         return Container.sketch({
           dom: {
             tag: 'div',
             classes: ['tox-form__group'],
             innerHtml: spec.html
-          }
+          },
+          containerBehaviours: derive$1([Tooltipping.config({
+              ...providersBackstage.tooltips.getConfig({
+                tooltipText: '',
+                onShow: comp => {
+                  descendant(comp.element, '[data-mce-tooltip]:hover').orThunk(() => search(comp.element)).each(current => {
+                    getOpt(current, 'data-mce-tooltip').each(text => {
+                      Tooltipping.setComponents(comp, providersBackstage.tooltips.getComponents({ tooltipText: text }));
+                    });
+                  });
+                }
+              }),
+              mode: 'children-normal',
+              anchor: comp => ({
+                type: 'node',
+                node: descendant(comp.element, '[data-mce-tooltip]:hover').orThunk(() => search(comp.element).filter(current => getOpt(current, 'data-mce-tooltip').isSome())),
+                root: comp.element,
+                layouts: {
+                  onLtr: constant$1([
+                    south$2,
+                    north$2,
+                    southeast$2,
+                    northeast$2,
+                    southwest$2,
+                    northwest$2
+                  ]),
+                  onRtl: constant$1([
+                    south$2,
+                    north$2,
+                    southeast$2,
+                    northeast$2,
+                    southwest$2,
+                    northwest$2
+                  ])
+                },
+                bubble: nu$5(0, -2, {})
+              })
+            })])
         });
       } else {
         return Container.sketch({
@@ -19253,7 +20058,7 @@
     };
 
     const make$2 = render => {
-      return (parts, spec, dialogData, backstage) => get$g(spec, 'name').fold(() => render(spec, backstage, Optional.none()), fieldName => parts.field(fieldName, render(spec, backstage, get$g(dialogData, fieldName))));
+      return (parts, spec, dialogData, backstage) => get$h(spec, 'name').fold(() => render(spec, backstage, Optional.none()), fieldName => parts.field(fieldName, render(spec, backstage, get$h(dialogData, fieldName))));
     };
     const makeIframe = render => (parts, spec, dialogData, backstage) => {
       const iframeSpec = deepMerge(spec, { source: 'dynamic' });
@@ -19279,7 +20084,7 @@
       slider: make$2((spec, backstage, data) => renderSlider(spec, backstage.shared.providers, data)),
       urlinput: make$2((spec, backstage, data) => renderUrlInput(spec, backstage, backstage.urlinput, data)),
       customeditor: make$2(renderCustomEditor),
-      htmlpanel: make$2(renderHtmlPanel),
+      htmlpanel: make$2((spec, backstage) => renderHtmlPanel(spec, backstage.shared.providers)),
       imagepreview: make$2((spec, _, data) => renderImagePreview(spec, data)),
       table: make$2((spec, backstage) => renderTable(spec, backstage.shared.providers)),
       tree: make$2((spec, backstage) => renderTree(spec, backstage)),
@@ -19293,7 +20098,7 @@
       const newBackstage = deepMerge(oldBackstage, { shared: { interpreter: childSpec => interpretParts(parts, childSpec, dialogData, newBackstage) } });
       return interpretParts(parts, spec, dialogData, newBackstage);
     };
-    const interpretParts = (parts, spec, dialogData, backstage) => get$g(factories, spec.type).fold(() => {
+    const interpretParts = (parts, spec, dialogData, backstage) => get$h(factories, spec.type).fold(() => {
       console.error(`Unknown factory type "${ spec.type }", defaulting to container: `, spec);
       return spec;
     }, factory => factory(parts, spec, dialogData, backstage));
@@ -19757,7 +20562,7 @@
       return doEnrich(formats);
     };
 
-    const init$7 = editor => {
+    const init$6 = editor => {
       const isSelectedFor = format => () => editor.formatter.match(format);
       const getPreviewFor = format => () => {
         const fmt = editor.formatter.get(format);
@@ -19785,6 +20590,51 @@
         return fromSettings.concat(fromEvents);
       };
       return { getData };
+    };
+
+    const TooltipsBackstage = getSink => {
+      const tooltipDelay = 300;
+      const intervalDelay = tooltipDelay * 0.2;
+      let numActiveTooltips = 0;
+      const alreadyShowingTooltips = () => numActiveTooltips > 0;
+      const getComponents = spec => {
+        return [{
+            dom: {
+              tag: 'div',
+              classes: ['tox-tooltip__body']
+            },
+            components: [text$2(spec.tooltipText)]
+          }];
+      };
+      const getConfig = spec => {
+        return {
+          delayForShow: () => alreadyShowingTooltips() ? intervalDelay : tooltipDelay,
+          delayForHide: constant$1(tooltipDelay),
+          exclusive: true,
+          lazySink: getSink,
+          tooltipDom: {
+            tag: 'div',
+            classes: [
+              'tox-tooltip',
+              'tox-tooltip--up'
+            ]
+          },
+          tooltipComponents: getComponents(spec),
+          onShow: (comp, tooltip) => {
+            numActiveTooltips++;
+            if (spec.onShow) {
+              spec.onShow(comp, tooltip);
+            }
+          },
+          onHide: () => {
+            numActiveTooltips--;
+          }
+        };
+      };
+      return {
+        getConfig,
+        getComponents
+      };
     };
 
     const isElement = node => isNonNullable(node) && node.nodeType === 1;
@@ -19916,14 +20766,14 @@
     };
     const getHistory = fileType => {
       const history = getAllHistory();
-      return get$g(history, fileType).getOr([]);
+      return get$h(history, fileType).getOr([]);
     };
     const addToHistory = (url, fileType) => {
       if (!isHttpUrl(url)) {
         return;
       }
       const history = getAllHistory();
-      const items = get$g(history, fileType).getOr([]);
+      const items = get$h(history, fileType).getOr([]);
       const itemsWithoutUrl = filter$2(items, item => item !== url);
       history[fileType] = [url].concat(itemsWithoutUrl).slice(0, HISTORY_LENGTH);
       setAllHistory(history);
@@ -19985,18 +20835,19 @@
       getUrlPicker: filetype => getUrlPicker(editor, filetype)
     });
 
-    const init$6 = (lazySinks, editor, lazyAnchorbar, lazyBottomAnchorBar) => {
+    const init$5 = (lazySinks, editor, lazyAnchorbar, lazyBottomAnchorBar) => {
       const contextMenuState = Cell(false);
       const toolbar = HeaderBackstage(editor);
       const providers = {
         icons: () => editor.ui.registry.getAll().icons,
         menuItems: () => editor.ui.registry.getAll().menuItems,
-        translate: global$8.translate,
+        translate: global$5.translate,
         isDisabled: () => editor.mode.isReadOnly() || !editor.ui.isEnabled(),
-        getOption: editor.options.get
+        getOption: editor.options.get,
+        tooltips: TooltipsBackstage(lazySinks.dialog)
       };
       const urlinput = UrlInputBackstage(editor);
-      const styles = init$7(editor);
+      const styles = init$6(editor);
       const colorinput = ColorInputBackstage(editor);
       const dialogSettings = DialogBackstage(editor);
       const isContextMenuOpen = () => contextMenuState.get();
@@ -20108,6 +20959,8 @@
       const onDismissPopups = event => {
         broadcastOn(dismissPopups(), { target: SugarElement.fromDom(event.relatedTarget.getContainer()) });
       };
+      const onFocusIn = event => editor.dispatch('focusin', event);
+      const onFocusOut = event => editor.dispatch('focusout', event);
       editor.on('PostRender', () => {
         editor.on('click', onContentClick);
         editor.on('tap', onContentClick);
@@ -20118,6 +20971,13 @@
         editor.on('ResizeEditor', onEditorResize);
         editor.on('AfterProgressState', onEditorProgress);
         editor.on('DismissPopups', onDismissPopups);
+        each$1([
+          mothership,
+          ...uiMotherships
+        ], gui => {
+          gui.element.dom.addEventListener('focusin', onFocusIn);
+          gui.element.dom.addEventListener('focusout', onFocusOut);
+        });
       });
       editor.on('remove', () => {
         editor.off('click', onContentClick);
@@ -20129,6 +20989,13 @@
         editor.off('ResizeEditor', onEditorResize);
         editor.off('AfterProgressState', onEditorProgress);
         editor.off('DismissPopups', onDismissPopups);
+        each$1([
+          mothership,
+          ...uiMotherships
+        ], gui => {
+          gui.element.dom.removeEventListener('focusin', onFocusIn);
+          gui.element.dom.removeEventListener('focusout', onFocusOut);
+        });
         onMousedown.unbind();
         onTouchstart.unbind();
         onTouchmove.unbind();
@@ -20265,405 +21132,14 @@
     });
 
     const setup$a = noop;
-    const isDocked$2 = never;
+    const isDocked$1 = never;
     const getBehaviours$1 = constant$1([]);
 
     var StaticHeader = /*#__PURE__*/Object.freeze({
         __proto__: null,
         setup: setup$a,
-        isDocked: isDocked$2,
-        getBehaviours: getBehaviours$1
-    });
-
-    const getOffsetParent = element => {
-      const isFixed = is$1(getRaw(element, 'position'), 'fixed');
-      const offsetParent$1 = isFixed ? Optional.none() : offsetParent(element);
-      return offsetParent$1.orThunk(() => {
-        const marker = SugarElement.fromTag('span');
-        return parent(element).bind(parent => {
-          append$2(parent, marker);
-          const offsetParent$1 = offsetParent(marker);
-          remove$5(marker);
-          return offsetParent$1;
-        });
-      });
-    };
-    const getOrigin = element => getOffsetParent(element).map(absolute$3).getOrThunk(() => SugarPosition(0, 0));
-
-    const appear = (component, contextualInfo) => {
-      const elem = component.element;
-      add$2(elem, contextualInfo.transitionClass);
-      remove$2(elem, contextualInfo.fadeOutClass);
-      add$2(elem, contextualInfo.fadeInClass);
-      contextualInfo.onShow(component);
-    };
-    const disappear = (component, contextualInfo) => {
-      const elem = component.element;
-      add$2(elem, contextualInfo.transitionClass);
-      remove$2(elem, contextualInfo.fadeInClass);
-      add$2(elem, contextualInfo.fadeOutClass);
-      contextualInfo.onHide(component);
-    };
-    const isPartiallyVisible = (box, bounds) => box.y < bounds.bottom && box.bottom > bounds.y;
-    const isTopCompletelyVisible = (box, bounds) => box.y >= bounds.y;
-    const isBottomCompletelyVisible = (box, bounds) => box.bottom <= bounds.bottom;
-    const forceTopPosition = (winBox, leftX, viewport) => ({
-      location: 'top',
-      leftX,
-      topY: viewport.bounds.y - winBox.y
-    });
-    const forceBottomPosition = (winBox, leftX, viewport) => ({
-      location: 'bottom',
-      leftX,
-      bottomY: winBox.bottom - viewport.bounds.bottom
-    });
-    const getDockedLeftPosition = bounds => {
-      return bounds.box.x - bounds.win.x;
-    };
-    const tryDockingPosition = (modes, bounds, viewport) => {
-      const winBox = bounds.win;
-      const box = bounds.box;
-      const leftX = getDockedLeftPosition(bounds);
-      return findMap(modes, mode => {
-        switch (mode) {
-        case 'bottom':
-          return !isBottomCompletelyVisible(box, viewport.bounds) ? Optional.some(forceBottomPosition(winBox, leftX, viewport)) : Optional.none();
-        case 'top':
-          return !isTopCompletelyVisible(box, viewport.bounds) ? Optional.some(forceTopPosition(winBox, leftX, viewport)) : Optional.none();
-        default:
-          return Optional.none();
-        }
-      }).getOr({ location: 'no-dock' });
-    };
-    const isVisibleForModes = (modes, box, viewport) => forall(modes, mode => {
-      switch (mode) {
-      case 'bottom':
-        return isBottomCompletelyVisible(box, viewport.bounds);
-      case 'top':
-        return isTopCompletelyVisible(box, viewport.bounds);
-      }
-    });
-    const getXYForRestoring = (pos, viewport) => {
-      const priorY = viewport.optScrollEnv.fold(constant$1(pos.bounds.y), scrollEnv => scrollEnv.scrollElmTop + (pos.bounds.y - scrollEnv.currentScrollTop));
-      return SugarPosition(pos.bounds.x, priorY);
-    };
-    const getXYForSaving = (box, viewport) => {
-      const priorY = viewport.optScrollEnv.fold(constant$1(box.y), scrollEnv => box.y + scrollEnv.currentScrollTop - scrollEnv.scrollElmTop);
-      return SugarPosition(box.x, priorY);
-    };
-    const getPrior = (elem, viewport, state) => state.getInitialPos().map(pos => {
-      const xy = getXYForRestoring(pos, viewport);
-      return {
-        box: bounds(xy.left, xy.top, get$c(elem), get$d(elem)),
-        location: pos.location
-      };
-    });
-    const storePrior = (elem, box, viewport, state, decision) => {
-      const xy = getXYForSaving(box, viewport);
-      const bounds$1 = bounds(xy.left, xy.top, box.width, box.height);
-      state.setInitialPos({
-        style: getAllRaw(elem),
-        position: get$e(elem, 'position') || 'static',
-        bounds: bounds$1,
-        location: decision.location
-      });
-    };
-    const storePriorIfNone = (elem, box, viewport, state, decision) => {
-      state.getInitialPos().fold(() => storePrior(elem, box, viewport, state, decision), () => noop);
-    };
-    const revertToOriginal = (elem, box, state) => state.getInitialPos().bind(position => {
-      var _a;
-      state.clearInitialPos();
-      switch (position.position) {
-      case 'static':
-        return Optional.some({ morph: 'static' });
-      case 'absolute':
-        const offsetParent = getOffsetParent(elem).getOr(body());
-        const offsetBox = box$1(offsetParent);
-        const scrollDelta = (_a = offsetParent.dom.scrollTop) !== null && _a !== void 0 ? _a : 0;
-        return Optional.some({
-          morph: 'absolute',
-          positionCss: NuPositionCss('absolute', get$g(position.style, 'left').map(_left => box.x - offsetBox.x), get$g(position.style, 'top').map(_top => box.y - offsetBox.y + scrollDelta), get$g(position.style, 'right').map(_right => offsetBox.right - box.right), get$g(position.style, 'bottom').map(_bottom => offsetBox.bottom - box.bottom))
-        });
-      default:
-        return Optional.none();
-      }
-    });
-    const tryMorphToOriginal = (elem, viewport, state) => getPrior(elem, viewport, state).filter(({box}) => isVisibleForModes(state.getModes(), box, viewport)).bind(({box}) => revertToOriginal(elem, box, state));
-    const tryDecisionToFixedMorph = decision => {
-      switch (decision.location) {
-      case 'top': {
-          return Optional.some({
-            morph: 'fixed',
-            positionCss: NuPositionCss('fixed', Optional.some(decision.leftX), Optional.some(decision.topY), Optional.none(), Optional.none())
-          });
-        }
-      case 'bottom': {
-          return Optional.some({
-            morph: 'fixed',
-            positionCss: NuPositionCss('fixed', Optional.some(decision.leftX), Optional.none(), Optional.none(), Optional.some(decision.bottomY))
-          });
-        }
-      default:
-        return Optional.none();
-      }
-    };
-    const tryMorphToFixed = (elem, viewport, state) => {
-      const box = box$1(elem);
-      const winBox = win();
-      const decision = tryDockingPosition(state.getModes(), {
-        win: winBox,
-        box
-      }, viewport);
-      if (decision.location === 'top' || decision.location === 'bottom') {
-        storePrior(elem, box, viewport, state, decision);
-        return tryDecisionToFixedMorph(decision);
-      } else {
-        return Optional.none();
-      }
-    };
-    const tryMorphToOriginalOrUpdateFixed = (elem, viewport, state) => {
-      return tryMorphToOriginal(elem, viewport, state).orThunk(() => {
-        return viewport.optScrollEnv.bind(_ => getPrior(elem, viewport, state)).bind(({box, location}) => {
-          const winBox = win();
-          const leftX = getDockedLeftPosition({
-            win: winBox,
-            box
-          });
-          const decision = location === 'top' ? forceTopPosition(winBox, leftX, viewport) : forceBottomPosition(winBox, leftX, viewport);
-          return tryDecisionToFixedMorph(decision);
-        });
-      });
-    };
-    const tryMorph = (component, viewport, state) => {
-      const elem = component.element;
-      const isDocked = is$1(getRaw(elem, 'position'), 'fixed');
-      return isDocked ? tryMorphToOriginalOrUpdateFixed(elem, viewport, state) : tryMorphToFixed(elem, viewport, state);
-    };
-    const calculateMorphToOriginal = (component, viewport, state) => {
-      const elem = component.element;
-      return getPrior(elem, viewport, state).bind(({box}) => revertToOriginal(elem, box, state));
-    };
-    const forceDockWith = (elem, viewport, state, getDecision) => {
-      const box = box$1(elem);
-      const winBox = win();
-      const leftX = getDockedLeftPosition({
-        win: winBox,
-        box
-      });
-      const decision = getDecision(winBox, leftX, viewport);
-      if (decision.location === 'bottom' || decision.location === 'top') {
-        storePriorIfNone(elem, box, viewport, state, decision);
-        return tryDecisionToFixedMorph(decision);
-      } else {
-        return Optional.none();
-      }
-    };
-
-    const morphToStatic = (component, config, state) => {
-      state.setDocked(false);
-      each$1([
-        'left',
-        'right',
-        'top',
-        'bottom',
-        'position'
-      ], prop => remove$6(component.element, prop));
-      config.onUndocked(component);
-    };
-    const morphToCoord = (component, config, state, position) => {
-      const isDocked = position.position === 'fixed';
-      state.setDocked(isDocked);
-      applyPositionCss(component.element, position);
-      const method = isDocked ? config.onDocked : config.onUndocked;
-      method(component);
-    };
-    const updateVisibility = (component, config, state, viewport, morphToDocked = false) => {
-      config.contextual.each(contextInfo => {
-        contextInfo.lazyContext(component).each(box => {
-          const isVisible = isPartiallyVisible(box, viewport.bounds);
-          if (isVisible !== state.isVisible()) {
-            state.setVisible(isVisible);
-            if (morphToDocked && !isVisible) {
-              add$1(component.element, [contextInfo.fadeOutClass]);
-              contextInfo.onHide(component);
-            } else {
-              const method = isVisible ? appear : disappear;
-              method(component, contextInfo);
-            }
-          }
-        });
-      });
-    };
-    const applyFixedMorph = (component, config, state, viewport, morph) => {
-      updateVisibility(component, config, state, viewport, true);
-      morphToCoord(component, config, state, morph.positionCss);
-    };
-    const applyMorph = (component, config, state, viewport, morph) => {
-      switch (morph.morph) {
-      case 'static': {
-          return morphToStatic(component, config, state);
-        }
-      case 'absolute': {
-          return morphToCoord(component, config, state, morph.positionCss);
-        }
-      case 'fixed': {
-          return applyFixedMorph(component, config, state, viewport, morph);
-        }
-      }
-    };
-    const refreshInternal = (component, config, state) => {
-      const viewport = config.lazyViewport(component);
-      updateVisibility(component, config, state, viewport);
-      tryMorph(component, viewport, state).each(morph => {
-        applyMorph(component, config, state, viewport, morph);
-      });
-    };
-    const resetInternal = (component, config, state) => {
-      const elem = component.element;
-      state.setDocked(false);
-      const viewport = config.lazyViewport(component);
-      calculateMorphToOriginal(component, viewport, state).each(staticOrAbsoluteMorph => {
-        switch (staticOrAbsoluteMorph.morph) {
-        case 'static': {
-            morphToStatic(component, config, state);
-            break;
-          }
-        case 'absolute': {
-            morphToCoord(component, config, state, staticOrAbsoluteMorph.positionCss);
-            break;
-          }
-        }
-      });
-      state.setVisible(true);
-      config.contextual.each(contextInfo => {
-        remove$1(elem, [
-          contextInfo.fadeInClass,
-          contextInfo.fadeOutClass,
-          contextInfo.transitionClass
-        ]);
-        contextInfo.onShow(component);
-      });
-      refresh$3(component, config, state);
-    };
-    const refresh$3 = (component, config, state) => {
-      if (component.getSystem().isConnected()) {
-        refreshInternal(component, config, state);
-      }
-    };
-    const reset = (component, config, state) => {
-      if (state.isDocked()) {
-        resetInternal(component, config, state);
-      }
-    };
-    const forceDockWithDecision = getDecision => (component, config, state) => {
-      const viewport = config.lazyViewport(component);
-      const optMorph = forceDockWith(component.element, viewport, state, getDecision);
-      optMorph.each(morph => {
-        applyFixedMorph(component, config, state, viewport, morph);
-      });
-    };
-    const forceDockToTop = forceDockWithDecision(forceTopPosition);
-    const forceDockToBottom = forceDockWithDecision(forceBottomPosition);
-    const isDocked$1 = (component, config, state) => state.isDocked();
-    const setModes = (component, config, state, modes) => state.setModes(modes);
-    const getModes = (component, config, state) => state.getModes();
-
-    var DockingApis = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        refresh: refresh$3,
-        reset: reset,
         isDocked: isDocked$1,
-        getModes: getModes,
-        setModes: setModes,
-        forceDockToTop: forceDockToTop,
-        forceDockToBottom: forceDockToBottom
-    });
-
-    const events$4 = (dockInfo, dockState) => derive$2([
-      runOnSource(transitionend(), (component, simulatedEvent) => {
-        dockInfo.contextual.each(contextInfo => {
-          if (has(component.element, contextInfo.transitionClass)) {
-            remove$1(component.element, [
-              contextInfo.transitionClass,
-              contextInfo.fadeInClass
-            ]);
-            const notify = dockState.isVisible() ? contextInfo.onShown : contextInfo.onHidden;
-            notify(component);
-          }
-          simulatedEvent.stop();
-        });
-      }),
-      run$1(windowScroll(), (component, _) => {
-        refresh$3(component, dockInfo, dockState);
-      }),
-      run$1(externalElementScroll(), (component, _) => {
-        refresh$3(component, dockInfo, dockState);
-      }),
-      run$1(windowResize(), (component, _) => {
-        reset(component, dockInfo, dockState);
-      })
-    ]);
-
-    var ActiveDocking = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        events: events$4
-    });
-
-    var DockingSchema = [
-      optionObjOf('contextual', [
-        requiredString('fadeInClass'),
-        requiredString('fadeOutClass'),
-        requiredString('transitionClass'),
-        requiredFunction('lazyContext'),
-        onHandler('onShow'),
-        onHandler('onShown'),
-        onHandler('onHide'),
-        onHandler('onHidden')
-      ]),
-      defaultedFunction('lazyViewport', () => ({
-        bounds: win(),
-        optScrollEnv: Optional.none()
-      })),
-      defaultedArrayOf('modes', [
-        'top',
-        'bottom'
-      ], string),
-      onHandler('onDocked'),
-      onHandler('onUndocked')
-    ];
-
-    const init$5 = spec => {
-      const docked = Cell(false);
-      const visible = Cell(true);
-      const initialBounds = value$2();
-      const modes = Cell(spec.modes);
-      const readState = () => `docked:  ${ docked.get() }, visible: ${ visible.get() }, modes: ${ modes.get().join(',') }`;
-      return nu$8({
-        isDocked: docked.get,
-        setDocked: docked.set,
-        getInitialPos: initialBounds.get,
-        setInitialPos: initialBounds.set,
-        clearInitialPos: initialBounds.clear,
-        isVisible: visible.get,
-        setVisible: visible.set,
-        getModes: modes.get,
-        setModes: modes.set,
-        readState
-      });
-    };
-
-    var DockingState = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        init: init$5
-    });
-
-    const Docking = create$4({
-      fields: DockingSchema,
-      name: 'docking',
-      active: ActiveDocking,
-      apis: DockingApis,
-      state: DockingState
+        getBehaviours: getBehaviours$1
     });
 
     const toolbarHeightChange = constant$1(generate$6('toolbar-height-change'));
@@ -20679,14 +21155,14 @@
       const doc = owner$4(containerHeader);
       const win = defaultView(containerHeader);
       const viewHeight = win.dom.innerHeight;
-      const scrollPos = get$b(doc);
+      const scrollPos = get$c(doc);
       const markerElement = SugarElement.fromDom(e.elm);
       const markerPos = absolute$2(markerElement);
-      const markerHeight = get$d(markerElement);
+      const markerHeight = get$e(markerElement);
       const markerTop = markerPos.y;
       const markerBottom = markerTop + markerHeight;
       const editorHeaderPos = absolute$3(containerHeader);
-      const editorHeaderHeight = get$d(containerHeader);
+      const editorHeaderHeight = get$e(containerHeader);
       const editorHeaderTop = editorHeaderPos.top;
       const editorHeaderBottom = editorHeaderTop + editorHeaderHeight;
       const editorHeaderDockedAtTop = Math.abs(editorHeaderTop - scrollPos.top) < 2;
@@ -20700,12 +21176,12 @@
     };
     const isDockedMode = (header, mode) => contains$2(Docking.getModes(header), mode);
     const updateIframeContentFlow = header => {
-      const getOccupiedHeight = elm => getOuter$2(elm) + (parseInt(get$e(elm, 'margin-top'), 10) || 0) + (parseInt(get$e(elm, 'margin-bottom'), 10) || 0);
+      const getOccupiedHeight = elm => getOuter$2(elm) + (parseInt(get$f(elm, 'margin-top'), 10) || 0) + (parseInt(get$f(elm, 'margin-bottom'), 10) || 0);
       const elm = header.element;
       parentElement(elm).each(parentElem => {
         const padding = 'padding-' + Docking.getModes(header)[0];
         if (Docking.isDocked(header)) {
-          const parentWidth = get$c(parentElem);
+          const parentWidth = get$d(parentElem);
           set$8(elm, 'width', parentWidth + 'px');
           set$8(parentElem, padding, getOccupiedHeight(elm) + 'px');
         } else {
@@ -20779,7 +21255,7 @@
     const isDocked = lazyHeader => lazyHeader().map(Docking.isDocked).getOr(false);
     const getIframeBehaviours = () => [Receiving.config({ channels: { [toolbarHeightChange()]: { onReceive: updateIframeContentFlow } } })];
     const getBehaviours = (editor, sharedBackstage) => {
-      const focusedElm = value$2();
+      const focusedElm = value$4();
       const lazySink = sharedBackstage.getSink;
       const runOnSinkElement = f => {
         lazySink().each(sink => f(sink.element));
@@ -21029,7 +21505,7 @@
     });
 
     const promotionMessage = '\u26A1\ufe0fUpgrade';
-    const promotionLink = 'https://www.tiny.cloud/tinymce-self-hosted-premium-features/?utm_source=TinyMCE&utm_medium=SPAP&utm_campaign=SPAP&utm_id=editorreferral';
+    const promotionLink = 'https://www.tiny.cloud/tinymce-self-hosted-premium-features/?utm_campaign=self_hosted_upgrade_promo&utm_source=tiny&utm_medium=referral';
     const renderPromotion = spec => {
       return {
         uid: spec.uid,
@@ -21080,7 +21556,7 @@
       const onSlots = f => (container, keys) => {
         each$1(keys, key => f(container, key));
       };
-      const doShowing = (comp, _key) => get$f(comp.element, 'aria-hidden') !== 'true';
+      const doShowing = (comp, _key) => get$g(comp.element, 'aria-hidden') !== 'true';
       const doShow = (comp, key) => {
         if (!doShowing(comp)) {
           const element = comp.element;
@@ -21120,7 +21596,7 @@
         uid: detail.uid,
         dom: detail.dom,
         components,
-        behaviours: get$3(detail.slotBehaviours),
+        behaviours: get$4(detail.slotBehaviours),
         apis
       };
     };
@@ -21301,7 +21777,7 @@
                 emitWith(slider, fixSize, { width: getRaw(slider.element, 'width').getOr('') });
               },
               onStartShrink: slider => {
-                emitWith(slider, fixSize, { width: get$c(slider.element) + 'px' });
+                emitWith(slider, fixSize, { width: get$d(slider.element) + 'px' });
               }
             }),
             Replacing.config({}),
@@ -21376,7 +21852,7 @@
       const blockWith = destroy => {
         blocker.set({ destroy });
       };
-      return nu$8({
+      return nu$7({
         readState: blocker.isSet,
         blockWith,
         clear: blocker.clear,
@@ -21407,7 +21883,7 @@
       },
       components: [{ dom: fromHtml('<div class="tox-spinner"><div></div><div></div><div></div></div>') }]
     });
-    const focusBusyComponent = throbber => Composing.getCurrent(throbber).each(comp => focus$3(comp.element));
+    const focusBusyComponent = throbber => Composing.getCurrent(throbber).each(comp => focus$3(comp.element, true));
     const toggleEditorTabIndex = (editor, state) => {
       const tabIndexAttr = 'tabindex';
       const dataTabIndexAttr = `data-mce-${ tabIndexAttr }`;
@@ -21470,7 +21946,7 @@
     };
     const setup$7 = (editor, lazyThrobber, sharedBackstage) => {
       const throbberState = Cell(false);
-      const timer = value$2();
+      const timer = value$4();
       const stealFocus = e => {
         if (throbberState.get() && !isPasteBinTarget(e)) {
           e.preventDefault();
@@ -21591,8 +22067,8 @@
       const focusedComp = findFocusedComp(groups);
       setOverflow([]);
       setGroups$1(primary, groups);
-      const availableWidth = get$c(primary.element);
-      const overflows = partition(availableWidth, detail.builtGroups.get(), comp => get$c(comp.element), overflowGroup);
+      const availableWidth = get$d(primary.element);
+      const overflows = partition(availableWidth, detail.builtGroups.get(), comp => Math.ceil(comp.element.dom.getBoundingClientRect().width), overflowGroup);
       if (overflows.extra.length === 0) {
         Replacing.remove(primary, overflowGroup);
         setOverflow([]);
@@ -21676,7 +22152,7 @@
       })
     ]);
 
-    const shouldSkipFocus = value$2();
+    const shouldSkipFocus = value$4();
     const toggleWithoutFocusing = (button, externals) => {
       shouldSkipFocus.set(true);
       toggle(button, externals);
@@ -21996,12 +22472,10 @@
                 onShrunk: comp => {
                   getPart(comp, detail, 'overflow-button').each(button => {
                     Toggling.off(button);
-                    Focusing.focus(button);
                   });
                   detail.onClosed(comp);
                 },
                 onGrown: comp => {
-                  Keying.focusIn(comp);
                   detail.onOpened(comp);
                 },
                 onStartGrow: comp => {
@@ -22024,7 +22498,7 @@
         overrides: detail => ({
           buttonBehaviours: derive$1([Toggling.config({
               toggleClass: detail.markers.overflowToggledClass,
-              aria: { mode: 'pressed' },
+              aria: { mode: 'expanded' },
               toggleOnExecute: false
             })])
         })
@@ -22033,10 +22507,31 @@
     ]);
 
     const isOpen = (toolbar, detail) => getPart(toolbar, detail, 'overflow').map(Sliding.hasGrown).getOr(false);
-    const toggleToolbar = (toolbar, detail) => {
-      getPart(toolbar, detail, 'overflow-button').bind(() => getPart(toolbar, detail, 'overflow')).each(overf => {
-        refresh(toolbar, detail);
-        Sliding.toggleGrow(overf);
+    const toggleToolbar = (toolbar, detail, skipFocus) => {
+      getPart(toolbar, detail, 'overflow-button').each(oveflowButton => {
+        getPart(toolbar, detail, 'overflow').each(overf => {
+          refresh(toolbar, detail);
+          if (Sliding.hasShrunk(overf)) {
+            const fn = detail.onOpened;
+            detail.onOpened = comp => {
+              if (!skipFocus) {
+                Keying.focusIn(overf);
+              }
+              fn(comp);
+              detail.onOpened = fn;
+            };
+          } else {
+            const fn = detail.onClosed;
+            detail.onClosed = comp => {
+              if (!skipFocus) {
+                Focusing.focus(oveflowButton);
+              }
+              fn(comp);
+              detail.onClosed = fn;
+            };
+          }
+          Sliding.toggleGrow(overf);
+        });
       });
     };
     const refresh = (toolbar, detail) => {
@@ -22080,7 +22575,7 @@
             }
           }),
           config('toolbar-toggle-events', [run$1(toolbarToggleEvent, toolbar => {
-              toggleToolbar(toolbar, detail);
+              toggleToolbar(toolbar, detail, false);
             })])
         ]),
         apis: {
@@ -22089,7 +22584,12 @@
             refresh(toolbar, detail);
           },
           refresh: toolbar => refresh(toolbar, detail),
-          toggle: toolbar => toggleToolbar(toolbar, detail),
+          toggle: toolbar => {
+            toggleToolbar(toolbar, detail, false);
+          },
+          toggleWithoutFocusing: toolbar => {
+            toggleToolbar(toolbar, detail, true);
+          },
           isOpen: toolbar => isOpen(toolbar, detail)
         },
         domModification: { attributes: { role: 'group' } }
@@ -22169,7 +22669,7 @@
             primary: false,
             buttonType: Optional.none(),
             borderless: false
-          }, Optional.none(), toolbarSpec.providers)
+          }, Optional.none(), toolbarSpec.providers, [], 'overflow-button')
         },
         splitToolbarBehaviours: getToolbarBehaviours(toolbarSpec, modeName)
       };
@@ -22347,10 +22847,7 @@
       const buttonTypeClasses = calculateClassesFromButtonType((_b = spec.buttonType) !== null && _b !== void 0 ? _b : 'secondary');
       const optTranslatedText = isToggleButton ? spec.text.map(providers.translate) : Optional.some(providers.translate(spec.text));
       const optTranslatedTextComponed = optTranslatedText.map(text$2);
-      const tooltipAttributes = buttonSpec.tooltip.or(optTranslatedText).map(tooltip => ({
-        'aria-label': providers.translate(tooltip),
-        'title': providers.translate(tooltip)
-      })).getOr({});
+      const ariaLabelAttributes = buttonSpec.tooltip.or(optTranslatedText).map(al => ({ 'aria-label': providers.translate(al) })).getOr({});
       const optIconSpec = optMemIcon.map(memIcon => memIcon.asSpec());
       const components = componentRenderPipeline([
         optIconSpec,
@@ -22360,10 +22857,10 @@
       const dom = {
         tag: 'button',
         classes: buttonTypeClasses.concat(...spec.icon.isSome() && !hasIconAndText ? ['tox-button--icon'] : []).concat(...hasIconAndText ? ['tox-button--icon-and-text'] : []).concat(...spec.borderless ? ['tox-button--naked'] : []).concat(...spec.type === 'togglebutton' && spec.active ? ['tox-button--enabled'] : []),
-        attributes: tooltipAttributes
+        attributes: ariaLabelAttributes
       };
       const extraBehaviours = [];
-      const iconButtonSpec = renderCommonSpec(buttonSpec, Optional.some(action), extraBehaviours, dom, components, providers);
+      const iconButtonSpec = renderCommonSpec(buttonSpec, Optional.some(action), extraBehaviours, dom, components, spec.tooltip, providers);
       return Button.sketch(iconButtonSpec);
     };
 
@@ -22377,7 +22874,7 @@
         components: map$2(spec.buttons, button => renderViewButton(button, providers))
       };
     };
-    const deviceDetection = detect$2().deviceType;
+    const deviceDetection = detect$1().deviceType;
     const isPhone = deviceDetection.isPhone();
     const isTablet = deviceDetection.isTablet();
     const renderViewHeader = spec => {
@@ -22431,6 +22928,10 @@
     const renderViewPane = spec => {
       return {
         uid: spec.uid,
+        behaviours: derive$1([
+          Focusing.config({}),
+          Tabstopping.config({})
+        ]),
         dom: {
           tag: 'div',
           classes: ['tox-view__pane']
@@ -22447,6 +22948,13 @@
         uid: detail.uid,
         dom: detail.dom,
         components,
+        behaviours: derive$1([
+          Focusing.config({}),
+          Keying.config({
+            mode: 'cyclic',
+            focusInside: FocusInsideModes.OnEnterOrSpaceMode
+          })
+        ]),
         apis
       };
     };
@@ -22594,6 +23102,17 @@
 
     const factory$6 = (detail, components, _spec) => {
       let toolbarDrawerOpenState = false;
+      const toggleStatusbar = editorContainer => {
+        sibling(editorContainer, '.tox-statusbar').each(statusBar => {
+          if (get$f(statusBar, 'display') === 'none' && get$g(statusBar, 'aria-hidden') === 'true') {
+            remove$6(statusBar, 'display');
+            remove$7(statusBar, 'aria-hidden');
+          } else {
+            set$8(statusBar, 'display', 'none');
+            set$9(statusBar, 'aria-hidden', 'true');
+          }
+        });
+      };
       const apis = {
         getSocket: comp => {
           return parts$a.getPart(comp, detail, 'socket');
@@ -22679,6 +23198,7 @@
           }
           parts$a.getPart(comp, detail, 'editorContainer').each(editorContainer => {
             const element = editorContainer.element;
+            toggleStatusbar(element);
             set$8(element, 'display', 'none');
             set$9(element, 'aria-hidden', 'true');
           });
@@ -22689,6 +23209,7 @@
           }
           parts$a.getPart(comp, detail, 'editorContainer').each(editorContainer => {
             const element = editorContainer.element;
+            toggleStatusbar(element);
             remove$6(element, 'display');
             remove$7(element, 'aria-hidden');
           });
@@ -22907,7 +23428,7 @@
     const defaultMenus = {
       file: {
         title: 'File',
-        items: 'newdocument restoredraft | preview | export print | deleteallconversations'
+        items: 'newdocument restoredraft | preview | importword exportpdf exportword | export print | deleteallconversations'
       },
       edit: {
         title: 'Edit',
@@ -22915,11 +23436,11 @@
       },
       view: {
         title: 'View',
-        items: 'code | visualaid visualchars visualblocks | spellchecker | preview fullscreen | showcomments'
+        items: 'code revisionhistory | visualaid visualchars visualblocks | spellchecker | preview fullscreen | showcomments'
       },
       insert: {
         title: 'Insert',
-        items: 'image link media addcomment pageembed template inserttemplate codesample inserttable accordion | charmap emoticons hr | pagebreak nonbreaking anchor tableofcontents footnotes | mergetags | insertdatetime'
+        items: 'image link media addcomment pageembed inserttemplate codesample inserttable accordion math | charmap emoticons hr | pagebreak nonbreaking anchor tableofcontents footnotes | mergetags | insertdatetime'
       },
       format: {
         title: 'Format',
@@ -22971,7 +23492,7 @@
       const validMenus = filter$2(menubar, menuName => {
         const isDefaultMenu = has$2(defaultMenus, menuName);
         if (userDefinedMenus) {
-          return isDefaultMenu || get$g(registry.menus, menuName).exists(menu => has$2(menu, 'items'));
+          return isDefaultMenu || get$h(registry.menus, menuName).exists(menu => has$2(menu, 'items'));
         } else {
           return isDefaultMenu;
         }
@@ -23008,37 +23529,74 @@
       editor.on('remove', () => styleSheetLoader.unload(stylesheetUrl));
       return styleSheetLoader.load(stylesheetUrl);
     };
-    const loadUiSkins = (editor, skinUrl) => {
-      const skinUiCss = skinUrl + '/skin.min.css';
-      return loadStylesheet(editor, skinUiCss, editor.ui.styleSheetLoader);
+    const loadRawCss = (editor, key, css, styleSheetLoader) => {
+      editor.on('remove', () => styleSheetLoader.unloadRawCss(key));
+      return styleSheetLoader.loadRawCss(key, css);
     };
-    const loadShadowDomUiSkins = (editor, skinUrl) => {
+    const loadUiSkins = async (editor, skinUrl) => {
+      const skinResourceIdentifier = getSkinUrlOption(editor).getOr('default');
+      const skinUiCss = 'ui/' + skinResourceIdentifier + '/skin.css';
+      const css = tinymce.Resource.get(skinUiCss);
+      if (isString(css)) {
+        loadRawCss(editor, skinUiCss, css, editor.ui.styleSheetLoader);
+      } else {
+        const suffix = editor.editorManager.suffix;
+        const skinUiCss = skinUrl + `/skin${ suffix }.css`;
+        return loadStylesheet(editor, skinUiCss, editor.ui.styleSheetLoader);
+      }
+    };
+    const loadShadowDomUiSkins = async (editor, skinUrl) => {
       const isInShadowRoot$1 = isInShadowRoot(SugarElement.fromDom(editor.getElement()));
       if (isInShadowRoot$1) {
-        const shadowDomSkinCss = skinUrl + '/skin.shadowdom.min.css';
-        return loadStylesheet(editor, shadowDomSkinCss, global$7.DOM.styleSheetLoader);
-      } else {
-        return Promise.resolve();
+        const skinResourceIdentifier = getSkinUrlOption(editor).getOr('default');
+        const shadowDomSkinCss = 'ui/' + skinResourceIdentifier + '/skin.shadowdom.css';
+        const css = tinymce.Resource.get(shadowDomSkinCss);
+        if (isString(css)) {
+          loadRawCss(editor, shadowDomSkinCss, css, global$8.DOM.styleSheetLoader);
+        } else {
+          const suffix = editor.editorManager.suffix;
+          const shadowDomSkinCss = skinUrl + `/skin.shadowdom${ suffix }.css`;
+          return loadStylesheet(editor, shadowDomSkinCss, global$8.DOM.styleSheetLoader);
+        }
       }
     };
-    const loadSkin = (isInline, editor) => {
+    const loadUrlSkin = async (isInline, editor) => {
+      const unbundled = () => {
+        const skinResourceIdentifier = getSkinUrl(editor);
+        const suffix = editor.editorManager.suffix;
+        if (skinResourceIdentifier) {
+          editor.contentCSS.push(skinResourceIdentifier + (isInline ? '/content.inline' : '/content') + `${ suffix }.css`);
+        }
+      };
+      getSkinUrlOption(editor).fold(unbundled, skinUrl => {
+        const skinContentCss = 'ui/' + skinUrl + (isInline ? '/content.inline' : '/content') + '.css';
+        const css = tinymce.Resource.get(skinContentCss);
+        if (isString(css)) {
+          loadRawCss(editor, skinContentCss, css, editor.ui.styleSheetLoader);
+        } else {
+          unbundled();
+        }
+      });
       const skinUrl = getSkinUrl(editor);
-      if (skinUrl) {
-        editor.contentCSS.push(skinUrl + (isInline ? '/content.inline' : '/content') + '.min.css');
-      }
       if (!isSkinDisabled(editor) && isString(skinUrl)) {
         return Promise.all([
           loadUiSkins(editor, skinUrl),
           loadShadowDomUiSkins(editor, skinUrl)
-        ]).then(fireSkinLoaded(editor), fireSkinLoadError(editor, 'Skin could not be loaded'));
-      } else {
-        return Promise.resolve(fireSkinLoaded(editor)());
+        ]).then();
       }
+    };
+    const loadSkin = (isInline, editor) => {
+      return loadUrlSkin(isInline, editor).then(fireSkinLoaded(editor), fireSkinLoadError(editor, 'Skin could not be loaded'));
     };
     const iframe = curry(loadSkin, false);
     const inline = curry(loadSkin, true);
 
-    const generateSelectItems = (_editor, backstage, spec) => {
+    const makeTooltipText = (editor, labelWithPlaceholder, value) => isEmpty(value) ? editor.translate(labelWithPlaceholder) : editor.translate([
+      labelWithPlaceholder,
+      editor.translate(value)
+    ]);
+
+    const generateSelectItems = (backstage, spec) => {
       const generateItem = (rawItem, response, invalid, value) => {
         const translatedText = backstage.shared.providers.translate(rawItem.title);
         if (rawItem.type === 'separator') {
@@ -23097,26 +23655,39 @@
         getFetch
       };
     };
-    const createMenuItems = (editor, backstage, spec) => {
+    const createMenuItems = (backstage, spec) => {
       const dataset = spec.dataset;
       const getStyleItems = dataset.type === 'basic' ? () => map$2(dataset.data, d => processBasic(d, spec.isSelectedFor, spec.getPreviewFor)) : dataset.getData;
       return {
-        items: generateSelectItems(editor, backstage, spec),
+        items: generateSelectItems(backstage, spec),
         getStyleItems
       };
     };
-    const createSelectButton = (editor, backstage, spec) => {
-      const {items, getStyleItems} = createMenuItems(editor, backstage, spec);
-      const getApi = comp => ({ getComponent: constant$1(comp) });
-      const onSetup = onSetupEvent(editor, 'NodeChange', api => {
-        const comp = api.getComponent();
-        spec.updateText(comp);
-        Disabling.set(api.getComponent(), !editor.selection.isEditable());
+    const createSelectButton = (editor, backstage, spec, getTooltip, textUpdateEventName, btnName) => {
+      const {items, getStyleItems} = createMenuItems(backstage, spec);
+      const tooltipString = Cell(spec.tooltip);
+      const getApi = comp => ({
+        getComponent: constant$1(comp),
+        setTooltip: tooltip => {
+          const translatedTooltip = backstage.shared.providers.translate(tooltip);
+          set$9(comp.element, 'aria-label', translatedTooltip);
+          tooltipString.set(tooltip);
+        }
       });
+      const onSetup = api => {
+        const handler = e => api.setTooltip(makeTooltipText(editor, getTooltip(e.value), e.value));
+        editor.on(textUpdateEventName, handler);
+        return composeUnbinders(onSetupEvent(editor, 'NodeChange', api => {
+          const comp = api.getComponent();
+          spec.updateText(comp);
+          Disabling.set(api.getComponent(), !editor.selection.isEditable());
+        })(api), () => editor.off(textUpdateEventName, handler));
+      };
       return renderCommonDropdown({
         text: spec.icon.isSome() ? Optional.none() : spec.text,
         icon: spec.icon,
-        tooltip: Optional.from(spec.tooltip),
+        ariaLabel: Optional.some(spec.tooltip),
+        tooltip: Optional.none(),
         role: Optional.none(),
         fetch: items.getFetch(backstage, getStyleItems),
         onSetup,
@@ -23124,8 +23695,18 @@
         columns: 1,
         presets: 'normal',
         classes: spec.icon.isSome() ? [] : ['bespoke'],
-        dropdownBehaviours: []
-      }, 'tox-tbtn', backstage.shared);
+        dropdownBehaviours: [Tooltipping.config({
+            ...backstage.shared.providers.tooltips.getConfig({
+              tooltipText: backstage.shared.providers.translate(spec.tooltip),
+              onShow: comp => {
+                if (spec.tooltip !== tooltipString.get()) {
+                  const translatedTooltip = backstage.shared.providers.translate(tooltipString.get());
+                  Tooltipping.setComponents(comp, backstage.shared.providers.tooltips.getComponents({ tooltipText: translatedTooltip }));
+                }
+              }
+            })
+          })]
+      }, 'tox-tbtn', backstage.shared, btnName);
     };
 
     const process = rawFormats => map$2(rawFormats, item => {
@@ -23165,6 +23746,9 @@
       };
     };
 
+    const menuTitle$4 = 'Align';
+    const getTooltipPlaceholder$4 = constant$1('Alignment {0}');
+    const fallbackAlignment = 'left';
     const alignMenuItems = [
       {
         title: 'Left',
@@ -23197,13 +23781,14 @@
       const getPreviewFor = _format => Optional.none;
       const updateSelectMenuIcon = comp => {
         const match = getMatchingValue();
-        const alignment = match.fold(constant$1('left'), item => item.title.toLowerCase());
+        const alignment = match.fold(constant$1(fallbackAlignment), item => item.title.toLowerCase());
         emitWith(comp, updateMenuIcon, { icon: `align-${ alignment }` });
+        fireAlignTextUpdate(editor, { value: alignment });
       };
       const dataset = buildBasicStaticDataset(alignMenuItems);
       const onAction = rawItem => () => find$5(alignMenuItems, item => item.format === rawItem.format).each(item => editor.execCommand(item.command));
       return {
-        tooltip: 'Align',
+        tooltip: makeTooltipText(editor, getTooltipPlaceholder$4(), fallbackAlignment),
         text: Optional.none(),
         icon: Optional.some('align-left'),
         isSelectedFor,
@@ -23216,11 +23801,11 @@
         isInvalid: item => !editor.formatter.canApply(item.format)
       };
     };
-    const createAlignButton = (editor, backstage) => createSelectButton(editor, backstage, getSpec$4(editor));
+    const createAlignButton = (editor, backstage) => createSelectButton(editor, backstage, getSpec$4(editor), getTooltipPlaceholder$4, 'AlignTextUpdate', 'align');
     const createAlignMenu = (editor, backstage) => {
-      const menuItems = createMenuItems(editor, backstage, getSpec$4(editor));
+      const menuItems = createMenuItems(backstage, getSpec$4(editor));
       editor.ui.registry.addNestedMenuItem('align', {
-        text: backstage.shared.providers.translate('Align'),
+        text: backstage.shared.providers.translate(menuTitle$4),
         onSetup: onSetupEditableToggle(editor),
         getSubmenuItems: () => menuItems.items.validateItems(menuItems.getStyleItems())
       });
@@ -23229,14 +23814,13 @@
     const findNearest = (editor, getStyles) => {
       const styles = getStyles();
       const formats = map$2(styles, style => style.format);
-      return Optional.from(editor.formatter.closest(formats)).bind(fmt => find$5(styles, data => data.format === fmt)).orThunk(() => someIf(editor.formatter.match('p'), {
-        title: 'Paragraph',
-        format: 'p'
-      }));
+      return Optional.from(editor.formatter.closest(formats)).bind(fmt => find$5(styles, data => data.format === fmt));
     };
 
+    const menuTitle$3 = 'Blocks';
+    const getTooltipPlaceholder$3 = constant$1('Block {0}');
+    const fallbackFormat = 'Paragraph';
     const getSpec$3 = editor => {
-      const fallbackFormat = 'Paragraph';
       const isSelectedFor = format => () => editor.formatter.match(format);
       const getPreviewFor = format => () => {
         const fmt = editor.formatter.get(format);
@@ -23253,10 +23837,11 @@
         const detectedFormat = findNearest(editor, () => dataset.data);
         const text = detectedFormat.fold(constant$1(fallbackFormat), fmt => fmt.title);
         emitWith(comp, updateMenuText, { text });
+        fireBlocksTextUpdate(editor, { value: text });
       };
       const dataset = buildBasicSettingsDataset(editor, 'block_formats', Delimiter.SemiColon);
       return {
-        tooltip: 'Blocks',
+        tooltip: makeTooltipText(editor, getTooltipPlaceholder$3(), fallbackFormat),
         text: Optional.some(fallbackFormat),
         icon: Optional.none(),
         isSelectedFor,
@@ -23269,16 +23854,19 @@
         isInvalid: item => !editor.formatter.canApply(item.format)
       };
     };
-    const createBlocksButton = (editor, backstage) => createSelectButton(editor, backstage, getSpec$3(editor));
+    const createBlocksButton = (editor, backstage) => createSelectButton(editor, backstage, getSpec$3(editor), getTooltipPlaceholder$3, 'BlocksTextUpdate', 'blocks');
     const createBlocksMenu = (editor, backstage) => {
-      const menuItems = createMenuItems(editor, backstage, getSpec$3(editor));
+      const menuItems = createMenuItems(backstage, getSpec$3(editor));
       editor.ui.registry.addNestedMenuItem('blocks', {
-        text: 'Blocks',
+        text: menuTitle$3,
         onSetup: onSetupEditableToggle(editor),
         getSubmenuItems: () => menuItems.items.validateItems(menuItems.getStyleItems())
       });
     };
 
+    const menuTitle$2 = 'Fonts';
+    const getTooltipPlaceholder$2 = constant$1('Font {0}');
+    const systemFont = 'System Font';
     const systemStackFonts = [
       '-apple-system',
       'Segoe UI',
@@ -23290,25 +23878,27 @@
       const fonts = fontFamily.split(/\s*,\s*/);
       return map$2(fonts, font => font.replace(/^['"]+|['"]+$/g, ''));
     };
-    const isSystemFontStack = fontFamily => {
-      const matchesSystemStack = () => {
+    const matchesStack = (fonts, stack) => stack.length > 0 && forall(stack, font => fonts.indexOf(font.toLowerCase()) > -1);
+    const isSystemFontStack = (fontFamily, userStack) => {
+      if (fontFamily.indexOf('-apple-system') === 0 || userStack.length > 0) {
         const fonts = splitFonts(fontFamily.toLowerCase());
-        return forall(systemStackFonts, font => fonts.indexOf(font.toLowerCase()) > -1);
-      };
-      return fontFamily.indexOf('-apple-system') === 0 && matchesSystemStack();
+        return matchesStack(fonts, systemStackFonts) || matchesStack(fonts, userStack);
+      } else {
+        return false;
+      }
     };
     const getSpec$2 = editor => {
-      const systemFont = 'System Font';
       const getMatchingValue = () => {
         const getFirstFont = fontFamily => fontFamily ? splitFonts(fontFamily)[0] : '';
         const fontFamily = editor.queryCommandValue('FontName');
         const items = dataset.data;
         const font = fontFamily ? fontFamily.toLowerCase() : '';
+        const userStack = getDefaultFontStack(editor);
         const matchOpt = find$5(items, item => {
           const format = item.format;
           return format.toLowerCase() === font || getFirstFont(format).toLowerCase() === getFirstFont(font).toLowerCase();
         }).orThunk(() => {
-          return someIf(isSystemFontStack(font), {
+          return someIf(isSystemFontStack(font, userStack), {
             title: systemFont,
             format: font
           });
@@ -23337,10 +23927,11 @@
         const {matchOpt, font} = getMatchingValue();
         const text = matchOpt.fold(constant$1(font), item => item.title);
         emitWith(comp, updateMenuText, { text });
+        fireFontFamilyTextUpdate(editor, { value: text });
       };
       const dataset = buildBasicSettingsDataset(editor, 'font_family_formats', Delimiter.SemiColon);
       return {
-        tooltip: 'Fonts',
+        tooltip: makeTooltipText(editor, getTooltipPlaceholder$2(), systemFont),
         text: Optional.some(systemFont),
         icon: Optional.none(),
         isSelectedFor,
@@ -23353,11 +23944,11 @@
         isInvalid: never
       };
     };
-    const createFontFamilyButton = (editor, backstage) => createSelectButton(editor, backstage, getSpec$2(editor));
+    const createFontFamilyButton = (editor, backstage) => createSelectButton(editor, backstage, getSpec$2(editor), getTooltipPlaceholder$2, 'FontFamilyTextUpdate', 'fontfamily');
     const createFontFamilyMenu = (editor, backstage) => {
-      const menuItems = createMenuItems(editor, backstage, getSpec$2(editor));
+      const menuItems = createMenuItems(backstage, getSpec$2(editor));
       editor.ui.registry.addNestedMenuItem('fontfamily', {
-        text: backstage.shared.providers.translate('Fonts'),
+        text: backstage.shared.providers.translate(menuTitle$2),
         onSetup: onSetupEditableToggle(editor),
         getSubmenuItems: () => menuItems.items.validateItems(menuItems.getStyleItems())
       });
@@ -23444,7 +24035,7 @@
       pageDown: constant$1(34)
     };
 
-    const createBespokeNumberInput = (editor, backstage, spec) => {
+    const createBespokeNumberInput = (editor, backstage, spec, btnName) => {
       let currentComp = Optional.none();
       const getValueFromCurrentComp = comp => comp.map(alloyComp => Representing.getValue(alloyComp)).getOr('');
       const onSetup = onSetupEvent(editor, 'NodeChange SwitchMode', api => {
@@ -23486,6 +24077,7 @@
         }
       };
       const makeStepperButton = (action, title, tooltip, classes) => {
+        const editorOffCellStepButton = Cell(noop);
         const translatedTooltip = backstage.shared.providers.translate(tooltip);
         const altExecuting = generate$6('altExecuting');
         const onSetup = onSetupEvent(editor, 'NodeChange SwitchMode', api => {
@@ -23500,20 +24092,21 @@
           dom: {
             tag: 'button',
             attributes: {
-              'title': translatedTooltip,
-              'aria-label': translatedTooltip
+              'aria-label': translatedTooltip,
+              'data-mce-name': title
             },
             classes: classes.concat(title)
           },
           components: [renderIconFromPack$1(title, backstage.shared.providers.icons)],
           buttonBehaviours: derive$1([
             Disabling.config({}),
+            Tooltipping.config(backstage.shared.providers.tooltips.getConfig({ tooltipText: translatedTooltip })),
             config(altExecuting, [
               onControlAttached({
                 onSetup,
                 getApi
-              }, editorOffCell),
-              onControlDetached({ getApi }, editorOffCell),
+              }, editorOffCellStepButton),
+              onControlDetached({ getApi }, editorOffCellStepButton),
               run$1(keydown(), (comp, se) => {
                 if (se.event.raw.keyCode === Keys.space() || se.event.raw.keyCode === Keys.enter()) {
                   if (!Disabling.isDisabled(comp)) {
@@ -23537,19 +24130,25 @@
             [touchend()]: [
               altExecuting,
               'alloy.base.behaviour'
+            ],
+            [attachedToDom()]: [
+              'alloy.base.behaviour',
+              altExecuting,
+              'tooltipping'
+            ],
+            [detachedFromDom()]: [
+              altExecuting,
+              'tooltipping'
             ]
           }
         });
       };
-      const memMinus = record(makeStepperButton(focusBack => decrease(false, focusBack), 'minus', 'Decrease font size', ['highlight-on-focus']));
-      const memPlus = record(makeStepperButton(focusBack => increase(false, focusBack), 'plus', 'Increase font size', ['highlight-on-focus']));
+      const memMinus = record(makeStepperButton(focusBack => decrease(false, focusBack), 'minus', 'Decrease font size', []));
+      const memPlus = record(makeStepperButton(focusBack => increase(false, focusBack), 'plus', 'Increase font size', []));
       const memInput = record({
         dom: {
           tag: 'div',
-          classes: [
-            'tox-input-wrapper',
-            'highlight-on-focus'
-          ]
+          classes: ['tox-input-wrapper']
         },
         components: [Input.sketch({
             inputBehaviours: derive$1([
@@ -23622,7 +24221,8 @@
       return {
         dom: {
           tag: 'div',
-          classes: ['tox-number-input']
+          classes: ['tox-number-input'],
+          attributes: { ...isNonNullable(btnName) ? { 'data-mce-name': btnName } : {} }
         },
         components: [
           memMinus.asSpec(),
@@ -23649,6 +24249,9 @@
       };
     };
 
+    const menuTitle$1 = 'Font sizes';
+    const getTooltipPlaceholder$1 = constant$1('Font size {0}');
+    const fallbackFontSize = '12pt';
     const legacyFontSizes = {
       '8pt': '1',
       '10pt': '2',
@@ -23675,10 +24278,10 @@
       if (/[0-9.]+px$/.test(fontSize)) {
         return round(parseInt(fontSize, 10) * 72 / 96, precision || 0) + 'pt';
       } else {
-        return get$g(keywordFontSizes, fontSize).getOr(fontSize);
+        return get$h(keywordFontSizes, fontSize).getOr(fontSize);
       }
     };
-    const toLegacy = fontSize => get$g(legacyFontSizes, fontSize).getOr('');
+    const toLegacy = fontSize => get$h(legacyFontSizes, fontSize).getOr('');
     const getSpec$1 = editor => {
       const getMatchingValue = () => {
         let matchOpt = Optional.none();
@@ -23712,11 +24315,12 @@
         const {matchOpt, size} = getMatchingValue();
         const text = matchOpt.fold(constant$1(size), match => match.title);
         emitWith(comp, updateMenuText, { text });
+        fireFontSizeTextUpdate(editor, { value: text });
       };
       const dataset = buildBasicSettingsDataset(editor, 'font_size_formats', Delimiter.Space);
       return {
-        tooltip: 'Font sizes',
-        text: Optional.some('12pt'),
+        tooltip: makeTooltipText(editor, getTooltipPlaceholder$1(), fallbackFontSize),
+        text: Optional.some(fallbackFontSize),
         icon: Optional.none(),
         isSelectedFor,
         getPreviewFor,
@@ -23728,7 +24332,7 @@
         isInvalid: never
       };
     };
-    const createFontSizeButton = (editor, backstage) => createSelectButton(editor, backstage, getSpec$1(editor));
+    const createFontSizeButton = (editor, backstage) => createSelectButton(editor, backstage, getSpec$1(editor), getTooltipPlaceholder$1, 'FontSizeTextUpdate', 'fontsize');
     const getConfigFromUnit = unit => {
       var _a;
       const baseConfig = { step: 1 };
@@ -23755,10 +24359,11 @@
             'unsupportedLength',
             'empty'
           ]);
+          const currentValue = getCurrentValue();
           const parsedText = parse(text, [
             'unsupportedLength',
             'empty'
-          ]).or(parse(getCurrentValue(), [
+          ]).or(parse(currentValue, [
             'unsupportedLength',
             'empty'
           ]));
@@ -23766,22 +24371,28 @@
           const defaultUnit = getFontSizeInputDefaultUnit(editor);
           const unit = parsedText.map(res => res.unit).filter(u => u !== '').getOr(defaultUnit);
           const newValue = updateFunction(value, getConfigFromUnit(unit).step);
-          return `${ isValidValue(newValue) ? newValue : value }${ unit }`;
+          const res = `${ isValidValue(newValue) ? newValue : value }${ unit }`;
+          if (res !== currentValue) {
+            fireFontSizeInputTextUpdate(editor, { value: res });
+          }
+          return res;
         }
       };
     };
-    const createFontSizeInputButton = (editor, backstage) => createBespokeNumberInput(editor, backstage, getNumberInputSpec(editor));
+    const createFontSizeInputButton = (editor, backstage) => createBespokeNumberInput(editor, backstage, getNumberInputSpec(editor), 'fontsizeinput');
     const createFontSizeMenu = (editor, backstage) => {
-      const menuItems = createMenuItems(editor, backstage, getSpec$1(editor));
+      const menuItems = createMenuItems(backstage, getSpec$1(editor));
       editor.ui.registry.addNestedMenuItem('fontsize', {
-        text: 'Font sizes',
+        text: menuTitle$1,
         onSetup: onSetupEditableToggle(editor),
         getSubmenuItems: () => menuItems.items.validateItems(menuItems.getStyleItems())
       });
     };
 
+    const menuTitle = 'Formats';
+    const getTooltipPlaceholder = value => isEmpty(value) ? 'Formats' : 'Format {0}';
     const getSpec = (editor, dataset) => {
-      const fallbackFormat = 'Paragraph';
+      const fallbackFormat = 'Formats';
       const isSelectedFor = format => () => editor.formatter.match(format);
       const getPreviewFor = format => () => {
         const fmt = editor.formatter.get(format);
@@ -23805,11 +24416,18 @@
         };
         const flattenedItems = bind$3(getStyleFormats(editor), getFormatItems);
         const detectedFormat = findNearest(editor, constant$1(flattenedItems));
-        const text = detectedFormat.fold(constant$1(fallbackFormat), fmt => fmt.title);
-        emitWith(comp, updateMenuText, { text });
+        const text = detectedFormat.fold(constant$1({
+          title: fallbackFormat,
+          tooltipLabel: ''
+        }), fmt => ({
+          title: fmt.title,
+          tooltipLabel: fmt.title
+        }));
+        emitWith(comp, updateMenuText, { text: text.title });
+        fireStylesTextUpdate(editor, { value: text.tooltipLabel });
       };
       return {
-        tooltip: 'Formats',
+        tooltip: makeTooltipText(editor, getTooltipPlaceholder(''), ''),
         text: Optional.some(fallbackFormat),
         icon: Optional.none(),
         isSelectedFor,
@@ -23827,16 +24445,16 @@
         type: 'advanced',
         ...backstage.styles
       };
-      return createSelectButton(editor, backstage, getSpec(editor, dataset));
+      return createSelectButton(editor, backstage, getSpec(editor, dataset), getTooltipPlaceholder, 'StylesTextUpdate', 'styles');
     };
     const createStylesMenu = (editor, backstage) => {
       const dataset = {
         type: 'advanced',
         ...backstage.styles
       };
-      const menuItems = createMenuItems(editor, backstage, getSpec(editor, dataset));
+      const menuItems = createMenuItems(backstage, getSpec(editor, dataset));
       editor.ui.registry.addNestedMenuItem('styles', {
-        text: 'Formats',
+        text: menuTitle,
         onSetup: onSetupEditableToggle(editor),
         getSubmenuItems: () => menuItems.items.validateItems(menuItems.getStyleItems())
       });
@@ -23972,7 +24590,7 @@
               set$9(component.element, 'aria-describedby', descriptorId);
             });
           })]),
-        ...events$a(Optional.some(action))
+        ...events$9(Optional.some(action))
       };
       const apis = {
         repositionMenus: comp => {
@@ -24058,19 +24676,19 @@
       setText: text => emitWith(component, updateMenuText, { text }),
       setIcon: icon => emitWith(component, updateMenuIcon, { icon })
     });
-    const getTooltipAttributes = (tooltip, providersBackstage) => tooltip.map(tooltip => ({
-      'aria-label': providersBackstage.translate(tooltip),
-      'title': providersBackstage.translate(tooltip)
-    })).getOr({});
+    const getTooltipAttributes = (tooltip, providersBackstage) => tooltip.map(tooltip => ({ 'aria-label': providersBackstage.translate(tooltip) })).getOr({});
     const focusButtonEvent = generate$6('focus-button');
-    const renderCommonStructure = (optIcon, optText, tooltip, behaviours, providersBackstage) => {
+    const renderCommonStructure = (optIcon, optText, tooltip, behaviours, providersBackstage, btnName) => {
       const optMemDisplayText = optText.map(text => record(renderLabel$1(text, 'tox-tbtn', providersBackstage)));
       const optMemDisplayIcon = optIcon.map(icon => record(renderReplaceableIconFromPack(icon, providersBackstage.icons)));
       return {
         dom: {
           tag: 'button',
           classes: ['tox-tbtn'].concat(optText.isSome() ? ['tox-tbtn--select'] : []),
-          attributes: getTooltipAttributes(tooltip, providersBackstage)
+          attributes: {
+            ...getTooltipAttributes(tooltip, providersBackstage),
+            ...isNonNullable(btnName) ? { 'data-mce-name': btnName } : {}
+          }
         },
         components: componentRenderPipeline([
           optMemDisplayIcon.map(mem => mem.asSpec()),
@@ -24110,7 +24728,7 @@
         ].concat(behaviours.getOr([])))
       };
     };
-    const renderFloatingToolbarButton = (spec, backstage, identifyButtons, attributes) => {
+    const renderFloatingToolbarButton = (spec, backstage, identifyButtons, attributes, btnName) => {
       const sharedBackstage = backstage.shared;
       const editorOffCell = Cell(noop);
       const specialisation = {
@@ -24129,7 +24747,7 @@
         }),
         markers: { toggledClass: 'tox-tbtn--enabled' },
         parts: {
-          button: renderCommonStructure(spec.icon, spec.text, spec.tooltip, Optional.some(behaviours), sharedBackstage.providers),
+          button: renderCommonStructure(spec.icon, spec.text, spec.tooltip, Optional.some(behaviours), sharedBackstage.providers, btnName),
           toolbar: {
             dom: {
               tag: 'div',
@@ -24140,10 +24758,10 @@
         }
       });
     };
-    const renderCommonToolbarButton = (spec, specialisation, providersBackstage) => {
+    const renderCommonToolbarButton = (spec, specialisation, providersBackstage, btnName) => {
       var _d;
       const editorOffCell = Cell(noop);
-      const structure = renderCommonStructure(spec.icon, spec.text, spec.tooltip, Optional.none(), providersBackstage);
+      const structure = renderCommonStructure(spec.icon, spec.text, spec.tooltip, Optional.none(), providersBackstage, btnName);
       return Button.sketch({
         dom: structure.dom,
         components: structure.components,
@@ -24158,6 +24776,7 @@
               onControlAttached(specialisation, editorOffCell),
               onControlDetached(specialisation, editorOffCell)
             ]),
+            ...spec.tooltip.map(t => Tooltipping.config(providersBackstage.tooltips.getConfig({ tooltipText: providersBackstage.translate(t) + spec.shortcut.map(shortcut => ` (${ convertText(shortcut) })`).getOr('') }))).toArray(),
             DisablingConfigs.toolbarButton(() => !spec.enabled || providersBackstage.isDisabled()),
             receivingConfig()
           ].concat(specialisation.toolbarButtonBehaviours)),
@@ -24165,14 +24784,14 @@
         }
       });
     };
-    const renderToolbarButton = (spec, providersBackstage) => renderToolbarButtonWith(spec, providersBackstage, []);
-    const renderToolbarButtonWith = (spec, providersBackstage, bonusEvents) => renderCommonToolbarButton(spec, {
+    const renderToolbarButton = (spec, providersBackstage, btnName) => renderToolbarButtonWith(spec, providersBackstage, [], btnName);
+    const renderToolbarButtonWith = (spec, providersBackstage, bonusEvents, btnName) => renderCommonToolbarButton(spec, {
       toolbarButtonBehaviours: bonusEvents.length > 0 ? [config('toolbarButtonWith', bonusEvents)] : [],
       getApi: getButtonApi,
       onSetup: spec.onSetup
-    }, providersBackstage);
-    const renderToolbarToggleButton = (spec, providersBackstage) => renderToolbarToggleButtonWith(spec, providersBackstage, []);
-    const renderToolbarToggleButtonWith = (spec, providersBackstage, bonusEvents) => renderCommonToolbarButton(spec, {
+    }, providersBackstage, btnName);
+    const renderToolbarToggleButton = (spec, providersBackstage, btnName) => renderToolbarToggleButtonWith(spec, providersBackstage, [], btnName);
+    const renderToolbarToggleButtonWith = (spec, providersBackstage, bonusEvents, btnName) => renderCommonToolbarButton(spec, {
       toolbarButtonBehaviours: [
         Replacing.config({}),
         Toggling.config({
@@ -24183,7 +24802,7 @@
       ].concat(bonusEvents.length > 0 ? [config('toolbarToggleButtonWith', bonusEvents)] : []),
       getApi: getToggleApi,
       onSetup: spec.onSetup
-    }, providersBackstage);
+    }, providersBackstage, btnName);
     const fetchChoices = (getApi, spec, providersBackstage) => comp => Future.nu(callback => spec.fetch(callback)).map(items => Optional.from(createTieredDataFrom(deepMerge(createPartialChoiceMenu(generate$6('menu-value'), items, value => {
       spec.onItemAction(getApi(comp), value);
     }, spec.columns, spec.presets, ItemResponse$1.CLOSE_ON_EXECUTE, spec.select.getOr(never), providersBackstage), {
@@ -24194,7 +24813,8 @@
           });
         })])
     }))));
-    const renderSplitButton = (spec, sharedBackstage) => {
+    const renderSplitButton = (spec, sharedBackstage, btnName) => {
+      const tooltipString = Cell(spec.tooltip.getOr(''));
       const getApi = comp => ({
         isEnabled: () => !Disabling.isDisabled(comp),
         setEnabled: state => Disabling.set(comp, !state),
@@ -24211,7 +24831,12 @@
         },
         isActive: () => descendant(comp.element, 'span').exists(button => comp.getSystem().getByDom(button).exists(Toggling.isOn)),
         setText: text => descendant(comp.element, 'span').each(button => comp.getSystem().getByDom(button).each(buttonComp => emitWith(buttonComp, updateMenuText, { text }))),
-        setIcon: icon => descendant(comp.element, 'span').each(button => comp.getSystem().getByDom(button).each(buttonComp => emitWith(buttonComp, updateMenuIcon, { icon })))
+        setIcon: icon => descendant(comp.element, 'span').each(button => comp.getSystem().getByDom(button).each(buttonComp => emitWith(buttonComp, updateMenuIcon, { icon }))),
+        setTooltip: tooltip => {
+          const translatedTooltip = sharedBackstage.providers.translate(tooltip);
+          set$9(comp.element, 'aria-label', translatedTooltip);
+          tooltipString.set(tooltip);
+        }
       });
       const editorOffCell = Cell(noop);
       const specialisation = {
@@ -24224,7 +24849,8 @@
           classes: ['tox-split-button'],
           attributes: {
             'aria-pressed': false,
-            ...getTooltipAttributes(spec.tooltip, sharedBackstage.providers)
+            ...getTooltipAttributes(spec.tooltip, sharedBackstage.providers),
+            ...isNonNullable(btnName) ? { 'data-mce-name': btnName } : {}
           }
         },
         onExecute: button => {
@@ -24244,12 +24870,30 @@
             onControlAttached(specialisation, editorOffCell),
             onControlDetached(specialisation, editorOffCell)
           ]),
-          Unselecting.config({})
+          Unselecting.config({}),
+          ...spec.tooltip.map(tooltip => {
+            return Tooltipping.config({
+              ...sharedBackstage.providers.tooltips.getConfig({
+                tooltipText: sharedBackstage.providers.translate(tooltip),
+                onShow: comp => {
+                  if (tooltipString.get() !== tooltip) {
+                    const translatedTooltip = sharedBackstage.providers.translate(tooltipString.get());
+                    Tooltipping.setComponents(comp, sharedBackstage.providers.tooltips.getComponents({ tooltipText: translatedTooltip }));
+                  }
+                }
+              })
+            });
+          }).toArray()
         ]),
         eventOrder: {
           [attachedToDom()]: [
             'alloy.base.behaviour',
-            'split-dropdown-events'
+            'split-dropdown-events',
+            'tooltipping'
+          ],
+          [detachedFromDom()]: [
+            'split-dropdown-events',
+            'tooltipping'
           ]
         },
         toggleClass: 'tox-tbtn--enabled',
@@ -24268,7 +24912,7 @@
                 'tox-tbtn',
                 'tox-split-button__chevron'
               ],
-              innerHtml: get$2('chevron-down', sharedBackstage.providers.icons)
+              innerHtml: get$3('chevron-down', sharedBackstage.providers.icons)
             },
             buttonBehaviours: derive$1([
               DisablingConfigs.splitButton(sharedBackstage.providers.isDisabled),
@@ -24332,16 +24976,16 @@
         items: ['addcomment']
       }
     ];
-    const renderFromBridge = (bridgeBuilder, render) => (spec, backstage, editor) => {
+    const renderFromBridge = (bridgeBuilder, render) => (spec, backstage, editor, btnName) => {
       const internal = bridgeBuilder(spec).mapError(errInfo => formatError(errInfo)).getOrDie();
-      return render(internal, backstage, editor);
+      return render(internal, backstage, editor, btnName);
     };
     const types = {
-      button: renderFromBridge(createToolbarButton, (s, backstage) => renderToolbarButton(s, backstage.shared.providers)),
-      togglebutton: renderFromBridge(createToggleButton, (s, backstage) => renderToolbarToggleButton(s, backstage.shared.providers)),
-      menubutton: renderFromBridge(createMenuButton, (s, backstage) => renderMenuButton(s, 'tox-tbtn', backstage, Optional.none(), false)),
-      splitbutton: renderFromBridge(createSplitButton, (s, backstage) => renderSplitButton(s, backstage.shared)),
-      grouptoolbarbutton: renderFromBridge(createGroupToolbarButton, (s, backstage, editor) => {
+      button: renderFromBridge(createToolbarButton, (s, backstage, _, btnName) => renderToolbarButton(s, backstage.shared.providers, btnName)),
+      togglebutton: renderFromBridge(createToggleButton, (s, backstage, _, btnName) => renderToolbarToggleButton(s, backstage.shared.providers, btnName)),
+      menubutton: renderFromBridge(createMenuButton, (s, backstage, _, btnName) => renderMenuButton(s, 'tox-tbtn', backstage, Optional.none(), false, btnName)),
+      splitbutton: renderFromBridge(createSplitButton, (s, backstage, _, btnName) => renderSplitButton(s, backstage.shared, btnName)),
+      grouptoolbarbutton: renderFromBridge(createGroupToolbarButton, (s, backstage, editor, btnName) => {
         const buttons = editor.ui.registry.getAll().buttons;
         const identify = toolbar => identifyButtons(editor, {
           buttons,
@@ -24351,16 +24995,16 @@
         const attributes = { [Attribute]: backstage.shared.header.isPositionedAtTop() ? AttributeValue.TopToBottom : AttributeValue.BottomToTop };
         switch (getToolbarMode(editor)) {
         case ToolbarMode$1.floating:
-          return renderFloatingToolbarButton(s, backstage, identify, attributes);
+          return renderFloatingToolbarButton(s, backstage, identify, attributes, btnName);
         default:
           throw new Error('Toolbar groups are only supported when using floating toolbar mode');
         }
       })
     };
-    const extractFrom = (spec, backstage, editor) => get$g(types, spec.type).fold(() => {
+    const extractFrom = (spec, backstage, editor, btnName) => get$h(types, spec.type).fold(() => {
       console.error('skipping button defined by', spec);
       return Optional.none();
-    }, render => Optional.some(render(spec, backstage, editor)));
+    }, render => Optional.some(render(spec, backstage, editor, btnName)));
     const bespokeButtons = {
       styles: createStylesButton,
       fontsize: createFontSizeButton,
@@ -24400,12 +25044,12 @@
         return [];
       }
     };
-    const lookupButton = (editor, buttons, toolbarItem, allowToolbarGroups, backstage, prefixes) => get$g(buttons, toolbarItem.toLowerCase()).orThunk(() => prefixes.bind(ps => findMap(ps, prefix => get$g(buttons, prefix + toolbarItem.toLowerCase())))).fold(() => get$g(bespokeButtons, toolbarItem.toLowerCase()).map(r => r(editor, backstage)), spec => {
+    const lookupButton = (editor, buttons, toolbarItem, allowToolbarGroups, backstage, prefixes) => get$h(buttons, toolbarItem.toLowerCase()).orThunk(() => prefixes.bind(ps => findMap(ps, prefix => get$h(buttons, prefix + toolbarItem.toLowerCase())))).fold(() => get$h(bespokeButtons, toolbarItem.toLowerCase()).map(r => r(editor, backstage)), spec => {
       if (spec.type === 'grouptoolbarbutton' && !allowToolbarGroups) {
         console.warn(`Ignoring the '${ toolbarItem }' toolbar button. Group toolbar buttons are only supported when using floating toolbar mode and cannot be nested.`);
         return Optional.none();
       } else {
-        return extractFrom(spec, backstage, editor);
+        return extractFrom(spec, backstage, editor, toolbarItem.toLowerCase());
       }
     });
     const identifyButtons = (editor, toolbarConfig, backstage, prefixes) => {
@@ -24441,7 +25085,7 @@
       }
     };
 
-    const detection = detect$2();
+    const detection = detect$1();
     const isiOS12 = detection.os.isiOS() && detection.os.version.major <= 12;
     const setupEvents$1 = (editor, uiRefs) => {
       const {uiMotherships} = uiRefs;
@@ -24499,15 +25143,12 @@
       const {mainUi, uiMotherships} = uiRefs;
       const lastToolbarWidth = Cell(0);
       const outerContainer = mainUi.outerContainer;
-      editor.on('SkinLoaded', () => {
-        setToolbar(editor, uiRefs, rawUiConfig, backstage);
-      });
       iframe(editor);
       const eTargetNode = SugarElement.fromDom(args.targetNode);
       const uiRoot = getContentContainer(getRootNode(eTargetNode));
       attachSystemAfter(eTargetNode, mainUi.mothership);
       attachUiMotherships(editor, uiRoot, uiRefs);
-      editor.on('PostRender', () => {
+      editor.on('SkinLoaded', () => {
         OuterContainer.setSidebar(outerContainer, rawUiConfig.sidebar, getSidebarShow(editor));
         setToolbar(editor, uiRefs, rawUiConfig, backstage);
         lastToolbarWidth.set(editor.getWin().innerWidth);
@@ -24624,30 +25265,31 @@
     const maximumDistanceToEdge = 40;
     const InlineHeader = (editor, targetElm, uiRefs, backstage, floatContainer) => {
       const {mainUi, uiMotherships} = uiRefs;
-      const DOM = global$7.DOM;
+      const DOM = global$8.DOM;
       const useFixedToolbarContainer = useFixedContainer(editor);
       const isSticky = isStickyToolbar(editor);
       const editorMaxWidthOpt = getMaxWidthOption(editor).or(getWidth(editor));
       const headerBackstage = backstage.shared.header;
       const isPositionedAtTop = headerBackstage.isPositionedAtTop;
+      const minimumToolbarWidth = 150;
       const toolbarMode = getToolbarMode(editor);
       const isSplitToolbar = toolbarMode === ToolbarMode.sliding || toolbarMode === ToolbarMode.floating;
       const visible = Cell(false);
       const isVisible = () => visible.get() && !editor.removed;
-      const calcToolbarOffset = toolbar => isSplitToolbar ? toolbar.fold(constant$1(0), tbar => tbar.components().length > 1 ? get$d(tbar.components()[1].element) : 0) : 0;
+      const calcToolbarOffset = toolbar => isSplitToolbar ? toolbar.fold(constant$1(0), tbar => tbar.components().length > 1 ? get$e(tbar.components()[1].element) : 0) : 0;
       const calcMode = container => {
         switch (getToolbarLocation(editor)) {
         case ToolbarLocation.auto:
           const toolbar = OuterContainer.getToolbar(mainUi.outerContainer);
           const offset = calcToolbarOffset(toolbar);
-          const toolbarHeight = get$d(container.element) - offset;
+          const toolbarHeight = get$e(container.element) - offset;
           const targetBounds = box$1(targetElm);
           const roomAtTop = targetBounds.y > toolbarHeight;
           if (roomAtTop) {
             return 'top';
           } else {
             const doc = documentElement(targetElm);
-            const docHeight = Math.max(doc.dom.scrollHeight, get$d(doc));
+            const docHeight = Math.max(doc.dom.scrollHeight, get$e(doc));
             const roomAtBottom = targetBounds.bottom < docHeight - toolbarHeight;
             if (roomAtBottom) {
               return 'bottom';
@@ -24675,45 +25317,45 @@
       const updateChromeWidth = () => {
         floatContainer.on(container => {
           const maxWidth = editorMaxWidthOpt.getOrThunk(() => {
-            const bodyMargin = parseToInt(get$e(body(), 'margin-left')).getOr(0);
-            return get$c(body()) - absolute$3(targetElm).left + bodyMargin;
+            return getBounds$3().width - viewport$1(targetElm).left - 10;
           });
           set$8(container.element, 'max-width', maxWidth + 'px');
         });
       };
-      const updateChromePosition = optToolbarWidth => {
+      const updateChromePosition = (isOuterContainerWidthRestored, prevScroll) => {
         floatContainer.on(container => {
           const toolbar = OuterContainer.getToolbar(mainUi.outerContainer);
           const offset = calcToolbarOffset(toolbar);
           const targetBounds = box$1(targetElm);
-          const {top, left} = getOffsetParent$1(editor, mainUi.outerContainer.element).fold(() => {
-            return {
-              top: isPositionedAtTop() ? Math.max(targetBounds.y - get$d(container.element) + offset, 0) : targetBounds.bottom,
-              left: targetBounds.x
-            };
-          }, offsetParent => {
+          const offsetParent = getOffsetParent$1(editor, mainUi.outerContainer.element);
+          const getLeft = () => offsetParent.fold(() => targetBounds.x, offsetParent => {
+            const offsetBox = box$1(offsetParent);
+            const isOffsetParentBody = eq(offsetParent, body());
+            return isOffsetParentBody ? targetBounds.x : targetBounds.x - offsetBox.x;
+          });
+          const getTop = () => offsetParent.fold(() => isPositionedAtTop() ? Math.max(targetBounds.y - get$e(container.element) + offset, 0) : targetBounds.bottom, offsetParent => {
             var _a;
             const offsetBox = box$1(offsetParent);
             const scrollDelta = (_a = offsetParent.dom.scrollTop) !== null && _a !== void 0 ? _a : 0;
             const isOffsetParentBody = eq(offsetParent, body());
-            const topValue = isOffsetParentBody ? Math.max(targetBounds.y - get$d(container.element) + offset, 0) : targetBounds.y - offsetBox.y + scrollDelta - get$d(container.element) + offset;
-            return {
-              top: isPositionedAtTop() ? topValue : targetBounds.bottom,
-              left: isOffsetParentBody ? targetBounds.x : targetBounds.x - offsetBox.x
-            };
+            const topValue = isOffsetParentBody ? Math.max(targetBounds.y - get$e(container.element) + offset, 0) : targetBounds.y - offsetBox.y + scrollDelta - get$e(container.element) + offset;
+            return isPositionedAtTop() ? topValue : targetBounds.bottom;
           });
+          const left = getLeft();
+          const widthProperties = someIf(isOuterContainerWidthRestored, Math.ceil(mainUi.outerContainer.element.dom.getBoundingClientRect().width)).filter(w => w > minimumToolbarWidth).map(toolbarWidth => {
+            const scroll = prevScroll.getOr(get$c());
+            const availableWidth = window.innerWidth - (left - scroll.left);
+            const width = Math.max(Math.min(toolbarWidth, availableWidth), minimumToolbarWidth);
+            if (availableWidth < toolbarWidth) {
+              set$8(mainUi.outerContainer.element, 'width', width + 'px');
+            }
+            return { width: width + 'px' };
+          }).getOr({ width: 'max-content' });
           const baseProperties = {
             position: 'absolute',
             left: Math.round(left) + 'px',
-            top: Math.round(top) + 'px'
+            top: getTop() + 'px'
           };
-          const widthProperties = optToolbarWidth.map(toolbarWidth => {
-            const scroll = get$b();
-            const minimumToolbarWidth = 150;
-            const availableWidth = window.innerWidth - (left - scroll.left);
-            const width = Math.max(Math.min(toolbarWidth, availableWidth), minimumToolbarWidth);
-            return { width: width + 'px' };
-          }).getOr({});
           setAll(mainUi.outerContainer.element, {
             ...baseProperties,
             ...widthProperties
@@ -24726,21 +25368,17 @@
           m.broadcastOn([repositionPopups()], {});
         });
       };
-      const restoreAndGetCompleteOuterContainerWidth = () => {
+      const restoreOuterContainerWidth = () => {
         if (!useFixedToolbarContainer) {
           const toolbarCurrentRightsidePosition = absolute$3(mainUi.outerContainer.element).left + getOuter$1(mainUi.outerContainer.element);
           if (toolbarCurrentRightsidePosition >= window.innerWidth - maximumDistanceToEdge || getRaw(mainUi.outerContainer.element, 'width').isSome()) {
             set$8(mainUi.outerContainer.element, 'position', 'absolute');
             set$8(mainUi.outerContainer.element, 'left', '0px');
             remove$6(mainUi.outerContainer.element, 'width');
-            const w = getOuter$1(mainUi.outerContainer.element);
-            return Optional.some(w);
-          } else {
-            return Optional.none();
+            return true;
           }
-        } else {
-          return Optional.none();
         }
+        return false;
       };
       const update = stickyAction => {
         if (!isVisible()) {
@@ -24749,12 +25387,18 @@
         if (!useFixedToolbarContainer) {
           updateChromeWidth();
         }
-        const optToolbarWidth = useFixedToolbarContainer ? Optional.none() : restoreAndGetCompleteOuterContainerWidth();
+        const prevScroll = get$c();
+        const isOuterContainerWidthRestored = useFixedToolbarContainer ? false : restoreOuterContainerWidth();
         if (isSplitToolbar) {
           OuterContainer.refreshToolbar(mainUi.outerContainer);
         }
         if (!useFixedToolbarContainer) {
-          updateChromePosition(optToolbarWidth);
+          const currentScroll = get$c();
+          const optScroll = someIf(prevScroll.left !== currentScroll.left, prevScroll);
+          updateChromePosition(isOuterContainerWidthRestored, optScroll);
+          optScroll.each(scroll => {
+            to(scroll.left, currentScroll.top);
+          });
         }
         if (isSticky) {
           floatContainer.on(stickyAction);
@@ -24858,7 +25502,7 @@
       let lastScrollX = 0;
       const updateUi = last(() => ui.update(Docking.refresh), 33);
       editor.on('ScrollWindow', () => {
-        const newScrollX = get$b().left;
+        const newScrollX = get$c().left;
         if (newScrollX !== lastScrollX) {
           lastScrollX = newScrollX;
           updateUi.throttle();
@@ -24878,7 +25522,7 @@
     };
     const render = (editor, uiRefs, rawUiConfig, backstage, args) => {
       const {mainUi} = uiRefs;
-      const floatContainer = value$2();
+      const floatContainer = value$4();
       const targetElm = SugarElement.fromDom(args.targetNode);
       const ui = InlineHeader(editor, targetElm, uiRefs, backstage, floatContainer);
       const toolbarPersist = isToolbarPersist(editor);
@@ -24897,11 +25541,18 @@
           attachSystem(uiContainer, mainUi.mothership);
         }
         attachSystem(uiContainer, uiRefs.dialogUi.mothership);
-        setToolbar(editor, uiRefs, rawUiConfig, backstage);
-        OuterContainer.setMenubar(mainUi.outerContainer, identifyMenus(editor, rawUiConfig));
-        ui.show();
-        setupEvents(editor, targetElm, ui, toolbarPersist);
-        editor.nodeChanged();
+        const setup = () => {
+          setToolbar(editor, uiRefs, rawUiConfig, backstage);
+          OuterContainer.setMenubar(mainUi.outerContainer, identifyMenus(editor, rawUiConfig));
+          ui.show();
+          setupEvents(editor, targetElm, ui, toolbarPersist);
+          editor.nodeChanged();
+        };
+        if (toolbarPersist) {
+          editor.once('SkinLoaded', setup);
+        } else {
+          setup();
+        }
       };
       editor.on('show', render);
       editor.on('hide', ui.hide);
@@ -24935,9 +25586,9 @@
     });
 
     const LazyUiReferences = () => {
-      const dialogUi = value$2();
-      const popupUi = value$2();
-      const mainUi = value$2();
+      const dialogUi = value$4();
+      const popupUi = value$4();
+      const mainUi = value$4();
       const lazyGetInOuterOrDie = (label, f) => () => mainUi.get().bind(oc => f(oc.outerContainer)).getOrDie(`Could not find ${ label } element in OuterContainer`);
       const getUiMotherships = () => {
         const optDialogMothership = dialogUi.get().map(ui => ui.mothership);
@@ -25076,7 +25727,7 @@
       const rng = editor.selection.getRng();
       const rect = getRangeRect(rng);
       if (editor.inline) {
-        const scroll = get$b();
+        const scroll = get$c();
         return bounds(scroll.left + rect.left, scroll.top + rect.top, rect.width, rect.height);
       } else {
         const bodyPos = absolute$2(SugarElement.fromDom(editor.getBody()));
@@ -25176,8 +25827,8 @@
           return isOverlapping && !data.isReposition() ? flip : preserve;
         });
       } else {
-        const yBounds = data.getMode() === 'fixed' ? bounds.y + get$b().top : bounds.y;
-        const contextbarHeight = get$d(contextbar) + bubbleSize$1;
+        const yBounds = data.getMode() === 'fixed' ? bounds.y + get$c().top : bounds.y;
+        const contextbarHeight = get$e(contextbar) + bubbleSize$1;
         return yBounds + contextbarHeight <= selectionBounds.y ? north : south;
       }
     };
@@ -25431,10 +26082,10 @@
             run$1(changeSlideEvent, (comp, se) => {
               const elem = comp.element;
               remove$6(elem, 'width');
-              const currentWidth = get$c(elem);
+              const currentWidth = get$d(elem);
               InlineView.setContent(comp, se.event.contents);
               add$2(elem, resizingClass);
-              const newWidth = get$c(elem);
+              const newWidth = get$d(elem);
               set$8(elem, 'width', currentWidth + 'px');
               InlineView.getContent(comp).each(newContents => {
                 se.event.focus.bind(f => {
@@ -25487,10 +26138,10 @@
     const register$9 = (editor, registryContextToolbars, sink, extras) => {
       const backstage = extras.backstage;
       const sharedBackstage = backstage.shared;
-      const isTouch = detect$2().deviceType.isTouch;
-      const lastElement = value$2();
-      const lastTrigger = value$2();
-      const lastContextPosition = value$2();
+      const isTouch = detect$1().deviceType.isTouch;
+      const lastElement = value$4();
+      const lastTrigger = value$4();
+      const lastContextPosition = value$4();
       const contextbar = build$1(renderContextToolbar({
         sink,
         onEscape: () => {
@@ -25638,7 +26289,7 @@
         editor.on(hideContextToolbarEvent, close);
         editor.on(showContextToolbarEvent, e => {
           const scopes = getScopes();
-          get$g(scopes.lookupTable, e.toolbarKey).each(ctx => {
+          get$h(scopes.lookupTable, e.toolbarKey).each(ctx => {
             launchContext([ctx], someIf(e.target !== editor, e.target));
             InlineView.getContent(contextbar).each(Keying.focusIn);
           });
@@ -25652,6 +26303,11 @@
         });
         editor.on('SwitchMode', () => {
           if (editor.mode.isReadOnly()) {
+            close();
+          }
+        });
+        editor.on('ExecCommand', ({command}) => {
+          if (command.toLowerCase() === 'toggleview') {
             close();
           }
         });
@@ -25721,7 +26377,7 @@
       const getMenuItems = () => {
         const options = spec.getOptions(editor);
         const initial = spec.getCurrent(editor).map(spec.hash);
-        const current = value$2();
+        const current = value$4();
         return map$2(options, value => ({
           type: 'togglemenuitem',
           text: spec.display(value),
@@ -25882,17 +26538,20 @@
         {
           name: 'bold',
           text: 'Bold',
-          icon: 'bold'
+          icon: 'bold',
+          shortcut: 'Meta+B'
         },
         {
           name: 'italic',
           text: 'Italic',
-          icon: 'italic'
+          icon: 'italic',
+          shortcut: 'Meta+I'
         },
         {
           name: 'underline',
           text: 'Underline',
-          icon: 'underline'
+          icon: 'underline',
+          shortcut: 'Meta+U'
         },
         {
           name: 'strikethrough',
@@ -25914,16 +26573,19 @@
           tooltip: btn.text,
           icon: btn.icon,
           onSetup: onSetupStateToggle(editor, btn.name),
-          onAction: onActionToggleFormat(editor, btn.name)
+          onAction: onActionToggleFormat(editor, btn.name),
+          shortcut: btn.shortcut
         });
       });
       for (let i = 1; i <= 6; i++) {
         const name = 'h' + i;
+        const shortcut = `Access+${ i }`;
         editor.ui.registry.addToggleButton(name, {
           text: name.toUpperCase(),
           tooltip: 'Heading ' + i,
           onSetup: onSetupStateToggle(editor, name),
-          onAction: onActionToggleFormat(editor, name)
+          onAction: onActionToggleFormat(editor, name),
+          shortcut
         });
       }
     };
@@ -25939,13 +26601,15 @@
           name: 'help',
           text: 'Help',
           action: 'mceHelp',
-          icon: 'help'
+          icon: 'help',
+          shortcut: 'Alt+0'
         },
         {
           name: 'selectall',
           text: 'Select all',
           action: 'SelectAll',
-          icon: 'select-all'
+          icon: 'select-all',
+          shortcut: 'Meta+A'
         },
         {
           name: 'newdocument',
@@ -25957,13 +26621,15 @@
           name: 'print',
           text: 'Print',
           action: 'mcePrint',
-          icon: 'print'
+          icon: 'print',
+          shortcut: 'Meta+P'
         }
       ], btn => {
         editor.ui.registry.addButton(btn.name, {
           tooltip: btn.text,
           icon: btn.icon,
-          onAction: onActionExecCommand(editor, btn.action)
+          onAction: onActionExecCommand(editor, btn.action),
+          shortcut: btn.shortcut
         });
       });
       global$1.each([
@@ -26175,14 +26841,16 @@
         icon: 'undo',
         enabled: false,
         onSetup: onSetupUndoRedoState(editor, 'hasUndo'),
-        onAction: onActionExecCommand(editor, 'undo')
+        onAction: onActionExecCommand(editor, 'undo'),
+        shortcut: 'Meta+Z'
       });
       editor.ui.registry.addButton('redo', {
         tooltip: 'Redo',
         icon: 'redo',
         enabled: false,
         onSetup: onSetupUndoRedoState(editor, 'hasRedo'),
-        onAction: onActionExecCommand(editor, 'redo')
+        onAction: onActionExecCommand(editor, 'redo'),
+        shortcut: 'Meta+Y'
       });
     };
     const register$2 = editor => {
@@ -26297,7 +26965,7 @@
       }
     };
     const transposeContentAreaContainer = (element, pos) => {
-      const containerPos = global$7.DOM.getPos(element);
+      const containerPos = global$8.DOM.getPos(element);
       return transpose(pos, containerPos.x, containerPos.y);
     };
     const getPointAnchor = (editor, e) => {
@@ -26455,7 +27123,7 @@
       });
     };
     const initAndShow = (editor, e, buildMenu, backstage, contextmenu, anchorType) => {
-      const detection = detect$2();
+      const detection = detect$1();
       const isiOS = detection.os.isiOS();
       const isMacOS = detection.os.isMacOS();
       const isAndroid = detection.os.isAndroid();
@@ -26529,7 +27197,7 @@
     };
     const generateContextMenu = (contextMenus, menuConfig, selectedElement) => {
       const sections = foldl(menuConfig, (acc, name) => {
-        return get$g(contextMenus, name.toLowerCase()).map(menu => {
+        return get$h(contextMenus, name.toLowerCase()).map(menu => {
           const items = menu.update(selectedElement);
           if (isString(items) && isNotEmpty(trim$1(items))) {
             return addContextMenuGroup(acc, items.split(' '));
@@ -26562,7 +27230,7 @@
       }
     };
     const setup$5 = (editor, lazySink, backstage) => {
-      const detection = detect$2();
+      const detection = detect$1();
       const isTouch = detection.deviceType.isTouch;
       const contextmenu = build$1(InlineView.sketch({
         dom: { tag: 'div' },
@@ -26678,10 +27346,10 @@
     const fixed = adt.fixed;
 
     const parseAttrToInt = (element, name) => {
-      const value = get$f(element, name);
+      const value = get$g(element, name);
       return isUndefined(value) ? NaN : parseInt(value, 10);
     };
-    const get = (component, snapsInfo) => {
+    const get$1 = (component, snapsInfo) => {
       const element = component.element;
       const x = parseAttrToInt(element, snapsInfo.leftAttr);
       const y = parseAttrToInt(element, snapsInfo.topAttr);
@@ -26698,7 +27366,7 @@
       remove$7(element, snapsInfo.topAttr);
     };
 
-    const getCoords = (component, snapInfo, coord, delta) => get(component, snapInfo).fold(() => coord, fixed$1 => fixed(fixed$1.left + delta.left, fixed$1.top + delta.top));
+    const getCoords = (component, snapInfo, coord, delta) => get$1(component, snapInfo).fold(() => coord, fixed$1 => fixed(fixed$1.left + delta.left, fixed$1.top + delta.top));
     const moveOrSnap = (component, snapInfo, coord, delta, scroll, origin) => {
       const newCoord = getCoords(component, snapInfo, coord, delta);
       const snap = snapInfo.mustSnap ? findClosestSnap(component, snapInfo, newCoord, scroll, origin) : findSnap(component, snapInfo, newCoord, scroll, origin);
@@ -26768,7 +27436,7 @@
       const target = dragConfig.getTarget(component.element);
       if (dragConfig.repositionTarget) {
         const doc = owner$4(component.element);
-        const scroll = get$b(doc);
+        const scroll = get$c(doc);
         const origin = getOrigin(target);
         const snapPin = snapTo$1(snap, scroll, origin);
         const styles = toStyles(snapPin.coord, scroll, origin);
@@ -26793,7 +27461,7 @@
         getRaw(root, 'z-index').each(zindex => {
           set$9(root, initialAttribute, zindex);
         });
-        set$8(root, 'z-index', get$e(blocker.element, 'z-index'));
+        set$8(root, 'z-index', get$f(blocker.element, 'z-index'));
       });
     };
     const instigate = (anyComponent, blocker) => {
@@ -26878,7 +27546,7 @@
       const target = dragConfig.getTarget(component.element);
       if (dragConfig.repositionTarget) {
         const doc = owner$4(component.element);
-        const scroll = get$b(doc);
+        const scroll = get$c(doc);
         const origin = getOrigin(target);
         const currentCoord = getCurrentCoord(target);
         const newCoord = calcNewCoord(component, dragConfig.snaps, currentCoord, scroll, origin, delta, startData);
@@ -26995,7 +27663,7 @@
     });
 
     const events$2 = (dragConfig, dragState, updateStartState) => {
-      const blockerSingleton = value$2();
+      const blockerSingleton = value$4();
       const stopBlocking = component => {
         stop(component, blockerSingleton.get(), dragConfig, dragState);
         blockerSingleton.clear();
@@ -27074,7 +27742,7 @@
       };
       const getStartData = () => startData;
       const readState = constant$1({});
-      return nu$8({
+      return nu$7({
         readState,
         reset,
         update,
@@ -27174,8 +27842,8 @@
       const tlTds = Cell([]);
       const brTds = Cell([]);
       const isVisible = Cell(false);
-      const startCell = value$2();
-      const finishCell = value$2();
+      const startCell = value$4();
+      const finishCell = value$4();
       const getTopLeftSnap = td => {
         const box = absolute$2(td);
         return calcSnap(memTopLeft.getOpt(sink), td, box.x, box.y, box.width, box.height);
@@ -27227,20 +27895,23 @@
       const snapLastTopLeft = () => startCell.get().each(snapTopLeft);
       const snapBottomRight = cell => snapTo(bottomRight, cell, getBottomRightSnap, 'bottom');
       const snapLastBottomRight = () => finishCell.get().each(snapBottomRight);
-      if (detect$2().deviceType.isTouch()) {
+      if (detect$1().deviceType.isTouch()) {
+        const domToSugar = arr => map$2(arr, SugarElement.fromDom);
         editor.on('TableSelectionChange', e => {
           if (!isVisible.get()) {
             attach(sink, topLeft);
             attach(sink, bottomRight);
             isVisible.set(true);
           }
-          startCell.set(e.start);
-          finishCell.set(e.finish);
-          e.otherCells.each(otherCells => {
-            tlTds.set(otherCells.upOrLeftCells);
-            brTds.set(otherCells.downOrRightCells);
-            snapTopLeft(e.start);
-            snapBottomRight(e.finish);
+          const start = SugarElement.fromDom(e.start);
+          const finish = SugarElement.fromDom(e.finish);
+          startCell.set(start);
+          finishCell.set(finish);
+          Optional.from(e.otherCells).each(otherCells => {
+            tlTds.set(domToSugar(otherCells.upOrLeftCells));
+            brTds.set(domToSugar(otherCells.downOrRightCells));
+            snapTopLeft(start);
+            snapBottomRight(finish);
           });
         });
         editor.on('ResizeEditor ResizeWindow ScrollContent', () => {
@@ -27367,7 +28038,7 @@
     };
     const resize = (editor, deltas, resizeType) => {
       const container = SugarElement.fromDom(editor.getContainer());
-      const dimensions = getDimensions(editor, deltas, resizeType, get$d(container), get$c(container));
+      const dimensions = getDimensions(editor, deltas, resizeType, get$e(container), get$d(container));
       each(dimensions, (val, dim) => {
         if (isNumber(val)) {
           set$8(container, dim, numToPx(val));
@@ -27402,8 +28073,8 @@
         tag: 'div',
         classes: ['tox-statusbar__resize-handle'],
         attributes: {
-          'title': providersBackstage.translate('Resize'),
-          'aria-label': providersBackstage.translate(resizeLabel)
+          'aria-label': providersBackstage.translate(resizeLabel),
+          'data-mce-name': 'resize-handle'
         },
         behaviours: [
           Dragging.config({
@@ -27420,7 +28091,8 @@
             onDown: () => keyboardHandler(editor, resizeType, 0, 1)
           }),
           Tabstopping.config({}),
-          Focusing.config({})
+          Focusing.config({}),
+          Tooltipping.config(providersBackstage.tooltips.getConfig({ tooltipText: providersBackstage.translate('Resize') }))
         ]
       }, providersBackstage.icons));
     };
@@ -27496,10 +28168,10 @@
               dom: {
                 tag: 'a',
                 attributes: {
-                  'href': 'https://www.tiny.cloud/powered-by-tiny?utm_campaign=editor_referral&utm_medium=poweredby&utm_source=tinymce&utm_content=v6',
+                  'href': 'https://www.tiny.cloud/powered-by-tiny?utm_campaign=poweredby&utm_source=tiny&utm_medium=referral&utm_content=v7',
                   'rel': 'noopener',
                   'target': '_blank',
-                  'aria-label': global$8.translate([
+                  'aria-label': global$5.translate([
                     'Powered by {0}',
                     'Tiny'
                   ])
@@ -27518,7 +28190,7 @@
             tag: 'div',
             classes: ['tox-statusbar__help-text']
           },
-          components: [text$2(global$8.translate([
+          components: [text$2(global$5.translate([
               text,
               shortcutText
             ]))]
@@ -27613,10 +28285,10 @@
       const mode = isInline ? Inline : Iframe;
       const header = isStickyToolbar(editor) ? StickyHeader : StaticHeader;
       const lazyUiRefs = LazyUiReferences();
-      const lazyMothership = value$2();
-      const lazyDialogMothership = value$2();
-      const lazyPopupMothership = value$2();
-      const platform = detect$2();
+      const lazyMothership = value$4();
+      const lazyDialogMothership = value$4();
+      const lazyPopupMothership = value$4();
+      const platform = detect$1();
       const isTouch = platform.deviceType.isTouch();
       const touchPlatformClass = 'tox-platform-touch';
       const deviceClasses = isTouch ? [touchPlatformClass] : [];
@@ -27641,7 +28313,7 @@
       const lazyBottomAnchorBar = lazyUiRefs.lazyGetInOuterOrDie('bottom anchor bar', memBottomAnchorBar.getOpt);
       const lazyToolbar = lazyUiRefs.lazyGetInOuterOrDie('toolbar', OuterContainer.getToolbar);
       const lazyThrobber = lazyUiRefs.lazyGetInOuterOrDie('throbber', OuterContainer.getThrobber);
-      const backstages = init$6({
+      const backstages = init$5({
         popup: lazyPopupSinkResult,
         dialog: lazyDialogSinkResult
       }, editor, lazyAnchorBar, lazyBottomAnchorBar);
@@ -27755,7 +28427,7 @@
       };
       const renderDialogUi = () => {
         const uiContainer = getUiContainer(editor);
-        const isGridUiContainer = eq(body(), uiContainer) && get$e(uiContainer, 'display') === 'grid';
+        const isGridUiContainer = eq(body(), uiContainer) && get$f(uiContainer, 'display') === 'grid';
         const sinkSpec = {
           dom: {
             tag: 'div',
@@ -27764,7 +28436,7 @@
               'tox-silver-sink',
               'tox-tinymce-aux'
             ].concat(deviceClasses),
-            attributes: { ...global$8.isRtl() ? { dir: 'rtl' } : {} }
+            attributes: { ...global$5.isRtl() ? { dir: 'rtl' } : {} }
           },
           behaviours: derive$1([Positioning.config({ useFixed: () => header.isDocked(lazyHeader) })])
         };
@@ -27792,7 +28464,7 @@
               'tox-silver-popup-sink',
               'tox-tinymce-aux'
             ].concat(deviceClasses),
-            attributes: { ...global$8.isRtl() ? { dir: 'rtl' } : {} }
+            attributes: { ...global$5.isRtl() ? { dir: 'rtl' } : {} }
           },
           behaviours: derive$1([Positioning.config({
               useFixed: () => header.isDocked(lazyHeader),
@@ -27827,16 +28499,13 @@
         const editorContainer = OuterContainer.parts.editorContainer({
           components: flatten([
             editorComponents,
-            isInline ? [] : [
-              memBottomAnchorBar.asSpec(),
-              ...statusbar.toArray()
-            ]
+            isInline ? [] : [memBottomAnchorBar.asSpec()]
           ])
         });
         const isHidden = isDistractionFree(editor);
         const attributes = {
           role: 'application',
-          ...global$8.isRtl() ? { dir: 'rtl' } : {},
+          ...global$5.isRtl() ? { dir: 'rtl' } : {},
           ...isHidden ? { 'aria-hidden': 'true' } : {}
         };
         const outerContainer = build$1(OuterContainer.sketch({
@@ -27857,7 +28526,10 @@
           },
           components: [
             editorContainer,
-            ...isInline ? [] : [partViewWrapper],
+            ...isInline ? [] : [
+              partViewWrapper,
+              ...statusbar.toArray()
+            ],
             partThrobber
           ],
           behaviours: derive$1([
@@ -27973,6 +28645,8 @@
       };
     };
 
+    const get = element => element.dom.textContent;
+
     const labelledBy = (labelledElement, labelElement) => {
       const labelId = getOpt(labelledElement, 'id').fold(() => {
         const id = generate$6('dialog-label');
@@ -28055,7 +28729,7 @@
     ]);
 
     const factory$4 = (detail, components, spec, externals) => {
-      const dialogComp = value$2();
+      const dialogComp = value$4();
       const showDialog = dialog => {
         dialogComp.set(dialog);
         const sink = detail.lazySink(dialog).getOrDie();
@@ -28094,6 +28768,7 @@
         ...detail.eventOrder,
         [attachedToDom()]: [modalEventsId].concat(detail.eventOrder['alloy.system.attached'] || [])
       };
+      const browser = detect$1();
       return {
         uid: detail.uid,
         dom: detail.dom,
@@ -28124,7 +28799,13 @@
           }),
           Blocking.config({ getRoot: dialogComp.get }),
           config(modalEventsId, [runOnAttached(c => {
-              labelledBy(c.element, getPartOrDie(c, detail, 'title').element);
+              const titleElm = getPartOrDie(c, detail, 'title').element;
+              const title = get(titleElm);
+              if (browser.os.isMacOS() && isNonNullable(title)) {
+                set$9(c.element, 'aria-label', title);
+              } else {
+                labelledBy(c.element, titleElm);
+              }
             })])
         ])
       };
@@ -28195,7 +28876,7 @@
     const toggleButtonSpecFields = [
       ...baseFooterButtonFields,
       requiredStringEnum('type', ['togglebutton']),
-      requiredString('tooltip'),
+      optionalTooltip,
       optionalIcon,
       optionalText,
       defaultedBoolean('active', false)
@@ -28276,6 +28957,7 @@
       defaultedString('tag', 'textarea'),
       requiredString('scriptId'),
       requiredString('scriptUrl'),
+      optionFunction('onFocus'),
       defaultedPostMsg('settings', undefined)
     ]);
     const customEditorFieldsOld = formComponentFields.concat([
@@ -28443,7 +29125,8 @@
         'media',
         'file'
       ]),
-      enabled
+      enabled,
+      optionString('picker_text')
     ]);
     const urlInputSchema = objOf(urlInputFields);
     const urlInputDataProcessor = objOf([
@@ -28729,7 +29412,7 @@
       uid: detail.uid,
       dom: detail.dom,
       components: detail.components,
-      events: events$a(detail.action),
+      events: events$9(detail.action),
       behaviours: augment(detail.tabButtonBehaviours, [
         Focusing.config({}),
         Keying.config({
@@ -28923,7 +29606,7 @@
         uid: detail.uid,
         dom: detail.dom,
         components,
-        behaviours: get$3(detail.tabSectionBehaviours),
+        behaviours: get$4(detail.tabSectionBehaviours),
         events: derive$2(flatten([
           detail.selectFirst ? [runOnAttached((section, _simulatedEvent) => {
               changeTabBy(section, Highlighting.getFirst);
@@ -28985,19 +29668,19 @@
     const getMaxTabviewHeight = (dialog, tabview, tablist) => {
       const documentElement$1 = documentElement(dialog).dom;
       const rootElm = ancestor(dialog, '.tox-dialog-wrap').getOr(dialog);
-      const isFixed = get$e(rootElm, 'position') === 'fixed';
+      const isFixed = get$f(rootElm, 'position') === 'fixed';
       let maxHeight;
       if (isFixed) {
         maxHeight = Math.max(documentElement$1.clientHeight, window.innerHeight);
       } else {
         maxHeight = Math.max(documentElement$1.offsetHeight, documentElement$1.scrollHeight);
       }
-      const tabviewHeight = get$d(tabview);
-      const isTabListBeside = tabview.dom.offsetLeft >= tablist.dom.offsetLeft + get$c(tablist);
-      const currentTabHeight = isTabListBeside ? Math.max(get$d(tablist), tabviewHeight) : tabviewHeight;
-      const dialogTopMargin = parseInt(get$e(dialog, 'margin-top'), 10) || 0;
-      const dialogBottomMargin = parseInt(get$e(dialog, 'margin-bottom'), 10) || 0;
-      const dialogHeight = get$d(dialog) + dialogTopMargin + dialogBottomMargin;
+      const tabviewHeight = get$e(tabview);
+      const isTabListBeside = tabview.dom.offsetLeft >= tablist.dom.offsetLeft + get$d(tablist);
+      const currentTabHeight = isTabListBeside ? Math.max(get$e(tablist), tabviewHeight) : tabviewHeight;
+      const dialogTopMargin = parseInt(get$f(dialog, 'margin-top'), 10) || 0;
+      const dialogBottomMargin = parseInt(get$f(dialog, 'margin-bottom'), 10) || 0;
+      const dialogHeight = get$e(dialog) + dialogTopMargin + dialogBottomMargin;
       const chromeHeight = dialogHeight - currentTabHeight;
       return maxHeight - chromeHeight;
     };
@@ -29023,7 +29706,7 @@
     };
     const getTabview = dialog => descendant(dialog, '[role="tabpanel"]');
     const smartMode = allTabs => {
-      const maxTabHeight = value$2();
+      const maxTabHeight = value$4();
       const extraEvents = [
         runOnAttached(comp => {
           const dialog = comp.element;
@@ -29256,7 +29939,7 @@
       return ModalDialog.parts.body(bodySpec);
     };
 
-    const isTouch = global$5.deviceType.isTouch();
+    const isTouch = global$6.deviceType.isTouch();
     const hiddenHeader = (title, close) => ({
       dom: {
         tag: 'div',
@@ -29417,10 +30100,13 @@
         attributes: {
           'type': 'button',
           'aria-label': providersBackstage.translate('Close'),
-          'title': providersBackstage.translate('Close')
+          'data-mce-name': 'close'
         }
       },
-      buttonBehaviours: derive$1([Tabstopping.config({})]),
+      buttonBehaviours: derive$1([
+        Tabstopping.config({}),
+        Tooltipping.config(providersBackstage.tooltips.getConfig({ tooltipText: providersBackstage.translate('Close') }))
+      ]),
       components: [render$3('close', {
           tag: 'span',
           classes: ['tox-icon']
@@ -29433,7 +30119,7 @@
       const renderComponents = data => [text$2(providersBackstage.translate(data.title))];
       return {
         dom: {
-          tag: 'div',
+          tag: 'h1',
           classes: ['tox-dialog__title'],
           attributes: { ...titleId.map(x => ({ id: x })).getOr({}) }
         },
@@ -29500,58 +30186,82 @@
     const getEventExtras = (lazyDialog, providers, extra) => ({
       onClose: () => extra.closeWindow(),
       onBlock: blockEvent => {
-        const headerHeight = descendant(lazyDialog().element, '.tox-dialog__header').map(header => get$d(header));
+        const headerHeight = descendant(lazyDialog().element, '.tox-dialog__header').map(header => get$e(header));
         ModalDialog.setBusy(lazyDialog(), (_comp, bs) => getBusySpec(blockEvent.message, bs, providers, headerHeight));
       },
       onUnblock: () => {
         ModalDialog.setIdle(lazyDialog());
       }
     });
-    const renderModalDialog = (spec, initialData, dialogEvents, backstage) => {
-      const updateState = (_comp, incoming) => Optional.some(incoming);
-      return build$1(renderDialog$1({
-        ...spec,
-        firstTabstop: 1,
-        lazySink: backstage.shared.getSink,
-        extraBehaviours: [
-          Reflecting.config({
-            channel: `${ dialogChannel }-${ spec.id }`,
-            updateState,
-            initialData
-          }),
-          memory({}),
-          ...spec.extraBehaviours
-        ],
-        onEscape: comp => {
-          emit(comp, formCancelEvent);
-        },
-        dialogEvents,
-        eventOrder: {
-          [receive()]: [
-            Reflecting.name(),
-            Receiving.name()
-          ],
-          [attachedToDom()]: [
-            'scroll-lock',
-            Reflecting.name(),
-            'messages',
-            'dialog-events',
-            'alloy.base.behaviour'
-          ],
-          [detachedFromDom()]: [
-            'alloy.base.behaviour',
-            'dialog-events',
-            'messages',
-            Reflecting.name(),
-            'scroll-lock'
-          ]
-        }
-      }));
+    const fullscreenClass = 'tox-dialog--fullscreen';
+    const largeDialogClass = 'tox-dialog--width-lg';
+    const mediumDialogClass = 'tox-dialog--width-md';
+    const getDialogSizeClass = size => {
+      switch (size) {
+      case 'large':
+        return Optional.some(largeDialogClass);
+      case 'medium':
+        return Optional.some(mediumDialogClass);
+      default:
+        return Optional.none();
+      }
     };
+    const updateDialogSizeClass = (size, component) => {
+      const dialogBody = SugarElement.fromDom(component.element.dom);
+      if (!has(dialogBody, fullscreenClass)) {
+        remove$1(dialogBody, [
+          largeDialogClass,
+          mediumDialogClass
+        ]);
+        getDialogSizeClass(size).each(dialogSizeClass => add$2(dialogBody, dialogSizeClass));
+      }
+    };
+    const toggleFullscreen = (comp, currentSize) => {
+      const dialogBody = SugarElement.fromDom(comp.element.dom);
+      const classes = get$9(dialogBody);
+      const currentSizeClass = find$5(classes, c => c === largeDialogClass || c === mediumDialogClass).or(getDialogSizeClass(currentSize));
+      toggle$3(dialogBody, [
+        fullscreenClass,
+        ...currentSizeClass.toArray()
+      ]);
+    };
+    const renderModalDialog = (spec, dialogEvents, backstage) => build$1(renderDialog$1({
+      ...spec,
+      firstTabstop: 1,
+      lazySink: backstage.shared.getSink,
+      extraBehaviours: [
+        memory({}),
+        ...spec.extraBehaviours
+      ],
+      onEscape: comp => {
+        emit(comp, formCancelEvent);
+      },
+      dialogEvents,
+      eventOrder: {
+        [receive()]: [
+          Reflecting.name(),
+          Receiving.name()
+        ],
+        [attachedToDom()]: [
+          'scroll-lock',
+          Reflecting.name(),
+          'messages',
+          'dialog-events',
+          'alloy.base.behaviour'
+        ],
+        [detachedFromDom()]: [
+          'alloy.base.behaviour',
+          'dialog-events',
+          'messages',
+          Reflecting.name(),
+          'scroll-lock'
+        ]
+      }
+    }));
     const mapMenuButtons = (buttons, menuItemStates = {}) => {
       const mapItems = button => {
         const items = map$2(button.items, item => {
-          const cell = get$g(menuItemStates, item.name).getOr(Cell(false));
+          const cell = get$h(menuItemStates, item.name).getOr(Cell(false));
           return {
             ...item,
             storage: cell
@@ -29820,20 +30530,17 @@
       return instanceApi;
     };
 
-    const getDialogSizeClasses = size => {
-      switch (size) {
-      case 'large':
-        return ['tox-dialog--width-lg'];
-      case 'medium':
-        return ['tox-dialog--width-md'];
-      default:
-        return [];
-      }
-    };
     const renderDialog = (dialogInit, extra, backstage) => {
       const dialogId = generate$6('dialog');
       const internalDialog = dialogInit.internalDialog;
       const header = getHeader(internalDialog.title, dialogId, backstage);
+      const dialogSize = Cell(internalDialog.size);
+      const dialogSizeClasses = getDialogSizeClass(dialogSize.get()).toArray();
+      const updateState = (comp, incoming) => {
+        dialogSize.set(incoming.internalDialog.size);
+        updateDialogSizeClass(incoming.internalDialog.size, comp);
+        return Optional.some(incoming);
+      };
       const body = renderModalBody({
         body: internalDialog.body,
         initialData: internalDialog.initialData
@@ -29842,32 +30549,27 @@
       const objOfCells = extractCellsToObject(storedMenuButtons);
       const footer = someIf(storedMenuButtons.length !== 0, renderModalFooter({ buttons: storedMenuButtons }, dialogId, backstage));
       const dialogEvents = initDialog(() => instanceApi, getEventExtras(() => dialog, backstage.shared.providers, extra), backstage.shared.getSink);
-      const dialogSize = getDialogSizeClasses(internalDialog.size);
       const spec = {
         id: dialogId,
         header,
         body,
         footer,
-        extraClasses: dialogSize,
-        extraBehaviours: [],
+        extraClasses: dialogSizeClasses,
+        extraBehaviours: [Reflecting.config({
+            channel: `${ dialogChannel }-${ dialogId }`,
+            updateState,
+            initialData: dialogInit
+          })],
         extraStyles: {}
       };
-      const dialog = renderModalDialog(spec, dialogInit, dialogEvents, backstage);
+      const dialog = renderModalDialog(spec, dialogEvents, backstage);
       const modalAccess = (() => {
         const getForm = () => {
           const outerForm = ModalDialog.getBody(dialog);
           return Composing.getCurrent(outerForm).getOr(outerForm);
         };
-        const toggleFullscreen = () => {
-          const fullscreenClass = 'tox-dialog--fullscreen';
-          const sugarBody = SugarElement.fromDom(dialog.element.dom);
-          if (!has(sugarBody, fullscreenClass)) {
-            remove$1(sugarBody, dialogSize);
-            add$2(sugarBody, fullscreenClass);
-          } else {
-            remove$2(sugarBody, fullscreenClass);
-            add$1(sugarBody, dialogSize);
-          }
+        const toggleFullscreen$1 = () => {
+          toggleFullscreen(dialog, dialogSize.get());
         };
         return {
           getId: constant$1(dialogId),
@@ -29875,7 +30577,7 @@
           getBody: () => ModalDialog.getBody(dialog),
           getFooter: () => ModalDialog.getFooter(dialog),
           getFormWrapper: getForm,
-          toggleFullscreen
+          toggleFullscreen: toggleFullscreen$1
         };
       })();
       const instanceApi = getDialogApi(modalAccess, extra.redial, objOfCells);
@@ -29885,21 +30587,19 @@
       };
     };
 
-    const getInlineDialogSizeClass = size => {
-      switch (size) {
-      case 'medium':
-        return Optional.some('tox-dialog--width-md');
-      default:
-        return Optional.none();
-      }
-    };
-    const renderInlineDialog = (dialogInit, extra, backstage, ariaAttrs = false) => {
+    const renderInlineDialog = (dialogInit, extra, backstage, ariaAttrs = false, refreshDocking) => {
       const dialogId = generate$6('dialog');
       const dialogLabelId = generate$6('dialog-label');
       const dialogContentId = generate$6('dialog-content');
       const internalDialog = dialogInit.internalDialog;
-      const dialogSize = getInlineDialogSizeClass(internalDialog.size);
-      const updateState = (_comp, incoming) => Optional.some(incoming);
+      const dialogSize = Cell(internalDialog.size);
+      const dialogSizeClass = getDialogSizeClass(dialogSize.get()).toArray();
+      const updateState = (comp, incoming) => {
+        dialogSize.set(incoming.internalDialog.size);
+        updateDialogSizeClass(incoming.internalDialog.size, comp);
+        refreshDocking();
+        return Optional.some(incoming);
+      };
       const memHeader = record(renderInlineHeader({
         title: internalDialog.title,
         draggable: true
@@ -29914,7 +30614,7 @@
       const dialogEvents = initDialog(() => instanceApi, {
         onBlock: event => {
           Blocking.block(dialog, (_comp, bs) => {
-            const headerHeight = memHeader.getOpt(dialog).map(dialog => get$d(dialog.element));
+            const headerHeight = memHeader.getOpt(dialog).map(dialog => get$e(dialog.element));
             return getBusySpec(event.message, bs, backstage.shared.providers, headerHeight);
           });
         },
@@ -29924,17 +30624,18 @@
         onClose: () => extra.closeWindow()
       }, backstage.shared.getSink);
       const inlineClass = 'tox-dialog-inline';
+      const os = detect$1().os;
       const dialog = build$1({
         dom: {
           tag: 'div',
           classes: [
             'tox-dialog',
             inlineClass,
-            ...dialogSize.toArray()
+            ...dialogSizeClass
           ],
           attributes: {
             role: 'dialog',
-            ['aria-labelledby']: dialogLabelId
+            ...os.isMacOS() ? { 'aria-label': internalDialog.title } : { 'aria-labelledby': dialogLabelId }
           }
         },
         eventOrder: {
@@ -29955,7 +30656,7 @@
               emit(c, formCloseEvent);
               return Optional.some(true);
             },
-            useTabstopAt: elem => !isPseudoStop(elem) && (name$3(elem) !== 'button' || get$f(elem, 'disabled') !== 'disabled'),
+            useTabstopAt: elem => !isPseudoStop(elem) && (name$3(elem) !== 'button' || get$g(elem, 'disabled') !== 'disabled'),
             firstTabstop: 1
           }),
           Reflecting.config({
@@ -29982,16 +30683,8 @@
           ...optMemFooter.map(memFooter => memFooter.asSpec()).toArray()
         ]
       });
-      const toggleFullscreen = () => {
-        const fullscreenClass = 'tox-dialog--fullscreen';
-        const sugarBody = SugarElement.fromDom(dialog.element.dom);
-        if (!hasAll(sugarBody, [fullscreenClass])) {
-          remove$1(sugarBody, [inlineClass]);
-          add$1(sugarBody, [fullscreenClass]);
-        } else {
-          remove$1(sugarBody, [fullscreenClass]);
-          add$1(sugarBody, [inlineClass]);
-        }
+      const toggleFullscreen$1 = () => {
+        toggleFullscreen(dialog, dialogSize.get());
       };
       const instanceApi = getDialogApi({
         getId: constant$1(dialogId),
@@ -30002,7 +30695,7 @@
           const body = memBody.get(dialog);
           return Composing.getCurrent(body).getOr(body);
         },
-        toggleFullscreen
+        toggleFullscreen: toggleFullscreen$1
       }, extra.redial, objOfCells);
       return {
         dialog,
@@ -30108,7 +30801,13 @@
       const iframeUri = new global(internalDialog.url, { base_uri: new global(window.location.href) });
       const iframeDomain = `${ iframeUri.protocol }://${ iframeUri.host }${ iframeUri.port ? ':' + iframeUri.port : '' }`;
       const messageHandlerUnbinder = unbindable();
+      const updateState = (_comp, incoming) => Optional.some(incoming);
       const extraBehaviours = [
+        Reflecting.config({
+          channel: `${ dialogChannel }-${ dialogId }`,
+          updateState,
+          initialData: internalDialog
+        }),
         config('messages', [
           runOnAttached(() => {
             const unbind = bind(SugarElement.fromDom(window), 'message', e => {
@@ -30149,7 +30848,7 @@
         extraBehaviours,
         extraStyles: styles
       };
-      const dialog = renderModalDialog(spec, internalDialog, dialogEvents, backstage);
+      const dialog = renderModalDialog(spec, dialogEvents, backstage);
       const instanceApi = getUrlDialogApi(dialog);
       return {
         dialog,
@@ -30334,7 +31033,7 @@
       const openInlineDialog = (config$1, anchor, closeWindow, windowParams) => {
         const factory = (contents, internalInitialData, dataValidator) => {
           const initialData = validateData(internalInitialData, dataValidator);
-          const inlineDialog = value$2();
+          const inlineDialog = value$4();
           const isToolbarLocationTop = extras.backstages.popup.shared.header.isPositionedAtTop();
           const dialogInit = {
             dataValidator,
@@ -30343,7 +31042,9 @@
           };
           const refreshDocking = () => inlineDialog.on(dialog => {
             InlineView.reposition(dialog);
-            Docking.refresh(dialog);
+            if (!isStickyToolbar$1 || !isToolbarLocationTop) {
+              Docking.refresh(dialog);
+            }
           });
           const dialogUi = renderInlineDialog(dialogInit, {
             redial: DialogManager.redial,
@@ -30353,7 +31054,7 @@
               inlineDialog.clear();
               closeWindow(dialogUi.instanceApi);
             }
-          }, extras.backstages.popup, windowParams.ariaAttrs);
+          }, extras.backstages.popup, windowParams.ariaAttrs, refreshDocking);
           const inlineDialogComp = build$1(InlineView.sketch({
             lazySink: extras.backstages.popup.shared.getSink,
             dom: {
@@ -30390,7 +31091,7 @@
       const openBottomInlineDialog = (config$1, anchor, closeWindow, windowParams) => {
         const factory = (contents, internalInitialData, dataValidator) => {
           const initialData = validateData(internalInitialData, dataValidator);
-          const inlineDialog = value$2();
+          const inlineDialog = value$4();
           const isToolbarLocationTop = extras.backstages.popup.shared.header.isPositionedAtTop();
           const dialogInit = {
             dataValidator,
@@ -30409,7 +31110,7 @@
               inlineDialog.clear();
               closeWindow(dialogUi.instanceApi);
             }
-          }, extras.backstages.popup, windowParams.ariaAttrs);
+          }, extras.backstages.popup, windowParams.ariaAttrs, refreshDocking);
           const inlineDialogComp = build$1(InlineView.sketch({
             lazySink: extras.backstages.popup.shared.getSink,
             dom: {
@@ -30466,7 +31167,7 @@
           };
           InlineView.showWithinBounds(inlineDialogComp, premade(dialogUi.dialog), { anchor }, getInlineDialogBounds);
           Docking.refresh(inlineDialogComp);
-          editor.on('ResizeEditor ScrollWindow ElementScroll', refreshDocking);
+          editor.on('ResizeEditor ScrollWindow ElementScroll ResizeWindow', refreshDocking);
           dialogUi.instanceApi.setData(initialData);
           Keying.focusIn(dialogUi.dialog);
           return dialogUi.instanceApi;
@@ -30523,7 +31224,8 @@
             dialog: dialogs.backstage
           }
         });
-        const getNotificationManagerImpl = () => NotificationManagerImpl(editor, { backstage: popups.backstage }, popups.getMothership());
+        const notificationRegion = value$4();
+        const getNotificationManagerImpl = () => NotificationManagerImpl(editor, { backstage: popups.backstage }, popups.getMothership(), notificationRegion);
         return {
           renderUI,
           getWindowManagerImpl: constant$1(windowMgr),

@@ -33,7 +33,7 @@ namespace LOVA.API.Controllers
                 await mailService.SendEmailAsync(request);
                 return Ok();
             }
-            catch (Exception ex)
+            catch
             {
                 throw;
             }
@@ -50,7 +50,7 @@ namespace LOVA.API.Controllers
                 await mailService.SendNoActivitiesEmailAsync();
                 return Ok();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
