@@ -252,7 +252,7 @@ function checkLongActivationTime() {
 
         if (parseInt(secondsBetween, 10) > 600) {
 
-            document.getElementById(id).classList.add('redSolidBorder');
+           // document.getElementById(id).classList.add('redSolidBorder');
         }
     }
 }

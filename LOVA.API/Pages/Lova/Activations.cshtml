@@ -22,10 +22,14 @@
                 <i class="fas fa-square"></i>
             </span>
             <span class="tableLive mt-1">&nbsp; Aktiv mer än 100 s</span>
+            <!--
             <span class="ml-2" style="font-size: 18px;color: #990000;">
                 <i class="far fa-square"></i>
             </span>
-            <span class="tableLive mt-1">&nbsp; Aktiv mer än 10 min</span>
+           
+
+            <span class="tableLive mt-1">&nbsp; Aktiv mer än 10 min</span> 
+            -->
             <span class="ml-2" style="font-size: 18px;color: #a6a6a6">
                 <i class="fas fa-square"></i>
             </span>
@@ -271,7 +275,7 @@
                                    $("#" + val["RowKey"]).attr("data-timeup", val["TimeUp"]).removeClass("tableLiveTdStart").addClass("active").addClass("tableLiveTdLongActive");
 
                                    if (secondsBetween > 600) {
-                                       $("#" + val["RowKey"]).addClass("redSolidBorder");
+                                      // $("#" + val["RowKey"]).addClass("redSolidBorder");
                                    }
                                } else {
                                    // color orange
