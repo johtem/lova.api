@@ -69,9 +69,9 @@ namespace LOVA.API.Pages.Lova
 
             
 
-            ViewData["buttonTextSlinga1"] = $"Slinga 1 - Återställd {resetGridSlinga1.ResetDate.ToLocalTime()}"; 
-            ViewData["buttonTextSlinga2"] = $"Slinga 2 - Återställd {resetGridSlinga2.ResetDate.ToLocalTime()}";
-            ViewData["buttonTextSlinga3"] = $"Slinga 3 - Återställd {resetGridSlinga3.ResetDate.ToLocalTime()}";
+            ViewData["buttonTextSlinga1"] = $"Slinga 1 - Återställd {resetGridSlinga1.ResetDate}"; 
+            ViewData["buttonTextSlinga2"] = $"Slinga 2 - Återställd {resetGridSlinga2.ResetDate}";
+            ViewData["buttonTextSlinga3"] = $"Slinga 3 - Återställd {resetGridSlinga3.ResetDate}";
 
             //if (now > resetGridExistingRow.ResetDate.ToLocalTime() && now < resetGridExistingRow.ResetDate.ToLocalTime().AddHours(MyConsts.resetGridWaitTime))
             //{
