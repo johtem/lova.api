@@ -9,14 +9,14 @@
         <h4>Fastighetens profil</h4>
     </div>
     <div class="row mt-5">
-        @if (!String.IsNullOrEmpty(Model.StatusMessage))
+@*         @if (!String.IsNullOrEmpty(Model.StatusMessage))
         {
             var statusMessageClass = Model.StatusMessage.StartsWith("Error") ? "danger" : "success";
             <div class="alert alert-@statusMessageClass alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 @Model
             </div>
-        }
+        } *@
     </div>
     <div class="row mt-5">
 
@@ -74,8 +74,8 @@
                     <th>@Html.DisplayNameFor(model => model.Profiles.First().PhoneNumber)</th>
                     <th>@Html.DisplayNameFor(model => model.Profiles.First().WantInfoEmail)</th>
                     <th>@Html.DisplayNameFor(model => model.Profiles.First().WantInfoSMS)</th>
-                    <th>@Html.DisplayNameFor(model => model.Profiles.First().WantGrannsamverkanEmail)</th>
-                    <th>@Html.DisplayNameFor(model => model.Profiles.First().IsActive)</th>
+                    @* <th>@Html.DisplayNameFor(model => model.Profiles.First().WantGrannsamverkanEmail)</th> *@
+                    @* <th>@Html.DisplayNameFor(model => model.Profiles.First().IsActive)</th> *@
 
                 </tr>
             </thead>
@@ -91,8 +91,8 @@
                         <td>@item.PhoneNumber</td>
                         <td><input type="checkbox" asp-for="@item.WantInfoEmail" class="form-check-input" disabled /></td>
                         <td><input type="checkbox" asp-for="@item.WantInfoSMS" class="form-check-input" disabled /></td>
-                        <td><input type="checkbox" asp-for="@item.WantGrannsamverkanEmail" class="form-check-input" disabled /></td>
-                        <td><input type="checkbox" asp-for="@item.IsActive" class="form-check-input" disabled /></td>
+                        @* <td><input type="checkbox" asp-for="@item.WantGrannsamverkanEmail" class="form-check-input" disabled /></td> *@
+                        @* <td><input type="checkbox" asp-for="@item.IsActive" class="form-check-input" disabled /></td> *@
                         <td><a asp-page="./ProfileEdit" asp-route-id="@item.Id">Uppdatera</a></td>
                         <td><a asp-page="./ProfileDelete" asp-route-id="@item.Id">Ta bort</a></td>
                         

@@ -135,7 +135,7 @@ namespace LOVA.API.Pages.Lova
                  .Where(a => a.TimeUp >= dateNow.AddDays(daysAgo) && a.TimeUp <= dateNow)
                  .Select(a => new ActivityPerDrainViewModel
                  {
-                     TimeUp = a.TimeUp.AddHours(1),
+                     TimeUp = a.TimeUp,
                      TimeDiffString = DateExtensions.SecondsToHHMMSS(Math.Abs((a.TimeDown - a.TimeUp).TotalSeconds))
                  })
                  .OrderByDescending(a => a.TimeUp)

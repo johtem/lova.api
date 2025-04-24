@@ -10,7 +10,7 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td width="60%">@item.TimeUp</td>
+                <td width="60%">@item.TimeUp.ToLocalTime()</td>
                 <td width="40%">@item.TimeDiffString</td>
             </tr>
         }
